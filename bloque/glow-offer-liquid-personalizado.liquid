@@ -10,8 +10,11 @@
   - Packs y regalos: valores separados por |, en el orden en que se muestran. Guion (-) = vacío.
   - Badges: separados por coma. El primero va destacado.
   - Regalos: g_min = desde cuántos frascos se desbloquea. g_handle = producto $0 que se agrega
-    al carrito (guion si no hay producto, ej. envío gratis o sorteo). Si el producto tiene
-    foto, se usa la foto; si no, el emoji de g_icon.
+    al carrito (guion si no hay producto, ej. envío gratis o sorteo).
+  - Imágenes de los regalos (g_image): subilas en Contenido → Archivos, tocá "Copiar enlace"
+    y pegá cada link en su lugar, separados por |. Guion (-) = sin imagen: usa la foto del
+    producto regalo y, si no hay, un ícono de línea (g_icon: truck, book, leaf, sun, gift).
+    Tip: imágenes cuadradas, fondo claro o transparente, mínimo 300×300 px.
 {%- endcomment -%}
 
 {%- liquid
@@ -19,7 +22,7 @@
 
   assign heading = 'Elegí tu protocolo'
   assign cta_label = 'Agregar al carrito'
-  assign cta_sub = 'Quiero mi tono dorado ✨'
+  assign cta_sub = 'Quiero mi tono dorado'
   assign redirect = 'cart'
 
   assign t_pos      = '4|3|2|1' | split: '|'
@@ -38,7 +41,8 @@
   assign g_value  = '-|$25.000|$20.000|-' | split: '|'
   assign g_tag    = 'GRATIS|GRATIS|GRATIS|SORTEO' | split: '|'
   assign g_min    = '1|2|3|3' | split: '|'
-  assign g_icon   = '🚚|📖|🥗|🏝️' | split: '|'
+  assign g_icon   = 'truck|book|leaf|sun' | split: '|'
+  assign g_image  = '-|-|-|-' | split: '|'
   assign g_handle = '-|guia-rutina-glow|guia-alimentacion-para-un-tono-dorado|-' | split: '|'
 
   assign c_accent = '#F2B47F'
@@ -170,7 +174,7 @@
   {%- endif -%}
 
   {%- comment -%} ---------- REGALOS ---------- {%- endcomment -%}
-  <p class="gg__title" data-gifts-title></p>
+  <div class="gg__title"><span></span><p data-gifts-title></p><span></span></div>
   <div class="gg" style="--cols: {{ g_title.size }}">
     {%- for gt in g_title -%}
       {%- liquid
@@ -185,12 +189,35 @@
       <div class="gg__tile" data-min="{{ g_min[gi] | plus: 0 }}"{% if gp != blank %} data-variant-id="{{ gp.selected_or_first_available_variant.id }}"{% endif %}>
         <span class="gg__check" aria-hidden="true">✓</span>
         <span class="gg__media">
-          {%- if gp != blank and gp.featured_image -%}
-            {{ gp.featured_image | image_url: width: 160 | image_tag: loading: 'lazy', alt: gt }}
+          {%- liquid
+            assign gimg = g_image[gi] | strip
+            assign has_img = false
+            if gimg != '-' and gimg != ''
+              assign has_img = true
+              if gimg contains '?'
+                assign gimg = gimg | append: '&width=300'
+              else
+                assign gimg = gimg | append: '?width=300'
+              endif
+            endif
+            assign gicon = g_icon[gi] | strip
+          -%}
+          {%- if has_img -%}
+            <img src="{{ gimg }}" alt="{{ gt | escape }}" loading="lazy" width="150" height="150">
+          {%- elsif gp != blank and gp.featured_image -%}
+            {{ gp.featured_image | image_url: width: 300 | image_tag: loading: 'lazy', alt: gt }}
           {%- else -%}
-            <span class="gg__emoji">{{ g_icon[gi] }}</span>
+            <svg class="gg__icon" viewBox="0 0 24 24" aria-hidden="true">
+              {%- case gicon -%}
+                {%- when 'truck' -%}<path d="M2.5 6.5h11v9h-11z"/><path d="M13.5 9.5h4l3 3.2v2.8h-7"/><circle cx="7" cy="17" r="1.8"/><circle cx="17" cy="17" r="1.8"/>
+                {%- when 'book' -%}<path d="M12 6.5C10 5 7 4.5 3.5 5v13c3.5-.5 6.5 0 8.5 1.5 2-1.5 5-2 8.5-1.5V5C17 4.5 14 5 12 6.5z"/><path d="M12 6.5v13"/>
+                {%- when 'leaf' -%}<path d="M5 19C5 10.5 10.5 5 19.5 4.5 19.5 13.5 14 19 5 19z"/><path d="M5 19l8.5-8.5"/>
+                {%- when 'sun' -%}<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/>
+                {%- else -%}<path d="M3.5 9.5h17v4h-17z"/><path d="M5 13.5v7h14v-7"/><path d="M12 9.5v11"/><path d="M12 9.5C10 9.5 7.5 8.5 8 6.5s3.5-.5 4 3c.5-3.5 3.5-5 4-3s-2 3-4 3z"/>
+              {%- endcase -%}
+            </svg>
           {%- endif -%}
-          <span class="gg__lock" aria-hidden="true">🔒</span>
+          <span class="gg__lock" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg></span>
         </span>
         <span class="gg__name">{{ gt }}</span>
         <span class="gg__tag">{{ g_tag[gi] }}</span>
@@ -271,14 +298,17 @@
   .gb__prices em.is-free { background: #1E7B3A; }
 
   /* Regalos */
-  .gg__title { margin: 18px 0 10px !important; text-align: center; font-size: 14.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+  .gg__title { display: flex; align-items: center; gap: 12px; margin: 20px 0 12px; }
+  .gg__title span { flex: 1; height: 1px; background: currentColor; opacity: .18; }
+  .gg__title p { font-size: 14px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; text-align: center; }
   .gg { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: 8px; }
   .gg__tile { position: relative; display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 10px 6px 9px; border: 2px solid var(--g-line); border-radius: 8px; background: var(--g-soft); text-align: center; transition: opacity .2s, border-color .2s, background .2s; }
   .gg__check { z-index: 2; position: absolute; top: 5px; right: 5px; width: 18px; height: 18px; border-radius: 4px; background: #34A853; color: #fff; font-size: 12px; font-weight: 700; line-height: 18px; }
-  .gg__media { position: relative; width: 100%; aspect-ratio: 1; max-width: 64px; border-radius: 6px; overflow: hidden; background: #fff; display: grid; place-items: center; }
+  .gg__media { position: relative; width: 100%; aspect-ratio: 1; max-width: 72px; border-radius: 6px; overflow: hidden; background: #fff; border: 1px solid #F1E6DC; display: grid; place-items: center; }
   .gg__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .gg__emoji { font-size: 32px; line-height: 1; }
-  .gg__lock { position: absolute; inset: 0; display: none; place-items: center; font-size: 26px; background: rgba(255,255,255,.75); }
+  .gg__icon { width: 55%; height: 55%; fill: none; stroke: var(--g-text); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+  .gg__lock { position: absolute; inset: 0; display: none; place-items: center; background: #FBF9F7; }
+  .gg__lock svg { width: 42%; height: 42%; fill: none; stroke: #9C8F86; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
   .gg__name { font-size: 13px; font-weight: 700; line-height: 1.2; min-height: 2.4em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   .gg__tag { padding: 2px 8px; border-radius: 4px; background: #E6F4EA; color: #1E7B3A; font-size: 12px; font-weight: 800; letter-spacing: .04em; }
   .gg__locked { display: none; font-size: 11.5px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; color: #9C8F86; }
@@ -315,7 +345,6 @@
     .gg { gap: 6px; }
     .gg__tile { padding: 9px 4px 8px; }
     .gg__name { font-size: 12.5px; }
-    .gg__emoji { font-size: 28px; }
   }
 </style>
 
@@ -364,8 +393,8 @@
         if (locked && (nextMin === null || min < nextMin)) nextMin = min;
       });
       giftsTitle.textContent = nextMin === null
-        ? '✅ Todos los regalos desbloqueados'
-        : '🔓 Desbloqueá con ' + nextMin + ' frascos o más';
+        ? 'Regalos incluidos'
+        : 'Desbloqueá con ' + nextMin + ' frascos o más';
 
       var price = Number(tier.dataset.price);
       var compare = Number(tier.dataset.compare);
