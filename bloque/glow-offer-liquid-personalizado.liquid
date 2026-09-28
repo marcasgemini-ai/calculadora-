@@ -194,8 +194,11 @@
   </div>
 
   <button type="button" class="glow__cta" data-glow-cta>
-    <span class="glow__cta-main">{{ cta_label }}</span>
-    {%- if cta_sub != blank -%}<span class="glow__cta-sub">{{ cta_sub }}</span>{%- endif -%}
+    <span class="glow__cta-idle">
+      <span class="glow__cta-main">{{ cta_label }}</span>
+      {%- if cta_sub != blank -%}<span class="glow__cta-sub">{{ cta_sub }}</span>{%- endif -%}
+    </span>
+    <span class="glow__cta-busy" aria-hidden="true"><span class="glow__spin"></span><span data-glow-busy-text>Agregando…</span></span>
   </button>
   <p class="glow__error" data-glow-error hidden></p>
 
@@ -266,11 +269,18 @@
   .glow__total s { font-size: 16px; }
   .glow__total em { margin-left: auto; font-style: normal; font-size: 15px; font-weight: 700; color: var(--g-text); }
 
-  .glow__cta { width: 100%; min-height: 60px; padding: 10px 16px; border: 0; border-radius: 999px; background: var(--g-accent); color: var(--g-ink); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; box-shadow: 0 8px 20px -10px rgba(154,79,28,.6); transition: transform .15s, filter .15s; }
-  .glow__cta:hover { transform: translateY(-1px); filter: brightness(.97); }
+  .glow__cta { position: relative; width: 100%; min-height: 60px; padding: 10px 16px; border: 0; border-radius: 999px; background: var(--g-ink); color: #fff; cursor: pointer; display: grid; place-items: center; box-shadow: 0 10px 22px -12px rgba(59,31,20,.8); transition: transform .15s, background .2s; }
+  .glow__cta:hover { transform: translateY(-1px); background: #2A150D; }
+  .glow__cta-idle, .glow__cta-busy { grid-area: 1 / 1; display: flex; flex-direction: column; align-items: center; gap: 2px; transition: opacity .2s; }
   .glow__cta-main { font-size: 18px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
-  .glow__cta-sub { font-size: 13.5px; font-weight: 500; }
-  .glow__cta[aria-busy="true"] { opacity: .6; pointer-events: none; }
+  .glow__cta-sub { font-size: 13.5px; font-weight: 500; color: var(--g-accent); }
+  .glow__cta-busy { flex-direction: row; gap: 10px; opacity: 0; font-size: 16px; font-weight: 700; }
+  .glow__cta.is-loading, .glow__cta.is-done { pointer-events: none; }
+  .glow__cta.is-loading .glow__cta-idle, .glow__cta.is-done .glow__cta-idle { opacity: 0; }
+  .glow__cta.is-loading .glow__cta-busy, .glow__cta.is-done .glow__cta-busy { opacity: 1; }
+  .glow__cta.is-done .glow__spin { display: none; }
+  .glow__spin { width: 20px; height: 20px; border-radius: 50%; border: 3px solid rgba(255,255,255,.3); border-top-color: var(--g-accent); animation: glow-spin .7s linear infinite; }
+  @keyframes glow-spin { to { transform: rotate(360deg); } }
   .glow__error { margin-top: 8px !important; color: #b42318; font-size: 14px; text-align: center; }
 
   @media (max-width: 420px) {
@@ -341,6 +351,9 @@
         if (g.variantId && bottles >= g.min) items.push({ id: g.variantId, quantity: 1, properties: { _regalo: offer } });
       });
 
+      var busyText = cta.querySelector('[data-glow-busy-text]');
+      busyText.textContent = 'Agregando…';
+      cta.classList.add('is-loading');
       cta.setAttribute('aria-busy', 'true');
       errorEl.hidden = true;
       fetch('{{ routes.cart_add_url }}.js', {
@@ -350,9 +363,16 @@
       })
         .then(function (res) { return res.json().then(function (d) { if (!res.ok) throw d; return d; }); })
         .then(function () {
+          cta.classList.remove('is-loading');
+          cta.classList.add('is-done');
+          busyText.textContent = '✓ ¡Agregado!';
+          return new Promise(function (r) { setTimeout(r, 450); });
+        })
+        .then(function () {
           window.location.href = root.dataset.redirect === 'checkout' ? '/checkout' : '{{ routes.cart_url }}';
         })
         .catch(function (err) {
+          cta.classList.remove('is-loading');
           cta.removeAttribute('aria-busy');
           errorEl.textContent = (err && (err.description || err.message)) || 'No pudimos agregar el pack. Probá de nuevo.';
           errorEl.hidden = false;
