@@ -297,19 +297,19 @@
 <style>
   #glow-offer { color: var(--g-ink); font-size: 16px; line-height: 1.35; margin: 18px 0; }
   #glow-offer * { box-sizing: border-box; }
-  #glow-offer s { opacity: .5; font-weight: 400; }
+  #glow-offer s { color: #8C7B70; font-weight: 500; }
   #glow-offer p { margin: 0; }
   #glow-offer .go-icon { width: 60%; height: 60%; fill: none; stroke: var(--g-text); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 
   .go__heading { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
-  .go__heading span { flex: 1; height: 1px; background: currentColor; opacity: .18; }
+  .go__heading span { flex: 1; height: 1px; background: #D6C3B4; }
   .go__heading p { font-size: 14px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
   .go__tiers { display: grid; gap: 22px; padding-top: 10px; }
 
   /* Tarjeta */
-  .gt { position: relative; border: 1.5px solid #E7DDD5; border-radius: 10px; background: #fff; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
-  .gt:hover { border-color: var(--g-accent); }
-  .gt.is-active { border: 2px solid var(--g-accent); box-shadow: 0 8px 22px -14px rgba(154,79,28,.55); }
+  .gt { position: relative; border: 2px solid #DCCBBD; border-radius: 10px; background: #fff; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+  .gt:hover { border-color: #E3A36C; }
+  .gt.is-active { border: 2.5px solid #E3A36C; box-shadow: 0 10px 26px -12px rgba(154,79,28,.55); }
 
   .gt__badges { display: flex; flex-wrap: wrap; gap: 4px; margin: -11px 0 0 12px; position: relative; z-index: 1; }
   .gt__badges span { padding: 3px 10px; border-radius: 999px; background: var(--g-accent); color: var(--g-ink); font-size: 11.5px; font-weight: 700; line-height: 1.3; white-space: nowrap; }
@@ -319,13 +319,13 @@
   .gt.is-active .gt__main { background: var(--g-soft); }
   .gt__radio { position: absolute; opacity: 0; pointer-events: none; }
   .gt__radio:focus-visible + .gt__dot { outline: 2px solid var(--g-ink); outline-offset: 2px; }
-  .gt__dot { width: 22px; height: 22px; border-radius: 50%; border: 2px solid #CFC4BB; background: #fff; display: flex; align-items: center; justify-content: center; }
+  .gt__dot { width: 22px; height: 22px; border-radius: 50%; border: 2px solid #A8988C; background: #fff; display: flex; align-items: center; justify-content: center; }
   .gt.is-active .gt__dot { border-color: var(--g-text); }
   .gt.is-active .gt__dot::after { content: ""; width: 11px; height: 11px; border-radius: 50%; background: var(--g-text); }
   .gt__name { display: flex; flex-direction: column; min-width: 0; }
   .gt__name strong { font-size: 18px; line-height: 1.2; letter-spacing: 0; }
-  .gt__meta { font-size: 13.5px; opacity: .7; margin-top: 1px; }
-  .gt__sub { display: none; margin-top: 6px; font-size: 14px; line-height: 1.4; opacity: .8; }
+  .gt__meta { font-size: 13.5px; color: #6E5A4E; margin-top: 1px; }
+  .gt__sub { display: none; margin-top: 6px; font-size: 14px; line-height: 1.4; color: #5A463B; }
   .gt.is-active .gt__sub { display: block; }
   .gt__price { display: flex; flex-direction: column; align-items: flex-end; white-space: nowrap; }
   .gt__price s { font-size: 14px; }
@@ -333,7 +333,7 @@
   .gt.is-active .gt__price strong { color: var(--g-text); }
 
   /* Upsell dentro de la tarjeta */
-  .gb { display: grid; grid-template-columns: 44px 1fr auto; gap: 10px; align-items: center; padding: 9px 14px; border-top: 1px solid #F1E6DC; background: #FFFBF7; cursor: pointer; outline: none; transition: background .15s; }
+  .gb { display: grid; grid-template-columns: 44px 1fr auto; gap: 10px; align-items: center; padding: 9px 14px; border-top: 1px solid #E6D5C6; background: #FCF2E9; cursor: pointer; outline: none; transition: background .15s; }
   .gb__box { display: none; width: 20px; height: 20px; border-radius: 4px; border: 2px solid var(--g-ink); background: #fff; align-items: center; justify-content: center; }
   .gt.is-active .gb { grid-template-columns: 20px 44px 1fr auto; background: var(--g-accent); border-top-color: var(--g-accent); }
   .gt.is-active .gb__box { display: flex; }
@@ -350,28 +350,28 @@
   .gb__price s { font-size: 12.5px; }
 
   /* Regalos */
-  .gg { border-top: 1px solid #F1E6DC; }
+  .gg { border-top: 1px solid #E6D5C6; }
   .gg__sum { display: flex; align-items: center; gap: 8px; padding: 9px 14px; }
   .gg__gift { flex: none; font-size: 16px; line-height: 1; }
   .gg__count { flex: 1; font-size: 14px; font-weight: 700; }
   .gg__thumbs { display: flex; gap: 4px; }
-  .gg__thumb { width: 30px; height: 30px; flex: none; border-radius: 5px; overflow: hidden; background: #fff; border: 1px solid #F1E6DC; display: flex; align-items: center; justify-content: center; }
+  .gg__thumb { width: 30px; height: 30px; flex: none; border-radius: 5px; overflow: hidden; background: #fff; border: 1px solid #E2D1C3; display: flex; align-items: center; justify-content: center; }
   .gg__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .gg__thumb.is-locked, .gg__list li.is-locked .gg__thumb { filter: grayscale(1); opacity: .45; }
+  .gg__thumb.is-locked, .gg__list li.is-locked .gg__thumb { filter: grayscale(1); opacity: .6; }
   .gg__list { display: none; list-style: none; margin: 0; padding: 4px 14px 8px; background: var(--g-soft); }
   .gt.is-active .gg__sum { display: none; }
   .gt.is-active .gg__list { display: block; }
-  .gg__list li { display: grid; grid-template-columns: 34px 1fr auto; gap: 10px; align-items: center; padding: 7px 0; border-bottom: 1px solid #F1E3D6; }
+  .gg__list li { display: grid; grid-template-columns: 34px 1fr auto; gap: 10px; align-items: center; padding: 7px 0; border-bottom: 1px solid #EAD8C8; }
   .gg__list li:last-child { border-bottom: 0; }
   .gg__list .gg__thumb { width: 34px; height: 34px; }
   .gg__name { font-size: 14.5px; font-weight: 700; line-height: 1.25; letter-spacing: 0; }
-  .gg__list li.is-locked .gg__name { opacity: .45; }
+  .gg__list li.is-locked .gg__name { color: #8C7B70; }
   .gg__val { display: flex; align-items: center; gap: 6px; white-space: nowrap; font-size: 14px; }
   .gg__val em { padding: 2px 7px; border-radius: 999px; background: var(--g-text); color: #fff; font-style: normal; font-size: 11px; font-weight: 800; letter-spacing: .04em; }
   .gg__val em.is-dark { background: var(--g-ink); }
   .gg__val b { color: var(--g-text); font-weight: 800; }
   .gg__val s { font-size: 12.5px; }
-  .gg__need { color: #9C8F86; font-size: 12.5px; font-weight: 700; }
+  .gg__need { color: #7E6D62; font-size: 12.5px; font-weight: 700; }
   .gg__need svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
   /* Botón */
