@@ -1,104 +1,104 @@
-# Oferta Glow · Bronzer (DR WOMAN): reemplazo de Kaching Bundles
+# Oferta Glow · Bronzer: paso a paso (15 min)
 
-Cada pack es una **variante del producto** con su precio real y su precio comparativo. Así lo que se ve en la página es exactamente lo que se cobra en el checkout, el Pixel/CAPI manda el valor correcto y no dependés de descuentos automáticos para el precio principal.
-CELUFIT va con descuentos automáticos nativos y los regalos son productos digitales de $0 que la sección agrega sola.
-
----
-
-## 0. Números de la oferta (revisalos antes de cargar)
-
-| Pack | Variante | Precio | Precio comparativo | Ahorro | Por frasco |
-|---|---|---|---|---|---|
-| Protocolo 60 días | 1 frasco | $53.990 | (sin comparativo) | 0 | $53.990 |
-| Protocolo 120 días | 2 frascos | $75.800 | $107.980 | $32.180 (30%) | $37.900 |
-| Protocolo Verano Completo ⭐ | 3 frascos | $93.300 | $161.970 | $68.670 (42%) | $31.100 |
-| Glow 12 meses | 6 frascos | $113.700 | $323.940 | $210.240 (65%) | $18.950 |
-
-⚠️ **Ojo con el margen del pack de 6.** Pasar de 3 a 6 frascos cuesta solo $20.400 más y encima lleva CELUFIT gratis (valor $49.990). Es un decoy muy fuerte: mucha gente va a elegir el de 6 aunque esté preseleccionado el de 3. Antes de publicar, confirmá que 6 × costo Bronzer + costo CELUFIT + envío + comisión de pago entra en $113.700.
-
-"60% OFF segunda unidad" da 59,6% ($21.810 la segunda). Queda bien, pero si querés el 60% exacto el pack de 2 va a $75.586.
+Hacelo en este orden. Las partes A, B y C no cambian nada de lo que ve la clienta, así que podés hacerlas en cualquier momento. La parte D es el cambio real: hacela en un horario de poco tráfico.
 
 ---
 
-## 1. Variantes del producto Bronzer
+## A. Regalos · 3 min
 
-1. **Productos → Bronzer**.
-2. En **Variantes**, agregá la opción **"Pack"** con estos valores y **en este orden** (la sección usa la posición):
-   1. `1 frasco`
-   2. `2 frascos`
-   3. `3 frascos`
-   4. `6 frascos`
-3. Cargá **Precio** y **Precio comparativo** de la tabla de arriba.
-4. Poné un SKU distinto a cada variante (ej. `BRZ-1`, `BRZ-2`, `BRZ-3`, `BRZ-6`) para que el depósito sepa cuántos frascos despachar.
-5. **Inventario.** Si controlás stock, tenés dos opciones:
-   - **Recomendada:** instalar **Shopify Bundles** (app oficial y gratis) y crear los packs como *multipack* de Bronzer. Cada venta descuenta 2, 3 o 6 unidades del stock real.
-   - **Simple:** desactivar "Hacer un seguimiento de la cantidad" en las variantes de pack y controlar el stock a mano.
-6. **Peso.** Poné el peso real de cada pack (1×, 2×, 3× y 6×) para que las tarifas de envío calculen bien.
+**Productos → Agregar producto.** Creá 2 productos:
 
-## 2. Producto CELUFIT (bump)
+| Título | Precio | Precio comparativo |
+|---|---|---|
+| Guía "Rutina Glow" | 0 | 25000 |
+| Guía "Alimentación para un tono dorado" | 0 | 20000 |
 
-1. Verificá que CELUFIT esté activo con precio **$49.990**.
-2. **Descuentos → Crear descuento → Compra X y llévate Y** (automático):
-   - Nombre: `CELUFIT 50% con Bronzer`
-   - Cliente compra: **cantidad mínima 1** del producto **Bronzer** (todas las variantes)
-   - Cliente obtiene: **1 × CELUFIT**, valor: **Monto de descuento por artículo: $26.000** (queda en $23.990)
-   - Usos máximos por pedido: 1
-   - Combinaciones: ✅ Descuentos de envío
-3. Creá otro descuento del mismo tipo:
-   - Nombre: `CELUFIT gratis Glow 12 meses`
-   - Cliente compra: **cantidad mínima 1** de la **variante Bronzer · 6 frascos**
-   - Cliente obtiene: **1 × CELUFIT**, valor **Gratis**
-   - Usos máximos por pedido: 1
-   - Combinaciones: ✅ Descuentos de envío
-4. Si los dos califican, Shopify aplica el mejor (gratis) sobre la línea de CELUFIT. No marques que se combinen entre sí.
+En cada uno:
+- Destildá **"Este es un producto físico"**.
+- Destildá **"Hacer un seguimiento de la cantidad"**.
+- Estado: **Activo** → **Guardar**.
 
-## 3. Regalos (guías)
+---
 
-1. Instalá **Digital Downloads** (app oficial y gratis) o preparate para mandar el PDF en el mail de confirmación.
-2. Creá 2 productos:
-   - `Guía "Rutina Glow: bronceado parejo y duradero"`: precio **$0**, comparativo **$25.000**
-   - `Guía "Alimentación para un tono dorado"`: precio **$0**, comparativo **$20.000**
-3. En los dos: destildá **"Este es un producto físico"** para que no sumen peso ni envío. Asigná el PDF desde Digital Downloads.
-4. Sacalos del canal **Tienda online** para que no aparezcan en colecciones ni en la búsqueda. La sección los agrega igual por ID, pero probalo (paso 8). Si tu tema no los deja agregar sin publicar, dejalos publicados y sacalos de las colecciones.
-5. **Sorteo "Viaje al Caribe":**
-   - ⚖️ En Argentina (Ley de Lealtad Comercial, DNU 274/2019) **no podés condicionar un sorteo a una compra**. Tenés que publicar **bases y condiciones** con una **forma de participar sin comprar** y poner el link a las bases cerca de la oferta. Consultalo con un abogado antes de lanzar.
-   - Para registrar a las participantes, en **Shopify Flow** creá: *Pedido creado* → condición *algún artículo tiene variante "3 frascos" o "6 frascos"* → *Agregar etiqueta al pedido* `SORTEO-CARIBE`.
+## B. Descuentos · 5 min
 
-## 4. Envío gratis y cuotas
+**Descuentos → Crear descuento.** Creá los 3:
 
-- **Envío gratis:** Descuentos → Crear → **Envío gratis** (automático) → Requisito: **monto mínimo $53.990** → Combinaciones: ✅ Descuentos de productos. Así cubrís los 4 packs.
-- **3 cuotas sin interés:** no se configura en Shopify. Se activa en tu medio de pago (Mercado Pago → Costos y cuotas → cuotas sin interés, o la promo del banco). Si no lo tenés activo, **sacá el badge** de los packs.
+**1) CELUFIT a $23.990**
+- Tipo: **Compra X y llévate Y** · Método: **Descuento automático**
+- Título: `CELUFIT 50% con Bronzer`
+- El cliente compra: **Cantidad mínima de artículos = 1** · Productos: **Bronzer**
+- El cliente obtiene: **Cantidad 1** · Productos: **CELUFIT**
+- Valor del descuento: **Monto de descuento por artículo = 26000**
+- ✅ Establecer número máximo de usos por pedido: **1**
+- Combinaciones: ✅ **Descuentos de envío**
+- Guardar
 
-## 5. Instalar la sección en el tema
+**2) CELUFIT gratis con 6 frascos** (hacelo después de cargar las variantes del paso D2)
+- Igual que el anterior, pero:
+- Título: `CELUFIT gratis Glow 12 meses`
+- El cliente compra: **Cantidad mínima 1** · Productos: **Bronzer → solo la variante "6 frascos"**
+- Valor del descuento: **Gratis**
 
-1. **Tienda online → Temas → ⋯ → Duplicar** (trabajá sobre la copia).
-2. En la copia: **⋯ → Editar código → Sections → Agregar sección nueva** → nombre `glow-offer` → pegá el contenido de [`sections/glow-offer.liquid`](sections/glow-offer.liquid) → Guardar.
-3. **Personalizar** → abrí la plantilla del producto Bronzer (te conviene crear una plantilla propia: *Plantillas → Crear plantilla → `product.bronzer`* y asignarla al producto).
-4. **Agregar sección → "Oferta Glow (packs)"** y ubicala justo debajo del título y el precio (arriba del pliegue en mobile).
-5. En la sección: elegí **Producto bump = CELUFIT**, y en cada regalo elegí el producto guía que creaste. El sorteo queda sin producto.
-6. Los 4 packs ya vienen cargados con tus textos, badges y bajadas. El de 3 frascos está preseleccionado. Revisá que **"Posición de la variante"** coincida con el orden del paso 1.
+**3) Envío gratis**
+- Tipo: **Envío gratis** · Método: **Descuento automático**
+- Título: `Envío gratis`
+- Requisito mínimo: **Monto mínimo de compra = 53990**
+- Combinaciones: ✅ **Descuentos de productos**
+- Guardar
 
-## 6. Sacar Kaching y lo que duplica
+---
 
-1. En la plantilla del producto: **ocultá el bloque de Kaching**, el **selector de variantes** y los **botones Agregar al carrito / Comprar ahora** del tema. La sección ya tiene su propio botón.
-2. Dejá la sección nueva activa y probala entera (paso 8) **antes** de desinstalar Kaching.
-3. Recién ahí: **Apps → Kaching Bundles → Desinstalar** y verificá que no quede ningún bloque `kaching` huérfano en *Personalizar*.
+## C. Pegar la sección en el tema · 4 min
 
-## 7. Detalles premium que suman conversión
+1. **Tienda online → Temas** → en tu tema actual: **⋯ → Duplicar**.
+2. En la **copia**: **⋯ → Editar código**.
+3. Carpeta **Sections** → **Agregar una nueva sección** → nombre: `glow-offer` → Listo.
+4. Borrá todo lo que viene por defecto y **pegá entero** el archivo `sections/glow-offer.liquid` → **Guardar**.
 
-- **Foto por pack:** asigná a cada variante una imagen (1 frasco, 2, 3 y 6 frascos juntos). Si tu tema cambia la imagen al cambiar de variante, se ve mucho más pro.
-- Poné **reseñas con estrellas** justo arriba del selector y el link a las **bases del sorteo** abajo del botón.
-- El texto del botón por defecto es "Quiero mi tono dorado". Se cambia en la sección.
-- Si tu carrito es tipo drawer y convierte bien, dejá "Ir al carrito". Si querés menos fricción, probá "Ir directo al checkout" en un test A/B.
+---
 
-## 8. Checklist de prueba (hacelo en mobile)
+## D. Activar la oferta · 3 min + prueba (horario de poco tráfico)
 
-- [ ] Cada pack muestra el precio, el comparativo tachado y el "c/u" correctos.
-- [ ] Al cambiar de pack se actualizan el total y el "Ahorrás".
-- [ ] 1 frasco + bump → en el checkout CELUFIT sale **$23.990**.
-- [ ] 6 frascos → CELUFIT viene tildado y en el checkout sale **$0**.
-- [ ] 2 frascos → entra 1 guía a $0. Con 3 o 6 frascos → entran las 2 guías.
-- [ ] Envío gratis aplicado en los 4 packs.
-- [ ] Pedido de prueba con 3 frascos → queda con la etiqueta `SORTEO-CARIBE`.
-- [ ] El evento de Meta **AddToCart / Purchase** llega con el valor del pack (Events Manager → Test events).
-- [ ] Kaching desinstalado y sin scripts colgados (revisá que la página no cargue `kaching` en DevTools → Network).
+**D1. Variantes del Bronzer.** Productos → Bronzer → Variantes → **Agregar opciones**:
+- Nombre de la opción: `Pack`
+- Valores, **en este orden**: `1 frasco`, `2 frascos`, `3 frascos`, `6 frascos`
+
+Después cargá precios y SKU:
+
+| Variante | Precio | Precio comparativo | SKU |
+|---|---|---|---|
+| 1 frasco | 53990 | (vacío) | BRZ-1 |
+| 2 frascos | 75800 | 107980 | BRZ-2 |
+| 3 frascos | 93300 | 161970 | BRZ-3 |
+| 6 frascos | 113700 | 323940 | BRZ-6 |
+
+Guardar. Ahora creá el **descuento B2** (CELUFIT gratis con 6 frascos).
+
+**D2. Armar la página.** En la copia del tema: **Personalizar** → arriba, elegí **Productos → Bronzer**.
+1. **Agregar sección → "Oferta Glow (packs)"** y arrastrala abajo del título del producto.
+2. En la sección elegí:
+   - **Producto bump** → CELUFIT
+   - **Regalo 1 · Producto** → Guía "Rutina Glow"
+   - **Regalo 2 · Producto** → Guía "Alimentación para un tono dorado"
+3. En el bloque **Información del producto** del tema, **ocultá** (ícono del ojo): Kaching, Selector de variantes y Botones de compra.
+4. **Guardar** → **⋯ → Publicar**.
+
+**D3. Prueba rápida (en el celular).**
+- [ ] Elegí 1 frasco + tildá CELUFIT → en el checkout CELUFIT sale **$23.990**.
+- [ ] Elegí 6 frascos → CELUFIT sale **$0** y entran las 2 guías a $0.
+- [ ] Elegí 2 frascos → entra 1 guía a $0.
+- [ ] En todos los casos, el envío sale **gratis**.
+
+Si todo da bien: **Apps → Kaching Bundles → Desinstalar**.
+
+---
+
+## Después (no bloquea el lanzamiento)
+
+- **Sorteo:** publicá bases y condiciones con una forma de participar **sin comprar** (la ley argentina lo exige). En Shopify Flow: *Pedido creado* → si tiene la variante "3 frascos" o "6 frascos" → *Agregar etiqueta* `SORTEO-CARIBE`.
+- **Cuotas sin interés:** se activan en Mercado Pago, no en Shopify. Si no las tenés, sacá ese badge desde la sección.
+- **PDF de las guías:** app **Digital Downloads** (gratis) → asignale el PDF a cada guía.
+- **Stock por frasco:** app **Shopify Bundles** (gratis) si querés que el pack de 6 descuente 6 unidades. Si no, controlá el stock a mano.
+- **Fotos:** asigná a cada variante una foto con 1, 2, 3 y 6 frascos.
+- **Margen del pack de 6:** $18.950 por frasco + CELUFIT gratis. Confirmá que te cierra.
