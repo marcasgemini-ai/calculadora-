@@ -8,6 +8,8 @@
 
   - Handle = lo que va después de /products/ en la URL del producto.
   - Packs y regalos: valores separados por |, en el orden en que se muestran. Guion (-) = vacío.
+  - redirect: 'drawer' = abre el carrito lateral del tema (si no hay, va a la página del carrito),
+    'cart' = va a la página del carrito, 'checkout' = va directo al checkout.
   - Badges: separados por coma. El primero va en oscuro, el resto en color.
   - Textos del upsell: podés usar <b>...</b> para poner algo en negrita.
   - Regalos: g_min = desde cuántos frascos se desbloquea. g_handle = producto $0 que se agrega
@@ -25,7 +27,7 @@
   assign heading = 'Elegí tu pack'
   assign cta_label = 'Agregar al carrito'
   assign cta_sub = ''
-  assign redirect = 'cart'
+  assign redirect = 'drawer'
 
   assign t_pos      = '4|3|2|1' | split: '|'
   assign t_bottles  = '6|3|2|1' | split: '|'
@@ -467,6 +469,23 @@
       });
     });
 
+    function resetCta() {
+      setTimeout(function () {
+        cta.classList.remove('is-done');
+        cta.removeAttribute('aria-busy');
+      }, 600);
+    }
+
+    // Otros temas: avisa que el carrito cambió y abre el carrito lateral si existe
+    function openThemeCart() {
+      ['cart:refresh', 'cart:updated', 'cart:build'].forEach(function (name) {
+        document.dispatchEvent(new CustomEvent(name, { bubbles: true }));
+      });
+      var toggle = document.querySelector('[data-cart-drawer-toggle], [data-drawer-toggle="cart"], .js-drawer-open-cart, [aria-controls="CartDrawer"], [aria-controls="cart-drawer"]');
+      if (toggle) { toggle.click(); return true; }
+      return false;
+    }
+
     cta.addEventListener('click', function () {
       var tier = active();
       var bottles = bottlesOf(tier);
@@ -482,20 +501,44 @@
       cta.classList.add('is-loading');
       cta.setAttribute('aria-busy', 'true');
       errorEl.hidden = true;
+      var drawer = document.querySelector('cart-drawer');
+      var useDrawer = root.dataset.redirect === 'drawer' && drawer && typeof drawer.renderContents === 'function';
+      var payload = { items: items };
+      if (useDrawer) {
+        payload.sections = ['cart-drawer', 'cart-icon-bubble'];
+        payload.sections_url = window.location.pathname;
+      }
+      var cartData;
       fetch('{{ routes.cart_add_url }}.js', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ items: items })
+        body: JSON.stringify(payload)
       })
         .then(function (res) { return res.json().then(function (d) { if (!res.ok) throw d; return d; }); })
-        .then(function () {
+        .then(function (d) {
+          cartData = d;
           cta.classList.remove('is-loading');
           cta.classList.add('is-done');
           busyText.textContent = '✓ ¡Agregado!';
-          return new Promise(function (r) { setTimeout(r, 450); });
+          return new Promise(function (r) { setTimeout(r, useDrawer ? 350 : 450); });
         })
         .then(function () {
-          window.location.href = root.dataset.redirect === 'checkout' ? '/checkout' : '{{ routes.cart_url }}';
+          var mode = root.dataset.redirect;
+          if (mode === 'checkout') { window.location.href = '/checkout'; return; }
+          if (mode === 'drawer') {
+            if (useDrawer && cartData && cartData.sections) {
+              try {
+                var inner = drawer.querySelector('.drawer__inner');
+                if (inner) inner.classList.remove('is-empty');
+                drawer.classList.remove('is-empty');
+                drawer.renderContents(cartData);
+                resetCta();
+                return;
+              } catch (e) { /* si el tema no responde, vamos a la página del carrito */ }
+            }
+            if (openThemeCart()) { resetCta(); return; }
+          }
+          window.location.href = '{{ routes.cart_url }}';
         })
         .catch(function (err) {
           cta.classList.remove('is-loading');
