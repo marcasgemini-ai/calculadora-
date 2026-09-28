@@ -18,7 +18,7 @@
 {%- endcomment -%}
 
 {%- liquid
-  assign bump_handle = 'celufit'
+  assign bump_handle = 'drenaje-linfatico-y-celulitis'
 
   assign heading = 'Elegí tu protocolo'
   assign cta_label = 'Agregar al carrito'
@@ -35,6 +35,7 @@
 
   assign bump_price = 23990
   assign bump_free_min = 6
+  assign bump_title = 'CELUFIT'
   assign bump_line = 'Para lucir tus piernas este verano'
 
   assign g_title  = 'Envío gratis|Guía Rutina Glow|Guía Alimentación|Viaje al Caribe' | split: '|'
@@ -77,7 +78,7 @@
     <p style="margin:0 0 8px;padding:8px 10px;border-radius:6px;background:#fff4e5;color:#8a4b00;font-size:13px;">⚠️ Solo el editor ve esto: el producto tiene {{ product.variants.size }} variante(s) y la oferta necesita {{ max_pos }} (1, 2, 3 y 6 frascos). La oferta no se muestra hasta que las crees (dejá Kaching visible mientras tanto).</p>
   {%- endif -%}
   {%- if bump_variant == blank -%}
-    <p style="margin:0 0 8px;padding:8px 10px;border-radius:6px;background:#fff4e5;color:#8a4b00;font-size:13px;">⚠️ Solo el editor ve esto: no se encontró el producto con handle "{{ bump_handle }}" (CELUFIT). Corregí bump_handle.</p>
+    <p style="margin:0 0 8px;padding:8px 10px;border-radius:6px;background:#fff4e5;color:#8a4b00;font-size:13px;">⚠️ Solo el editor ve esto: no se encontró el producto con handle "{{ bump_handle }}" ({{ bump_title }}). Corregí bump_handle.</p>
   {%- endif -%}
   {%- if missing_gifts != blank -%}
     <p style="margin:0 0 8px;padding:8px 10px;border-radius:6px;background:#fff4e5;color:#8a4b00;font-size:13px;">⚠️ Solo el editor ve esto: no se encontraron estos regalos:{{ missing_gifts }}. Se muestran, pero no se agregan al carrito.</p>
@@ -163,7 +164,7 @@
         {%- endif -%}
       </span>
       <span class="gb__info">
-        <strong>{{ bump_product.title }}</strong>
+        <strong>{% if bump_title != blank %}{{ bump_title }}{% else %}{{ bump_product.title }}{% endif %}</strong>
         <span class="gb__line">{{ bump_line }}</span>
         <span class="gb__prices">
           <s>{{ bump_variant.price | money_without_trailing_zeros }}</s>
