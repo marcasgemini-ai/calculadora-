@@ -4,6 +4,7 @@ Variantes del producto (opción Pack) en orden: 1 frasco, 2, 3, 6.
 redirect: 'drawer' carrito lateral · 'cart' página del carrito · 'checkout'.
 {%- endcomment -%}
 {%- liquid
+assign product_handle = 'energia-balance-hormonal-para-la-mujer-40'
 assign bump_handle = 'slimfit'
 assign bump_title = 'SLIMFIT'
 assign heading = 'Elegí tu tratamiento'
@@ -38,6 +39,7 @@ assign c_text = '#6922A5'
 assign c_ink = '#2A0E45'
 -%}
 {%- comment -%} ===================== FIN CONFIGURACIÓN ===================== {%- endcomment -%}
+{%- if product_handle != '' and all_products[product_handle] != blank -%}{%- assign product = all_products[product_handle] -%}{%- endif -%}
 {%- liquid
 assign bump_product = all_products[bump_handle]
 assign bump_variant = bump_product.selected_or_first_available_variant
