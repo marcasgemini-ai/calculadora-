@@ -18,7 +18,8 @@
   assign gift_2_handle = 'guia-alimentacion-para-un-tono-dorado'
 
   assign heading = 'Elegí tu protocolo'
-  assign cta_label = 'Quiero mi tono dorado'
+  assign cta_label = 'Agregar al carrito'
+  assign cta_sub = 'Quiero mi tono dorado ✨'
   assign redirect = 'cart'
 
   assign t_pos      = '4|3|2|1' | split: '|'
@@ -39,8 +40,9 @@
   assign g_tag   = 'GRATIS|GRATIS|SORTEO' | split: '|'
   assign g_min   = '2|3|3' | split: '|'
 
-  assign c_accent = '#E07A5F'
-  assign c_soft = '#FDF1EC'
+  assign c_accent = '#F2B47F'
+  assign c_soft = '#FEF5EC'
+  assign c_text = '#9A4F1C'
   assign c_ink = '#3B1F14'
 
   assign bump_product = all_products[bump_handle]
@@ -79,7 +81,7 @@
   data-bump-free-min="{{ bump_free_min }}"
   data-bump-price="{{ bump_price | times: 100 }}"
   data-bump-compare="{{ bump_variant.price }}"
-  style="--g-accent: {{ c_accent }}; --g-soft: {{ c_soft }}; --g-ink: {{ c_ink }};"
+  style="--g-accent: {{ c_accent }}; --g-soft: {{ c_soft }}; --g-text: {{ c_text }}; --g-ink: {{ c_ink }};"
 >
   <div class="glow__heading"><span></span><p>{{ heading }}</p><span></span></div>
 
@@ -191,7 +193,10 @@
     <em data-glow-savings></em>
   </div>
 
-  <button type="button" class="glow__cta" data-glow-cta>{{ cta_label }}</button>
+  <button type="button" class="glow__cta" data-glow-cta>
+    <span class="glow__cta-main">{{ cta_label }}</span>
+    {%- if cta_sub != blank -%}<span class="glow__cta-sub">{{ cta_sub }}</span>{%- endif -%}
+  </button>
   <p class="glow__error" data-glow-error hidden></p>
 
   <script type="application/json" data-glow-gifts>
@@ -203,66 +208,75 @@
 </div>
 
 <style>
-  #glow-offer { color: var(--g-ink); font-size: 14px; line-height: 1.3; margin: 8px 0 16px; }
+  #glow-offer { color: var(--g-ink); font-size: 16px; line-height: 1.35; margin: 10px 0 18px; }
   #glow-offer * { box-sizing: border-box; }
-  #glow-offer s { opacity: .5; font-weight: 400; }
+  #glow-offer s { opacity: .55; font-weight: 400; }
   #glow-offer p { margin: 0; }
 
-  .glow__heading { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-  .glow__heading span { flex: 1; height: 1px; background: currentColor; opacity: .15; }
-  .glow__heading p { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
-  .glow__tiers { display: grid; gap: 8px; }
+  .glow__heading { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .glow__heading span { flex: 1; height: 1px; background: currentColor; opacity: .18; }
+  .glow__heading p { font-size: 14px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+  .glow__tiers { display: grid; gap: 10px; }
 
-  .gt { position: relative; padding: 10px 12px; border: 1.5px solid rgba(0,0,0,.12); border-radius: 12px; background: #fff; cursor: pointer; transition: border-color .15s, background .15s; }
+  .gt { position: relative; padding: 14px 14px; border: 2px solid #EADFD6; border-radius: 14px; background: #fff; cursor: pointer; transition: border-color .15s, background .15s, box-shadow .15s; }
   .gt:hover { border-color: var(--g-accent); }
-  .gt.is-active { border-color: var(--g-accent); background: var(--g-soft); }
+  .gt.is-active { border-color: var(--g-accent); background: var(--g-soft); box-shadow: 0 6px 18px -10px rgba(154,79,28,.45); }
   .gt__radio { position: absolute; opacity: 0; pointer-events: none; }
-  .gt__radio:focus-visible + .gt__head .gt__dot { outline: 2px solid var(--g-accent); outline-offset: 2px; }
+  .gt__radio:focus-visible + .gt__head .gt__dot { outline: 2px solid var(--g-ink); outline-offset: 2px; }
 
-  .gt__head { display: grid; grid-template-columns: 18px 1fr auto; gap: 10px; align-items: center; }
-  .gt__dot { width: 18px; height: 18px; border-radius: 50%; border: 2px solid rgba(0,0,0,.25); display: grid; place-items: center; }
-  .is-active .gt__dot { border-color: var(--g-accent); }
-  .is-active .gt__dot::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--g-accent); }
-  .gt__name strong { display: block; font-size: 14.5px; }
-  .gt__name span { font-size: 12px; opacity: .65; }
+  .gt__head { display: grid; grid-template-columns: 22px 1fr auto; gap: 12px; align-items: center; }
+  .gt__dot { width: 22px; height: 22px; border-radius: 50%; border: 2px solid #CBBFB5; background: #fff; display: grid; place-items: center; }
+  .is-active .gt__dot { border-color: var(--g-ink); }
+  .is-active .gt__dot::after { content: ""; width: 11px; height: 11px; border-radius: 50%; background: var(--g-ink); }
+  .gt__name strong { display: block; font-size: 17px; line-height: 1.2; }
+  .gt__name span { display: block; margin-top: 2px; font-size: 14px; opacity: .75; }
   .gt__price { text-align: right; white-space: nowrap; }
-  .gt__price strong { display: block; font-size: 16px; }
-  .gt__price s { font-size: 12px; }
+  .gt__price strong { display: block; font-size: 20px; line-height: 1.15; }
+  .gt__price s { font-size: 14px; }
 
-  .gt__badges { display: flex; flex-wrap: wrap; gap: 4px; margin: 6px 0 0 28px; }
-  .gt__badges span { padding: 2px 7px; border-radius: 999px; background: rgba(0,0,0,.05); font-size: 10.5px; font-weight: 600; }
-  .gt__badges span.is-key { background: var(--g-accent); color: #fff; }
+  .gt__badges { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 0 34px; }
+  .gt__badges span { padding: 4px 10px; border-radius: 999px; background: #F4EDE7; font-size: 13px; font-weight: 600; }
+  .gt__badges span.is-key { background: var(--g-accent); color: var(--g-ink); font-weight: 700; }
 
-  .gt__body { display: none; margin: 8px 0 0 28px; }
-  .gt.is-active .gt__body { display: grid; gap: 8px; }
-  .gt__sub { font-size: 12.5px; font-style: italic; opacity: .85; }
+  .gt__body { display: none; margin: 12px 0 0 34px; }
+  .gt.is-active .gt__body { display: grid; gap: 10px; }
+  .gt__sub { font-size: 15px; font-style: italic; }
 
   .gb__input { position: absolute; opacity: 0; pointer-events: none; }
-  .gb { display: grid; grid-template-columns: 16px 1fr auto; gap: 8px; align-items: center; padding: 7px 9px; border: 1.5px dashed var(--g-accent); border-radius: 8px; background: #fff; cursor: pointer; }
-  .gb__box { width: 16px; height: 16px; border-radius: 4px; border: 2px solid var(--g-accent); display: grid; place-items: center; }
-  .gb__input:checked + .gb .gb__box { background: var(--g-accent); }
-  .gb__input:checked + .gb .gb__box::after { content: "✓"; color: #fff; font-size: 10px; font-weight: 700; }
-  .gb__input:focus-visible + .gb { outline: 2px solid var(--g-accent); outline-offset: 2px; }
-  .gb__text { font-size: 12px; font-weight: 600; }
-  .gb__price { text-align: right; font-size: 12px; white-space: nowrap; }
-  .gb__price strong { display: block; color: var(--g-accent); }
+  .gb { display: grid; grid-template-columns: 20px 1fr auto; gap: 10px; align-items: center; padding: 10px 12px; border: 2px dashed var(--g-accent); border-radius: 10px; background: #fff; cursor: pointer; }
+  .gb__box { width: 20px; height: 20px; border-radius: 5px; border: 2px solid var(--g-ink); display: grid; place-items: center; }
+  .gb__input:checked + .gb .gb__box { background: var(--g-ink); }
+  .gb__input:checked + .gb .gb__box::after { content: "✓"; color: #fff; font-size: 13px; font-weight: 700; }
+  .gb__input:focus-visible + .gb { outline: 2px solid var(--g-ink); outline-offset: 2px; }
+  .gb__text { font-size: 14.5px; font-weight: 600; line-height: 1.3; }
+  .gb__price { text-align: right; font-size: 14px; white-space: nowrap; }
+  .gb__price strong { display: block; font-size: 16px; color: var(--g-text); }
 
-  .gg { padding: 7px 9px; border-radius: 8px; background: rgba(255,255,255,.75); }
-  .gg__title { font-size: 12px; font-weight: 700; margin-bottom: 3px !important; }
-  .gg ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
-  .gg li { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; }
-  .gg li.is-locked { opacity: .45; }
+  .gg { padding: 10px 12px; border-radius: 10px; background: #fff; }
+  .gg__title { font-size: 15px; font-weight: 700; margin-bottom: 6px !important; }
+  .gg ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 5px; }
+  .gg li { display: flex; justify-content: space-between; gap: 10px; font-size: 14.5px; }
+  .gg li.is-locked { opacity: .5; }
   .gg__v { white-space: nowrap; }
-  .gg__v b { color: var(--g-accent); font-size: 11px; }
+  .gg__v b { color: var(--g-text); font-size: 13px; }
 
-  .glow__total { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 8px; margin: 12px 2px 8px; }
-  .glow__total span { font-size: 13px; opacity: .7; }
-  .glow__total strong { font-size: 20px; }
-  .glow__total em { margin-left: auto; font-style: normal; font-size: 12.5px; font-weight: 700; color: var(--g-accent); }
+  .glow__total { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; margin: 16px 2px 10px; }
+  .glow__total span { font-size: 15px; opacity: .75; }
+  .glow__total strong { font-size: 24px; }
+  .glow__total s { font-size: 16px; }
+  .glow__total em { margin-left: auto; font-style: normal; font-size: 15px; font-weight: 700; color: var(--g-text); }
 
-  .glow__cta { width: 100%; min-height: 52px; border: 0; border-radius: 999px; background: var(--g-ink); color: #fff; font-size: 15px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; cursor: pointer; }
+  .glow__cta { width: 100%; min-height: 60px; padding: 10px 16px; border: 0; border-radius: 999px; background: var(--g-accent); color: var(--g-ink); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; box-shadow: 0 8px 20px -10px rgba(154,79,28,.6); transition: transform .15s, filter .15s; }
+  .glow__cta:hover { transform: translateY(-1px); filter: brightness(.97); }
+  .glow__cta-main { font-size: 18px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
+  .glow__cta-sub { font-size: 13.5px; font-weight: 500; }
   .glow__cta[aria-busy="true"] { opacity: .6; pointer-events: none; }
-  .glow__error { margin-top: 6px !important; color: #b42318; font-size: 12.5px; text-align: center; }
+  .glow__error { margin-top: 8px !important; color: #b42318; font-size: 14px; text-align: center; }
+
+  @media (max-width: 420px) {
+    .gt__badges, .gt__body { margin-left: 0; }
+    .gt { padding: 13px 12px; }
+  }
 </style>
 
 <script>
