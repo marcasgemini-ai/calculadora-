@@ -221,7 +221,7 @@
   .glow__heading p { font-size: 14px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
   .glow__tiers { display: grid; gap: 10px; }
 
-  .gt { position: relative; padding: 14px 14px; border: 2px solid #EADFD6; border-radius: 14px; background: #fff; cursor: pointer; transition: border-color .15s, background .15s, box-shadow .15s; }
+  .gt { position: relative; padding: 14px 14px; border: 2px solid #EADFD6; border-radius: 4px; background: #fff; cursor: pointer; transition: border-color .15s, background .15s, box-shadow .15s; }
   .gt:hover { border-color: var(--g-accent); }
   .gt.is-active { border-color: var(--g-accent); background: var(--g-soft); box-shadow: 0 6px 18px -10px rgba(154,79,28,.45); }
   .gt__radio { position: absolute; opacity: 0; pointer-events: none; }
@@ -238,7 +238,7 @@
   .gt__price s { font-size: 14px; }
 
   .gt__badges { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 0 34px; }
-  .gt__badges span { padding: 4px 10px; border-radius: 999px; background: #F4EDE7; font-size: 13px; font-weight: 600; }
+  .gt__badges span { padding: 4px 10px; border-radius: 3px; background: #F4EDE7; font-size: 13px; font-weight: 600; }
   .gt__badges span.is-key { background: var(--g-accent); color: var(--g-ink); font-weight: 700; }
 
   .gt__body { display: none; margin: 12px 0 0 34px; }
@@ -246,8 +246,8 @@
   .gt__sub { font-size: 15px; font-style: italic; }
 
   .gb__input { position: absolute; opacity: 0; pointer-events: none; }
-  .gb { display: grid; grid-template-columns: 20px 1fr auto; gap: 10px; align-items: center; padding: 10px 12px; border: 2px dashed var(--g-accent); border-radius: 10px; background: #fff; cursor: pointer; }
-  .gb__box { width: 20px; height: 20px; border-radius: 5px; border: 2px solid var(--g-ink); display: grid; place-items: center; }
+  .gb { display: grid; grid-template-columns: 20px 1fr auto; gap: 10px; align-items: center; padding: 10px 12px; border: 2px dashed var(--g-accent); border-radius: 3px; background: #fff; cursor: pointer; }
+  .gb__box { width: 20px; height: 20px; border-radius: 2px; border: 2px solid var(--g-ink); display: grid; place-items: center; }
   .gb__input:checked + .gb .gb__box { background: var(--g-ink); }
   .gb__input:checked + .gb .gb__box::after { content: "✓"; color: #fff; font-size: 13px; font-weight: 700; }
   .gb__input:focus-visible + .gb { outline: 2px solid var(--g-ink); outline-offset: 2px; }
@@ -255,7 +255,7 @@
   .gb__price { text-align: right; font-size: 14px; white-space: nowrap; }
   .gb__price strong { display: block; font-size: 16px; color: var(--g-text); }
 
-  .gg { padding: 10px 12px; border-radius: 10px; background: #fff; }
+  .gg { padding: 10px 12px; border-radius: 3px; background: #fff; }
   .gg__title { font-size: 15px; font-weight: 700; margin-bottom: 6px !important; }
   .gg ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 5px; }
   .gg li { display: flex; justify-content: space-between; gap: 10px; font-size: 14.5px; }
@@ -269,7 +269,7 @@
   .glow__total s { font-size: 16px; }
   .glow__total em { margin-left: auto; font-style: normal; font-size: 15px; font-weight: 700; color: var(--g-text); }
 
-  .glow__cta { position: relative; width: 100%; min-height: 60px; padding: 10px 16px; border: 0; border-radius: 999px; background: var(--g-ink); color: #fff; cursor: pointer; display: grid; place-items: center; box-shadow: 0 10px 22px -12px rgba(59,31,20,.8); transition: transform .15s, background .2s; }
+  .glow__cta { position: relative; width: 100%; min-height: 60px; padding: 10px 16px; border: 0; border-radius: 4px; background: var(--g-ink); color: #fff; cursor: pointer; display: grid; place-items: center; box-shadow: 0 10px 22px -12px rgba(59,31,20,.8); transition: transform .15s, background .2s; }
   .glow__cta:hover { transform: translateY(-1px); background: #2A150D; }
   .glow__cta-idle, .glow__cta-busy { grid-area: 1 / 1; display: flex; flex-direction: column; align-items: center; gap: 2px; transition: opacity .2s; }
   .glow__cta-main { font-size: 18px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
