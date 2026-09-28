@@ -30,14 +30,14 @@
   assign t_bottles  = '6|3|2|1' | split: '|'
   assign t_title    = 'Glow 12 meses|Protocolo Verano Completo|Protocolo 120 días|Protocolo 60 días' | split: '|'
   assign t_meta     = '6 frascos|3 frascos · 180 días|2 frascos|1 frasco' | split: '|'
-  assign t_badges   = 'Envío gratis, Mejor precio, Pagás 3 llevás 6|Más comprado, Recomendado, Pagás 2 llevás 3|Envío gratis, 3 cuotas sin interés, 60% OFF 2da unidad|Envío gratis, 3 cuotas sin interés' | split: '|'
+  assign t_badges   = 'Envío gratis, ⭐ Mejor precio, Pagás 3 llevás 6|🔥 Más comprado, Recomendado, Pagás 2 llevás 3|Envío gratis, 3 cuotas sin interés, 60% OFF 2da unidad|Envío gratis, 3 cuotas sin interés' | split: '|'
   assign t_subtitle = 'Un año entero con tu tono dorado: llegás al verano y lo mantenés todo el año.|Empezás ahora y llegás con el tono desde octubre hasta el último día de marzo.|-|-' | split: '|'
   assign preselected = 2
 
   assign bump_price = 23990
   assign bump_free_min = 6
   assign bump_text = 'Tenés <b>50% OFF</b> en CELUFIT para lucir tus piernas este verano'
-  assign bump_text_free = '<b>CELUFIT de regalo</b> para lucir tus piernas este verano'
+  assign bump_text_free = '🎁 <b>CELUFIT de regalo</b> para lucir tus piernas este verano'
 
   assign g_title  = 'Guía Rutina Glow|Guía Alimentación para un tono dorado|Viaje al Caribe para Enero' | split: '|'
   assign g_value  = '$25.000|$20.000|-' | split: '|'
@@ -217,7 +217,7 @@
 
         <div class="gg">
           <div class="gg__sum">
-            <svg class="gg__gift" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 9.5h17v4h-17z"/><path d="M5 13.5v7h14v-7"/><path d="M12 9.5v11"/><path d="M12 9.5C10 9.5 7.5 8.5 8 6.5s3.5-.5 4 3c.5-3.5 3.5-5 4-3s-2 3-4 3z"/></svg>
+            <span class="gg__gift" aria-hidden="true">🎁</span>
             <span class="gg__count">
               {%- if unlocked > 0 -%}{{ unlocked }}/{{ gift_count }} regalos incluidos{%- else -%}Regalos desde {{ first_gift_min }} frascos{%- endif -%}
             </span>
@@ -347,7 +347,7 @@
   /* Regalos */
   .gg { border-top: 1px solid #F1E6DC; }
   .gg__sum { display: flex; align-items: center; gap: 8px; padding: 9px 14px; }
-  .gg__gift { width: 18px; height: 18px; flex: none; fill: none; stroke: var(--g-text); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .gg__gift { flex: none; font-size: 16px; line-height: 1; }
   .gg__count { flex: 1; font-size: 14px; font-weight: 700; }
   .gg__thumbs { display: flex; gap: 4px; }
   .gg__thumb { width: 30px; height: 30px; flex: none; border-radius: 5px; overflow: hidden; background: #fff; border: 1px solid #F1E6DC; display: flex; align-items: center; justify-content: center; }
