@@ -8,55 +8,61 @@
 
   - Handle = lo que va después de /products/ en la URL del producto.
   - Packs y regalos: valores separados por |, en el orden en que se muestran. Guion (-) = vacío.
-  - Badges: separados por coma. El primero va destacado.
+  - Badges: separados por coma. El primero va en oscuro, el resto en color.
+  - Textos del upsell: podés usar <b>...</b> para poner algo en negrita.
   - Regalos: g_min = desde cuántos frascos se desbloquea. g_handle = producto $0 que se agrega
-    al carrito (guion si no hay producto, ej. envío gratis o sorteo).
+    al carrito (guion si no hay, ej. sorteo).
   - Imágenes de los regalos (g_image): subilas en Contenido → Archivos, tocá "Copiar enlace"
     y pegá cada link en su lugar, separados por |. Guion (-) = sin imagen: usa la foto del
-    producto regalo y, si no hay, un ícono de línea (g_icon: truck, book, leaf, sun, gift).
-    Tip: imágenes cuadradas, fondo claro o transparente, mínimo 300×300 px.
+    producto regalo y, si no hay, un ícono de línea (g_icon: book, leaf, sun, gift, truck).
+    Tip: imágenes cuadradas, fondo claro, mínimo 300×300 px.
 {%- endcomment -%}
 
 {%- liquid
   assign bump_handle = 'drenaje-linfatico-y-celulitis'
+  assign bump_title = 'CELUFIT'
 
-  assign heading = 'Elegí tu protocolo'
   assign cta_label = 'Agregar al carrito'
-  assign cta_sub = 'Quiero mi tono dorado'
+  assign cta_sub = ''
   assign redirect = 'cart'
 
   assign t_pos      = '4|3|2|1' | split: '|'
   assign t_bottles  = '6|3|2|1' | split: '|'
   assign t_title    = 'Glow 12 meses|Protocolo Verano Completo|Protocolo 120 días|Protocolo 60 días' | split: '|'
   assign t_meta     = '6 frascos|3 frascos · 180 días|2 frascos|1 frasco' | split: '|'
-  assign t_badges   = 'Pagás 3 llevás 6, Mejor precio, Envío gratis|Más comprado, Recomendado, Pagás 2 llevás 3|60% OFF segunda unidad, Envío gratis, 3 cuotas sin interés|Envío gratis, 3 cuotas sin interés' | split: '|'
+  assign t_badges   = 'Envío gratis, Mejor precio, Pagás 3 llevás 6|Más comprado, Recomendado, Pagás 2 llevás 3|Envío gratis, 3 cuotas sin interés, 60% OFF 2da unidad|Envío gratis, 3 cuotas sin interés' | split: '|'
   assign t_subtitle = 'Un año entero con tu tono dorado: llegás al verano y lo mantenés todo el año.|Empezás ahora y llegás con el tono desde octubre hasta el último día de marzo.|-|-' | split: '|'
   assign preselected = 2
 
   assign bump_price = 23990
   assign bump_free_min = 6
-  assign bump_title = 'CELUFIT'
-  assign bump_line = 'Para lucir tus piernas este verano'
+  assign bump_text = 'Tenés <b>50% OFF</b> en CELUFIT para lucir tus piernas este verano'
+  assign bump_text_free = '<b>CELUFIT de regalo</b> para lucir tus piernas este verano'
 
-  assign g_title  = 'Envío gratis|Guía Rutina Glow|Guía Alimentación|Viaje al Caribe' | split: '|'
-  assign g_value  = '-|$25.000|$20.000|-' | split: '|'
-  assign g_tag    = 'GRATIS|GRATIS|GRATIS|SORTEO' | split: '|'
-  assign g_min    = '1|2|3|3' | split: '|'
-  assign g_icon   = 'truck|book|leaf|sun' | split: '|'
-  assign g_image  = '-|-|-|-' | split: '|'
-  assign g_handle = '-|guia-rutina-glow|guia-alimentacion-para-un-tono-dorado|-' | split: '|'
+  assign g_title  = 'Guía Rutina Glow|Guía Alimentación para un tono dorado|Viaje al Caribe para Enero' | split: '|'
+  assign g_value  = '$25.000|$20.000|-' | split: '|'
+  assign g_tag    = 'GRATIS|GRATIS|SORTEO' | split: '|'
+  assign g_min    = '2|3|3' | split: '|'
+  assign g_icon   = 'book|leaf|sun' | split: '|'
+  assign g_handle = 'guia-rutina-glow|guia-alimentacion-para-un-tono-dorado|-' | split: '|'
+  assign g_image  = '-|-|-' | split: '|'
+
+  assign guarantee_title = ''
+  assign guarantee_text = ''
 
   assign c_accent = '#F2B47F'
   assign c_soft = '#FEF5EC'
   assign c_text = '#9A4F1C'
   assign c_ink = '#3B1F14'
-  assign c_line = '#D9A677'
 -%}
 {%- comment -%} ===================== FIN CONFIGURACIÓN ===================== {%- endcomment -%}
 
 {%- liquid
   assign bump_product = all_products[bump_handle]
   assign bump_variant = bump_product.selected_or_first_available_variant
+  if bump_title == blank
+    assign bump_title = bump_product.title
+  endif
   assign max_pos = 0
   for t in t_pos
     assign p = t | plus: 0
@@ -64,14 +70,60 @@
       assign max_pos = p
     endif
   endfor
+  assign gift_count = g_title.size
+  assign first_gift_min = g_min[0] | plus: 0
   assign missing_gifts = ''
   for h in g_handle
     assign hh = h | strip
-    if hh != '-' and hh != blank and all_products[hh] == blank
+    if hh != '-' and hh != '' and all_products[hh] == blank
       assign missing_gifts = missing_gifts | append: ' "' | append: hh | append: '"'
     endif
   endfor
 -%}
+
+{%- capture gift_media -%}
+  {%- for gt in g_title -%}
+    {%- liquid
+      assign gi = forloop.index0
+      assign gh = g_handle[gi] | strip
+      assign has_gp_img = false
+      if gh != '-' and gh != ''
+        assign gp = all_products[gh]
+        if gp.featured_image
+          assign has_gp_img = true
+        endif
+      endif
+      assign gimg = g_image[gi] | strip
+      assign has_img = false
+      if gimg != '-' and gimg != ''
+        assign has_img = true
+        if gimg contains '?'
+          assign gimg = gimg | append: '&width=160'
+        else
+          assign gimg = gimg | append: '?width=160'
+        endif
+      endif
+      assign gicon = g_icon[gi] | strip
+    -%}
+    {%- if has_img -%}
+      <img src="{{ gimg }}" alt="" loading="lazy" width="80" height="80">
+    {%- elsif has_gp_img -%}
+      {{ gp.featured_image | image_url: width: 160 | image_tag: loading: 'lazy', alt: '' }}
+    {%- else -%}
+      <svg class="go-icon" viewBox="0 0 24 24" aria-hidden="true">
+        {%- case gicon -%}
+          {%- when 'truck' -%}<path d="M2.5 6.5h11v9h-11z"/><path d="M13.5 9.5h4l3 3.2v2.8h-7"/><circle cx="7" cy="17" r="1.8"/><circle cx="17" cy="17" r="1.8"/>
+          {%- when 'book' -%}<path d="M12 6.5C10 5 7 4.5 3.5 5v13c3.5-.5 6.5 0 8.5 1.5 2-1.5 5-2 8.5-1.5V5C17 4.5 14 5 12 6.5z"/><path d="M12 6.5v13"/>
+          {%- when 'leaf' -%}<path d="M5 19C5 10.5 10.5 5 19.5 4.5 19.5 13.5 14 19 5 19z"/><path d="M5 19l8.5-8.5"/>
+          {%- when 'sun' -%}<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/>
+          {%- else -%}<path d="M3.5 9.5h17v4h-17z"/><path d="M5 13.5v7h14v-7"/><path d="M12 9.5v11"/><path d="M12 9.5C10 9.5 7.5 8.5 8 6.5s3.5-.5 4 3c.5-3.5 3.5-5 4-3s-2 3-4 3z"/>
+        {%- endcase -%}
+      </svg>
+    {%- endif -%}
+    {%- unless forloop.last -%}@@@{%- endunless -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- assign gift_media = gift_media | split: '@@@' -%}
 
 {%- if request.design_mode -%}
   {%- if product.variants.size < max_pos -%}
@@ -80,7 +132,7 @@
   {%- if bump_variant == blank -%}
     <p style="margin:0 0 8px;padding:8px 10px;border-radius:6px;background:#fff4e5;color:#8a4b00;font-size:13px;">⚠️ Solo el editor ve esto: no se encontró el producto con handle "{{ bump_handle }}" ({{ bump_title }}). Corregí bump_handle.</p>
   {%- endif -%}
-  {%- if missing_gifts != blank -%}
+  {%- if missing_gifts != '' -%}
     <p style="margin:0 0 8px;padding:8px 10px;border-radius:6px;background:#fff4e5;color:#8a4b00;font-size:13px;">⚠️ Solo el editor ve esto: no se encontraron estos regalos:{{ missing_gifts }}. Se muestran, pero no se agregan al carrito.</p>
   {%- endif -%}
 {%- endif -%}
@@ -88,19 +140,14 @@
 {%- if product.variants.size >= max_pos -%}
 <div
   id="glow-offer"
-  class="glow"
+  class="go"
   lang="es"
   data-redirect="{{ redirect }}"
   data-bump-id="{{ bump_variant.id }}"
   data-bump-free-min="{{ bump_free_min }}"
-  data-bump-price="{{ bump_price | times: 100 }}"
-  data-bump-compare="{{ bump_variant.price }}"
-  style="--g-accent: {{ c_accent }}; --g-soft: {{ c_soft }}; --g-text: {{ c_text }}; --g-ink: {{ c_ink }}; --g-line: {{ c_line }};"
+  style="--g-accent: {{ c_accent }}; --g-soft: {{ c_soft }}; --g-text: {{ c_text }}; --g-ink: {{ c_ink }};"
 >
-  <div class="glow__heading"><span></span><p>{{ heading }}</p><span></span></div>
-
-  {%- comment -%} ---------- PACKS ---------- {%- endcomment -%}
-  <div class="glow__tiers" role="radiogroup" aria-label="{{ heading | escape }}">
+  <div class="go__tiers" role="radiogroup" aria-label="Elegí tu pack">
     {%- for t in t_pos -%}
       {%- liquid
         assign ti = forloop.index0
@@ -111,259 +158,248 @@
         assign subtitle = t_subtitle[ti] | strip
         assign compare = variant.compare_at_price | default: variant.price
         assign savings = compare | minus: variant.price
+        assign unlocked = 0
+        for m in g_min
+          assign mm = m | plus: 0
+          if bottles >= mm
+            assign unlocked = unlocked | plus: 1
+          endif
+        endfor
+        assign bump_free = false
+        if bottles >= bump_free_min
+          assign bump_free = true
+        endif
       -%}
       {%- if variant != blank -%}
       <div
         class="gt{% if forloop.index == preselected %} is-active{% endif %}"
         data-variant-id="{{ variant.id }}"
         data-bottles="{{ bottles }}"
-        data-price="{{ variant.price }}"
-        data-compare="{{ compare }}"
         data-name="{{ title | escape }}"
       >
-        <input type="radio" class="gt__radio" name="glow-tier" value="{{ variant.id }}"
-          aria-label="{{ title | escape }} · {{ variant.price | money_without_trailing_zeros }}"
-          {% if forloop.index == preselected %}checked{% endif %} {% unless variant.available %}disabled{% endunless %}>
-        <div class="gt__head">
-          <span class="gt__dot" aria-hidden="true"></span>
-          <div class="gt__name">
-            <strong>{{ title }}</strong>
-            <span>{{ t_meta[ti] }}</span>
-          </div>
-          <div class="gt__price">
-            <strong>{{ variant.price | money_without_trailing_zeros }}</strong>
-            {%- if savings > 0 -%}<s>{{ compare | money_without_trailing_zeros }}</s>{%- endif -%}
-          </div>
-        </div>
         <div class="gt__badges">
           {%- assign badges = t_badges[ti] | split: ',' -%}
           {%- for badge in badges -%}
-            <span{% if forloop.first %} class="is-key"{% endif %}>{{ badge | strip }}</span>
+            <span{% if forloop.first %} class="is-dark"{% endif %}>{{ badge | strip }}</span>
           {%- endfor -%}
         </div>
-        {%- if subtitle != '-' and subtitle != blank -%}
-          <p class="gt__sub">"{{ subtitle }}"</p>
+
+        <label class="gt__main">
+          <input type="radio" class="gt__radio" name="glow-tier" value="{{ variant.id }}"
+            {% if forloop.index == preselected %}checked{% endif %} {% unless variant.available %}disabled{% endunless %}>
+          <span class="gt__dot" aria-hidden="true"></span>
+          <span class="gt__name">
+            <strong>{{ title }}</strong>
+            <span class="gt__meta">{{ t_meta[ti] }}</span>
+            {%- if subtitle != '-' and subtitle != '' -%}<span class="gt__sub">{{ subtitle }}</span>{%- endif -%}
+          </span>
+          <span class="gt__price">
+            {%- if savings > 0 -%}<s>{{ compare | money_without_trailing_zeros }}</s>{%- endif -%}
+            <strong>{{ variant.price | money_without_trailing_zeros }}</strong>
+          </span>
+        </label>
+
+        {%- if bump_variant != blank -%}
+          <div class="gb" role="checkbox" tabindex="-1" aria-checked="false" data-bump-row>
+            <span class="gb__box" aria-hidden="true"></span>
+            <span class="gb__img">
+              {%- if bump_product.featured_image -%}
+                {{ bump_product.featured_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: bump_title }}
+              {%- endif -%}
+            </span>
+            <span class="gb__text">{% if bump_free %}{{ bump_text_free }}{% else %}{{ bump_text }}{% endif %}</span>
+            <span class="gb__price">
+              <strong>{% if bump_free %}GRATIS{% else %}{{ bump_price | times: 100 | money_without_trailing_zeros }}{% endif %}</strong>
+              <s>{{ bump_variant.price | money_without_trailing_zeros }}</s>
+            </span>
+          </div>
         {%- endif -%}
+
+        <div class="gg">
+          <div class="gg__sum">
+            <svg class="gg__gift" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 9.5h17v4h-17z"/><path d="M5 13.5v7h14v-7"/><path d="M12 9.5v11"/><path d="M12 9.5C10 9.5 7.5 8.5 8 6.5s3.5-.5 4 3c.5-3.5 3.5-5 4-3s-2 3-4 3z"/></svg>
+            <span class="gg__count">
+              {%- if unlocked > 0 -%}{{ unlocked }}/{{ gift_count }} regalos incluidos{%- else -%}Regalos desde {{ first_gift_min }} frascos{%- endif -%}
+            </span>
+            <span class="gg__thumbs">
+              {%- for gt in g_title -%}
+                {%- assign gmin = g_min[forloop.index0] | plus: 0 -%}
+                <span class="gg__thumb{% if bottles < gmin %} is-locked{% endif %}">{{ gift_media[forloop.index0] }}</span>
+              {%- endfor -%}
+            </span>
+          </div>
+          <ul class="gg__list">
+            {%- for gt in g_title -%}
+              {%- liquid
+                assign gi = forloop.index0
+                assign gmin = g_min[gi] | plus: 0
+                assign gval = g_value[gi] | strip
+                assign gtag = g_tag[gi] | strip
+              -%}
+              <li class="{% if bottles < gmin %}is-locked{% endif %}">
+                <span class="gg__thumb">{{ gift_media[gi] }}</span>
+                <span class="gg__name">+ {{ gt }}</span>
+                {%- if bottles >= gmin -%}
+                  <span class="gg__val">
+                    <em class="{% if gtag == 'SORTEO' %}is-dark{% endif %}">{{ gtag }}</em>
+                    {%- if gtag != 'SORTEO' -%}<b>$0</b>{%- endif -%}
+                    {%- if gval != '-' and gval != '' -%}<s>{{ gval }}</s>{%- endif -%}
+                  </span>
+                {%- else -%}
+                  <span class="gg__val gg__need">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg>
+                    Con {{ gmin }} frascos
+                  </span>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
       </div>
       {%- endif -%}
     {%- endfor -%}
   </div>
 
-  {%- comment -%} ---------- UPSELL CELUFIT ---------- {%- endcomment -%}
-  {%- if bump_variant != blank -%}
-    {%- liquid
-      assign bump_cents = bump_price | times: 100
-      assign bump_off = bump_variant.price | minus: bump_cents | times: 100 | divided_by: bump_variant.price | floor
-    -%}
-    <input type="checkbox" class="gb__input" id="glow-bump">
-    <label class="gb" for="glow-bump">
-      <span class="gb__box" aria-hidden="true"></span>
-      <span class="gb__img">
-        {%- if bump_product.featured_image -%}
-          {{ bump_product.featured_image | image_url: width: 160 | image_tag: loading: 'lazy', alt: bump_product.title }}
-        {%- endif -%}
-      </span>
-      <span class="gb__info">
-        <strong>{% if bump_title != blank %}{{ bump_title }}{% else %}{{ bump_product.title }}{% endif %}</strong>
-        <span class="gb__line">{{ bump_line }}</span>
-        <span class="gb__prices">
-          <s>{{ bump_variant.price | money_without_trailing_zeros }}</s>
-          <b data-bump-now>{{ bump_cents | money_without_trailing_zeros }}</b>
-          <em data-bump-pill data-off="-{{ bump_off }}%">-{{ bump_off }}%</em>
-        </span>
-      </span>
-    </label>
+  <button type="button" class="go__cta" data-glow-cta>
+    <span class="go__cta-idle">
+      <span class="go__cta-main">{{ cta_label }}</span>
+      {%- if cta_sub != '' -%}<span class="go__cta-sub">{{ cta_sub }}</span>{%- endif -%}
+    </span>
+    <span class="go__cta-busy" aria-hidden="true"><span class="go__spin"></span><span data-glow-busy-text>Agregando…</span></span>
+  </button>
+  <p class="go__error" data-glow-error hidden></p>
+
+  {%- if guarantee_title != '' -%}
+    <div class="go__guarantee">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7.5 3v5.5c0 4.5-3.2 8-7.5 9.5-4.3-1.5-7.5-5-7.5-9.5V6z"/><path d="M8.5 12l2.5 2.5 4.5-4.5"/></svg>
+      <p><b>{{ guarantee_title }}</b> {{ guarantee_text }}</p>
+    </div>
   {%- endif -%}
 
-  {%- comment -%} ---------- REGALOS ---------- {%- endcomment -%}
-  <div class="gg__title"><span></span><p data-gifts-title></p><span></span></div>
-  <div class="gg" style="--cols: {{ g_title.size }}">
-    {%- for gt in g_title -%}
-      {%- liquid
-        assign gi = forloop.index0
-        assign gval = g_value[gi] | strip
-        assign gh = g_handle[gi] | strip
-        assign gp = nil
-        if gh != '-' and gh != blank
-          assign gp = all_products[gh]
-        endif
-      -%}
-      <div class="gg__tile" data-min="{{ g_min[gi] | plus: 0 }}"{% if gp != blank %} data-variant-id="{{ gp.selected_or_first_available_variant.id }}"{% endif %}>
-        <span class="gg__check" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M4 8.4l2.6 2.6L12 5.6"/></svg></span>
-        <span class="gg__media">
-          {%- liquid
-            assign gimg = g_image[gi] | strip
-            assign has_img = false
-            if gimg != '-' and gimg != ''
-              assign has_img = true
-              if gimg contains '?'
-                assign gimg = gimg | append: '&width=300'
-              else
-                assign gimg = gimg | append: '?width=300'
-              endif
-            endif
-            assign gicon = g_icon[gi] | strip
-          -%}
-          {%- if has_img -%}
-            <img src="{{ gimg }}" alt="{{ gt | escape }}" loading="lazy" width="150" height="150">
-          {%- elsif gp != blank and gp.featured_image -%}
-            {{ gp.featured_image | image_url: width: 300 | image_tag: loading: 'lazy', alt: gt }}
-          {%- else -%}
-            <svg class="gg__icon" viewBox="0 0 24 24" aria-hidden="true">
-              {%- case gicon -%}
-                {%- when 'truck' -%}<path d="M2.5 6.5h11v9h-11z"/><path d="M13.5 9.5h4l3 3.2v2.8h-7"/><circle cx="7" cy="17" r="1.8"/><circle cx="17" cy="17" r="1.8"/>
-                {%- when 'book' -%}<path d="M12 6.5C10 5 7 4.5 3.5 5v13c3.5-.5 6.5 0 8.5 1.5 2-1.5 5-2 8.5-1.5V5C17 4.5 14 5 12 6.5z"/><path d="M12 6.5v13"/>
-                {%- when 'leaf' -%}<path d="M5 19C5 10.5 10.5 5 19.5 4.5 19.5 13.5 14 19 5 19z"/><path d="M5 19l8.5-8.5"/>
-                {%- when 'sun' -%}<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/>
-                {%- else -%}<path d="M3.5 9.5h17v4h-17z"/><path d="M5 13.5v7h14v-7"/><path d="M12 9.5v11"/><path d="M12 9.5C10 9.5 7.5 8.5 8 6.5s3.5-.5 4 3c.5-3.5 3.5-5 4-3s-2 3-4 3z"/>
-              {%- endcase -%}
-            </svg>
-          {%- endif -%}
-          <span class="gg__lock" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg></span>
-        </span>
-        <span class="gg__txt">
-          <span class="gg__name">{{ gt }}</span>
-          <span class="gg__meta">
-            <span class="gg__tag">{{ g_tag[gi] }}</span>
-            <span class="gg__locked">Con {{ g_min[gi] | plus: 0 }} frascos</span>
-            {%- if gval != '-' and gval != blank -%}<s class="gg__val">{{ gval }}</s>{%- endif -%}
-          </span>
-        </span>
-      </div>
-    {%- endfor -%}
-  </div>
-
-  {%- comment -%} ---------- TOTAL Y BOTÓN ---------- {%- endcomment -%}
-  <div class="glow__total">
-    <span>Total</span>
-    <strong data-glow-total></strong>
-    <s data-glow-compare></s>
-    <em data-glow-savings></em>
-  </div>
-
-  <button type="button" class="glow__cta" data-glow-cta>
-    <span class="glow__cta-idle">
-      <span class="glow__cta-main">{{ cta_label }}</span>
-      {%- if cta_sub != blank -%}<span class="glow__cta-sub">{{ cta_sub }}</span>{%- endif -%}
-    </span>
-    <span class="glow__cta-busy" aria-hidden="true"><span class="glow__spin"></span><span data-glow-busy-text>Agregando…</span></span>
-  </button>
-  <p class="glow__error" data-glow-error hidden></p>
+  <script type="application/json" data-glow-gifts>
+    [
+      {%- for gt in g_title -%}
+        {%- liquid
+          assign gh = g_handle[forloop.index0] | strip
+          assign gid = ''
+          if gh != '-' and gh != ''
+            assign gid = all_products[gh].selected_or_first_available_variant.id | append: ''
+          endif
+        -%}
+        { "min": {{ g_min[forloop.index0] | plus: 0 }}, "variantId": {% if gid != '' %}{{ gid }}{% else %}null{% endif %} }{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ]
+  </script>
 </div>
 
 <style>
-  #glow-offer { color: var(--g-ink); font-size: 16px; line-height: 1.35; margin: 10px 0 18px; }
+  #glow-offer { color: var(--g-ink); font-size: 16px; line-height: 1.35; margin: 18px 0; }
   #glow-offer * { box-sizing: border-box; }
-  #glow-offer s { opacity: .55; font-weight: 400; }
+  #glow-offer s { opacity: .5; font-weight: 400; }
   #glow-offer p { margin: 0; }
+  #glow-offer .go-icon { width: 60%; height: 60%; fill: none; stroke: var(--g-text); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 
-  .glow__heading { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-  .glow__heading span { flex: 1; height: 1px; background: currentColor; opacity: .18; }
-  .glow__heading p { font-size: 14px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+  .go__tiers { display: grid; gap: 22px; padding-top: 10px; }
 
-  /* Packs */
-  .glow__tiers { display: grid; gap: 10px; }
-  .gt { position: relative; padding: 14px; border: 2px solid #EADFD6; border-radius: 8px; background: #fff; cursor: pointer; transition: border-color .15s, background .15s, box-shadow .15s; }
+  /* Tarjeta */
+  .gt { position: relative; border: 1.5px solid #E7DDD5; border-radius: 10px; background: #fff; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
   .gt:hover { border-color: var(--g-accent); }
-  .gt.is-active { border-color: var(--g-accent); background: var(--g-soft); box-shadow: 0 6px 18px -10px rgba(154,79,28,.45); }
-  .gt__radio { position: absolute; opacity: 0; pointer-events: none; }
-  .gt__radio:focus-visible + .gt__head .gt__dot { outline: 2px solid var(--g-ink); outline-offset: 2px; }
-  .gt__head { display: grid; grid-template-columns: 22px 1fr auto; gap: 12px; align-items: center; }
-  .gt__dot { width: 22px; height: 22px; border-radius: 50%; border: 2px solid #CBBFB5; background: #fff; display: grid; place-items: center; }
-  .is-active .gt__dot { border-color: var(--g-ink); }
-  .is-active .gt__dot::after { content: ""; width: 11px; height: 11px; border-radius: 50%; background: var(--g-ink); }
-  .gt__name strong { display: block; font-size: 17px; line-height: 1.2; }
-  .gt__name span { display: block; margin-top: 2px; font-size: 14px; opacity: .75; }
-  .gt__price { text-align: right; white-space: nowrap; }
-  .gt__price strong { display: block; font-size: 20px; line-height: 1.15; }
-  .gt__price s { font-size: 14px; }
-  .gt__badges { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 0 34px; }
-  .gt__badges span { padding: 4px 10px; border-radius: 6px; background: #F4EDE7; font-size: 13px; font-weight: 600; }
-  .gt__badges span.is-key { background: var(--g-accent); color: var(--g-ink); font-weight: 700; }
-  .gt__sub { display: none; margin: 10px 0 0 34px !important; font-size: 15px; font-style: italic; }
-  .gt.is-active .gt__sub { display: block; }
+  .gt.is-active { border: 2px solid var(--g-accent); box-shadow: 0 8px 22px -14px rgba(154,79,28,.55); }
 
-  /* Upsell */
-  .gb__input { position: absolute; opacity: 0; pointer-events: none; }
-  .gb { display: grid; grid-template-columns: 24px 64px 1fr; gap: 14px; align-items: center; margin-top: 14px; padding: 12px 14px; border: 2px solid #EADFD6; border-radius: 8px; background: #fff; cursor: pointer; transition: border-color .15s, background .15s; }
-  .gb:hover { border-color: var(--g-accent); }
-  .gb__input:checked + .gb { border-color: var(--g-accent); background: var(--g-soft); }
-  .gb__input:focus-visible + .gb { outline: 2px solid var(--g-ink); outline-offset: 2px; }
-  .gb__box { width: 24px; height: 24px; border-radius: 5px; border: 2px solid #9C8F86; background: #fff; display: grid; place-items: center; }
-  .gb__input:checked + .gb .gb__box { background: var(--g-ink); border-color: var(--g-ink); }
-  .gb__input:checked + .gb .gb__box::after { content: ""; width: 6px; height: 11px; margin-top: -2px; border: solid #fff; border-width: 0 2.5px 2.5px 0; transform: rotate(45deg); }
-  .gb__img { width: 64px; height: 64px; border-radius: 6px; overflow: hidden; background: var(--g-soft); }
+  .gt__badges { display: flex; flex-wrap: wrap; gap: 4px; margin: -11px 0 0 12px; position: relative; z-index: 1; }
+  .gt__badges span { padding: 3px 10px; border-radius: 999px; background: var(--g-accent); color: var(--g-ink); font-size: 11.5px; font-weight: 700; line-height: 1.3; white-space: nowrap; }
+  .gt__badges span.is-dark { background: var(--g-ink); color: #fff; }
+
+  .gt__main { display: grid; grid-template-columns: 22px 1fr auto; gap: 12px; align-items: center; padding: 12px 14px 14px; cursor: pointer; margin: 0; }
+  .gt.is-active .gt__main { background: var(--g-soft); }
+  .gt__radio { position: absolute; opacity: 0; pointer-events: none; }
+  .gt__radio:focus-visible + .gt__dot { outline: 2px solid var(--g-ink); outline-offset: 2px; }
+  .gt__dot { width: 22px; height: 22px; border-radius: 50%; border: 2px solid #CFC4BB; background: #fff; display: flex; align-items: center; justify-content: center; }
+  .gt.is-active .gt__dot { border-color: var(--g-text); }
+  .gt.is-active .gt__dot::after { content: ""; width: 11px; height: 11px; border-radius: 50%; background: var(--g-text); }
+  .gt__name { display: flex; flex-direction: column; min-width: 0; }
+  .gt__name strong { font-size: 18px; line-height: 1.2; letter-spacing: 0; }
+  .gt__meta { font-size: 13.5px; opacity: .7; margin-top: 1px; }
+  .gt__sub { display: none; margin-top: 6px; font-size: 14px; line-height: 1.4; opacity: .8; }
+  .gt.is-active .gt__sub { display: block; }
+  .gt__price { display: flex; flex-direction: column; align-items: flex-end; white-space: nowrap; }
+  .gt__price s { font-size: 14px; }
+  .gt__price strong { font-size: 20px; line-height: 1.2; }
+  .gt.is-active .gt__price strong { color: var(--g-text); }
+
+  /* Upsell dentro de la tarjeta */
+  .gb { display: grid; grid-template-columns: 44px 1fr auto; gap: 10px; align-items: center; padding: 9px 14px; border-top: 1px solid #F1E6DC; background: #FFFBF7; cursor: pointer; outline: none; transition: background .15s; }
+  .gb__box { display: none; width: 20px; height: 20px; border-radius: 4px; border: 2px solid var(--g-ink); background: #fff; align-items: center; justify-content: center; }
+  .gt.is-active .gb { grid-template-columns: 20px 44px 1fr auto; background: var(--g-accent); border-top-color: var(--g-accent); }
+  .gt.is-active .gb__box { display: flex; }
+  .gt.is-active .gb:focus-visible { box-shadow: inset 0 0 0 2px var(--g-ink); }
+  #glow-offer.bump-on .gt.is-active .gb__box { background: var(--g-ink); }
+  #glow-offer.bump-on .gt.is-active .gb__box::after { content: ""; width: 5px; height: 10px; margin-top: -2px; border: solid #fff; border-width: 0 2.5px 2.5px 0; transform: rotate(45deg); }
+  .gb__img { width: 44px; height: 44px; border-radius: 6px; overflow: hidden; background: #fff; }
   .gb__img img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .gb__info { display: grid; gap: 2px; min-width: 0; }
-  .gb__info strong { font-size: 17px; line-height: 1.2; }
-  .gb__line { font-size: 13.5px; opacity: .75; }
-  .gb__prices { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 2px; }
-  .gb__prices s { font-size: 15px; }
-  .gb__prices b { font-size: 19px; color: var(--g-text); }
-  .gb__prices em { padding: 2px 7px; border-radius: 4px; background: #C62828; color: #fff; font-style: normal; font-size: 13px; font-weight: 700; }
-  .gb__prices em.is-free { background: #1E7B3A; }
+  .gb__text { font-size: 14px; line-height: 1.3; color: var(--g-text); }
+  .gb__text b { font-weight: 800; }
+  .gt.is-active .gb__text { color: var(--g-ink); }
+  .gb__price { display: flex; flex-direction: column; align-items: flex-end; white-space: nowrap; }
+  .gb__price strong { font-size: 15px; }
+  .gb__price s { font-size: 12.5px; }
 
   /* Regalos */
-  .gg__title { display: flex; align-items: center; gap: 12px; margin: 20px 0 12px; }
-  .gg__title span { flex: 1; height: 1px; background: currentColor; opacity: .18; }
-  .gg__title p { font-size: 14px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; text-align: center; }
-  .gg { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: 8px; }
-  .gg__tile { position: relative; display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 10px 6px 9px; border: 2px solid var(--g-line); border-radius: 8px; background: var(--g-soft); text-align: center; transition: opacity .2s, border-color .2s, background .2s; }
-  .gg__check { z-index: 2; position: absolute; top: 5px; right: 5px; width: 20px; height: 20px; border-radius: 5px; background: #34A853; display: flex; align-items: center; justify-content: center; }
-  .gg__check svg { display: block; width: 14px; height: 14px; fill: none; stroke: #fff; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
-  .gg__media { position: relative; flex: none; width: 100%; aspect-ratio: 1; max-width: 64px; border-radius: 6px; overflow: hidden; background: #fff; border: 1px solid #F1E6DC; display: grid; place-items: center; }
-  .gg__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .gg__icon { width: 55%; height: 55%; fill: none; stroke: var(--g-text); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
-  .gg__lock { position: absolute; inset: 0; display: none; place-items: center; background: #FBF9F7; }
-  .gg__lock svg { width: 42%; height: 42%; fill: none; stroke: #9C8F86; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-  .gg__txt { display: flex; flex-direction: column; align-items: center; gap: 5px; width: 100%; min-width: 0; }
-  #glow-offer .gg__name { font-size: 13px; font-weight: 700; line-height: 1.25; letter-spacing: 0; text-transform: none; overflow-wrap: break-word; hyphens: auto; }
-  .gg__meta { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-  #glow-offer .gg__tag { letter-spacing: .03em; }
-  .gg__tag { padding: 2px 8px; border-radius: 4px; background: #E6F4EA; color: #1E7B3A; font-size: 12px; font-weight: 800; letter-spacing: .04em; }
-  .gg__locked { display: none; font-size: 11.5px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; color: #9C8F86; }
-  .gg__val { font-size: 12.5px; }
-  .gg__tile.is-locked { border-color: #EFE8E2; background: #FBF9F7; cursor: pointer; }
-  .gg__tile.is-locked .gg__check, .gg__tile.is-locked .gg__tag { display: none; }
-  .gg__tile.is-locked .gg__lock { display: grid; }
-  .gg__tile.is-locked .gg__locked { display: block; }
-  .gg__tile.is-locked .gg__name, .gg__tile.is-locked .gg__val { opacity: .45; }
+  .gg { border-top: 1px solid #F1E6DC; }
+  .gg__sum { display: flex; align-items: center; gap: 8px; padding: 9px 14px; }
+  .gg__gift { width: 18px; height: 18px; flex: none; fill: none; stroke: var(--g-text); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .gg__count { flex: 1; font-size: 14px; font-weight: 700; }
+  .gg__thumbs { display: flex; gap: 4px; }
+  .gg__thumb { width: 30px; height: 30px; flex: none; border-radius: 5px; overflow: hidden; background: #fff; border: 1px solid #F1E6DC; display: flex; align-items: center; justify-content: center; }
+  .gg__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .gg__thumb.is-locked, .gg__list li.is-locked .gg__thumb { filter: grayscale(1); opacity: .45; }
+  .gg__list { display: none; list-style: none; margin: 0; padding: 4px 14px 8px; background: var(--g-soft); }
+  .gt.is-active .gg__sum { display: none; }
+  .gt.is-active .gg__list { display: block; }
+  .gg__list li { display: grid; grid-template-columns: 34px 1fr auto; gap: 10px; align-items: center; padding: 7px 0; border-bottom: 1px solid #F1E3D6; }
+  .gg__list li:last-child { border-bottom: 0; }
+  .gg__list .gg__thumb { width: 34px; height: 34px; }
+  .gg__name { font-size: 14.5px; font-weight: 700; line-height: 1.25; letter-spacing: 0; }
+  .gg__list li.is-locked .gg__name { opacity: .45; }
+  .gg__val { display: flex; align-items: center; gap: 6px; white-space: nowrap; font-size: 14px; }
+  .gg__val em { padding: 2px 7px; border-radius: 999px; background: var(--g-text); color: #fff; font-style: normal; font-size: 11px; font-weight: 800; letter-spacing: .04em; }
+  .gg__val em.is-dark { background: var(--g-ink); }
+  .gg__val b { color: var(--g-text); font-weight: 800; }
+  .gg__val s { font-size: 12.5px; }
+  .gg__need { color: #9C8F86; font-size: 12.5px; font-weight: 700; }
+  .gg__need svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
-  /* Total y botón */
-  .glow__total { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; margin: 18px 2px 10px; }
-  .glow__total span { font-size: 15px; opacity: .75; }
-  .glow__total strong { font-size: 24px; }
-  .glow__total s { font-size: 16px; }
-  .glow__total em { margin-left: auto; font-style: normal; font-size: 15px; font-weight: 700; color: var(--g-text); }
-  .glow__cta { position: relative; width: 100%; min-height: 60px; padding: 10px 16px; border: 0; border-radius: 8px; background: var(--g-ink); color: #fff; cursor: pointer; display: grid; place-items: center; box-shadow: 0 10px 22px -12px rgba(59,31,20,.8); transition: transform .15s, background .2s; }
-  .glow__cta:hover { transform: translateY(-1px); background: #2A150D; }
-  .glow__cta-idle, .glow__cta-busy { grid-area: 1 / 1; display: flex; flex-direction: column; align-items: center; gap: 2px; transition: opacity .2s; }
-  .glow__cta-main { font-size: 18px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
-  .glow__cta-sub { font-size: 13.5px; font-weight: 500; color: var(--g-accent); }
-  .glow__cta-busy { flex-direction: row; gap: 10px; opacity: 0; font-size: 16px; font-weight: 700; }
-  .glow__cta.is-loading, .glow__cta.is-done { pointer-events: none; }
-  .glow__cta.is-loading .glow__cta-idle, .glow__cta.is-done .glow__cta-idle { opacity: 0; }
-  .glow__cta.is-loading .glow__cta-busy, .glow__cta.is-done .glow__cta-busy { opacity: 1; }
-  .glow__cta.is-done .glow__spin { display: none; }
-  .glow__spin { width: 20px; height: 20px; border-radius: 50%; border: 3px solid rgba(255,255,255,.3); border-top-color: var(--g-accent); animation: glow-spin .7s linear infinite; }
-  @keyframes glow-spin { to { transform: rotate(360deg); } }
-  .glow__error { margin-top: 8px !important; color: #b42318; font-size: 14px; text-align: center; }
+  /* Botón */
+  .go__cta { position: relative; width: 100%; min-height: 58px; margin-top: 18px; padding: 10px 16px; border: 0; border-radius: 10px; background: var(--g-ink); color: #fff; cursor: pointer; display: grid; place-items: center; box-shadow: 0 10px 22px -12px rgba(59,31,20,.8); transition: transform .15s, background .2s; }
+  .go__cta:hover { transform: translateY(-1px); background: #2A150D; }
+  .go__cta-idle, .go__cta-busy { grid-area: 1 / 1; display: flex; flex-direction: column; align-items: center; gap: 2px; transition: opacity .2s; }
+  .go__cta-main { font-size: 18px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+  .go__cta-sub { font-size: 13.5px; font-weight: 500; color: var(--g-accent); }
+  .go__cta-busy { flex-direction: row; gap: 10px; opacity: 0; font-size: 16px; font-weight: 700; }
+  .go__cta.is-loading, .go__cta.is-done { pointer-events: none; }
+  .go__cta.is-loading .go__cta-idle, .go__cta.is-done .go__cta-idle { opacity: 0; }
+  .go__cta.is-loading .go__cta-busy, .go__cta.is-done .go__cta-busy { opacity: 1; }
+  .go__cta.is-done .go__spin { display: none; }
+  .go__spin { width: 20px; height: 20px; border-radius: 50%; border: 3px solid rgba(255,255,255,.3); border-top-color: var(--g-accent); animation: go-spin .7s linear infinite; }
+  @keyframes go-spin { to { transform: rotate(360deg); } }
+  .go__error { margin-top: 8px !important; color: #b42318; font-size: 14px; text-align: center; }
 
-  @media (max-width: 520px) {
-    .gg { grid-template-columns: 1fr 1fr; }
-    .gg__tile { flex-direction: row; align-items: center; gap: 9px; padding: 8px 10px 8px 8px; text-align: left; }
-    .gg__media { width: 46px; max-width: 46px; }
-    .gg__txt, .gg__meta { align-items: flex-start; }
-    .gg__meta { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 3px 6px; }
-    #glow-offer .gg__name { font-size: 13.5px; }
-    .gg__check { top: 4px; left: 4px; right: auto; width: 18px; height: 18px; }
-    .gg__check svg { width: 12px; height: 12px; }
-    .gg__locked { font-size: 11px; }
-  }
+  .go__guarantee { display: flex; align-items: center; gap: 12px; margin-top: 12px; padding: 12px 14px; border: 1.5px solid var(--g-accent); border-radius: 10px; }
+  .go__guarantee svg { width: 34px; height: 34px; flex: none; fill: none; stroke: var(--g-text); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .go__guarantee p { font-size: 14px; line-height: 1.4; }
+
   @media (max-width: 420px) {
-    .gt { padding: 13px 12px; }
-    .gt__badges, .gt__sub { margin-left: 0 !important; }
-    .gg { gap: 6px; }
+    .gt__main { padding: 12px 12px 13px; gap: 10px; }
+    .gt__badges { gap: 3px; margin-left: 8px; }
+    .gt__badges span { padding: 2px 7px; font-size: 10.5px; }
+    .gt__name strong { font-size: 17px; }
+    .gb, .gt.is-active .gb { padding: 9px 12px; gap: 8px; }
+    .gt.is-active .gb { grid-template-columns: 20px 40px 1fr auto; }
+    .gb { grid-template-columns: 40px 1fr auto; }
+    .gb__img { width: 40px; height: 40px; }
+    .gb__text { font-size: 13.5px; }
+    .gg__sum, .gg__list { padding-left: 12px; padding-right: 12px; }
+    .gg__name { font-size: 14px; }
   }
 </style>
 
@@ -373,57 +409,30 @@
     if (!root) return;
     var tiers = Array.prototype.slice.call(root.querySelectorAll('.gt'));
     if (!tiers.length) return;
-    var tiles = Array.prototype.slice.call(root.querySelectorAll('.gg__tile'));
-    var giftsTitle = root.querySelector('[data-gifts-title]');
-    var bumpBox = root.querySelector('.gb__input');
-    var bumpNow = root.querySelector('[data-bump-now]');
-    var bumpPill = root.querySelector('[data-bump-pill]');
+    var gifts = JSON.parse(root.querySelector('[data-glow-gifts]').textContent);
     var bumpId = Number(root.dataset.bumpId) || null;
     var bumpFreeMin = Number(root.dataset.bumpFreeMin);
-    var bumpPrice = Number(root.dataset.bumpPrice);
-    var bumpCompare = Number(root.dataset.bumpCompare);
     var cta = root.querySelector('[data-glow-cta]');
     var errorEl = root.querySelector('[data-glow-error]');
+    var bumpOn = false;
     var wasFree = false;
 
-    function money(cents) { return '$' + Math.round(cents / 100).toLocaleString('es-AR'); }
     function active() { return root.querySelector('.gt.is-active') || tiers[0]; }
     function bottlesOf(tier) { return Number(tier.dataset.bottles); }
-    function bumpOn() { return !!(bumpBox && bumpBox.checked && bumpId); }
 
     function render() {
       var tier = active();
-      var bottles = bottlesOf(tier);
-      var free = bottles >= bumpFreeMin;
-
-      if (bumpBox) {
-        if (free && !wasFree) bumpBox.checked = true;
-        wasFree = free;
-        bumpNow.textContent = free ? 'GRATIS' : money(bumpPrice);
-        bumpPill.textContent = free ? '-100%' : bumpPill.dataset.off;
-        bumpPill.classList.toggle('is-free', free);
-      }
-
-      var nextMin = null;
-      tiles.forEach(function (tile) {
-        var min = Number(tile.dataset.min);
-        var locked = bottles < min;
-        tile.classList.toggle('is-locked', locked);
-        if (locked && (nextMin === null || min < nextMin)) nextMin = min;
+      var free = bottlesOf(tier) >= bumpFreeMin;
+      if (free && !wasFree) bumpOn = true;
+      wasFree = free;
+      root.classList.toggle('bump-on', bumpOn && !!bumpId);
+      tiers.forEach(function (t) {
+        var row = t.querySelector('[data-bump-row]');
+        if (!row) return;
+        var on = t === tier;
+        row.setAttribute('tabindex', on ? '0' : '-1');
+        row.setAttribute('aria-checked', on && bumpOn ? 'true' : 'false');
       });
-      giftsTitle.textContent = nextMin === null
-        ? 'Regalos incluidos'
-        : 'Desbloqueá con ' + nextMin + ' frascos o más';
-
-      var price = Number(tier.dataset.price);
-      var compare = Number(tier.dataset.compare);
-      if (bumpOn()) {
-        price += free ? 0 : bumpPrice;
-        compare += bumpCompare;
-      }
-      root.querySelector('[data-glow-total]').textContent = money(price);
-      root.querySelector('[data-glow-compare]').textContent = compare > price ? money(compare) : '';
-      root.querySelector('[data-glow-savings]').textContent = compare > price ? 'Ahorrás ' + money(compare - price) : '';
     }
 
     function select(tier) {
@@ -438,21 +447,18 @@
     tiers.forEach(function (tier) {
       var radio = tier.querySelector('.gt__radio');
       radio.addEventListener('change', function () { select(tier); });
-      tier.addEventListener('click', function () {
+      tier.addEventListener('click', function (e) {
+        var row = e.target.closest('[data-bump-row]');
+        if (row && tier.classList.contains('is-active')) {
+          bumpOn = !bumpOn;
+          render();
+          return;
+        }
         if (!radio.disabled && !tier.classList.contains('is-active')) select(tier);
       });
-    });
-    if (bumpBox) bumpBox.addEventListener('change', render);
-
-    // Tocar un regalo bloqueado elige el pack más chico que lo desbloquea
-    tiles.forEach(function (tile) {
-      tile.addEventListener('click', function () {
-        if (!tile.classList.contains('is-locked')) return;
-        var min = Number(tile.dataset.min);
-        var target = tiers
-          .filter(function (t) { return bottlesOf(t) >= min && !t.querySelector('.gt__radio').disabled; })
-          .sort(function (a, b) { return bottlesOf(a) - bottlesOf(b); })[0];
-        if (target) select(target);
+      var row = tier.querySelector('[data-bump-row]');
+      if (row) row.addEventListener('keydown', function (e) {
+        if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); row.click(); }
       });
     });
 
@@ -461,10 +467,9 @@
       var bottles = bottlesOf(tier);
       var offer = tier.dataset.name;
       var items = [{ id: Number(tier.dataset.variantId), quantity: 1, properties: { _oferta: offer } }];
-      if (bumpOn()) items.push({ id: bumpId, quantity: 1, properties: { _oferta: offer + ' · upsell' } });
-      tiles.forEach(function (tile) {
-        var id = Number(tile.dataset.variantId);
-        if (id && bottles >= Number(tile.dataset.min)) items.push({ id: id, quantity: 1, properties: { _regalo: offer } });
+      if (bumpOn && bumpId) items.push({ id: bumpId, quantity: 1, properties: { _oferta: offer + ' · upsell' } });
+      gifts.forEach(function (g) {
+        if (g.variantId && bottles >= g.min) items.push({ id: g.variantId, quantity: 1, properties: { _regalo: offer } });
       });
 
       var busyText = cta.querySelector('[data-glow-busy-text]');
