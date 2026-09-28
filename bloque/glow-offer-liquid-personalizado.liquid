@@ -1,554 +1,400 @@
 {%- comment -%}
-  OFERTA GLOW · bloque "Liquid personalizado". Pegá TODO este archivo.
-  Solo se edita la parte CONFIGURACIÓN (hasta "FIN CONFIGURACIÓN").
-
-  IMPORTANTE: el producto necesita las variantes (opción "Pack"), en este orden:
-    1 = 1 frasco ($53.990) · 2 = 2 frascos ($75.800) · 3 = 3 frascos ($93.300) · 4 = 6 frascos ($113.700)
-  El precio que se muestra y el que se cobra sale de cada variante.
-
-  - Handle = lo que va después de /products/ en la URL del producto.
-  - Packs y regalos: valores separados por |, en el orden en que se muestran. Guion (-) = vacío.
-  - redirect: 'drawer' = abre el carrito lateral del tema (si no hay, va a la página del carrito),
-    'cart' = va a la página del carrito, 'checkout' = va directo al checkout.
-  - Badges: separados por coma. El primero va en oscuro, el resto en color.
-  - Textos del upsell: podés usar <b>...</b> para poner algo en negrita.
-  - Regalos: g_min = desde cuántos frascos se desbloquea. g_handle = producto $0 que se agrega
-    al carrito (guion si no hay, ej. sorteo).
-  - Imágenes de los regalos (g_image): subilas en Contenido → Archivos, tocá "Copiar enlace"
-    y pegá cada link en su lugar, separados por |. Guion (-) = sin imagen: usa la foto del
-    producto regalo y, si no hay, un ícono de línea (g_icon: book, leaf, sun, gift, truck).
-    Tip: imágenes cuadradas, fondo claro, mínimo 300×300 px.
+OFERTA GLOW. Pegá TODO. Editá solo CONFIGURACIÓN. Guion (-) = vacío. Valores separados por |.
+Variantes del producto (opción Pack) en orden: 1 frasco, 2, 3, 6.
+redirect: 'drawer' carrito lateral · 'cart' página del carrito · 'checkout'.
 {%- endcomment -%}
-
 {%- liquid
-  assign bump_handle = 'drenaje-linfatico-y-celulitis'
-  assign bump_title = 'CELUFIT'
-
-  assign heading = 'Elegí tu pack'
-  assign cta_label = 'Agregar al carrito'
-  assign cta_sub = ''
-  assign redirect = 'drawer'
-
-  assign t_pos      = '4|3|2|1' | split: '|'
-  assign t_bottles  = '6|3|2|1' | split: '|'
-  assign t_title    = 'Glow 12 meses|Protocolo Verano Completo|Protocolo 120 días|Protocolo 60 días' | split: '|'
-  assign t_meta     = '6 frascos|3 frascos · 180 días|2 frascos|1 frasco' | split: '|'
-  assign t_badges   = 'Envío gratis, ⭐ Mejor precio, Pagás 3 llevás 6|🔥 Más comprado, Recomendado, Pagás 2 llevás 3|Envío gratis, 3 cuotas sin interés, 60% OFF 2da unidad|Envío gratis, 3 cuotas sin interés' | split: '|'
-  assign t_subtitle = 'Un año entero con tu tono dorado: llegás al verano y lo mantenés todo el año.|Empezás ahora y llegás con el tono desde octubre hasta el último día de marzo.|-|-' | split: '|'
-  assign preselected = 2
-
-  assign bump_price = 23990
-  assign bump_free_min = 6
-  assign bump_text = 'Tenés <b>50% OFF</b> en CELUFIT para lucir tus piernas este verano'
-  assign bump_text_free = '🎁 <b>CELUFIT de regalo</b> para lucir tus piernas este verano'
-
-  assign g_title  = 'Guía Rutina Glow|Guía Alimentación para un tono dorado|Viaje al Caribe para Enero' | split: '|'
-  assign g_value  = '$25.000|$20.000|-' | split: '|'
-  assign g_tag    = 'GRATIS|GRATIS|SORTEO' | split: '|'
-  assign g_min    = '2|3|3' | split: '|'
-  assign g_icon   = 'book|leaf|sun' | split: '|'
-  assign g_handle = 'guia-rutina-glow|guia-alimentacion-para-un-tono-dorado|-' | split: '|'
-  assign g_image  = 'https://cdn.shopify.com/s/files/1/0789/3421/2779/files/Imagen_de_ChatGPT_28_sept_2026_10_42_24.png?v=1790603085|https://cdn.shopify.com/s/files/1/0789/3421/2779/files/Imagen_de_ChatGPT_28_sept_2026_10_42_14.png?v=1790603085|https://cdn.shopify.com/s/files/1/0789/3421/2779/files/Imagen_de_ChatGPT_28_sept_2026_10_41_39.png?v=1790603087' | split: '|'
-
-  assign guarantee_title = ''
-  assign guarantee_text = ''
-
-  assign c_accent = '#F2B47F'
-  assign c_soft = '#FEF5EC'
-  assign c_text = '#9A4F1C'
-  assign c_ink = '#3B1F14'
+assign bump_handle = 'drenaje-linfatico-y-celulitis'
+assign bump_title = 'CELUFIT'
+assign heading = 'Elegí tu pack'
+assign cta_label = 'Agregar al carrito'
+assign cta_sub = ''
+assign redirect = 'drawer'
+assign t_pos      = '4|3|2|1' | split: '|'
+assign t_bottles  = '6|3|2|1' | split: '|'
+assign t_title    = 'Glow 12 meses|Protocolo Verano Completo|Protocolo 120 días|Protocolo 60 días' | split: '|'
+assign t_meta     = '6 frascos|3 frascos · 180 días|2 frascos|1 frasco' | split: '|'
+assign t_badges   = 'Envío gratis, ⭐ Mejor precio, Pagás 3 llevás 6|🔥 Más comprado, Recomendado, Pagás 2 llevás 3|Envío gratis, 3 cuotas sin interés, 60% OFF 2da unidad|Envío gratis, 3 cuotas sin interés' | split: '|'
+assign t_subtitle = 'Un año entero con tu tono dorado: llegás al verano y lo mantenés todo el año.|Empezás ahora y llegás con el tono desde octubre hasta el último día de marzo.|-|-' | split: '|'
+assign preselected = 2
+assign bump_price = 23990
+assign bump_free_min = 6
+assign bump_text = 'Tenés <b>50% OFF</b> en CELUFIT para lucir tus piernas este verano'
+assign bump_text_free = '🎁 <b>CELUFIT de regalo</b> para lucir tus piernas este verano'
+assign g_title  = 'Guía Rutina Glow|Guía Alimentación para un tono dorado|Viaje al Caribe para Enero' | split: '|'
+assign g_value  = '$25.000|$20.000|-' | split: '|'
+assign g_tag    = 'GRATIS|GRATIS|SORTEO' | split: '|'
+assign g_min    = '2|3|3' | split: '|'
+assign g_icon   = 'book|leaf|sun' | split: '|'
+assign g_handle = 'guia-rutina-glow|guia-alimentacion-para-un-tono-dorado|-' | split: '|'
+assign g_image  = 'https://cdn.shopify.com/s/files/1/0789/3421/2779/files/Imagen_de_ChatGPT_28_sept_2026_10_42_24.png?v=1790603085|https://cdn.shopify.com/s/files/1/0789/3421/2779/files/Imagen_de_ChatGPT_28_sept_2026_10_42_14.png?v=1790603085|https://cdn.shopify.com/s/files/1/0789/3421/2779/files/Imagen_de_ChatGPT_28_sept_2026_10_41_39.png?v=1790603087' | split: '|'
+assign guarantee_title = ''
+assign guarantee_text = ''
+assign c_accent = '#F2B47F'
+assign c_soft = '#FEF5EC'
+assign c_text = '#9A4F1C'
+assign c_ink = '#3B1F14'
 -%}
 {%- comment -%} ===================== FIN CONFIGURACIÓN ===================== {%- endcomment -%}
-
 {%- liquid
-  assign bump_product = all_products[bump_handle]
-  assign bump_variant = bump_product.selected_or_first_available_variant
-  if bump_title == blank
-    assign bump_title = bump_product.title
-  endif
-  assign max_pos = 0
-  for t in t_pos
-    assign p = t | plus: 0
-    if p > max_pos
-      assign max_pos = p
-    endif
-  endfor
-  assign gift_count = g_title.size
-  assign first_gift_min = g_min[0] | plus: 0
-  assign missing_gifts = ''
-  for h in g_handle
-    assign hh = h | strip
-    if hh != '-' and hh != '' and all_products[hh] == blank
-      assign missing_gifts = missing_gifts | append: ' "' | append: hh | append: '"'
-    endif
-  endfor
+assign bump_product = all_products[bump_handle]
+assign bump_variant = bump_product.selected_or_first_available_variant
+if bump_title == blank
+assign bump_title = bump_product.title
+endif
+assign max_pos = 0
+for t in t_pos
+assign p = t | plus: 0
+if p > max_pos
+assign max_pos = p
+endif
+endfor
+assign gift_count = g_title.size
+assign first_gift_min = g_min[0] | plus: 0
+assign missing_gifts = ''
+for h in g_handle
+assign hh = h | strip
+if hh != '-' and hh != '' and all_products[hh] == blank
+assign missing_gifts = missing_gifts | append: ' "' | append: hh | append: '"'
+endif
+endfor
 -%}
-
 {%- capture gift_media -%}
-  {%- for gt in g_title -%}
-    {%- liquid
-      assign gi = forloop.index0
-      assign gh = g_handle[gi] | strip
-      assign has_gp_img = false
-      if gh != '-' and gh != ''
-        assign gp = all_products[gh]
-        if gp.featured_image
-          assign has_gp_img = true
-        endif
-      endif
-      assign gimg = g_image[gi] | strip
-      assign has_img = false
-      if gimg != '-' and gimg != ''
-        assign has_img = true
-        if gimg contains '?'
-          assign gimg = gimg | append: '&width=160'
-        else
-          assign gimg = gimg | append: '?width=160'
-        endif
-      endif
-      assign gicon = g_icon[gi] | strip
-    -%}
-    {%- if has_img -%}
-      <img src="{{ gimg }}" alt="" loading="lazy" width="80" height="80">
-    {%- elsif has_gp_img -%}
-      {{ gp.featured_image | image_url: width: 160 | image_tag: loading: 'lazy', alt: '' }}
-    {%- else -%}
-      <svg class="go-icon" viewBox="0 0 24 24" aria-hidden="true">
-        {%- case gicon -%}
-          {%- when 'truck' -%}<path d="M2.5 6.5h11v9h-11z"/><path d="M13.5 9.5h4l3 3.2v2.8h-7"/><circle cx="7" cy="17" r="1.8"/><circle cx="17" cy="17" r="1.8"/>
-          {%- when 'book' -%}<path d="M12 6.5C10 5 7 4.5 3.5 5v13c3.5-.5 6.5 0 8.5 1.5 2-1.5 5-2 8.5-1.5V5C17 4.5 14 5 12 6.5z"/><path d="M12 6.5v13"/>
-          {%- when 'leaf' -%}<path d="M5 19C5 10.5 10.5 5 19.5 4.5 19.5 13.5 14 19 5 19z"/><path d="M5 19l8.5-8.5"/>
-          {%- when 'sun' -%}<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/>
-          {%- else -%}<path d="M3.5 9.5h17v4h-17z"/><path d="M5 13.5v7h14v-7"/><path d="M12 9.5v11"/><path d="M12 9.5C10 9.5 7.5 8.5 8 6.5s3.5-.5 4 3c.5-3.5 3.5-5 4-3s-2 3-4 3z"/>
-        {%- endcase -%}
-      </svg>
-    {%- endif -%}
-    {%- unless forloop.last -%}@@@{%- endunless -%}
-  {%- endfor -%}
+{%- for gt in g_title -%}
+{%- liquid
+assign gi = forloop.index0
+assign gh = g_handle[gi] | strip
+assign has_gp_img = false
+if gh != '-' and gh != ''
+assign gp = all_products[gh]
+if gp.featured_image
+assign has_gp_img = true
+endif
+endif
+assign gimg = g_image[gi] | strip
+assign has_img = false
+if gimg != '-' and gimg != ''
+assign has_img = true
+if gimg contains '?'
+assign gimg = gimg | append: '&width=160'
+else
+assign gimg = gimg | append: '?width=160'
+endif
+endif
+assign gicon = g_icon[gi] | strip
+-%}
+{%- if has_img -%}
+<img src="{{ gimg }}" alt="" loading="lazy" width="80" height="80">
+{%- elsif has_gp_img -%}
+{{ gp.featured_image | image_url: width: 160 | image_tag: loading: 'lazy', alt: '' }}
+{%- else -%}
+<svg class="go-icon" viewBox="0 0 24 24" aria-hidden="true">
+{%- case gicon -%}
+{%- when 'truck' -%}<path d="M2.5 6.5h11v9h-11z"/><path d="M13.5 9.5h4l3 3.2v2.8h-7"/><circle cx="7" cy="17" r="1.8"/><circle cx="17" cy="17" r="1.8"/>
+{%- when 'book' -%}<path d="M12 6.5C10 5 7 4.5 3.5 5v13c3.5-.5 6.5 0 8.5 1.5 2-1.5 5-2 8.5-1.5V5C17 4.5 14 5 12 6.5z"/><path d="M12 6.5v13"/>
+{%- when 'leaf' -%}<path d="M5 19C5 10.5 10.5 5 19.5 4.5 19.5 13.5 14 19 5 19z"/><path d="M5 19l8.5-8.5"/>
+{%- when 'sun' -%}<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/>
+{%- else -%}<path d="M3.5 9.5h17v4h-17z"/><path d="M5 13.5v7h14v-7"/><path d="M12 9.5v11"/><path d="M12 9.5C10 9.5 7.5 8.5 8 6.5s3.5-.5 4 3c.5-3.5 3.5-5 4-3s-2 3-4 3z"/>
+{%- endcase -%}
+</svg>
+{%- endif -%}
+{%- unless forloop.last -%}@@@{%- endunless -%}
+{%- endfor -%}
 {%- endcapture -%}
 {%- assign gift_media = gift_media | split: '@@@' -%}
-
 {%- if request.design_mode -%}
-  {%- if product.variants.size < max_pos -%}
-    <p style="margin:0 0 8px;padding:8px 10px;border-radius:6px;background:#fff4e5;color:#8a4b00;font-size:13px;">⚠️ Solo el editor ve esto: el producto tiene {{ product.variants.size }} variante(s) y la oferta necesita {{ max_pos }} (1, 2, 3 y 6 frascos). La oferta no se muestra hasta que las crees (dejá Kaching visible mientras tanto).</p>
-  {%- endif -%}
-  {%- if bump_variant == blank -%}
-    <p style="margin:0 0 8px;padding:8px 10px;border-radius:6px;background:#fff4e5;color:#8a4b00;font-size:13px;">⚠️ Solo el editor ve esto: no se encontró el producto con handle "{{ bump_handle }}" ({{ bump_title }}). Corregí bump_handle.</p>
-  {%- endif -%}
-  {%- if missing_gifts != '' -%}
-    <p style="margin:0 0 8px;padding:8px 10px;border-radius:6px;background:#fff4e5;color:#8a4b00;font-size:13px;">⚠️ Solo el editor ve esto: no se encontraron estos regalos:{{ missing_gifts }}. Se muestran, pero no se agregan al carrito.</p>
-  {%- endif -%}
+{%- if product.variants.size < max_pos -%}
+<p style="margin:0 0 8px;padding:8px 10px;border-radius:6px;background:#fff4e5;color:#8a4b00;font-size:13px;">⚠️ Solo el editor ve esto: el producto tiene {{ product.variants.size }} variante(s) y la oferta necesita {{ max_pos }} (1, 2, 3 y 6 frascos). La oferta no se muestra hasta que las crees (dejá Kaching visible mientras tanto).</p>
 {%- endif -%}
-
+{%- if bump_variant == blank -%}
+<p style="margin:0 0 8px;padding:8px 10px;border-radius:6px;background:#fff4e5;color:#8a4b00;font-size:13px;">⚠️ Solo el editor ve esto: no se encontró el producto con handle "{{ bump_handle }}" ({{ bump_title }}). Corregí bump_handle.</p>
+{%- endif -%}
+{%- if missing_gifts != '' -%}
+<p style="margin:0 0 8px;padding:8px 10px;border-radius:6px;background:#fff4e5;color:#8a4b00;font-size:13px;">⚠️ Solo el editor ve esto: no se encontraron estos regalos:{{ missing_gifts }}. Se muestran, pero no se agregan al carrito.</p>
+{%- endif -%}
+{%- endif -%}
 {%- if product.variants.size >= max_pos -%}
 <div
-  id="glow-offer"
-  class="go"
-  lang="es"
-  data-redirect="{{ redirect }}"
-  data-bump-id="{{ bump_variant.id }}"
-  data-bump-free-min="{{ bump_free_min }}"
-  style="--g-accent: {{ c_accent }}; --g-soft: {{ c_soft }}; --g-text: {{ c_text }}; --g-ink: {{ c_ink }};"
+id="glow-offer"
+class="go"
+lang="es"
+data-redirect="{{ redirect }}"
+data-bump-id="{{ bump_variant.id }}"
+data-bump-free-min="{{ bump_free_min }}"
+style="--g-accent: {{ c_accent }}; --g-soft: {{ c_soft }}; --g-text: {{ c_text }}; --g-ink: {{ c_ink }};"
 >
-  <div class="go__heading"><span></span><p>{{ heading }}</p><span></span></div>
-  <div class="go__tiers" role="radiogroup" aria-label="{{ heading | escape }}">
-    {%- for t in t_pos -%}
-      {%- liquid
-        assign ti = forloop.index0
-        assign v_index = t | plus: 0 | minus: 1
-        assign variant = product.variants[v_index]
-        assign bottles = t_bottles[ti] | plus: 0
-        assign title = t_title[ti]
-        assign subtitle = t_subtitle[ti] | strip
-        assign compare = variant.compare_at_price | default: variant.price
-        assign savings = compare | minus: variant.price
-        assign unlocked = 0
-        for m in g_min
-          assign mm = m | plus: 0
-          if bottles >= mm
-            assign unlocked = unlocked | plus: 1
-          endif
-        endfor
-        assign bump_free = false
-        if bottles >= bump_free_min
-          assign bump_free = true
-        endif
-      -%}
-      {%- if variant != blank -%}
-      <div
-        class="gt{% if forloop.index == preselected %} is-active{% endif %}"
-        data-variant-id="{{ variant.id }}"
-        data-bottles="{{ bottles }}"
-        data-name="{{ title | escape }}"
-      >
-        <div class="gt__badges">
-          {%- assign badges = t_badges[ti] | split: ',' -%}
-          {%- for badge in badges -%}
-            <span{% if forloop.first %} class="is-dark"{% endif %}>{{ badge | strip }}</span>
-          {%- endfor -%}
-        </div>
-
-        <label class="gt__main">
-          <input type="radio" class="gt__radio" name="glow-tier" value="{{ variant.id }}"
-            {% if forloop.index == preselected %}checked{% endif %} {% unless variant.available %}disabled{% endunless %}>
-          <span class="gt__dot" aria-hidden="true"></span>
-          <span class="gt__name">
-            <strong>{{ title }}</strong>
-            <span class="gt__meta">{{ t_meta[ti] }}</span>
-            {%- if subtitle != '-' and subtitle != '' -%}<span class="gt__sub">{{ subtitle }}</span>{%- endif -%}
-          </span>
-          <span class="gt__price">
-            {%- if savings > 0 -%}<s>{{ compare | money_without_trailing_zeros }}</s>{%- endif -%}
-            <strong>{{ variant.price | money_without_trailing_zeros }}</strong>
-          </span>
-        </label>
-
-        {%- if bump_variant != blank -%}
-          <div class="gb" role="checkbox" tabindex="-1" aria-checked="false" data-bump-row>
-            <span class="gb__box" aria-hidden="true"></span>
-            <span class="gb__img">
-              {%- if bump_product.featured_image -%}
-                {{ bump_product.featured_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: bump_title }}
-              {%- endif -%}
-            </span>
-            <span class="gb__text">{% if bump_free %}{{ bump_text_free }}{% else %}{{ bump_text }}{% endif %}</span>
-            <span class="gb__price">
-              <strong>{% if bump_free %}GRATIS{% else %}{{ bump_price | times: 100 | money_without_trailing_zeros }}{% endif %}</strong>
-              <s>{{ bump_variant.price | money_without_trailing_zeros }}</s>
-            </span>
-          </div>
-        {%- endif -%}
-
-        <div class="gg">
-          <div class="gg__sum">
-            <span class="gg__gift" aria-hidden="true">🎁</span>
-            <span class="gg__count">
-              {%- if unlocked > 0 -%}{{ unlocked }}/{{ gift_count }} regalos incluidos{%- else -%}Regalos desde {{ first_gift_min }} frascos{%- endif -%}
-            </span>
-            <span class="gg__thumbs">
-              {%- for gt in g_title -%}
-                {%- assign gmin = g_min[forloop.index0] | plus: 0 -%}
-                <span class="gg__thumb{% if bottles < gmin %} is-locked{% endif %}">{{ gift_media[forloop.index0] }}</span>
-              {%- endfor -%}
-            </span>
-          </div>
-          <ul class="gg__list">
-            {%- for gt in g_title -%}
-              {%- liquid
-                assign gi = forloop.index0
-                assign gmin = g_min[gi] | plus: 0
-                assign gval = g_value[gi] | strip
-                assign gtag = g_tag[gi] | strip
-              -%}
-              <li class="{% if bottles < gmin %}is-locked{% endif %}">
-                <span class="gg__thumb">{{ gift_media[gi] }}</span>
-                <span class="gg__name">+ {{ gt }}</span>
-                {%- if bottles >= gmin -%}
-                  <span class="gg__val">
-                    <em class="{% if gtag == 'SORTEO' %}is-dark{% endif %}">{{ gtag }}</em>
-                    {%- if gtag != 'SORTEO' -%}<b>$0</b>{%- endif -%}
-                    {%- if gval != '-' and gval != '' -%}<s>{{ gval }}</s>{%- endif -%}
-                  </span>
-                {%- else -%}
-                  <span class="gg__val gg__need">
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg>
-                    Con {{ gmin }} frascos
-                  </span>
-                {%- endif -%}
-              </li>
-            {%- endfor -%}
-          </ul>
-        </div>
-      </div>
-      {%- endif -%}
-    {%- endfor -%}
-  </div>
-
-  <button type="button" class="go__cta" data-glow-cta>
-    <span class="go__cta-idle">
-      <span class="go__cta-main">{{ cta_label }}</span>
-      {%- if cta_sub != '' -%}<span class="go__cta-sub">{{ cta_sub }}</span>{%- endif -%}
-    </span>
-    <span class="go__cta-busy" aria-hidden="true"><span class="go__spin"></span><span data-glow-busy-text>Agregando…</span></span>
-  </button>
-  <p class="go__error" data-glow-error hidden></p>
-
-  {%- if guarantee_title != '' -%}
-    <div class="go__guarantee">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7.5 3v5.5c0 4.5-3.2 8-7.5 9.5-4.3-1.5-7.5-5-7.5-9.5V6z"/><path d="M8.5 12l2.5 2.5 4.5-4.5"/></svg>
-      <p><b>{{ guarantee_title }}</b> {{ guarantee_text }}</p>
-    </div>
-  {%- endif -%}
-
-  <script type="application/json" data-glow-gifts>
-    [
-      {%- for gt in g_title -%}
-        {%- liquid
-          assign gh = g_handle[forloop.index0] | strip
-          assign gid = ''
-          if gh != '-' and gh != ''
-            assign gid = all_products[gh].selected_or_first_available_variant.id | append: ''
-          endif
-        -%}
-        { "min": {{ g_min[forloop.index0] | plus: 0 }}, "variantId": {% if gid != '' %}{{ gid }}{% else %}null{% endif %} }{% unless forloop.last %},{% endunless %}
-      {%- endfor -%}
-    ]
-  </script>
+<div class="go__heading"><span></span><p>{{ heading }}</p><span></span></div>
+<div class="go__tiers" role="radiogroup" aria-label="{{ heading | escape }}">
+{%- for t in t_pos -%}
+{%- liquid
+assign ti = forloop.index0
+assign v_index = t | plus: 0 | minus: 1
+assign variant = product.variants[v_index]
+assign bottles = t_bottles[ti] | plus: 0
+assign title = t_title[ti]
+assign subtitle = t_subtitle[ti] | strip
+assign compare = variant.compare_at_price | default: variant.price
+assign savings = compare | minus: variant.price
+assign unlocked = 0
+for m in g_min
+assign mm = m | plus: 0
+if bottles >= mm
+assign unlocked = unlocked | plus: 1
+endif
+endfor
+assign bump_free = false
+if bottles >= bump_free_min
+assign bump_free = true
+endif
+-%}
+{%- if variant != blank -%}
+<div
+class="gt{% if forloop.index == preselected %} is-active{% endif %}"
+data-variant-id="{{ variant.id }}"
+data-bottles="{{ bottles }}"
+data-name="{{ title | escape }}"
+>
+<div class="gt__badges">
+{%- assign badges = t_badges[ti] | split: ',' -%}
+{%- for badge in badges -%}
+<span{% if forloop.first %} class="is-dark"{% endif %}>{{ badge | strip }}</span>
+{%- endfor -%}
 </div>
-
+<label class="gt__main">
+<input type="radio" class="gt__radio" name="glow-tier" value="{{ variant.id }}"
+{% if forloop.index == preselected %}checked{% endif %} {% unless variant.available %}disabled{% endunless %}>
+<span class="gt__dot" aria-hidden="true"></span>
+<span class="gt__name">
+<strong>{{ title }}</strong>
+<span class="gt__meta">{{ t_meta[ti] }}</span>
+{%- if subtitle != '-' and subtitle != '' -%}<span class="gt__sub">{{ subtitle }}</span>{%- endif -%}
+</span>
+<span class="gt__price">
+{%- if savings > 0 -%}<s>{{ compare | money_without_trailing_zeros }}</s>{%- endif -%}
+<strong>{{ variant.price | money_without_trailing_zeros }}</strong>
+</span>
+</label>
+{%- if bump_variant != blank -%}
+<div class="gb" role="checkbox" tabindex="-1" aria-checked="false" data-bump-row>
+<span class="gb__box" aria-hidden="true"></span>
+<span class="gb__img">
+{%- if bump_product.featured_image -%}
+{{ bump_product.featured_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: bump_title }}
+{%- endif -%}
+</span>
+<span class="gb__text">{% if bump_free %}{{ bump_text_free }}{% else %}{{ bump_text }}{% endif %}</span>
+<span class="gb__price">
+<strong>{% if bump_free %}GRATIS{% else %}{{ bump_price | times: 100 | money_without_trailing_zeros }}{% endif %}</strong>
+<s>{{ bump_variant.price | money_without_trailing_zeros }}</s>
+</span>
+</div>
+{%- endif -%}
+<div class="gg">
+<div class="gg__sum">
+<span class="gg__gift" aria-hidden="true">🎁</span>
+<span class="gg__count">
+{%- if unlocked > 0 -%}{{ unlocked }}/{{ gift_count }} regalos incluidos{%- else -%}Regalos desde {{ first_gift_min }} frascos{%- endif -%}
+</span>
+<span class="gg__thumbs">
+{%- for gt in g_title -%}
+{%- assign gmin = g_min[forloop.index0] | plus: 0 -%}
+<span class="gg__thumb{% if bottles < gmin %} is-locked{% endif %}">{{ gift_media[forloop.index0] }}</span>
+{%- endfor -%}
+</span>
+</div>
+<ul class="gg__list">
+{%- for gt in g_title -%}
+{%- liquid
+assign gi = forloop.index0
+assign gmin = g_min[gi] | plus: 0
+assign gval = g_value[gi] | strip
+assign gtag = g_tag[gi] | strip
+-%}
+<li class="{% if bottles < gmin %}is-locked{% endif %}">
+<span class="gg__thumb">{{ gift_media[gi] }}</span>
+<span class="gg__name">+ {{ gt }}</span>
+{%- if bottles >= gmin -%}
+<span class="gg__val">
+<em class="{% if gtag == 'SORTEO' %}is-dark{% endif %}">{{ gtag }}</em>
+{%- if gtag != 'SORTEO' -%}<b>$0</b>{%- endif -%}
+{%- if gval != '-' and gval != '' -%}<s>{{ gval }}</s>{%- endif -%}
+</span>
+{%- else -%}
+<span class="gg__val gg__need">
+<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg>
+Con {{ gmin }} frascos
+</span>
+{%- endif -%}
+</li>
+{%- endfor -%}
+</ul>
+</div>
+</div>
+{%- endif -%}
+{%- endfor -%}
+</div>
+<button type="button" class="go__cta" data-glow-cta>
+<span class="go__cta-idle">
+<span class="go__cta-main">{{ cta_label }}</span>
+{%- if cta_sub != '' -%}<span class="go__cta-sub">{{ cta_sub }}</span>{%- endif -%}
+</span>
+<span class="go__cta-busy" aria-hidden="true"><span class="go__spin"></span><span data-glow-busy-text>Agregando…</span></span>
+</button>
+<p class="go__error" data-glow-error hidden></p>
+{%- if guarantee_title != '' -%}
+<div class="go__guarantee">
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7.5 3v5.5c0 4.5-3.2 8-7.5 9.5-4.3-1.5-7.5-5-7.5-9.5V6z"/><path d="M8.5 12l2.5 2.5 4.5-4.5"/></svg>
+<p><b>{{ guarantee_title }}</b> {{ guarantee_text }}</p>
+</div>
+{%- endif -%}
+<script type="application/json" data-glow-gifts>
+[
+{%- for gt in g_title -%}
+{%- liquid
+assign gh = g_handle[forloop.index0] | strip
+assign gid = ''
+if gh != '-' and gh != ''
+assign gid = all_products[gh].selected_or_first_available_variant.id | append: ''
+endif
+-%}
+{ "min": {{ g_min[forloop.index0] | plus: 0 }}, "variantId": {% if gid != '' %}{{ gid }}{% else %}null{% endif %} }{% unless forloop.last %},{% endunless %}
+{%- endfor -%}
+]
+</script>
+</div>
 <style>
-  #glow-offer { color: var(--g-ink); font-size: 16px; line-height: 1.35; margin: 18px 0; }
-  #glow-offer * { box-sizing: border-box; }
-  #glow-offer s { color: #7A6A60; font-weight: 500; }
-  #glow-offer p { margin: 0; }
-  #glow-offer .go-icon { width: 60%; height: 60%; fill: none; stroke: var(--g-text); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 
-  .go__heading { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
-  .go__heading span { flex: 1; height: 1.5px; background: #C9B3A0; }
-  .go__heading p { font-size: 14px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
-  .go__tiers { display: grid; gap: 22px; padding-top: 10px; }
-
-  /* Tarjeta */
-  .gt { position: relative; border: 2px solid #C9B3A0; border-radius: 10px; background: #fff; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
-  .gt:hover { border-color: #C7793F; }
-  .gt.is-active { border: 3px solid #C7793F; box-shadow: 0 12px 28px -12px rgba(154,79,28,.6); }
-
-  .gt__badges { display: flex; flex-wrap: wrap; gap: 4px; margin: -11px 0 0 12px; position: relative; z-index: 1; }
-  .gt__badges span { padding: 3px 10px; border-radius: 999px; background: var(--g-accent); color: var(--g-ink); font-size: 11.5px; font-weight: 700; line-height: 1.3; white-space: nowrap; }
-  .gt__badges span.is-dark { background: var(--g-ink); color: #fff; }
-
-  .gt__main { display: grid; grid-template-columns: 22px 1fr auto; gap: 12px; align-items: center; padding: 12px 14px 14px; cursor: pointer; margin: 0; }
-  .gt.is-active .gt__main { background: var(--g-soft); }
-  .gt__radio { position: absolute; opacity: 0; pointer-events: none; }
-  .gt__radio:focus-visible + .gt__dot { outline: 2px solid var(--g-ink); outline-offset: 2px; }
-  .gt__dot { width: 22px; height: 22px; border-radius: 50%; border: 2px solid #8C7B70; background: #fff; display: flex; align-items: center; justify-content: center; }
-  .gt.is-active .gt__dot { border-color: var(--g-text); }
-  .gt.is-active .gt__dot::after { content: ""; width: 11px; height: 11px; border-radius: 50%; background: var(--g-text); }
-  .gt__name { display: flex; flex-direction: column; min-width: 0; }
-  .gt__name strong { font-size: 18px; line-height: 1.2; letter-spacing: 0; }
-  .gt__meta { font-size: 14px; color: #5A463B; margin-top: 1px; }
-  .gt__sub { display: none; margin-top: 6px; font-size: 14px; line-height: 1.4; color: #5A463B; }
-  .gt.is-active .gt__sub { display: block; }
-  .gt__price { display: flex; flex-direction: column; align-items: flex-end; white-space: nowrap; }
-  .gt__price s { font-size: 14px; }
-  .gt__price strong { font-size: 20px; line-height: 1.2; }
-  .gt.is-active .gt__price strong { color: var(--g-text); }
-
-  /* Upsell dentro de la tarjeta */
-  .gb { display: grid; grid-template-columns: 44px 1fr auto; gap: 10px; align-items: center; padding: 9px 14px; border-top: 1px solid #DCC6B3; background: #FAEADC; cursor: pointer; outline: none; transition: background .15s; }
-  .gb__box { display: none; width: 20px; height: 20px; border-radius: 4px; border: 2px solid var(--g-ink); background: #fff; align-items: center; justify-content: center; }
-  .gt.is-active .gb { grid-template-columns: 20px 44px 1fr auto; background: var(--g-accent); border-top-color: var(--g-accent); }
-  .gt.is-active .gb__box { display: flex; }
-  .gt.is-active .gb:focus-visible { box-shadow: inset 0 0 0 2px var(--g-ink); }
-  #glow-offer.bump-on .gt.is-active .gb__box { background: var(--g-ink); }
-  #glow-offer.bump-on .gt.is-active .gb__box::after { content: ""; width: 5px; height: 10px; margin-top: -2px; border: solid #fff; border-width: 0 2.5px 2.5px 0; transform: rotate(45deg); }
-  .gb__img { width: 44px; height: 44px; border-radius: 6px; overflow: hidden; background: #fff; }
-  .gb__img img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .gb__text { font-size: 14px; line-height: 1.3; color: var(--g-text); }
-  .gb__text b { font-weight: 800; }
-  .gt.is-active .gb__text { color: var(--g-ink); }
-  .gb__price { display: flex; flex-direction: column; align-items: flex-end; white-space: nowrap; }
-  .gb__price strong { font-size: 15px; }
-  .gb__price s { font-size: 12.5px; }
-
-  /* Regalos */
-  .gg { border-top: 1px solid #DCC6B3; }
-  .gg__sum { display: flex; align-items: center; gap: 8px; padding: 9px 14px; }
-  .gg__gift { flex: none; font-size: 16px; line-height: 1; }
-  .gg__count { flex: 1; font-size: 14px; font-weight: 700; }
-  .gg__thumbs { display: flex; gap: 4px; }
-  .gg__thumb { width: 30px; height: 30px; flex: none; border-radius: 5px; overflow: hidden; background: #fff; border: 1px solid #D6C1AF; display: flex; align-items: center; justify-content: center; }
-  .gg__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .gg__thumb.is-locked, .gg__list li.is-locked .gg__thumb { filter: grayscale(1); opacity: .75; }
-  .gg__list { display: none; list-style: none; margin: 0; padding: 4px 14px 8px; background: var(--g-soft); }
-  .gt.is-active .gg__sum { display: none; }
-  .gt.is-active .gg__list { display: block; }
-  .gg__list li { display: grid; grid-template-columns: 34px 1fr auto; gap: 10px; align-items: center; padding: 7px 0; border-bottom: 1px solid #DFC9B6; }
-  .gg__list li:last-child { border-bottom: 0; }
-  .gg__list .gg__thumb { width: 34px; height: 34px; }
-  .gg__name { font-size: 14.5px; font-weight: 700; line-height: 1.25; letter-spacing: 0; }
-  .gg__list li.is-locked .gg__name { color: #7A6A60; }
-  .gg__val { display: flex; align-items: center; gap: 6px; white-space: nowrap; font-size: 14px; }
-  .gg__val em { padding: 2px 7px; border-radius: 999px; background: var(--g-text); color: #fff; font-style: normal; font-size: 11px; font-weight: 800; letter-spacing: .04em; }
-  .gg__val em.is-dark { background: var(--g-ink); }
-  .gg__val b { color: var(--g-text); font-weight: 800; }
-  .gg__val s { font-size: 12.5px; }
-  .gg__need { color: #7E6D62; font-size: 12.5px; font-weight: 700; }
-  .gg__need svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-
-  /* Botón */
-  .go__cta { position: relative; width: 100%; min-height: 58px; margin-top: 18px; padding: 10px 16px; border: 0; border-radius: 10px; background: var(--g-ink); color: #fff; cursor: pointer; display: grid; place-items: center; box-shadow: 0 10px 22px -12px rgba(59,31,20,.8); transition: transform .15s, background .2s; }
-  .go__cta:hover { transform: translateY(-1px); background: #2A150D; }
-  .go__cta-idle, .go__cta-busy { grid-area: 1 / 1; display: flex; flex-direction: column; align-items: center; gap: 2px; transition: opacity .2s; }
-  .go__cta-main { font-size: 18px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
-  .go__cta-sub { font-size: 13.5px; font-weight: 500; color: var(--g-accent); }
-  .go__cta-busy { flex-direction: row; gap: 10px; opacity: 0; font-size: 16px; font-weight: 700; }
-  .go__cta.is-loading, .go__cta.is-done { pointer-events: none; }
-  .go__cta.is-loading .go__cta-idle, .go__cta.is-done .go__cta-idle { opacity: 0; }
-  .go__cta.is-loading .go__cta-busy, .go__cta.is-done .go__cta-busy { opacity: 1; }
-  .go__cta.is-done .go__spin { display: none; }
-  .go__spin { width: 20px; height: 20px; border-radius: 50%; border: 3px solid rgba(255,255,255,.3); border-top-color: var(--g-accent); animation: go-spin .7s linear infinite; }
-  @keyframes go-spin { to { transform: rotate(360deg); } }
-  .go__error { margin-top: 8px !important; color: #b42318; font-size: 14px; text-align: center; }
-
-  .go__guarantee { display: flex; align-items: center; gap: 12px; margin-top: 12px; padding: 12px 14px; border: 1.5px solid var(--g-accent); border-radius: 10px; }
-  .go__guarantee svg { width: 34px; height: 34px; flex: none; fill: none; stroke: var(--g-text); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
-  .go__guarantee p { font-size: 14px; line-height: 1.4; }
-
-  @media (max-width: 420px) {
-    .gt__main { padding: 12px 12px 13px; gap: 10px; }
-    .gt__badges { gap: 3px; margin-left: 8px; }
-    .gt__badges span { padding: 2px 7px; font-size: 10.5px; }
-    .gt__name strong { font-size: 17px; }
-    .gb, .gt.is-active .gb { padding: 9px 12px; gap: 8px; }
-    .gt.is-active .gb { grid-template-columns: 20px 40px 1fr auto; }
-    .gb { grid-template-columns: 40px 1fr auto; }
-    .gb__img { width: 40px; height: 40px; }
-    .gb__text { font-size: 13.5px; }
-    .gg__sum, .gg__list { padding-left: 12px; padding-right: 12px; }
-    .gg__name { font-size: 14px; }
-  }
+#glow-offer{color:var(--g-ink);font-size:16px;line-height:1.35;margin:18px 0}#glow-offer *{box-sizing:border-box}#glow-offer s{color:#7A6A60;font-weight:500}#glow-offer p{margin:0}#glow-offer .go-icon{width:60%;height:60%;fill:none;stroke:var(--g-text);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}.go__heading{display:flex;align-items:center;gap:12px;margin-bottom:8px}.go__heading span{flex:1;height:1.5px;background:#C9B3A0}.go__heading p{font-size:14px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}.go__tiers{display:grid;gap:22px;padding-top:10px}.gt{position:relative;border:2px solid #C9B3A0;border-radius:10px;background:#fff;cursor:pointer;transition:border-color .15s,box-shadow .15s}.gt:hover{border-color:#C7793F}.gt.is-active{border:3px solid #C7793F;box-shadow:0 12px 28px -12px rgba(154,79,28,.6)}.gt__badges{display:flex;flex-wrap:wrap;gap:4px;margin:-11px 0 0 12px;position:relative;z-index:1}.gt__badges span{padding:3px 10px;border-radius:999px;background:var(--g-accent);color:var(--g-ink);font-size:11.5px;font-weight:700;line-height:1.3;white-space:nowrap}.gt__badges span.is-dark{background:var(--g-ink);color:#fff}.gt__main{display:grid;grid-template-columns:22px 1fr auto;gap:12px;align-items:center;padding:12px 14px 14px;cursor:pointer;margin:0}.gt.is-active .gt__main{background:var(--g-soft)}.gt__radio{position:absolute;opacity:0;pointer-events:none}.gt__radio:focus-visible + .gt__dot{outline:2px solid var(--g-ink);outline-offset:2px}.gt__dot{width:22px;height:22px;border-radius:50%;border:2px solid #8C7B70;background:#fff;display:flex;align-items:center;justify-content:center}.gt.is-active .gt__dot{border-color:var(--g-text)}.gt.is-active .gt__dot::after{content:"";width:11px;height:11px;border-radius:50%;background:var(--g-text)}.gt__name{display:flex;flex-direction:column;min-width:0}.gt__name strong{font-size:18px;line-height:1.2;letter-spacing:0}.gt__meta{font-size:14px;color:#5A463B;margin-top:1px}.gt__sub{display:none;margin-top:6px;font-size:14px;line-height:1.4;color:#5A463B}.gt.is-active .gt__sub{display:block}.gt__price{display:flex;flex-direction:column;align-items:flex-end;white-space:nowrap}.gt__price s{font-size:14px}.gt__price strong{font-size:20px;line-height:1.2}.gt.is-active .gt__price strong{color:var(--g-text)}.gb{display:grid;grid-template-columns:44px 1fr auto;gap:10px;align-items:center;padding:9px 14px;border-top:1px solid #DCC6B3;background:#FAEADC;cursor:pointer;outline:none;transition:background .15s}.gb__box{display:none;width:20px;height:20px;border-radius:4px;border:2px solid var(--g-ink);background:#fff;align-items:center;justify-content:center}.gt.is-active .gb{grid-template-columns:20px 44px 1fr auto;background:var(--g-accent);border-top-color:var(--g-accent)}.gt.is-active .gb__box{display:flex}.gt.is-active .gb:focus-visible{box-shadow:inset 0 0 0 2px var(--g-ink)}#glow-offer.bump-on .gt.is-active .gb__box{background:var(--g-ink)}#glow-offer.bump-on .gt.is-active .gb__box::after{content:"";width:5px;height:10px;margin-top:-2px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}.gb__img{width:44px;height:44px;border-radius:6px;overflow:hidden;background:#fff}.gb__img img{width:100%;height:100%;object-fit:cover;display:block}.gb__text{font-size:14px;line-height:1.3;color:var(--g-text)}.gb__text b{font-weight:800}.gt.is-active .gb__text{color:var(--g-ink)}.gb__price{display:flex;flex-direction:column;align-items:flex-end;white-space:nowrap}.gb__price strong{font-size:15px}.gb__price s{font-size:12.5px}.gg{border-top:1px solid #DCC6B3}.gg__sum{display:flex;align-items:center;gap:8px;padding:9px 14px}.gg__gift{flex:none;font-size:16px;line-height:1}.gg__count{flex:1;font-size:14px;font-weight:700}.gg__thumbs{display:flex;gap:4px}.gg__thumb{width:30px;height:30px;flex:none;border-radius:5px;overflow:hidden;background:#fff;border:1px solid #D6C1AF;display:flex;align-items:center;justify-content:center}.gg__thumb img{width:100%;height:100%;object-fit:cover;display:block}.gg__thumb.is-locked,.gg__list li.is-locked .gg__thumb{filter:grayscale(1);opacity:.75}.gg__list{display:none;list-style:none;margin:0;padding:4px 14px 8px;background:var(--g-soft)}.gt.is-active .gg__sum{display:none}.gt.is-active .gg__list{display:block}.gg__list li{display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:center;padding:7px 0;border-bottom:1px solid #DFC9B6}.gg__list li:last-child{border-bottom:0}.gg__list .gg__thumb{width:34px;height:34px}.gg__name{font-size:14.5px;font-weight:700;line-height:1.25;letter-spacing:0}.gg__list li.is-locked .gg__name{color:#7A6A60}.gg__val{display:flex;align-items:center;gap:6px;white-space:nowrap;font-size:14px}.gg__val em{padding:2px 7px;border-radius:999px;background:var(--g-text);color:#fff;font-style:normal;font-size:11px;font-weight:800;letter-spacing:.04em}.gg__val em.is-dark{background:var(--g-ink)}.gg__val b{color:var(--g-text);font-weight:800}.gg__val s{font-size:12.5px}.gg__need{color:#7E6D62;font-size:12.5px;font-weight:700}.gg__need svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.go__cta{position:relative;width:100%;min-height:58px;margin-top:18px;padding:10px 16px;border:0;border-radius:10px;background:var(--g-ink);color:#fff;cursor:pointer;display:grid;place-items:center;box-shadow:0 10px 22px -12px rgba(59,31,20,.8);transition:transform .15s,background .2s}.go__cta:hover{transform:translateY(-1px);background:#2A150D}.go__cta-idle,.go__cta-busy{grid-area:1 / 1;display:flex;flex-direction:column;align-items:center;gap:2px;transition:opacity .2s}.go__cta-main{font-size:18px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}.go__cta-sub{font-size:13.5px;font-weight:500;color:var(--g-accent)}.go__cta-busy{flex-direction:row;gap:10px;opacity:0;font-size:16px;font-weight:700}.go__cta.is-loading,.go__cta.is-done{pointer-events:none}.go__cta.is-loading .go__cta-idle,.go__cta.is-done .go__cta-idle{opacity:0}.go__cta.is-loading .go__cta-busy,.go__cta.is-done .go__cta-busy{opacity:1}.go__cta.is-done .go__spin{display:none}.go__spin{width:20px;height:20px;border-radius:50%;border:3px solid rgba(255,255,255,.3);border-top-color:var(--g-accent);animation:go-spin .7s linear infinite}@keyframes go-spin{to{transform:rotate(360deg)}}.go__error{margin-top:8px !important;color:#b42318;font-size:14px;text-align:center}.go__guarantee{display:flex;align-items:center;gap:12px;margin-top:12px;padding:12px 14px;border:1.5px solid var(--g-accent);border-radius:10px}.go__guarantee svg{width:34px;height:34px;flex:none;fill:none;stroke:var(--g-text);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}.go__guarantee p{font-size:14px;line-height:1.4}@media (max-width:420px){.gt__main{padding:12px 12px 13px;gap:10px}.gt__badges{gap:3px;margin-left:8px}.gt__badges span{padding:2px 7px;font-size:10.5px}.gt__name strong{font-size:17px}.gb,.gt.is-active .gb{padding:9px 12px;gap:8px}.gt.is-active .gb{grid-template-columns:20px 40px 1fr auto}.gb{grid-template-columns:40px 1fr auto}.gb__img{width:40px;height:40px}.gb__text{font-size:13.5px}.gg__sum,.gg__list{padding-left:12px;padding-right:12px}.gg__name{font-size:14px}}
 </style>
-
 <script>
-  (function () {
-    var root = document.getElementById('glow-offer');
-    if (!root) return;
-    var tiers = Array.prototype.slice.call(root.querySelectorAll('.gt'));
-    if (!tiers.length) return;
-    var gifts = JSON.parse(root.querySelector('[data-glow-gifts]').textContent);
-    var bumpId = Number(root.dataset.bumpId) || null;
-    var bumpFreeMin = Number(root.dataset.bumpFreeMin);
-    var cta = root.querySelector('[data-glow-cta]');
-    var errorEl = root.querySelector('[data-glow-error]');
-    var bumpOn = false;
-    var wasFree = false;
-
-    function active() { return root.querySelector('.gt.is-active') || tiers[0]; }
-    function bottlesOf(tier) { return Number(tier.dataset.bottles); }
-
-    function render() {
-      var tier = active();
-      var free = bottlesOf(tier) >= bumpFreeMin;
-      if (free && !wasFree) bumpOn = true;
-      wasFree = free;
-      root.classList.toggle('bump-on', bumpOn && !!bumpId);
-      tiers.forEach(function (t) {
-        var row = t.querySelector('[data-bump-row]');
-        if (!row) return;
-        var on = t === tier;
-        row.setAttribute('tabindex', on ? '0' : '-1');
-        row.setAttribute('aria-checked', on && bumpOn ? 'true' : 'false');
-      });
-    }
-
-    function select(tier) {
-      tiers.forEach(function (t) {
-        var on = t === tier;
-        t.classList.toggle('is-active', on);
-        t.querySelector('.gt__radio').checked = on;
-      });
-      render();
-    }
-
-    tiers.forEach(function (tier) {
-      var radio = tier.querySelector('.gt__radio');
-      radio.addEventListener('change', function () { select(tier); });
-      tier.addEventListener('click', function (e) {
-        var row = e.target.closest('[data-bump-row]');
-        if (row && tier.classList.contains('is-active')) {
-          bumpOn = !bumpOn;
-          render();
-          return;
-        }
-        if (!radio.disabled && !tier.classList.contains('is-active')) select(tier);
-      });
-      var row = tier.querySelector('[data-bump-row]');
-      if (row) row.addEventListener('keydown', function (e) {
-        if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); row.click(); }
-      });
-    });
-
-    function resetCta() {
-      setTimeout(function () {
-        cta.classList.remove('is-done');
-        cta.removeAttribute('aria-busy');
-      }, 600);
-    }
-
-    // Otros temas: avisa que el carrito cambió y abre el carrito lateral si existe
-    function openThemeCart() {
-      ['cart:refresh', 'cart:updated', 'cart:build'].forEach(function (name) {
-        document.dispatchEvent(new CustomEvent(name, { bubbles: true }));
-      });
-      var toggle = document.querySelector('[data-cart-drawer-toggle], [data-drawer-toggle="cart"], .js-drawer-open-cart, [aria-controls="CartDrawer"], [aria-controls="cart-drawer"]');
-      if (toggle) { toggle.click(); return true; }
-      return false;
-    }
-
-    cta.addEventListener('click', function () {
-      var tier = active();
-      var bottles = bottlesOf(tier);
-      var offer = tier.dataset.name;
-      var items = [{ id: Number(tier.dataset.variantId), quantity: 1, properties: { _oferta: offer } }];
-      if (bumpOn && bumpId) items.push({ id: bumpId, quantity: 1, properties: { _oferta: offer + ' · upsell' } });
-      gifts.forEach(function (g) {
-        if (g.variantId && bottles >= g.min) items.push({ id: g.variantId, quantity: 1, properties: { _regalo: offer } });
-      });
-
-      var busyText = cta.querySelector('[data-glow-busy-text]');
-      busyText.textContent = 'Agregando…';
-      cta.classList.add('is-loading');
-      cta.setAttribute('aria-busy', 'true');
-      errorEl.hidden = true;
-      var drawer = document.querySelector('cart-drawer');
-      var useDrawer = root.dataset.redirect === 'drawer' && drawer && typeof drawer.renderContents === 'function';
-      var payload = { items: items };
-      if (useDrawer) {
-        payload.sections = ['cart-drawer', 'cart-icon-bubble'];
-        payload.sections_url = window.location.pathname;
-      }
-      var cartData;
-      fetch('{{ routes.cart_add_url }}.js', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify(payload)
-      })
-        .then(function (res) { return res.json().then(function (d) { if (!res.ok) throw d; return d; }); })
-        .then(function (d) {
-          cartData = d;
-          cta.classList.remove('is-loading');
-          cta.classList.add('is-done');
-          busyText.textContent = '✓ ¡Agregado!';
-          return new Promise(function (r) { setTimeout(r, useDrawer ? 350 : 450); });
-        })
-        .then(function () {
-          var mode = root.dataset.redirect;
-          if (mode === 'checkout') { window.location.href = '/checkout'; return; }
-          if (mode === 'drawer') {
-            if (useDrawer && cartData && cartData.sections) {
-              try {
-                var inner = drawer.querySelector('.drawer__inner');
-                if (inner) inner.classList.remove('is-empty');
-                drawer.classList.remove('is-empty');
-                drawer.renderContents(cartData);
-                resetCta();
-                return;
-              } catch (e) { /* si el tema no responde, vamos a la página del carrito */ }
-            }
-            if (openThemeCart()) { resetCta(); return; }
-          }
-          window.location.href = '{{ routes.cart_url }}';
-        })
-        .catch(function (err) {
-          cta.classList.remove('is-loading');
-          cta.removeAttribute('aria-busy');
-          errorEl.textContent = (err && (err.description || err.message)) || 'No pudimos agregar el pack. Probá de nuevo.';
-          errorEl.hidden = false;
-        });
-    });
-
-    select(active());
-  })();
+(function () {
+var root = document.getElementById('glow-offer');
+if (!root) return;
+var tiers = Array.prototype.slice.call(root.querySelectorAll('.gt'));
+if (!tiers.length) return;
+var gifts = JSON.parse(root.querySelector('[data-glow-gifts]').textContent);
+var bumpId = Number(root.dataset.bumpId) || null;
+var bumpFreeMin = Number(root.dataset.bumpFreeMin);
+var cta = root.querySelector('[data-glow-cta]');
+var errorEl = root.querySelector('[data-glow-error]');
+var bumpOn = false;
+var wasFree = false;
+function active() { return root.querySelector('.gt.is-active') || tiers[0]; }
+function bottlesOf(tier) { return Number(tier.dataset.bottles); }
+function render() {
+var tier = active();
+var free = bottlesOf(tier) >= bumpFreeMin;
+if (free && !wasFree) bumpOn = true;
+wasFree = free;
+root.classList.toggle('bump-on', bumpOn && !!bumpId);
+tiers.forEach(function (t) {
+var row = t.querySelector('[data-bump-row]');
+if (!row) return;
+var on = t === tier;
+row.setAttribute('tabindex', on ? '0' : '-1');
+row.setAttribute('aria-checked', on && bumpOn ? 'true' : 'false');
+});
+}
+function select(tier) {
+tiers.forEach(function (t) {
+var on = t === tier;
+t.classList.toggle('is-active', on);
+t.querySelector('.gt__radio').checked = on;
+});
+render();
+}
+tiers.forEach(function (tier) {
+var radio = tier.querySelector('.gt__radio');
+radio.addEventListener('change', function () { select(tier); });
+tier.addEventListener('click', function (e) {
+var row = e.target.closest('[data-bump-row]');
+if (row && tier.classList.contains('is-active')) {
+bumpOn = !bumpOn;
+render();
+return;
+}
+if (!radio.disabled && !tier.classList.contains('is-active')) select(tier);
+});
+var row = tier.querySelector('[data-bump-row]');
+if (row) row.addEventListener('keydown', function (e) {
+if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); row.click(); }
+});
+});
+function resetCta() {
+setTimeout(function () {
+cta.classList.remove('is-done');
+cta.removeAttribute('aria-busy');
+}, 600);
+}
+function openThemeCart() {
+['cart:refresh', 'cart:updated', 'cart:build'].forEach(function (name) {
+document.dispatchEvent(new CustomEvent(name, { bubbles: true }));
+});
+var toggle = document.querySelector('[data-cart-drawer-toggle], [data-drawer-toggle="cart"], .js-drawer-open-cart, [aria-controls="CartDrawer"], [aria-controls="cart-drawer"]');
+if (toggle) { toggle.click(); return true; }
+return false;
+}
+cta.addEventListener('click', function () {
+var tier = active();
+var bottles = bottlesOf(tier);
+var offer = tier.dataset.name;
+var items = [{ id: Number(tier.dataset.variantId), quantity: 1, properties: { _oferta: offer } }];
+if (bumpOn && bumpId) items.push({ id: bumpId, quantity: 1, properties: { _oferta: offer + ' · upsell' } });
+gifts.forEach(function (g) {
+if (g.variantId && bottles >= g.min) items.push({ id: g.variantId, quantity: 1, properties: { _regalo: offer } });
+});
+var busyText = cta.querySelector('[data-glow-busy-text]');
+busyText.textContent = 'Agregando…';
+cta.classList.add('is-loading');
+cta.setAttribute('aria-busy', 'true');
+errorEl.hidden = true;
+var drawer = document.querySelector('cart-drawer');
+var useDrawer = root.dataset.redirect === 'drawer' && drawer && typeof drawer.renderContents === 'function';
+var payload = { items: items };
+if (useDrawer) {
+payload.sections = ['cart-drawer', 'cart-icon-bubble'];
+payload.sections_url = window.location.pathname;
+}
+var cartData;
+fetch('{{ routes.cart_add_url }}.js', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+body: JSON.stringify(payload)
+})
+.then(function (res) { return res.json().then(function (d) { if (!res.ok) throw d; return d; }); })
+.then(function (d) {
+cartData = d;
+cta.classList.remove('is-loading');
+cta.classList.add('is-done');
+busyText.textContent = '✓ ¡Agregado!';
+return new Promise(function (r) { setTimeout(r, useDrawer ? 350 : 450); });
+})
+.then(function () {
+var mode = root.dataset.redirect;
+if (mode === 'checkout') { window.location.href = '/checkout'; return; }
+if (mode === 'drawer') {
+if (useDrawer && cartData && cartData.sections) {
+try {
+var inner = drawer.querySelector('.drawer__inner');
+if (inner) inner.classList.remove('is-empty');
+drawer.classList.remove('is-empty');
+drawer.renderContents(cartData);
+resetCta();
+return;
+} catch (e) { /* si el tema no responde, vamos a la página del carrito */ }
+}
+if (openThemeCart()) { resetCta(); return; }
+}
+window.location.href = '{{ routes.cart_url }}';
+})
+.catch(function (err) {
+cta.classList.remove('is-loading');
+cta.removeAttribute('aria-busy');
+errorEl.textContent = (err && (err.description || err.message)) || 'No pudimos agregar el pack. Probá de nuevo.';
+errorEl.hidden = false;
+});
+});
+select(active());
+})();
 </script>
 {%- endif -%}
