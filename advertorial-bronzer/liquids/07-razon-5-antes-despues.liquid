@@ -1,0 +1,44 @@
+{% comment %}
+  07 de 12 · RAZÓN #5 · ANTES / DESPUÉS
+  Imágenes en Contenido > Archivos: bronzer-antes.jpg y bronzer-despues.jpg (1200x1500, mismo encuadre)
+  IMPORTANTE: usar fotos REALES de una clienta, con su autorización. No usar antes/después generados con IA.
+  Completá las [X] semanas.
+{% endcomment %}
+<style>
+  .bz-ba{--pos:50%;position:relative;border-radius:16px;overflow:hidden;background:var(--bz-peach-light);margin-bottom:22px;aspect-ratio:4/5;user-select:none}
+  .bz-ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .bz-ba-after{position:absolute;inset:0;clip-path:inset(0 0 0 var(--pos))}
+  .bz-ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0;z-index:3}
+  .bz-ba-line{position:absolute;top:0;bottom:0;left:var(--pos);width:3px;background:#fff;transform:translateX(-50%);z-index:2;pointer-events:none}
+  .bz-ba-line::after{content:"‹ ›";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;background:#fff;color:var(--bz-brown);font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.2)}
+  .bz-ba-tag{position:absolute;top:12px;z-index:2;background:#fff;color:var(--bz-brown);font-size:12px;font-weight:700;letter-spacing:.08em;padding:5px 10px;border-radius:999px;pointer-events:none}
+  .bz-ba-tag.l{left:12px}.bz-ba-tag.r{right:12px}
+  .bz-ba input:focus-visible~.bz-ba-line::after{outline:3px solid var(--bz-cta)}
+</style>
+
+<div class="bz">
+  <section class="bz-sec">
+    <div class="bz-wrap">
+      <div class="bz-kicker"><span>Razón #5 · Resultado natural</span><span>05</span></div>
+      <h2>No se trata de verte más oscura: se trata de verte <span class="bz-hl">con buena cara.</span></h2>
+
+      <div class="bz-ba">
+        <img src="{{ 'bronzer-antes.jpg' | file_url }}" alt="Antes de usar DR WOMAN Bronzer" width="1200" height="1500" loading="lazy">
+        <div class="bz-ba-after"><img src="{{ 'bronzer-despues.jpg' | file_url }}" alt="Después de usar DR WOMAN Bronzer" width="1200" height="1500" loading="lazy"></div>
+        <span class="bz-ba-tag l">ANTES</span><span class="bz-ba-tag r">DESPUÉS</span>
+        <input type="range" min="0" max="100" value="50" aria-label="Deslizá para comparar antes y después" oninput="this.parentNode.style.setProperty('--pos',this.value+'%')">
+        <span class="bz-ba-line"></span>
+      </div>
+      <p class="bz-cap">Foto real de clienta tras [X] semanas de uso constante. Los resultados pueden variar según cada persona.</p>
+
+      <p>La mayoría no busca un bronceado de Punta del Este en julio. Busca verse descansada, con color en la cara, sin base, sin bronzer de maquillaje, sin explicarle a nadie qué se puso.</p>
+      <p>Es lo que más nos repiten las clientas: <strong>"me dicen que estoy radiante y no saben por qué".</strong></p>
+      <ul class="bz-checks">
+        <li>Tono dorado parejo</li>
+        <li>Sin manchas ni vetas</li>
+        <li>Se ve natural en fotos y con luz de día</li>
+        <li>Acompaña a todos los tonos de piel</li>
+      </ul>
+    </div>
+  </section>
+</div>

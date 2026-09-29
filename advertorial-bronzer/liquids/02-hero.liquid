@@ -1,0 +1,47 @@
+{% comment %}
+  02 de 12 · HERO
+  Imágenes en Contenido > Archivos: bronzer-hero.jpg (1600x2000) · bronzer-autora.jpg (400x400)
+{% endcomment %}
+<style>
+  .bz-hero{padding-top:28px}
+  .bz-hero .bz-lead{font-size:19px;line-height:1.5;color:var(--bz-text);margin-bottom:20px}
+  .bz-author{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--bz-muted);margin-bottom:22px}
+  .bz-author img{width:44px;height:44px;border-radius:50%;object-fit:cover;background:var(--bz-peach-light)}
+  .bz-author b{display:block;color:var(--bz-brown);font-size:15px}
+  .bz-hero-media{position:relative;margin-bottom:34px}
+  .bz-hero-media .bz-img{margin:0}
+  .bz-hero-card{position:absolute;left:12px;bottom:-22px;max-width:260px;background:#fff;border-radius:14px;padding:12px 14px;box-shadow:0 10px 30px rgba(58,35,23,.16);font-size:14px;line-height:1.4}
+  .bz-hero-card em{display:block;font-style:normal;color:var(--bz-brown);margin:2px 0 4px}
+  .bz-hero-card small{color:var(--bz-muted)}
+  @media(min-width:750px){.bz-hero-media .bz-img img{aspect-ratio:16/10}.bz-hero-card{left:24px;max-width:300px}}
+</style>
+
+<div class="bz">
+  <section class="bz-sec bz-hero">
+    <div class="bz-wrap">
+      <span class="bz-pill">Belleza · Nota destacada</span>
+      <h1>5 razones por las que las argentinas están dejando el autobronceante <span class="bz-hl">(y bronceándose desde adentro)</span></h1>
+      <p class="bz-lead">Sin manchas naranjas, sin sábanas teñidas y sin horas al rayo del sol. Así funciona el bronceado que se volvió viral en TikTok y ya es #1 en Mercado Libre.</p>
+
+      <div class="bz-author">
+        <img src="{{ 'bronzer-autora.jpg' | file_url }}" alt="" width="44" height="44" loading="eager">
+        <div><b>Por Carolina Méndez · Editora de Belleza</b>Actualizado: {{ 'now' | date: '%d/%m/%Y' }} · 4 min de lectura</div>
+      </div>
+
+      <div class="bz-hero-media">
+        <div class="bz-img bz-r45">
+          <img src="{{ 'bronzer-hero.jpg' | file_url }}" alt="Mujer con piel dorada tomando sol en una terraza" width="1600" height="2000" loading="eager" fetchpriority="high">
+        </div>
+        <div class="bz-hero-card">
+          <span class="bz-stars">★★★★★</span>
+          <em>“Dejé el autobronceante y no vuelvo más. Me ven dorada todo el año.”</em>
+          <small>— Clienta verificada</small>
+        </div>
+      </div>
+
+      <p>Si alguna vez te pusiste autobronceante antes de un casamiento y terminaste con las palmas naranjas, las rodillas manchadas y las sábanas arruinadas, esta nota es para vos.</p>
+      <p>Cada vez más argentinas están cambiando la loción por algo mucho más simple: <strong>una cápsula por día.</strong> Te contamos por qué.</p>
+      <a class="bz-link" href="#oferta">Ir directo al producto →</a>
+    </div>
+  </section>
+</div>

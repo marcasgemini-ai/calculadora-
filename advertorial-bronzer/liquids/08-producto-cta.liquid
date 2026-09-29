@@ -1,0 +1,95 @@
+{% comment %}
+  08 de 12 · PRODUCTO + PRIMER CTA
+  1) Cambiá 'dr-woman-bronzer' por el handle real del producto (lo ves en la URL: /products/HANDLE).
+     El precio, el precio tachado y el link al checkout se toman solos del producto.
+  2) Imagen en Contenido > Archivos: bronzer-producto.jpg (1500x1500). Es la foto oficial del frasco.
+  3) Completá rating y cantidad de opiniones [ ] con datos reales.
+{% endcomment %}
+{%- assign bz_p = all_products['dr-woman-bronzer'] -%}
+{%- if bz_p.id -%}
+  {%- assign bz_v = bz_p.selected_or_first_available_variant -%}
+  {%- capture bz_url -%}/cart/{{ bz_v.id }}:1{%- endcapture -%}
+{%- else -%}
+  {%- assign bz_url = '/products/dr-woman-bronzer' -%}
+{%- endif -%}
+<style>
+  .bz-prod{background:var(--bz-peach-light)}
+  .bz-prod .bz-wrap{text-align:center}
+  .bz-prod .bz-pill{background:#fff}
+  .bz-prod-img{position:relative;max-width:480px;margin:0 auto 20px}
+  .bz-prod-img .bz-img{margin:0;background:#fff}
+  .bz-stk{position:absolute;display:flex;align-items:center;gap:6px;background:#fff;border-radius:999px;padding:5px 6px 5px 12px;font-weight:800;font-size:14px;color:#111;box-shadow:0 6px 18px rgba(0,0,0,.15);white-space:nowrap}
+  .bz-stk b{border-radius:999px;padding:4px 10px}
+  .bz-stk-tt{top:12px;left:12px}.bz-stk-tt b{background:#111;color:#fff}
+  .bz-stk-ml{top:58px;left:12px}.bz-stk-ml b{background:#FFE600;color:#2D3277}
+  @media(min-width:750px){.bz-stk-ml{top:12px;left:auto;right:12px}}
+  .bz-prod h2{margin-bottom:4px}
+  .bz-prod-sub{color:var(--bz-muted);font-size:15px;margin-bottom:8px}
+  .bz-rating{font-size:14px;color:var(--bz-brown);margin-bottom:18px}
+  .bz-icons{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:420px;margin:0 auto 22px}
+  .bz-icons div{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--bz-brown)}
+  .bz-icons span{display:flex;margin:0 auto 6px;width:52px;height:52px;border-radius:50%;border:1.5px solid var(--bz-brown);align-items:center;justify-content:center;font-size:22px}
+  .bz-prod .bz-checks{text-align:left;max-width:420px;margin:0 auto 22px}
+  .bz-price{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:4px}
+  .bz-price s{color:var(--bz-muted);font-size:18px}
+  .bz-price strong{font-family:var(--font-heading-family,inherit);font-size:34px;color:var(--bz-brown)}
+  .bz-price em{font-style:normal;background:var(--bz-cta);color:#fff;font-weight:700;font-size:13px;padding:4px 8px;border-radius:6px}
+  .bz-cuotas{font-size:14px;color:var(--bz-muted);margin-bottom:18px}
+</style>
+
+<div class="bz">
+  <section class="bz-sec bz-prod">
+    <div class="bz-wrap">
+      <span class="bz-pill">Lo que usan las que ya dejaron el autobronceante</span>
+      <div class="bz-prod-img">
+        <div class="bz-img bz-r11">
+          <img src="{{ 'bronzer-producto.jpg' | file_url }}" alt="Frasco de DR WOMAN Bronzer con cápsulas" width="1500" height="1500" loading="lazy">
+        </div>
+        {% comment %}
+          La foto oficial ya trae los stickers "Viral en TikTok" y "#1 en Mercado Libre".
+          Si usás una foto limpia del frasco (sin stickers), borrá las 2 líneas "comment" / "endcomment" que envuelven los 2 stickers de abajo.
+        {% endcomment %}
+        {% comment %}
+        <span class="bz-stk bz-stk-tt">🔥 Viral en <b>TikTok</b></span>
+        <span class="bz-stk bz-stk-ml">#1 en <b>Mercado Libre</b></span>
+        {% endcomment %}
+      </div>
+
+      <h2>DR WOMAN Bronzer</h2>
+      <p class="bz-prod-sub">Bronceado natural · 60 cápsulas · 1 por día</p>
+      <p class="bz-rating"><span class="bz-stars">★★★★★</span> [4,8]/5 · [+2.300] opiniones</p>
+
+      <div class="bz-icons">
+        <div><span>☀</span>Tono dorado</div>
+        <div><span>✦</span>Antioxidante</div>
+        <div><span>🌿</span>Piel sana</div>
+      </div>
+
+      <ul class="bz-checks">
+        <li>Tono dorado parejo, sin manchar</li>
+        <li>Betacaroteno + licopeno + cúrcuma</li>
+        <li>Vitaminas C, E y complejo B</li>
+        <li>Sin gluten · Formulated in USA</li>
+        <li>Envío gratis a todo el país</li>
+      </ul>
+
+      <div class="bz-price">
+        {%- if bz_p.id -%}
+          {%- if bz_p.compare_at_price > bz_p.price -%}
+            <s>{{ bz_p.compare_at_price | money }}</s>
+            <strong>{{ bz_p.price | money }}</strong>
+            <em>-{{ bz_p.compare_at_price | minus: bz_p.price | times: 100 | divided_by: bz_p.compare_at_price | floor }}%</em>
+          {%- else -%}
+            <strong>{{ bz_p.price | money }}</strong>
+          {%- endif -%}
+        {%- else -%}
+          <s>$XX.XXX</s><strong>$XX.XXX</strong><em>-XX%</em>
+        {%- endif -%}
+      </div>
+      <p class="bz-cuotas">3 cuotas sin interés</p>
+
+      <a class="bz-btn" href="{{ bz_url }}">Quiero mi Bronzer →</a>
+      <div class="bz-micro"><span>🔒 Pago seguro</span><span>🚚 Envío gratis</span><span>↩ Garantía de satisfacción</span></div>
+    </div>
+  </section>
+</div>

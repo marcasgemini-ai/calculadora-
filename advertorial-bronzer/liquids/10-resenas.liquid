@@ -1,0 +1,95 @@
+{% comment %}
+  10 de 12 · RESEÑAS + CAPTURAS
+  Usá SOLO reseñas reales (Mercado Libre, TikTok, WhatsApp, DMs), con permiso y tapando datos personales.
+  Fotos de reseñas en Contenido > Archivos: bronzer-review-1.jpg ... bronzer-review-4.jpg (1200x1500)
+  Capturas: bronzer-captura-1.jpg ... bronzer-captura-6.jpg (vertical)
+  Para sumar o sacar tarjetas, copiá o borrá un bloque <article> / <img> completo.
+{% endcomment %}
+<style>
+  .bz-revs-head{text-align:center}
+  .bz-revs-sum{font-size:14px;color:var(--bz-brown);margin-bottom:22px}
+  .bz-revs{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 20px 14px;margin:0 -20px;scrollbar-width:none}
+  .bz-revs::-webkit-scrollbar{display:none}
+  .bz-rev{flex:0 0 78%;scroll-snap-align:center;background:#fff;border-radius:16px;overflow:hidden;border:1px solid var(--bz-peach-light);display:flex;flex-direction:column}
+  @media(min-width:750px){.bz-revs{margin:0;padding:4px 0 14px}.bz-rev{flex-basis:calc(33.333% - 8px)}}
+  .bz-rev .bz-img{border-radius:0;margin:0}
+  .bz-rev .bz-img img{aspect-ratio:4/5}
+  .bz-rev-body{padding:14px 16px 16px;font-size:14px;line-height:1.5}
+  .bz-rev-name{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px}
+  .bz-rev-name b{color:var(--bz-brown);font-size:15px}
+  .bz-ver{font-size:11px;font-weight:700;color:#2E8B57;white-space:nowrap}
+  .bz-rev p{margin:6px 0 10px}
+  .bz-rev small{display:inline-block;background:var(--bz-peach-light);color:var(--bz-cta-dark);font-weight:700;font-size:12px;padding:4px 10px;border-radius:999px}
+  .bz-swipe{text-align:center;font-size:13px;color:var(--bz-muted);margin:0 0 30px}
+  @media(min-width:750px){.bz-swipe{display:none}}
+  .bz-caps-title{text-align:center;font-size:22px !important;text-transform:uppercase;letter-spacing:.04em;margin-top:10px !important}
+  .bz-caps{columns:2;column-gap:12px;margin-bottom:24px}
+  @media(min-width:750px){.bz-caps{columns:3}}
+  .bz-caps img{width:100%;margin:0 0 12px;border-radius:12px;box-shadow:0 4px 14px rgba(58,35,23,.1);break-inside:avoid;background:var(--bz-peach-light)}
+  .bz-revs-cta{display:grid;gap:12px}
+</style>
+
+<div class="bz">
+  <section class="bz-sec">
+    <div class="bz-wrap">
+      <div class="bz-revs-head">
+        <h2>Lo que dicen las que <span class="bz-hl">ya lo probaron</span></h2>
+        <p class="bz-revs-sum"><span class="bz-stars">★★★★★</span> [4,8] · basado en [+2.300] opiniones</p>
+      </div>
+
+      <div class="bz-revs">
+        <article class="bz-rev">
+          <div class="bz-img"><img src="{{ 'bronzer-review-1.jpg' | file_url }}" alt="Foto de clienta" width="1200" height="1500" loading="lazy"></div>
+          <div class="bz-rev-body">
+            <div class="bz-rev-name"><b>[Nombre], [Ciudad]</b><span class="bz-ver">✔ Compra verificada</span></div>
+            <span class="bz-stars">★★★★★</span>
+            <p>[Pegá acá una reseña real de Mercado Libre o TikTok]</p>
+            <small>Usa Bronzer hace [X] semanas</small>
+          </div>
+        </article>
+        <article class="bz-rev">
+          <div class="bz-img"><img src="{{ 'bronzer-review-2.jpg' | file_url }}" alt="Foto de clienta" width="1200" height="1500" loading="lazy"></div>
+          <div class="bz-rev-body">
+            <div class="bz-rev-name"><b>[Nombre], [Ciudad]</b><span class="bz-ver">✔ Compra verificada</span></div>
+            <span class="bz-stars">★★★★★</span>
+            <p>[Pegá acá una reseña real de Mercado Libre o TikTok]</p>
+            <small>Usa Bronzer hace [X] semanas</small>
+          </div>
+        </article>
+        <article class="bz-rev">
+          <div class="bz-img"><img src="{{ 'bronzer-review-3.jpg' | file_url }}" alt="Foto de clienta" width="1200" height="1500" loading="lazy"></div>
+          <div class="bz-rev-body">
+            <div class="bz-rev-name"><b>[Nombre], [Ciudad]</b><span class="bz-ver">✔ Compra verificada</span></div>
+            <span class="bz-stars">★★★★★</span>
+            <p>[Pegá acá una reseña real de Mercado Libre o TikTok]</p>
+            <small>Usa Bronzer hace [X] semanas</small>
+          </div>
+        </article>
+        <article class="bz-rev">
+          <div class="bz-img"><img src="{{ 'bronzer-review-4.jpg' | file_url }}" alt="Foto de clienta" width="1200" height="1500" loading="lazy"></div>
+          <div class="bz-rev-body">
+            <div class="bz-rev-name"><b>[Nombre], [Ciudad]</b><span class="bz-ver">✔ Compra verificada</span></div>
+            <span class="bz-stars">★★★★★</span>
+            <p>[Pegá acá una reseña real de Mercado Libre o TikTok]</p>
+            <small>Usa Bronzer hace [X] semanas</small>
+          </div>
+        </article>
+      </div>
+      <p class="bz-swipe">← Deslizá para ver más →</p>
+
+      <h2 class="bz-caps-title">Lo que nos escriben las clientas</h2>
+      <div class="bz-caps">
+        <img src="{{ 'bronzer-captura-1.jpg' | file_url }}" alt="Mensaje de clienta" loading="lazy">
+        <img src="{{ 'bronzer-captura-2.jpg' | file_url }}" alt="Mensaje de clienta" loading="lazy">
+        <img src="{{ 'bronzer-captura-3.jpg' | file_url }}" alt="Mensaje de clienta" loading="lazy">
+        <img src="{{ 'bronzer-captura-4.jpg' | file_url }}" alt="Mensaje de clienta" loading="lazy">
+        <img src="{{ 'bronzer-captura-5.jpg' | file_url }}" alt="Mensaje de clienta" loading="lazy">
+        <img src="{{ 'bronzer-captura-6.jpg' | file_url }}" alt="Mensaje de clienta" loading="lazy">
+      </div>
+
+      <div class="bz-revs-cta">
+        <a class="bz-btn" href="#oferta">Quiero probarlo →</a>
+      </div>
+    </div>
+  </section>
+</div>

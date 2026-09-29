@@ -1,0 +1,39 @@
+{% comment %}
+  06 de 12 · RAZÓN #4 · RUTINA + COMPARATIVA
+  Imagen en Contenido > Archivos: bronzer-rutina.jpg (1600x1200)
+{% endcomment %}
+<style>
+  .bz-cmp{border-radius:14px;overflow:hidden;border:1px solid var(--bz-peach-light);background:#fff;margin-top:24px;font-size:14px;line-height:1.35}
+  .bz-cmp-row{display:grid;grid-template-columns:1.2fr 1fr 1fr}
+  .bz-cmp-row>div{padding:12px 10px;border-top:1px solid var(--bz-peach-light);display:flex;align-items:center}
+  .bz-cmp-row>div:nth-child(2),.bz-cmp-row>div:nth-child(3){justify-content:center;text-align:center}
+  .bz-cmp-row>div:nth-child(3){background:var(--bz-peach-light);color:var(--bz-brown);font-weight:600}
+  .bz-cmp-head>div{background:var(--bz-brown) !important;color:var(--bz-cream) !important;font-weight:700;border-top:0}
+  .bz-cmp-head>div:nth-child(3){background:var(--bz-cta) !important}
+  .bz-no{color:#A9A09A}
+  .bz-yes{color:var(--bz-cta);font-weight:700}
+  @media(min-width:750px){.bz-cmp{font-size:15px}.bz-cmp-row>div{padding:14px 16px}}
+</style>
+
+<div class="bz">
+  <section class="bz-sec">
+    <div class="bz-wrap">
+      <div class="bz-kicker"><span>Razón #4 · Rutina</span><span>04</span></div>
+      <h2>Mantener el dorado pasa a ser tan simple como tomar <span class="bz-hl">una cápsula.</span></h2>
+      <div class="bz-img bz-r43">
+        <img src="{{ 'bronzer-rutina.jpg' | file_url }}" alt="Desayuno con mate, medialunas y DR WOMAN Bronzer" width="1600" height="1200" loading="lazy">
+      </div>
+      <p>Con el autobronceante vivís pendiente: exfoliar, aplicar, esperar que seque, no transpirar, retocar cada tres días.</p>
+      <p>Con Bronzer es <strong>una cápsula por día con el desayuno (o con el mate).</strong> Sin guantes, sin olor, sin manchar nada. Lo tomás de forma constante y el tono se va construyendo solo.</p>
+
+      <div class="bz-cmp" role="table" aria-label="Autobronceante vs DR WOMAN Bronzer">
+        <div class="bz-cmp-row bz-cmp-head" role="row"><div role="columnheader"></div><div role="columnheader">Autobronceante</div><div role="columnheader">Bronzer</div></div>
+        <div class="bz-cmp-row" role="row"><div role="cell">Tiempo por semana</div><div role="cell" class="bz-no">1 a 2 horas</div><div role="cell">10 seg. por día</div></div>
+        <div class="bz-cmp-row" role="row"><div role="cell">Manchas naranjas</div><div role="cell" class="bz-no">✕ Sí</div><div role="cell"><span class="bz-yes">✓ No</span></div></div>
+        <div class="bz-cmp-row" role="row"><div role="cell">Mancha ropa y sábanas</div><div role="cell" class="bz-no">✕ Sí</div><div role="cell"><span class="bz-yes">✓ No</span></div></div>
+        <div class="bz-cmp-row" role="row"><div role="cell">Olor</div><div role="cell" class="bz-no">✕ Sí</div><div role="cell"><span class="bz-yes">✓ No</span></div></div>
+        <div class="bz-cmp-row" role="row"><div role="cell">Tono parejo</div><div role="cell" class="bz-no">Depende de cómo lo apliques</div><div role="cell">Gradual y parejo</div></div>
+      </div>
+    </div>
+  </section>
+</div>

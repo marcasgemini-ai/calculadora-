@@ -1,0 +1,122 @@
+{% comment %}
+  12 de 12 · OFERTA FINAL + GARANTÍA + LEGALES + BARRA FIJA MOBILE
+  1) Cambiá 'dr-woman-bronzer' por el handle real del producto (igual que en la sección 08).
+  2) Los packs mandan al checkout con 1, 2 o 3 unidades. Los precios se calculan solos (precio x cantidad).
+     Si tenés descuento por cantidad (descuento automático), se aplica solo en el checkout; escribí el ahorro en "Ahorrás".
+  3) Imagen opcional en Contenido > Archivos: bronzer-producto.jpg (la misma de la sección 08).
+{% endcomment %}
+{%- assign bz_p = all_products['dr-woman-bronzer'] -%}
+{%- if bz_p.id -%}
+  {%- assign bz_v = bz_p.selected_or_first_available_variant.id -%}
+  {%- capture bz_u1 -%}/cart/{{ bz_v }}:1{%- endcapture -%}
+  {%- capture bz_u2 -%}/cart/{{ bz_v }}:2{%- endcapture -%}
+  {%- capture bz_u3 -%}/cart/{{ bz_v }}:3{%- endcapture -%}
+  {%- capture bz_p1 -%}{{ bz_p.price | money }}{%- endcapture -%}
+  {%- capture bz_p2 -%}{{ bz_p.price | times: 2 | money }}{%- endcapture -%}
+  {%- capture bz_p3 -%}{{ bz_p.price | times: 3 | money }}{%- endcapture -%}
+{%- else -%}
+  {%- assign bz_u1 = '/products/dr-woman-bronzer' -%}{%- assign bz_u2 = bz_u1 -%}{%- assign bz_u3 = bz_u1 -%}
+  {%- assign bz_p1 = '$XX.XXX' -%}{%- assign bz_p2 = '$XX.XXX' -%}{%- assign bz_p3 = '$XX.XXX' -%}
+{%- endif -%}
+<style>
+  .bz-fin{background:linear-gradient(180deg,#F7C3A6 0%,#F2A488 100%);text-align:center}
+  .bz-fin .bz-pill{background:#fff}
+  .bz-fin h2{margin-bottom:22px}
+  .bz-packs{display:grid;gap:10px;margin-bottom:18px;text-align:left}
+  .bz-pack{position:relative;display:flex;align-items:center;gap:14px;background:#fff;border:2px solid transparent;border-radius:14px;padding:16px;cursor:pointer;transition:border-color .15s}
+  .bz-pack input{position:absolute;opacity:0}
+  .bz-pack-dot{flex:0 0 22px;height:22px;border-radius:50%;border:2px solid var(--bz-peach);display:flex;align-items:center;justify-content:center}
+  .bz-pack:has(input:checked){border-color:var(--bz-cta);box-shadow:0 8px 22px rgba(58,35,23,.12)}
+  .bz-pack:has(input:checked) .bz-pack-dot{border-color:var(--bz-cta)}
+  .bz-pack:has(input:checked) .bz-pack-dot::after{content:"";width:12px;height:12px;border-radius:50%;background:var(--bz-cta)}
+  .bz-pack input:focus-visible~.bz-pack-dot{outline:3px solid var(--bz-brown);outline-offset:2px}
+  .bz-pack-txt{flex:1;line-height:1.3}
+  .bz-pack-txt b{display:block;color:var(--bz-brown);font-size:17px}
+  .bz-pack-txt small{color:var(--bz-muted);font-size:13px}
+  .bz-pack-txt .bz-save{color:#2E8B57;font-weight:700}
+  .bz-pack-price{font-family:var(--font-heading-family,inherit);font-weight:700;font-size:19px;color:var(--bz-brown);white-space:nowrap}
+  .bz-pack-badge{position:absolute;top:-10px;right:14px;background:var(--bz-brown);color:#fff;font-size:11px;font-weight:700;letter-spacing:.06em;padding:4px 10px;border-radius:999px}
+  .bz-fin .bz-micro{color:var(--bz-brown)}
+  .bz-guar{display:flex;gap:14px;align-items:center;background:#fff;border-radius:14px;padding:16px;margin:24px 0 16px;text-align:left;font-size:15px;line-height:1.45}
+  .bz-guar-ic{flex:0 0 56px;height:56px;border-radius:50%;border:2px dashed var(--bz-gold);display:flex;align-items:center;justify-content:center;font-size:26px}
+  .bz-pay{font-size:13px;color:var(--bz-brown);opacity:.8}
+  .bz-foot{background:var(--bz-brown);color:var(--bz-cream);font-size:12px;text-align:center;padding:22px 20px 96px}
+  .bz-foot a{color:var(--bz-cream);opacity:.8;margin:0 8px}
+  .bz-foot p{margin:0 0 8px}
+  @media(min-width:750px){.bz-foot{padding-bottom:22px}}
+  .bz-sticky{position:fixed;left:0;right:0;bottom:0;z-index:50;display:flex;align-items:center;gap:10px;background:#fff;padding:10px 14px calc(10px + env(safe-area-inset-bottom));box-shadow:0 -6px 20px rgba(58,35,23,.15);transform:translateY(110%);transition:transform .25s}
+  .bz-sticky.is-on{transform:none}
+  .bz-sticky img{width:44px;height:44px;border-radius:8px;object-fit:cover;background:var(--bz-peach-light)}
+  .bz-sticky-t{flex:1;font-size:13px;line-height:1.25;color:var(--bz-brown)}
+  .bz-sticky-t b{display:block;font-size:14px}
+  .bz-sticky .bz-btn{width:auto;min-height:46px;font-size:14px;padding:10px 18px}
+  @media(min-width:750px){.bz-sticky{display:none}}
+</style>
+
+<div class="bz">
+  <section class="bz-sec bz-fin" id="oferta">
+    <div class="bz-wrap">
+      <span class="bz-pill">Oferta por tiempo limitado</span>
+      <h2>Probá el bronceado desde adentro y dejá el autobronceante en el cajón.</h2>
+
+      <div class="bz-packs" role="radiogroup" aria-label="Elegí tu pack">
+        <label class="bz-pack">
+          <input type="radio" name="bz-pack" value="{{ bz_u1 }}">
+          <span class="bz-pack-dot"></span>
+          <span class="bz-pack-txt"><b>1 frasco</b><small>2 meses de uso</small></span>
+          <span class="bz-pack-price">{{ bz_p1 }}</span>
+        </label>
+        <label class="bz-pack">
+          <input type="radio" name="bz-pack" value="{{ bz_u2 }}" checked>
+          <span class="bz-pack-badge">MÁS ELEGIDO</span>
+          <span class="bz-pack-dot"></span>
+          <span class="bz-pack-txt"><b>2 frascos</b><small>4 meses de uso · <span class="bz-save">Ahorrás [$X.XXX]</span></small></span>
+          <span class="bz-pack-price">{{ bz_p2 }}</span>
+        </label>
+        <label class="bz-pack">
+          <input type="radio" name="bz-pack" value="{{ bz_u3 }}">
+          <span class="bz-pack-dot"></span>
+          <span class="bz-pack-txt"><b>3 frascos</b><small>6 meses de uso · <span class="bz-save">Ahorrás [$X.XXX]</span></small></span>
+          <span class="bz-pack-price">{{ bz_p3 }}</span>
+        </label>
+      </div>
+
+      <a class="bz-btn" id="bz-buy" href="{{ bz_u2 }}">Quiero mi Bronzer →</a>
+      <div class="bz-micro"><span>💳 3 cuotas sin interés</span><span>🚚 Envío gratis</span><span>🔒 Pago seguro</span></div>
+
+      <div class="bz-guar">
+        <div class="bz-guar-ic">✓</div>
+        <div><strong>Garantía de satisfacción de [30] días.</strong> Si no te gusta, te devolvemos el dinero.</div>
+      </div>
+      <p class="bz-pay">Mercado Pago · Visa · Mastercard · Amex · Transferencia</p>
+    </div>
+  </section>
+
+  <footer class="bz-foot">
+    <p>Este artículo es publicidad de DR WOMAN.</p>
+    <p>Suplemento dietario. No reemplaza el protector solar. Los resultados pueden variar según cada persona.</p>
+    <p><a href="/policies/terms-of-service">Términos</a><a href="/policies/privacy-policy">Privacidad</a></p>
+  </footer>
+
+  <div class="bz-sticky" id="bz-sticky" aria-hidden="true">
+    <img src="{{ 'bronzer-producto.jpg' | file_url }}" alt="" width="44" height="44" loading="lazy">
+    <div class="bz-sticky-t"><b>DR WOMAN Bronzer</b>{{ bz_p1 }} · Envío gratis</div>
+    <a class="bz-btn" href="#oferta" tabindex="-1">Comprar</a>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var buy = document.getElementById('bz-buy');
+    document.querySelectorAll('input[name="bz-pack"]').forEach(function (r) {
+      r.addEventListener('change', function () { if (buy) buy.href = r.value; });
+    });
+    var bar = document.getElementById('bz-sticky'), offer = document.getElementById('oferta'), offerOn = false;
+    if (!bar) return;
+    function update() { bar.classList.toggle('is-on', window.scrollY > 600 && !offerOn); }
+    window.addEventListener('scroll', update, { passive: true });
+    if (offer && 'IntersectionObserver' in window) {
+      new IntersectionObserver(function (e) { offerOn = e[0].isIntersecting; update(); }).observe(offer);
+    }
+  })();
+</script>

@@ -1,0 +1,39 @@
+{% comment %}
+  05 de 12 · RAZÓN #3 · CÓMO FUNCIONA
+  Imagen en Contenido > Archivos: bronzer-mecanismo.jpg (1600x1000)
+{% endcomment %}
+<style>
+  .bz-ings{display:grid;grid-template-columns:1fr;gap:12px;margin:24px 0 16px}
+  @media(min-width:750px){.bz-ings{grid-template-columns:repeat(3,1fr)}}
+  .bz-ing{background:#fff;border:1px solid var(--bz-peach-light);border-radius:14px;padding:18px;display:flex;gap:14px;align-items:flex-start}
+  @media(min-width:750px){.bz-ing{flex-direction:column}}
+  .bz-ing-ic{flex:0 0 48px;width:48px;height:48px;border-radius:50%;background:var(--bz-peach-light);display:flex;align-items:center;justify-content:center;font-size:24px}
+  .bz-ing h3{margin:0 0 4px;font-size:17px}
+  .bz-ing p{margin:0;font-size:14px;line-height:1.5}
+  .bz-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+  .bz-chips span{background:#fff;border:1px solid var(--bz-peach);color:var(--bz-brown);font-size:13px;font-weight:600;padding:5px 12px;border-radius:999px}
+  .bz-small{font-size:14px;color:var(--bz-muted)}
+</style>
+
+<div class="bz">
+  <section class="bz-sec">
+    <div class="bz-wrap">
+      <div class="bz-kicker"><span>Razón #3 · Cómo funciona</span><span>03</span></div>
+      <h2>Por qué el color se ve distinto cuando se forma <span class="bz-hl">desde adentro.</span></h2>
+      <div class="bz-img bz-r1610">
+        <img src="{{ 'bronzer-mecanismo.jpg' | file_url }}" alt="Ilustración de los carotenoides depositándose en las capas de la piel" width="1600" height="1000" loading="lazy">
+      </div>
+      <p>El betacaroteno y el licopeno son <strong>carotenoides</strong>: los mismos pigmentos que le dan color a la zanahoria y al tomate.</p>
+      <p>Cuando los consumís de forma constante, se van depositando de a poco en la piel y le aportan un tono dorado cálido, parejo y natural. <strong>No es una capa que se despega: es tu propio tono, un poco más dorado.</strong></p>
+
+      <div class="bz-ings">
+        <div class="bz-ing"><div class="bz-ing-ic">🥕</div><div><h3>Betacaroteno</h3><p>Carotenoide precursor de la vitamina A. Aporta el tono dorado.</p></div></div>
+        <div class="bz-ing"><div class="bz-ing-ic">🍅</div><div><h3>Licopeno</h3><p>El pigmento del tomate. Suma calidez al tono de la piel.</p></div></div>
+        <div class="bz-ing"><div class="bz-ing-ic">✨</div><div><h3>Extracto de cúrcuma</h3><p>Antioxidante natural de color dorado.</p></div></div>
+      </div>
+
+      <div class="bz-chips"><span>Vitamina C</span><span>Vitamina E</span><span>B2 · B3 · B5 · B6 · B12</span><span>Ácido fólico</span></div>
+      <p class="bz-small">Vitaminas C y E: antioxidantes que acompañan el cuidado de la piel.</p>
+    </div>
+  </section>
+</div>

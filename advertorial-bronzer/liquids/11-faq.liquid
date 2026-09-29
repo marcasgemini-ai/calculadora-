@@ -1,0 +1,57 @@
+{% comment %}
+  11 de 12 · PREGUNTAS FRECUENTES
+  Completá los [X] (semanas y días de envío). Para sumar una pregunta, copiá un bloque <details> completo.
+{% endcomment %}
+<style>
+  .bz-faq details{border-bottom:1px solid var(--bz-peach);padding:4px 0}
+  .bz-faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px 0;font-weight:700;color:var(--bz-brown);font-size:17px}
+  .bz-faq summary::-webkit-details-marker{display:none}
+  .bz-faq summary::after{content:"+";flex:0 0 28px;height:28px;border-radius:50%;background:var(--bz-peach-light);color:var(--bz-cta);display:flex;align-items:center;justify-content:center;font-size:20px;transition:transform .2s}
+  .bz-faq details[open] summary::after{transform:rotate(45deg)}
+  .bz-faq summary:focus-visible{outline:3px solid var(--bz-cta);outline-offset:2px}
+  .bz-faq details p{margin:0 0 16px;font-size:16px}
+  .bz-legal-mini{font-size:12px;color:var(--bz-muted);margin-top:22px}
+</style>
+
+<div class="bz">
+  <section class="bz-sec bz-faq">
+    <div class="bz-wrap">
+      <h2>Preguntas frecuentes</h2>
+
+      <details open>
+        <summary>¿Cómo se toma?</summary>
+        <p>1 cápsula por día, preferentemente con una comida. La clave es la constancia.</p>
+      </details>
+      <details>
+        <summary>¿En cuánto tiempo se ve el tono dorado?</summary>
+        <p>Es gradual: los carotenoides se van acumulando en la piel con el uso diario. La mayoría de las clientas nota cambios después de [X] semanas de uso constante.</p>
+      </details>
+      <details>
+        <summary>¿Reemplaza el protector solar?</summary>
+        <p>No. DR WOMAN Bronzer es un suplemento dietario y no reemplaza el protector solar. Seguí usándolo todos los días.</p>
+      </details>
+      <details>
+        <summary>¿Me voy a poner naranja?</summary>
+        <p>No es una capa de color sobre la piel como el autobronceante: el tono se construye de forma gradual y pareja. Respetá la dosis indicada.</p>
+      </details>
+      <details>
+        <summary>¿Sirve para todos los tonos de piel?</summary>
+        <p>Sí, el efecto acompaña tu tono natural.</p>
+      </details>
+      <details>
+        <summary>¿Tiene gluten o contraindicaciones?</summary>
+        <p>Es sin gluten. Si estás embarazada, en período de lactancia o tomás medicación, consultá con tu médico antes de consumirlo.</p>
+      </details>
+      <details>
+        <summary>¿Cuánto dura un frasco?</summary>
+        <p>60 cápsulas: 2 meses tomando 1 por día.</p>
+      </details>
+      <details>
+        <summary>¿Cuánto tarda el envío?</summary>
+        <p>Enviamos a todo el país. CABA y GBA: [X] días hábiles. Interior: [X] días hábiles.</p>
+      </details>
+
+      <p class="bz-legal-mini">Suplemento dietario. Consumir dentro de una dieta variada y equilibrada. Consulte a su médico. RNPA/RNE: [completar].</p>
+    </div>
+  </section>
+</div>

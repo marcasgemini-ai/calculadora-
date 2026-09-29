@@ -1,0 +1,74 @@
+{% comment %}
+  ADVERTORIAL DR WOMAN BRONZER · 01 de 12 · HEADER + ESTILOS
+  Esta sección va PRIMERA: acá están los estilos que usan las 12 secciones.
+  Cómo usar: Editor del tema > Agregar sección > "Liquid personalizado" > pegar este código.
+  En cada sección de Liquid personalizado poné el relleno superior e inferior en 0.
+  Las imágenes se suben en Contenido > Archivos con el nombre exacto que figura en cada archivo.
+{% endcomment %}
+<style>
+  .bz{--bz-peach:#F4A98C;--bz-peach-2:#F7C3A6;--bz-peach-light:#FBE3D6;--bz-cream:#FFF8F3;--bz-brown:#3A2317;--bz-text:#4A3328;--bz-muted:#8A7266;--bz-gold:#C99A3B;--bz-cta:#E0795A;--bz-cta-dark:#C8603F;
+    font-family:var(--font-body-family,inherit);color:var(--bz-text);background:var(--bz-cream);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .bz *,.bz *::before,.bz *::after{box-sizing:border-box}
+  .bz-wrap{max-width:720px;margin:0 auto;padding:0 20px}
+  .bz-sec{padding:40px 0}
+  .bz h1,.bz h2,.bz h3{font-family:var(--font-heading-family,inherit);font-weight:var(--font-heading-weight,700);font-style:var(--font-heading-style,normal);color:var(--bz-brown);letter-spacing:-.01em;margin:0 0 16px}
+  .bz h1{font-size:34px;line-height:1.1}
+  .bz h2{font-size:28px;line-height:1.15}
+  .bz h3{font-size:19px;line-height:1.25}
+  @media(min-width:750px){.bz h1{font-size:48px}.bz h2{font-size:36px}.bz-sec{padding:56px 0}}
+  .bz p{margin:0 0 16px}
+  .bz strong{color:var(--bz-brown)}
+  .bz a{color:inherit}
+  .bz img{display:block;max-width:100%;height:auto}
+  .bz-hl{color:var(--bz-cta)}
+  .bz-img{background:var(--bz-peach-light);border-radius:16px;overflow:hidden;margin:0 0 22px}
+  .bz-img img{width:100%;object-fit:cover}
+  .bz-r43 img{aspect-ratio:4/3}.bz-r45 img{aspect-ratio:4/5}.bz-r11 img{aspect-ratio:1/1}.bz-r1610 img{aspect-ratio:16/10}
+  .bz-cap{font-size:13px;color:var(--bz-muted);margin:-12px 0 20px}
+
+  /* Kicker editorial */
+  .bz-kicker{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--bz-cta);border-bottom:1px solid var(--bz-peach);padding-bottom:8px;margin-bottom:18px}
+  .bz-kicker span:last-child{color:var(--bz-brown);opacity:.5}
+  .bz-pill{display:inline-block;background:var(--bz-peach-light);color:var(--bz-cta-dark);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:6px 12px;border-radius:999px;margin-bottom:16px}
+
+  /* Caja de dato */
+  .bz-dato{background:var(--bz-peach-light);border-left:4px solid var(--bz-gold);border-radius:0 12px 12px 0;padding:16px 18px;font-size:15px;margin:8px 0 0}
+  .bz-dato p:last-child{margin:0}
+
+  /* Botones */
+  .bz-btn{display:flex;align-items:center;justify-content:center;width:100%;min-height:56px;padding:14px 24px;background:var(--bz-cta);color:#fff !important;text-decoration:none;font-weight:700;font-size:17px;letter-spacing:.04em;text-transform:uppercase;border-radius:999px;box-shadow:0 8px 20px rgba(224,121,90,.35);transition:transform .15s,background .15s;border:0;cursor:pointer;text-align:center}
+  .bz-btn:hover{background:var(--bz-cta-dark);transform:translateY(-1px)}
+  .bz-btn:focus-visible,.bz-link:focus-visible{outline:3px solid var(--bz-brown);outline-offset:3px}
+  @media(min-width:750px){.bz-btn{max-width:440px;margin:0 auto}}
+  .bz-btn-out{background:transparent;color:var(--bz-brown) !important;border:2px solid var(--bz-brown);box-shadow:none}
+  .bz-btn-out:hover{background:var(--bz-brown);color:#fff !important}
+  .bz-link{color:var(--bz-cta) !important;font-weight:700;text-decoration:none}
+  .bz-micro{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 14px;font-size:13px;color:var(--bz-muted);margin-top:12px}
+
+  /* Listas */
+  .bz-checks{list-style:none;padding:0;margin:0 0 20px}
+  .bz-checks li{position:relative;padding-left:30px;margin-bottom:10px}
+  .bz-checks li::before{content:"✓";position:absolute;left:0;top:1px;width:20px;height:20px;border-radius:50%;background:var(--bz-cta);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  .bz-stars{color:#E8A93B;letter-spacing:2px}
+
+  /* Header */
+  .bz-top{background:var(--bz-brown);color:var(--bz-cream);text-align:center;font-size:13px;padding:9px 16px;letter-spacing:.02em}
+  .bz-head{border-bottom:1px solid var(--bz-peach-light);background:#fff}
+  .bz-head .bz-wrap{display:flex;align-items:center;justify-content:space-between;height:56px;max-width:1100px}
+  .bz-logo{font-family:var(--font-heading-family,inherit);font-weight:700;font-size:20px;letter-spacing:.12em;color:var(--bz-brown);text-decoration:none}
+  .bz-logo small{font-size:11px;letter-spacing:.2em;color:var(--bz-cta);margin-left:6px;font-weight:700}
+  .bz-nav{display:none;gap:22px;font-size:13px;color:var(--bz-muted);text-transform:uppercase;letter-spacing:.06em}
+  @media(min-width:750px){.bz-nav{display:flex}}
+  .bz-date{font-size:12px;color:var(--bz-muted)}
+</style>
+
+<div class="bz">
+  <div class="bz-top">🔥 Viral en TikTok · #1 en Mercado Libre · Envío gratis a todo el país</div>
+  <header class="bz-head">
+    <div class="bz-wrap">
+      <a class="bz-logo" href="{{ routes.root_url }}">DR WOMAN<small>JOURNAL</small></a>
+      <nav class="bz-nav" aria-hidden="true"><span>Belleza</span><span>Bienestar</span><span>Piel</span><span>Tendencias</span></nav>
+      <span class="bz-date">{{ 'now' | date: '%d/%m/%Y' }}</span>
+    </div>
+  </header>
+</div>
