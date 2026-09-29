@@ -1,9 +1,9 @@
 {% comment %}
-  12 de 12 · OFERTA FINAL + GARANTÍA + LEGALES + BARRA FIJA MOBILE
+  12 de 12 · OFERTA FINAL + GARANTÍA + LEGALES + BARRA FIJA EN CELULAR
   1) Cambiá 'dr-woman-bronzer' por el handle real del producto (igual que en la sección 08).
-  2) Los packs mandan al checkout con 1, 2 o 3 unidades. Los precios se calculan solos (precio x cantidad).
-     Si tenés descuento por cantidad (descuento automático), se aplica solo en el checkout; escribí el ahorro en "Ahorrás".
-  3) Imagen opcional en Contenido > Archivos: bronzer-producto.jpg (la misma de la sección 08).
+  2) Los packs mandan directo al checkout con 1, 2 o 3 unidades. Los precios se calculan solos (precio x cantidad).
+     Si tenés descuento por cantidad (descuento automático) se aplica en el checkout: escribí el ahorro en "Ahorrás [ ]".
+  3) Usa bronzer-producto.jpg (la misma de la sección 08).
 {% endcomment %}
 {%- assign bz_p = all_products['dr-woman-bronzer'] -%}
 {%- if bz_p.id -%}
@@ -18,77 +18,106 @@
   {%- assign bz_u1 = '/products/dr-woman-bronzer' -%}{%- assign bz_u2 = bz_u1 -%}{%- assign bz_u3 = bz_u1 -%}
   {%- assign bz_p1 = '$XX.XXX' -%}{%- assign bz_p2 = '$XX.XXX' -%}{%- assign bz_p3 = '$XX.XXX' -%}
 {%- endif -%}
+{%- capture bz_img -%}{{ 'bronzer-producto.jpg' | file_url }}{%- endcapture -%}
 <style>
-  .bz-fin{background:linear-gradient(180deg,#F7C3A6 0%,#F2A488 100%);text-align:center}
-  .bz-fin .bz-pill{background:#fff}
-  .bz-fin h2{margin-bottom:22px}
-  .bz-packs{display:grid;gap:10px;margin-bottom:18px;text-align:left}
-  .bz-pack{position:relative;display:flex;align-items:center;gap:14px;background:#fff;border:2px solid transparent;border-radius:14px;padding:16px;cursor:pointer;transition:border-color .15s}
-  .bz-pack input{position:absolute;opacity:0}
-  .bz-pack-dot{flex:0 0 22px;height:22px;border-radius:50%;border:2px solid var(--bz-peach);display:flex;align-items:center;justify-content:center}
-  .bz-pack:has(input:checked){border-color:var(--bz-cta);box-shadow:0 8px 22px rgba(58,35,23,.12)}
-  .bz-pack:has(input:checked) .bz-pack-dot{border-color:var(--bz-cta)}
-  .bz-pack:has(input:checked) .bz-pack-dot::after{content:"";width:12px;height:12px;border-radius:50%;background:var(--bz-cta)}
-  .bz-pack input:focus-visible~.bz-pack-dot{outline:3px solid var(--bz-brown);outline-offset:2px}
-  .bz-pack-txt{flex:1;line-height:1.3}
-  .bz-pack-txt b{display:block;color:var(--bz-brown);font-size:17px}
-  .bz-pack-txt small{color:var(--bz-muted);font-size:13px}
-  .bz-pack-txt .bz-save{color:#2E8B57;font-weight:700}
-  .bz-pack-price{font-family:var(--font-heading-family,inherit);font-weight:700;font-size:19px;color:var(--bz-brown);white-space:nowrap}
-  .bz-pack-badge{position:absolute;top:-10px;right:14px;background:var(--bz-brown);color:#fff;font-size:11px;font-weight:700;letter-spacing:.06em;padding:4px 10px;border-radius:999px}
-  .bz-fin .bz-micro{color:var(--bz-brown)}
-  .bz-guar{display:flex;gap:14px;align-items:center;background:#fff;border-radius:14px;padding:16px;margin:24px 0 16px;text-align:left;font-size:15px;line-height:1.45}
-  .bz-guar-ic{flex:0 0 56px;height:56px;border-radius:50%;border:2px dashed var(--bz-gold);display:flex;align-items:center;justify-content:center;font-size:26px}
-  .bz-pay{font-size:13px;color:var(--bz-brown);opacity:.8}
-  .bz-foot{background:var(--bz-brown);color:var(--bz-cream);font-size:12px;text-align:center;padding:22px 20px 96px}
-  .bz-foot a{color:var(--bz-cream);opacity:.8;margin:0 8px}
-  .bz-foot p{margin:0 0 8px}
-  @media(min-width:750px){.bz-foot{padding-bottom:22px}}
-  .bz-sticky{position:fixed;left:0;right:0;bottom:0;z-index:50;display:flex;align-items:center;gap:10px;background:#fff;padding:10px 14px calc(10px + env(safe-area-inset-bottom));box-shadow:0 -6px 20px rgba(58,35,23,.15);transform:translateY(110%);transition:transform .25s}
+  .bz-fin{background:var(--bz-grad);position:relative;overflow:hidden}
+  .bz-fin::before{content:"";position:absolute;width:640px;height:640px;left:-240px;top:-260px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.55) 0,rgba(255,255,255,0) 65%)}
+  .bz-fin .bz-wrap{position:relative}
+  .bz-fin-g{display:grid;gap:26px}
+  @media(min-width:990px){.bz-fin-g{grid-template-columns:.95fr 1.05fr;gap:64px;align-items:center}}
+  .bz-fin-head{text-align:center}
+  @media(min-width:990px){.bz-fin-head{text-align:left}}
+  .bz-fin .bz-eyebrow{color:var(--bz-brown)}
+  .bz-fin-img{display:none}
+  @media(min-width:990px){.bz-fin-img{display:block}.bz-fin-img .bz-media{border-radius:28px;box-shadow:0 30px 60px -30px rgba(58,35,23,.55)}}
+  .bz-packs{display:grid;gap:12px;margin-bottom:18px}
+  .bz-pack{position:relative;display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.92);border:2px solid transparent;border-radius:20px;padding:14px 16px;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .15s}
+  .bz-pack:hover{transform:translateY(-1px)}
+  .bz-pack input{position:absolute;opacity:0;pointer-events:none}
+  .bz-pack-dot{flex:0 0 22px;height:22px;border-radius:50%;border:2px solid var(--bz-p3);display:flex;align-items:center;justify-content:center;background:#fff}
+  .bz-pack:has(input:checked){border-color:var(--bz-brown);background:#fff;box-shadow:0 16px 34px -18px rgba(58,35,23,.55)}
+  .bz-pack:has(input:checked) .bz-pack-dot{border-color:var(--bz-brown)}
+  .bz-pack:has(input:checked) .bz-pack-dot::after{content:"";width:12px;height:12px;border-radius:50%;background:var(--bz-brown)}
+  .bz-pack input:focus-visible~.bz-pack-dot{outline:3px solid var(--bz-coral);outline-offset:2px}
+  .bz-pack-imgs{display:flex;flex:0 0 auto}
+  .bz-pack-imgs img{width:38px;height:38px;border-radius:10px;object-fit:cover;border:2px solid #fff;background:var(--bz-p2)}
+  .bz-pack-imgs img+img{margin-left:-24px}
+  @media(min-width:750px){.bz-pack-imgs img{width:46px;height:46px}.bz-pack-imgs img+img{margin-left:-20px}}
+  .bz-pack-t{flex:1;line-height:1.3;min-width:0}
+  .bz-pack-t b{display:block;color:var(--bz-brown);font-size:16px}
+  .bz-pack-t small{color:var(--bz-muted);font-size:13px}
+  .bz-save{display:block;color:#2E7D55;font-weight:700}
+  .bz-pack-p{font-family:var(--bz-head);font-weight:700;font-size:18px;color:var(--bz-brown);white-space:nowrap}
+  .bz-pack-badge{position:absolute;top:-11px;left:18px;background:var(--bz-coral);color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.12em;padding:4px 10px;border-radius:999px}
+  .bz-fin .bz-btn{width:100%;min-width:0}
+  .bz-fin-micro{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 16px;font-size:13px;color:var(--bz-brown);margin-top:14px}
+  .bz-guar{display:flex;gap:14px;align-items:center;background:rgba(255,255,255,.6);border:1px dashed rgba(58,35,23,.35);border-radius:18px;padding:14px 16px;margin-top:18px;font-size:14.5px;line-height:1.45;color:var(--bz-brown)}
+  .bz-guar .bz-ic{width:50px;height:50px}
+  .bz-pay{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:16px}
+  @media(min-width:990px){.bz-pay,.bz-fin-micro{justify-content:flex-start}}
+  .bz-pay span{background:#fff;border-radius:6px;padding:4px 9px;font-size:11px;font-weight:700;color:var(--bz-brown);letter-spacing:.04em}
+  .bz-foot{background:var(--bz-brown);color:#E9D6CB;font-size:12px;text-align:center;padding:26px 20px 100px;line-height:1.6}
+  .bz-foot p{margin:0 0 6px}
+  .bz-foot a{color:#E9D6CB;opacity:.8;margin:0 8px}
+  @media(min-width:750px){.bz-foot{padding-bottom:26px}}
+  .bz-sticky{position:fixed;left:10px;right:10px;bottom:10px;z-index:50;display:flex;align-items:center;gap:10px;background:#fff;border-radius:18px;padding:8px 8px 8px 10px;margin-bottom:env(safe-area-inset-bottom);box-shadow:0 12px 30px -8px rgba(58,35,23,.4);transform:translateY(140%);transition:transform .3s}
   .bz-sticky.is-on{transform:none}
-  .bz-sticky img{width:44px;height:44px;border-radius:8px;object-fit:cover;background:var(--bz-peach-light)}
-  .bz-sticky-t{flex:1;font-size:13px;line-height:1.25;color:var(--bz-brown)}
-  .bz-sticky-t b{display:block;font-size:14px}
-  .bz-sticky .bz-btn{width:auto;min-height:46px;font-size:14px;padding:10px 18px}
+  .bz-sticky img{width:44px;height:44px;border-radius:10px;object-fit:cover;background:var(--bz-p2)}
+  .bz-sticky-t{flex:1;font-size:12.5px;line-height:1.25;color:var(--bz-muted)}
+  .bz-sticky-t b{display:block;font-size:14px;color:var(--bz-brown)}
+  .bz-sticky .bz-btn{width:auto;min-width:0;min-height:46px;font-size:13px;padding:10px 18px}
   @media(min-width:750px){.bz-sticky{display:none}}
 </style>
 
 <div class="bz">
   <section class="bz-sec bz-fin" id="oferta">
     <div class="bz-wrap">
-      <span class="bz-pill">Oferta por tiempo limitado</span>
-      <h2>Probá el bronceado desde adentro y dejá el autobronceante en el cajón.</h2>
+      <div class="bz-fin-g">
+        <div class="bz-fin-img">
+          <div class="bz-media bz-ar-11"><img src="{{ bz_img }}" alt="DR WOMAN Bronzer" width="1500" height="1500" loading="lazy" onerror="this.parentNode.classList.add('is-empty');this.remove()"><span class="bz-media-ph">bronzer-producto.jpg</span></div>
+        </div>
 
-      <div class="bz-packs" role="radiogroup" aria-label="Elegí tu pack">
-        <label class="bz-pack">
-          <input type="radio" name="bz-pack" value="{{ bz_u1 }}">
-          <span class="bz-pack-dot"></span>
-          <span class="bz-pack-txt"><b>1 frasco</b><small>2 meses de uso</small></span>
-          <span class="bz-pack-price">{{ bz_p1 }}</span>
-        </label>
-        <label class="bz-pack">
-          <input type="radio" name="bz-pack" value="{{ bz_u2 }}" checked>
-          <span class="bz-pack-badge">MÁS ELEGIDO</span>
-          <span class="bz-pack-dot"></span>
-          <span class="bz-pack-txt"><b>2 frascos</b><small>4 meses de uso · <span class="bz-save">Ahorrás [$X.XXX]</span></small></span>
-          <span class="bz-pack-price">{{ bz_p2 }}</span>
-        </label>
-        <label class="bz-pack">
-          <input type="radio" name="bz-pack" value="{{ bz_u3 }}">
-          <span class="bz-pack-dot"></span>
-          <span class="bz-pack-txt"><b>3 frascos</b><small>6 meses de uso · <span class="bz-save">Ahorrás [$X.XXX]</span></small></span>
-          <span class="bz-pack-price">{{ bz_p3 }}</span>
-        </label>
+        <div>
+          <div class="bz-fin-head">
+            <span class="bz-eyebrow">Oferta por tiempo limitado</span>
+            <h2>Probá el bronceado desde adentro y dejá el autobronceante <em>en el cajón.</em></h2>
+          </div>
+
+          <div class="bz-packs" role="radiogroup" aria-label="Elegí tu pack">
+            <label class="bz-pack">
+              <input type="radio" name="bz-pack" value="{{ bz_u1 }}">
+              <span class="bz-pack-dot"></span>
+              <span class="bz-pack-imgs"><img src="{{ bz_img }}" alt="" width="42" height="42" loading="lazy"></span>
+              <span class="bz-pack-t"><b>1 frasco</b><small>2 meses de uso</small></span>
+              <span class="bz-pack-p">{{ bz_p1 }}</span>
+            </label>
+            <label class="bz-pack">
+              <input type="radio" name="bz-pack" value="{{ bz_u2 }}" checked>
+              <span class="bz-pack-badge">MÁS ELEGIDO</span>
+              <span class="bz-pack-dot"></span>
+              <span class="bz-pack-imgs"><img src="{{ bz_img }}" alt="" width="42" height="42" loading="lazy"><img src="{{ bz_img }}" alt="" width="42" height="42" loading="lazy"></span>
+              <span class="bz-pack-t"><b>2 frascos</b><small>4 meses de uso<span class="bz-save">Ahorrás [$X.XXX]</span></small></span>
+              <span class="bz-pack-p">{{ bz_p2 }}</span>
+            </label>
+            <label class="bz-pack">
+              <input type="radio" name="bz-pack" value="{{ bz_u3 }}">
+              <span class="bz-pack-dot"></span>
+              <span class="bz-pack-imgs"><img src="{{ bz_img }}" alt="" width="42" height="42" loading="lazy"><img src="{{ bz_img }}" alt="" width="42" height="42" loading="lazy"><img src="{{ bz_img }}" alt="" width="42" height="42" loading="lazy"></span>
+              <span class="bz-pack-t"><b>3 frascos</b><small>6 meses de uso<span class="bz-save">Ahorrás [$X.XXX]</span></small></span>
+              <span class="bz-pack-p">{{ bz_p3 }}</span>
+            </label>
+          </div>
+
+          <a class="bz-btn" id="bz-buy" href="{{ bz_u2 }}">Quiero mi Bronzer <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <div class="bz-fin-micro"><span>3 cuotas sin interés</span><span>·</span><span>Envío gratis</span><span>·</span><span>Pago seguro</span></div>
+
+          <div class="bz-guar">
+            <span class="bz-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7.5 3v5.5c0 4.5-3.2 8-7.5 9.5-4.3-1.5-7.5-5-7.5-9.5V6z"/><path d="M8.8 12.2l2.2 2.2 4.2-4.4"/></svg></span>
+            <div><strong>Garantía de satisfacción de [30] días.</strong> Si no te gusta, te devolvemos el dinero.</div>
+          </div>
+          <div class="bz-pay"><span>Mercado Pago</span><span>Visa</span><span>Mastercard</span><span>Amex</span><span>Transferencia</span></div>
+        </div>
       </div>
-
-      <a class="bz-btn" id="bz-buy" href="{{ bz_u2 }}">Quiero mi Bronzer →</a>
-      <div class="bz-micro"><span>💳 3 cuotas sin interés</span><span>🚚 Envío gratis</span><span>🔒 Pago seguro</span></div>
-
-      <div class="bz-guar">
-        <div class="bz-guar-ic">✓</div>
-        <div><strong>Garantía de satisfacción de [30] días.</strong> Si no te gusta, te devolvemos el dinero.</div>
-      </div>
-      <p class="bz-pay">Mercado Pago · Visa · Mastercard · Amex · Transferencia</p>
     </div>
   </section>
 
@@ -99,7 +128,7 @@
   </footer>
 
   <div class="bz-sticky" id="bz-sticky" aria-hidden="true">
-    <img src="{{ 'bronzer-producto.jpg' | file_url }}" alt="" width="44" height="44" loading="lazy">
+    <img src="{{ bz_img }}" alt="" width="44" height="44" loading="lazy">
     <div class="bz-sticky-t"><b>DR WOMAN Bronzer</b>{{ bz_p1 }} · Envío gratis</div>
     <a class="bz-btn" href="#oferta" tabindex="-1">Comprar</a>
   </div>
@@ -113,7 +142,7 @@
     });
     var bar = document.getElementById('bz-sticky'), offer = document.getElementById('oferta'), offerOn = false;
     if (!bar) return;
-    function update() { bar.classList.toggle('is-on', window.scrollY > 600 && !offerOn); }
+    function update() { bar.classList.toggle('is-on', window.scrollY > 700 && !offerOn); }
     window.addEventListener('scroll', update, { passive: true });
     if (offer && 'IntersectionObserver' in window) {
       new IntersectionObserver(function (e) { offerOn = e[0].isIntersecting; update(); }).observe(offer);

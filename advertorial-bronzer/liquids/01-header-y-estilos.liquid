@@ -1,74 +1,119 @@
 {% comment %}
-  ADVERTORIAL DR WOMAN BRONZER · 01 de 12 · HEADER + ESTILOS
-  Esta sección va PRIMERA: acá están los estilos que usan las 12 secciones.
-  Cómo usar: Editor del tema > Agregar sección > "Liquid personalizado" > pegar este código.
-  En cada sección de Liquid personalizado poné el relleno superior e inferior en 0.
-  Las imágenes se suben en Contenido > Archivos con el nombre exacto que figura en cada archivo.
+  ADVERTORIAL DR WOMAN BRONZER · 01 de 12 · ESTILOS + HEADER
+  Va PRIMERA: acá están los estilos que usan las 12 secciones.
+  Cómo usar: Editor del tema > Agregar sección > "Liquid personalizado" > pegar. En cada sección: relleno superior e inferior = 0.
+  Tipografía: usa la del theme (--font-heading-family / --font-body-family). No se importa ninguna fuente.
+  Imágenes: Contenido > Archivos, con el nombre exacto que dice cada archivo. Si falta una, se ve un recuadro de marca (no una imagen rota).
 {% endcomment %}
 <style>
-  .bz{--bz-peach:#F4A98C;--bz-peach-2:#F7C3A6;--bz-peach-light:#FBE3D6;--bz-cream:#FFF8F3;--bz-brown:#3A2317;--bz-text:#4A3328;--bz-muted:#8A7266;--bz-gold:#C99A3B;--bz-cta:#E0795A;--bz-cta-dark:#C8603F;
-    font-family:var(--font-body-family,inherit);color:var(--bz-text);background:var(--bz-cream);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .bz{--bz-p1:#FFF3EC;--bz-p2:#FBDCCB;--bz-p3:#F4AE93;--bz-coral:#E0765A;--bz-coral-d:#C65F45;--bz-brown:#3A2317;--bz-brown-2:#6B4A3A;--bz-text:#4B342A;--bz-muted:#8C7468;--bz-cream:#FFF8F4;--bz-white:#fff;--bz-line:rgba(58,35,23,.12);--bz-gold:#D39A3A;
+    --bz-grad:linear-gradient(165deg,#FCDCCB 0%,#F7BDA2 55%,#F1A085 100%);
+    --bz-head:var(--font-heading-family,inherit);--bz-body:var(--font-body-family,inherit);
+    font-family:var(--bz-body);color:var(--bz-text);background:var(--bz-cream);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:clip}
+  @media(min-width:990px){.bz{font-size:18px}}
   .bz *,.bz *::before,.bz *::after{box-sizing:border-box}
-  .bz-wrap{max-width:720px;margin:0 auto;padding:0 20px}
-  .bz-sec{padding:40px 0}
-  .bz h1,.bz h2,.bz h3{font-family:var(--font-heading-family,inherit);font-weight:var(--font-heading-weight,700);font-style:var(--font-heading-style,normal);color:var(--bz-brown);letter-spacing:-.01em;margin:0 0 16px}
-  .bz h1{font-size:34px;line-height:1.1}
-  .bz h2{font-size:28px;line-height:1.15}
-  .bz h3{font-size:19px;line-height:1.25}
-  @media(min-width:750px){.bz h1{font-size:48px}.bz h2{font-size:36px}.bz-sec{padding:56px 0}}
-  .bz p{margin:0 0 16px}
-  .bz strong{color:var(--bz-brown)}
+  .bz-wrap{max-width:1160px;margin:0 auto;padding:0 20px}
+  .bz-narrow{max-width:760px}
+  @media(min-width:750px){.bz-wrap{padding:0 32px}}
+  .bz-sec{padding:56px 0}
+  @media(min-width:990px){.bz-sec{padding:96px 0}}
+  .bz-bg-white{background:var(--bz-white)}.bz-bg-p1{background:var(--bz-p1)}
+
+  /* Tipografía */
+  .bz h1,.bz h2,.bz h3{font-family:var(--bz-head);font-weight:var(--font-heading-weight,700);color:var(--bz-brown);letter-spacing:-.015em;margin:0 0 18px}
+  .bz h1{font-size:33px;line-height:1.08}
+  .bz h2{font-size:29px;line-height:1.12}
+  .bz h3{font-size:19px;line-height:1.25;margin-bottom:6px}
+  @media(min-width:750px){.bz h1{font-size:46px}.bz h2{font-size:36px}}
+  @media(min-width:990px){.bz h1{font-size:52px}.bz h2{font-size:42px}}
+  .bz h1 em,.bz h2 em{font-style:italic;color:var(--bz-coral);font-weight:inherit}
+  .bz :where(p){margin:0 0 16px}
+  .bz strong{color:var(--bz-brown);font-weight:700}
   .bz a{color:inherit}
   .bz img{display:block;max-width:100%;height:auto}
-  .bz-hl{color:var(--bz-cta)}
-  .bz-img{background:var(--bz-peach-light);border-radius:16px;overflow:hidden;margin:0 0 22px}
-  .bz-img img{width:100%;object-fit:cover}
-  .bz-r43 img{aspect-ratio:4/3}.bz-r45 img{aspect-ratio:4/5}.bz-r11 img{aspect-ratio:1/1}.bz-r1610 img{aspect-ratio:16/10}
-  .bz-cap{font-size:13px;color:var(--bz-muted);margin:-12px 0 20px}
+  .bz-lead{font-size:18px;line-height:1.55;color:var(--bz-brown-2)}
+  @media(min-width:990px){.bz-lead{font-size:20px}}
+  .bz-eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--bz-coral);margin-bottom:14px}
+  .bz-small{font-size:14px;color:var(--bz-muted)}
 
-  /* Kicker editorial */
-  .bz-kicker{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--bz-cta);border-bottom:1px solid var(--bz-peach);padding-bottom:8px;margin-bottom:18px}
-  .bz-kicker span:last-child{color:var(--bz-brown);opacity:.5}
-  .bz-pill{display:inline-block;background:var(--bz-peach-light);color:var(--bz-cta-dark);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:6px 12px;border-radius:999px;margin-bottom:16px}
+  /* Etiquetas estilo packaging */
+  .bz-tags{display:flex;flex-wrap:wrap;gap:8px}
+  .bz-tag{display:inline-flex;align-items:center;border:1px solid var(--bz-brown);color:var(--bz-brown);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:6px 12px;border-radius:999px;background:transparent}
 
-  /* Caja de dato */
-  .bz-dato{background:var(--bz-peach-light);border-left:4px solid var(--bz-gold);border-radius:0 12px 12px 0;padding:16px 18px;font-size:15px;margin:8px 0 0}
-  .bz-dato p:last-child{margin:0}
+  /* Íconos en círculo (como la etiqueta) */
+  .bz-ic{display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:50%;border:1.5px solid var(--bz-brown);color:var(--bz-brown);flex:0 0 auto}
+  .bz-ic svg{width:26px;height:26px}
+  .bz-ic-fill{background:var(--bz-p2);border-color:transparent;color:var(--bz-coral-d)}
+
+  /* Imágenes con recuadro de marca si falta el archivo */
+  .bz-media{position:relative;border-radius:22px;overflow:hidden;background:var(--bz-p2)}
+  .bz-media img{width:100%;height:100%;object-fit:cover}
+  .bz-ar-45{aspect-ratio:4/5}.bz-ar-43{aspect-ratio:4/3}.bz-ar-11{aspect-ratio:1/1}
+  .bz-media-ph{display:none}
+  .bz-media.is-empty{background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.55) 0,rgba(255,255,255,0) 45%),var(--bz-grad)}
+  .bz-media.is-empty .bz-media-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--bz-brown);font-size:12px;letter-spacing:.12em;text-transform:uppercase;text-align:center;padding:20px;opacity:.7}
+  .bz-media.is-empty .bz-media-ph::before{content:"";width:46px;height:46px;border-radius:50%;border:1.5px solid currentColor;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233A2317' stroke-width='1.5'%3E%3Crect x='3' y='5' width='18' height='14' rx='2'/%3E%3Ccircle cx='9' cy='10' r='2'/%3E%3Cpath d='M21 16l-5-5-8 8'/%3E%3C/svg%3E") center/22px no-repeat}
 
   /* Botones */
-  .bz-btn{display:flex;align-items:center;justify-content:center;width:100%;min-height:56px;padding:14px 24px;background:var(--bz-cta);color:#fff !important;text-decoration:none;font-weight:700;font-size:17px;letter-spacing:.04em;text-transform:uppercase;border-radius:999px;box-shadow:0 8px 20px rgba(224,121,90,.35);transition:transform .15s,background .15s;border:0;cursor:pointer;text-align:center}
-  .bz-btn:hover{background:var(--bz-cta-dark);transform:translateY(-1px)}
+  .bz-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:58px;padding:16px 28px;background:linear-gradient(180deg,#E6826A 0%,var(--bz-coral) 100%);color:#fff !important;text-decoration:none;font-family:var(--bz-body);font-weight:700;font-size:16px;letter-spacing:.08em;text-transform:uppercase;border-radius:999px;box-shadow:0 10px 24px -8px rgba(198,95,69,.6);transition:transform .15s,box-shadow .15s;border:0;cursor:pointer;text-align:center}
+  .bz-btn svg{width:18px;height:18px;transition:transform .15s}
+  .bz-btn:hover{transform:translateY(-2px);box-shadow:0 14px 28px -8px rgba(198,95,69,.7)}
+  .bz-btn:hover svg{transform:translateX(3px)}
   .bz-btn:focus-visible,.bz-link:focus-visible{outline:3px solid var(--bz-brown);outline-offset:3px}
-  @media(min-width:750px){.bz-btn{max-width:440px;margin:0 auto}}
-  .bz-btn-out{background:transparent;color:var(--bz-brown) !important;border:2px solid var(--bz-brown);box-shadow:none}
-  .bz-btn-out:hover{background:var(--bz-brown);color:#fff !important}
-  .bz-link{color:var(--bz-cta) !important;font-weight:700;text-decoration:none}
-  .bz-micro{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 14px;font-size:13px;color:var(--bz-muted);margin-top:12px}
+  @media(min-width:750px){.bz-btn{width:auto;min-width:340px}}
+  .bz-btn-block{width:100% !important}
+  .bz-link{display:inline-flex;align-items:center;gap:6px;color:var(--bz-coral-d) !important;font-weight:700;text-decoration:none;border-bottom:1.5px solid currentColor;padding-bottom:2px}
 
-  /* Listas */
-  .bz-checks{list-style:none;padding:0;margin:0 0 20px}
-  .bz-checks li{position:relative;padding-left:30px;margin-bottom:10px}
-  .bz-checks li::before{content:"✓";position:absolute;left:0;top:1px;width:20px;height:20px;border-radius:50%;background:var(--bz-cta);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
-  .bz-stars{color:#E8A93B;letter-spacing:2px}
+  /* Checks */
+  .bz-checks{list-style:none;padding:0;margin:0 0 22px}
+  .bz-checks li{position:relative;padding-left:32px;margin-bottom:12px;line-height:1.45}
+  .bz-checks li::before{content:"";position:absolute;left:0;top:1px;width:22px;height:22px;border-radius:50%;background:var(--bz-coral) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/13px no-repeat}
+  .bz-stars{color:var(--bz-gold);letter-spacing:1px;font-size:15px}
+
+  /* Caja de dato */
+  .bz-note{display:flex;gap:14px;align-items:flex-start;background:var(--bz-white);border:1px solid var(--bz-line);border-radius:18px;padding:18px;font-size:15px;line-height:1.55;margin-top:6px}
+  .bz-note .bz-ic{width:44px;height:44px}.bz-note .bz-ic svg{width:22px;height:22px}
+  .bz-note p:last-child{margin:0}
+
+  /* Razones: layout 2 columnas en PC */
+  .bz-rz{display:grid;grid-template-areas:"head" "media" "text";gap:0}
+  .bz-rz-head{grid-area:head}.bz-rz-media{grid-area:media;margin-bottom:26px}.bz-rz-text{grid-area:text}
+  .bz-rz-num{display:flex;align-items:baseline;gap:14px;margin-bottom:6px}
+  .bz-rz-num b{font-family:var(--bz-head);font-size:54px;line-height:1;color:var(--bz-p3);font-weight:700}
+  .bz-rz-num .bz-eyebrow{margin:0}
+  @media(min-width:990px){
+    .bz-rz{grid-template-columns:1fr 1fr;grid-template-areas:"media head" "media text";column-gap:72px;align-items:start}
+    .bz-rz-head{align-self:end}
+    .bz-rz-media{margin:0;position:sticky;top:40px}
+    .bz-rz-flip{grid-template-areas:"head media" "text media"}
+    .bz-rz-num b{font-size:72px}
+  }
 
   /* Header */
-  .bz-top{background:var(--bz-brown);color:var(--bz-cream);text-align:center;font-size:13px;padding:9px 16px;letter-spacing:.02em}
-  .bz-head{border-bottom:1px solid var(--bz-peach-light);background:#fff}
-  .bz-head .bz-wrap{display:flex;align-items:center;justify-content:space-between;height:56px;max-width:1100px}
-  .bz-logo{font-family:var(--font-heading-family,inherit);font-weight:700;font-size:20px;letter-spacing:.12em;color:var(--bz-brown);text-decoration:none}
-  .bz-logo small{font-size:11px;letter-spacing:.2em;color:var(--bz-cta);margin-left:6px;font-weight:700}
-  .bz-nav{display:none;gap:22px;font-size:13px;color:var(--bz-muted);text-transform:uppercase;letter-spacing:.06em}
-  @media(min-width:750px){.bz-nav{display:flex}}
-  .bz-date{font-size:12px;color:var(--bz-muted)}
+  .bz-top{background:var(--bz-brown);color:#FBE9DF;font-size:11px;letter-spacing:.06em;white-space:nowrap;overflow:hidden;text-transform:uppercase;text-align:center;padding:10px 16px}
+  .bz-top span+span::before{content:"✦";margin:0 10px;color:var(--bz-p3)}
+  @media(min-width:750px){.bz-top{font-size:12px;letter-spacing:.08em}}
+  .bz-top .bz-top-x{display:none}
+  @media(min-width:750px){.bz-top .bz-top-x{display:inline}}
+  .bz-head{background:var(--bz-white);border-bottom:1px solid var(--bz-line)}
+  .bz-head .bz-wrap{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:68px}
+  .bz-head-l,.bz-head-r{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--bz-muted)}
+  .bz-head-l{display:none}.bz-head-r{text-align:right;display:none}
+  @media(min-width:750px){.bz-head-l,.bz-head-r{display:block}}
+  .bz-logo{grid-column:2;text-decoration:none;text-align:center;line-height:1;color:var(--bz-brown)}
+  .bz-logo b{display:block;font-family:var(--bz-body);font-weight:600;font-size:19px;letter-spacing:.32em;margin-right:-.32em}
+  .bz-logo small{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px;font-size:9px;font-weight:600;letter-spacing:.42em;margin-right:-.42em;color:var(--bz-coral);text-transform:uppercase}
+  .bz-logo small::before,.bz-logo small::after{content:"";width:18px;height:1px;background:currentColor;opacity:.6}
+  .bz-ad{display:inline-block;border:1px solid var(--bz-line);border-radius:999px;padding:4px 10px;font-size:10px}
 </style>
 
 <div class="bz">
-  <div class="bz-top">🔥 Viral en TikTok · #1 en Mercado Libre · Envío gratis a todo el país</div>
+  <div class="bz-top"><span>Envío gratis a todo el país</span><span>3 cuotas sin interés</span><span class="bz-top-x">#1 en Mercado Libre</span></div>
   <header class="bz-head">
     <div class="bz-wrap">
-      <a class="bz-logo" href="{{ routes.root_url }}">DR WOMAN<small>JOURNAL</small></a>
-      <nav class="bz-nav" aria-hidden="true"><span>Belleza</span><span>Bienestar</span><span>Piel</span><span>Tendencias</span></nav>
-      <span class="bz-date">{{ 'now' | date: '%d/%m/%Y' }}</span>
+      <div class="bz-head-l">Belleza &nbsp;·&nbsp; Bienestar &nbsp;·&nbsp; Piel</div>
+      <a class="bz-logo" href="{{ routes.root_url }}"><b>DR WOMAN</b><small>Journal</small></a>
+      <div class="bz-head-r"><span class="bz-ad">Contenido de marca</span></div>
     </div>
   </header>
 </div>

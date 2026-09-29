@@ -1,20 +1,42 @@
 {% comment %}
   03 de 12 · RAZÓN #1 · AUTOBRONCEANTE
-  Imagen en Contenido > Archivos: bronzer-razon-1.jpg (1600x1200)
+  Imagen en Contenido > Archivos: bronzer-razon-1.jpg (1600x2000, vertical 4:5)
 {% endcomment %}
+<style>
+  .bz-pains{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:6px 0 22px}
+  .bz-pain{display:flex;align-items:center;gap:10px;background:var(--bz-white);border:1px solid var(--bz-line);border-radius:14px;padding:12px;font-size:14px;font-weight:600;color:var(--bz-brown);line-height:1.25}
+  .bz-pain i{flex:0 0 26px;height:26px;border-radius:50%;background:#F4E7E1;display:flex;align-items:center;justify-content:center}
+  .bz-pain svg{width:12px;height:12px}
+</style>
+
 <div class="bz">
-  <section class="bz-sec">
+  <section class="bz-sec" id="razon-1">
     <div class="bz-wrap">
-      <div class="bz-kicker"><span>Razón #1 · Autobronceante</span><span>01</span></div>
-      <h2>El autobronceante se queda en la superficie… <span class="bz-hl">y se nota.</span></h2>
-      <div class="bz-img bz-r43">
-        <img src="{{ 'bronzer-razon-1.jpg' | file_url }}" alt="Mano con manchas naranjas de autobronceante" width="1600" height="1200" loading="lazy">
-      </div>
-      <p>El autobronceante tiñe solo la capa más superficial de la piel. Por eso se acumula en codos, rodillas y tobillos, se va en parches con la ducha y te deja ese tono anaranjado que todas reconocemos a una cuadra.</p>
-      <p>Además: olor raro, ropa blanca prohibida, sábanas manchadas y 20 minutos de guante cada tres días.</p>
-      <p><strong>No es que lo estés aplicando mal. Es que el color está en el lugar equivocado.</strong></p>
-      <div class="bz-dato">
-        <p>💡 <strong>Por qué pasa:</strong> el DHA del autobronceante reacciona con las células muertas de la superficie, que se renuevan cada pocos días. Por eso el color se va desparejo.</p>
+      <div class="bz-rz">
+        <div class="bz-rz-head">
+          <div class="bz-rz-num"><b>01</b><span class="bz-eyebrow">Razón 1 · Autobronceante</span></div>
+          <h2>El autobronceante se queda en la superficie… <em>y se nota.</em></h2>
+        </div>
+        <div class="bz-rz-media">
+          <div class="bz-media bz-ar-45">
+            <img src="{{ 'bronzer-razon-1.jpg' | file_url }}" alt="Mano con manchas naranjas de autobronceante" width="1600" height="2000" loading="lazy" onerror="this.parentNode.classList.add('is-empty');this.remove()">
+            <span class="bz-media-ph">bronzer-razon-1.jpg</span>
+          </div>
+        </div>
+        <div class="bz-rz-text">
+          <p>El autobronceante tiñe solo la capa más superficial de la piel. Por eso se acumula en codos, rodillas y tobillos, se va en parches con la ducha y deja ese tono anaranjado que todas reconocemos a una cuadra.</p>
+          <div class="bz-pains">
+            <div class="bz-pain"><i><svg viewBox="0 0 12 12" stroke="#C65F45" stroke-width="2" stroke-linecap="round"><path d="M2 2l8 8M10 2l-8 8"/></svg></i>Palmas y codos naranjas</div>
+            <div class="bz-pain"><i><svg viewBox="0 0 12 12" stroke="#C65F45" stroke-width="2" stroke-linecap="round"><path d="M2 2l8 8M10 2l-8 8"/></svg></i>Sábanas y ropa teñidas</div>
+            <div class="bz-pain"><i><svg viewBox="0 0 12 12" stroke="#C65F45" stroke-width="2" stroke-linecap="round"><path d="M2 2l8 8M10 2l-8 8"/></svg></i>Olor característico</div>
+            <div class="bz-pain"><i><svg viewBox="0 0 12 12" stroke="#C65F45" stroke-width="2" stroke-linecap="round"><path d="M2 2l8 8M10 2l-8 8"/></svg></i>Se va en parches</div>
+          </div>
+          <p><strong>No es que lo estés aplicando mal. Es que el color está en el lugar equivocado.</strong></p>
+          <div class="bz-note">
+            <span class="bz-ic bz-ic-fill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.4 1 1.1 1 1.8V16h5v-.3c0-.7.4-1.4 1-1.8A6 6 0 0 0 12 3z"/></svg></span>
+            <p><strong>Por qué pasa:</strong> el DHA del autobronceante reacciona con las células muertas de la superficie, que se renuevan cada pocos días. Por eso el color se va desparejo.</p>
+          </div>
+        </div>
       </div>
     </div>
   </section>

@@ -1,47 +1,107 @@
 {% comment %}
-  02 de 12 · HERO
-  Imágenes en Contenido > Archivos: bronzer-hero.jpg (1600x2000) · bronzer-autora.jpg (400x400)
+  02 de 12 · HERO + ÍNDICE + INTRO
+  Imagen en Contenido > Archivos: bronzer-hero.jpg (1600x1600, cuadrada).
+  Mientras no tengas la foto lifestyle, subí la FOTO OFICIAL del frasco con este nombre: queda perfecta.
+  Completá los [ ] con datos reales (rating y cantidad de opiniones).
 {% endcomment %}
 <style>
-  .bz-hero{padding-top:28px}
-  .bz-hero .bz-lead{font-size:19px;line-height:1.5;color:var(--bz-text);margin-bottom:20px}
-  .bz-author{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--bz-muted);margin-bottom:22px}
-  .bz-author img{width:44px;height:44px;border-radius:50%;object-fit:cover;background:var(--bz-peach-light)}
-  .bz-author b{display:block;color:var(--bz-brown);font-size:15px}
-  .bz-hero-media{position:relative;margin-bottom:34px}
-  .bz-hero-media .bz-img{margin:0}
-  .bz-hero-card{position:absolute;left:12px;bottom:-22px;max-width:260px;background:#fff;border-radius:14px;padding:12px 14px;box-shadow:0 10px 30px rgba(58,35,23,.16);font-size:14px;line-height:1.4}
-  .bz-hero-card em{display:block;font-style:normal;color:var(--bz-brown);margin:2px 0 4px}
-  .bz-hero-card small{color:var(--bz-muted)}
-  @media(min-width:750px){.bz-hero-media .bz-img img{aspect-ratio:16/10}.bz-hero-card{left:24px;max-width:300px}}
+  .bz-hero{background:linear-gradient(180deg,var(--bz-p1) 0%,var(--bz-p2) 100%);padding:32px 0 48px;position:relative;overflow:hidden}
+  .bz-hero::before{content:"";position:absolute;width:620px;height:620px;right:-220px;top:-180px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.7) 0,rgba(255,255,255,0) 65%);pointer-events:none}
+  .bz-hero-grid{position:relative;display:grid;gap:30px}
+  .bz-hero .bz-lead{margin-bottom:22px}
+  .bz-byline{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--bz-muted);line-height:1.4}
+  .bz-avatar{flex:0 0 44px;height:44px;border-radius:50%;background:var(--bz-brown);color:#FBE9DF;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;letter-spacing:.12em}
+  .bz-byline b{display:block;color:var(--bz-brown);font-size:14px}
+  .bz-hero-proof{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;margin:0 0 22px;font-size:14px;color:var(--bz-brown)}
+  .bz-hero-proof>span{display:inline-flex;align-items:center;gap:8px}
+  .bz-chip-tt{background:#111;color:#fff;border-radius:999px;padding:3px 10px;font-weight:700;font-size:12px}
+  .bz-chip-ml{background:#FFE600;color:#2D3277;border-radius:999px;padding:3px 10px;font-weight:800;font-size:12px}
+  .bz-hero-visual{position:relative;max-width:520px;width:100%;margin:0 auto}
+  .bz-hero-visual .bz-media{border-radius:28px;box-shadow:0 30px 60px -30px rgba(58,35,23,.45)}
+  .bz-float{position:absolute;display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.96);backdrop-filter:blur(6px);border-radius:18px;padding:12px 16px 12px 12px;box-shadow:0 16px 36px -14px rgba(58,35,23,.35);font-size:13px;line-height:1.3;color:var(--bz-text)}
+  .bz-float b{display:block;color:var(--bz-brown);font-size:15px}
+  .bz-float .bz-ic{width:42px;height:42px}.bz-float .bz-ic svg{width:20px;height:20px}
+  .bz-float-a{left:12px;bottom:14px}
+  .bz-hero-cta{display:none}
+  @media(min-width:990px){
+    .bz-hero{padding:72px 0 88px}
+    .bz-hero-grid{grid-template-columns:1.12fr .88fr;gap:64px;align-items:center}
+    .bz-hero-cta{display:flex;align-items:center;gap:22px;margin:0 0 30px}
+    .bz-float-a{left:-36px;bottom:48px}
+  }
+
+  /* Índice de la nota */
+  .bz-toc{position:relative;margin-top:36px;background:var(--bz-white);border-radius:22px;padding:18px 18px 8px;box-shadow:0 20px 40px -28px rgba(58,35,23,.4)}
+  .bz-toc-t{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--bz-muted);margin-bottom:6px}
+  .bz-toc ol{list-style:none;margin:0;padding:0;display:grid}
+  .bz-toc a{display:flex;align-items:center;gap:14px;padding:11px 0;border-top:1px solid var(--bz-line);text-decoration:none;color:var(--bz-brown);font-size:15px;font-weight:600;line-height:1.3}
+  .bz-toc li:first-child a{border-top:0}
+  .bz-toc a span{font-family:var(--bz-head);color:var(--bz-coral);font-size:18px;min-width:26px}
+  @media(min-width:990px){
+    .bz-toc{margin-top:64px;padding:22px 28px}
+    .bz-toc ol{grid-template-columns:repeat(5,1fr);gap:20px}
+    .bz-toc a{flex-direction:column;align-items:flex-start;gap:6px;border-top:0;padding:4px 0 10px}
+    .bz-toc a span{font-size:28px}
+  }
+
+  /* Intro */
+  .bz-intro{padding:52px 0 8px}
+  .bz-intro p:first-child{font-size:19px;color:var(--bz-brown)}
+  @media(min-width:990px){.bz-intro{padding:88px 0 8px}.bz-intro p{font-size:20px}.bz-intro p:first-child{font-size:22px}}
 </style>
 
 <div class="bz">
-  <section class="bz-sec bz-hero">
+  <section class="bz-hero">
     <div class="bz-wrap">
-      <span class="bz-pill">Belleza · Nota destacada</span>
-      <h1>5 razones por las que las argentinas están dejando el autobronceante <span class="bz-hl">(y bronceándose desde adentro)</span></h1>
-      <p class="bz-lead">Sin manchas naranjas, sin sábanas teñidas y sin horas al rayo del sol. Así funciona el bronceado que se volvió viral en TikTok y ya es #1 en Mercado Libre.</p>
+      <div class="bz-hero-grid">
+        <div class="bz-hero-copy">
+          <span class="bz-eyebrow">Belleza · Tendencia viral</span>
+          <h1>5 razones por las que las argentinas están dejando el autobronceante <em>(y bronceándose desde adentro)</em></h1>
+          <p class="bz-lead">Sin manchas naranjas, sin sábanas teñidas y sin horas al rayo del sol. Así funciona el bronceado en cápsulas que explotó en TikTok.</p>
+          <div class="bz-hero-proof">
+            <span><span class="bz-stars">★★★★★</span> <b>[4,8]</b> · [+2.300] opiniones</span>
+            <span>Viral en <span class="bz-chip-tt">TikTok</span></span>
+            <span>#1 en <span class="bz-chip-ml">Mercado Libre</span></span>
+          </div>
+          <div class="bz-hero-cta">
+            <a class="bz-btn" href="#razon-1">Leer la nota <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            <a class="bz-link" href="#oferta">Ver el producto</a>
+          </div>
+          <div class="bz-byline">
+            <span class="bz-avatar">DW</span>
+            <div><b>Redacción DR WOMAN Journal</b>Actualizado el {{ 'now' | date: '%d/%m/%Y' }} · 4 min de lectura</div>
+          </div>
+        </div>
 
-      <div class="bz-author">
-        <img src="{{ 'bronzer-autora.jpg' | file_url }}" alt="" width="44" height="44" loading="eager">
-        <div><b>Por Carolina Méndez · Editora de Belleza</b>Actualizado: {{ 'now' | date: '%d/%m/%Y' }} · 4 min de lectura</div>
+        <div class="bz-hero-visual">
+          <div class="bz-media bz-ar-11">
+            <img src="{{ 'bronzer-hero.jpg' | file_url }}" alt="DR WOMAN Bronzer, cápsulas de bronceado natural" width="1600" height="1600" loading="eager" fetchpriority="high" onerror="this.parentNode.classList.add('is-empty');this.remove()">
+            <span class="bz-media-ph">bronzer-hero.jpg</span>
+          </div>
+          <div class="bz-float bz-float-a">
+            <span class="bz-ic bz-ic-fill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="3.5" y="8.5" width="17" height="7" rx="3.5" transform="rotate(-35 12 12)"/><path d="M9.2 16l5.6-8" /></svg></span>
+            <div><b>1 cápsula por día</b>60 cápsulas · 2 meses</div>
+          </div>
+        </div>
       </div>
 
-      <div class="bz-hero-media">
-        <div class="bz-img bz-r45">
-          <img src="{{ 'bronzer-hero.jpg' | file_url }}" alt="Mujer con piel dorada tomando sol en una terraza" width="1600" height="2000" loading="eager" fetchpriority="high">
-        </div>
-        <div class="bz-hero-card">
-          <span class="bz-stars">★★★★★</span>
-          <em>“Dejé el autobronceante y no vuelvo más. Me ven dorada todo el año.”</em>
-          <small>— Clienta verificada</small>
-        </div>
-      </div>
-
-      <p>Si alguna vez te pusiste autobronceante antes de un casamiento y terminaste con las palmas naranjas, las rodillas manchadas y las sábanas arruinadas, esta nota es para vos.</p>
-      <p>Cada vez más argentinas están cambiando la loción por algo mucho más simple: <strong>una cápsula por día.</strong> Te contamos por qué.</p>
-      <a class="bz-link" href="#oferta">Ir directo al producto →</a>
+      <nav class="bz-toc" aria-label="En esta nota">
+        <div class="bz-toc-t">En esta nota</div>
+        <ol>
+          <li><a href="#razon-1"><span>01</span>El autobronceante se nota</a></li>
+          <li><a href="#razon-2"><span>02</span>El sol pasa factura</a></li>
+          <li><a href="#razon-3"><span>03</span>El color desde adentro</a></li>
+          <li><a href="#razon-4"><span>04</span>Una cápsula por día</a></li>
+          <li><a href="#razon-5"><span>05</span>Un resultado natural</a></li>
+        </ol>
+      </nav>
     </div>
   </section>
+
+  <div class="bz-intro">
+    <div class="bz-wrap bz-narrow">
+      <p>Si alguna vez te pusiste autobronceante antes de un casamiento y terminaste con las palmas naranjas, las rodillas manchadas y las sábanas arruinadas, esta nota es para vos.</p>
+      <p>Cada vez más argentinas están cambiando la loción por algo mucho más simple: <strong>una cápsula por día.</strong> Repasamos cómo funciona y lo que más nos cuentan las clientas. Estas son las 5 razones.</p>
+    </div>
+  </div>
 </div>

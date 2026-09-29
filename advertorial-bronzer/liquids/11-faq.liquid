@@ -1,57 +1,51 @@
 {% comment %}
   11 de 12 · PREGUNTAS FRECUENTES
-  Completá los [X] (semanas y días de envío). Para sumar una pregunta, copiá un bloque <details> completo.
+  Completá los [X] (semanas y días de envío) y el RNPA. Para sumar una pregunta, copiá un bloque <details> completo.
 {% endcomment %}
 <style>
-  .bz-faq details{border-bottom:1px solid var(--bz-peach);padding:4px 0}
-  .bz-faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px 0;font-weight:700;color:var(--bz-brown);font-size:17px}
+  .bz-faqg{display:grid;gap:26px}
+  @media(min-width:990px){.bz-faqg{grid-template-columns:.8fr 1.2fr;gap:72px;align-items:start}.bz-faq-side{position:sticky;top:40px}}
+  .bz-faq-mini{display:flex;align-items:center;gap:14px;background:var(--bz-p1);border-radius:18px;padding:12px;margin-top:22px}
+  .bz-faq-mini img{width:64px;height:64px;border-radius:12px;object-fit:cover;background:var(--bz-p2)}
+  .bz-faq-mini b{display:block;color:var(--bz-brown);font-size:15px}
+  .bz-faq-mini a{font-size:14px}
+  .bz-faq details{border-bottom:1px solid var(--bz-line)}
+  .bz-faq details:first-child{border-top:1px solid var(--bz-line)}
+  .bz-faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 0;font-weight:700;color:var(--bz-brown);font-size:16.5px;line-height:1.35}
   .bz-faq summary::-webkit-details-marker{display:none}
-  .bz-faq summary::after{content:"+";flex:0 0 28px;height:28px;border-radius:50%;background:var(--bz-peach-light);color:var(--bz-cta);display:flex;align-items:center;justify-content:center;font-size:20px;transition:transform .2s}
-  .bz-faq details[open] summary::after{transform:rotate(45deg)}
-  .bz-faq summary:focus-visible{outline:3px solid var(--bz-cta);outline-offset:2px}
-  .bz-faq details p{margin:0 0 16px;font-size:16px}
+  .bz-faq summary::after{content:"";flex:0 0 30px;height:30px;border-radius:50%;border:1.5px solid var(--bz-brown);background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233A2317' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M12 6v12M6 12h12'/%3E%3C/svg%3E") center/14px no-repeat;transition:transform .2s,background-color .2s}
+  .bz-faq details[open] summary::after{transform:rotate(45deg);background-color:var(--bz-p2)}
+  .bz-faq summary:focus-visible{outline:3px solid var(--bz-coral);outline-offset:2px}
+  .bz-faq details p{margin:0 0 18px;font-size:16px;padding-right:40px}
   .bz-legal-mini{font-size:12px;color:var(--bz-muted);margin-top:22px}
 </style>
 
 <div class="bz">
-  <section class="bz-sec bz-faq">
+  <section class="bz-sec bz-bg-white bz-faq" id="faq">
     <div class="bz-wrap">
-      <h2>Preguntas frecuentes</h2>
+      <div class="bz-faqg">
+        <div class="bz-faq-side">
+          <span class="bz-eyebrow">Preguntas frecuentes</span>
+          <h2>Todo lo que nos <em>preguntan</em></h2>
+          <p class="bz-small">Lo que más nos consultan antes de probar Bronzer.</p>
+          <div class="bz-faq-mini">
+            <img src="{{ 'bronzer-producto.jpg' | file_url }}" alt="" width="64" height="64" loading="lazy">
+            <div><b>DR WOMAN Bronzer</b><a class="bz-link" href="#oferta">Ver oferta</a></div>
+          </div>
+        </div>
 
-      <details open>
-        <summary>¿Cómo se toma?</summary>
-        <p>1 cápsula por día, preferentemente con una comida. La clave es la constancia.</p>
-      </details>
-      <details>
-        <summary>¿En cuánto tiempo se ve el tono dorado?</summary>
-        <p>Es gradual: los carotenoides se van acumulando en la piel con el uso diario. La mayoría de las clientas nota cambios después de [X] semanas de uso constante.</p>
-      </details>
-      <details>
-        <summary>¿Reemplaza el protector solar?</summary>
-        <p>No. DR WOMAN Bronzer es un suplemento dietario y no reemplaza el protector solar. Seguí usándolo todos los días.</p>
-      </details>
-      <details>
-        <summary>¿Me voy a poner naranja?</summary>
-        <p>No es una capa de color sobre la piel como el autobronceante: el tono se construye de forma gradual y pareja. Respetá la dosis indicada.</p>
-      </details>
-      <details>
-        <summary>¿Sirve para todos los tonos de piel?</summary>
-        <p>Sí, el efecto acompaña tu tono natural.</p>
-      </details>
-      <details>
-        <summary>¿Tiene gluten o contraindicaciones?</summary>
-        <p>Es sin gluten. Si estás embarazada, en período de lactancia o tomás medicación, consultá con tu médico antes de consumirlo.</p>
-      </details>
-      <details>
-        <summary>¿Cuánto dura un frasco?</summary>
-        <p>60 cápsulas: 2 meses tomando 1 por día.</p>
-      </details>
-      <details>
-        <summary>¿Cuánto tarda el envío?</summary>
-        <p>Enviamos a todo el país. CABA y GBA: [X] días hábiles. Interior: [X] días hábiles.</p>
-      </details>
-
-      <p class="bz-legal-mini">Suplemento dietario. Consumir dentro de una dieta variada y equilibrada. Consulte a su médico. RNPA/RNE: [completar].</p>
+        <div>
+          <details open><summary>¿Cómo se toma?</summary><p>1 cápsula por día, preferentemente con una comida. La clave es la constancia.</p></details>
+          <details><summary>¿En cuánto tiempo se ve el tono dorado?</summary><p>Es gradual: los carotenoides se van acumulando en la piel con el uso diario. La mayoría de las clientas nota cambios después de [X] semanas de uso constante.</p></details>
+          <details><summary>¿Reemplaza el protector solar?</summary><p>No. DR WOMAN Bronzer es un suplemento dietario y no reemplaza el protector solar. Seguí usándolo todos los días.</p></details>
+          <details><summary>¿Me voy a poner naranja?</summary><p>No es una capa de color sobre la piel como el autobronceante: el tono se construye de forma gradual y pareja. Respetá la dosis indicada.</p></details>
+          <details><summary>¿Sirve para todos los tonos de piel?</summary><p>Sí, el efecto acompaña tu tono natural.</p></details>
+          <details><summary>¿Tiene gluten o contraindicaciones?</summary><p>Es sin gluten. Si estás embarazada, en período de lactancia o tomás medicación, consultá con tu médico antes de consumirlo.</p></details>
+          <details><summary>¿Cuánto dura un frasco?</summary><p>60 cápsulas: 2 meses tomando 1 por día.</p></details>
+          <details><summary>¿Cuánto tarda el envío?</summary><p>Enviamos a todo el país. CABA y GBA: [X] días hábiles. Interior: [X] días hábiles.</p></details>
+          <p class="bz-legal-mini">Suplemento dietario. Consumir dentro de una dieta variada y equilibrada. Consulte a su médico. RNPA/RNE: [completar].</p>
+        </div>
+      </div>
     </div>
   </section>
 </div>

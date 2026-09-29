@@ -1,95 +1,103 @@
 {% comment %}
   08 de 12 · PRODUCTO + PRIMER CTA
   1) Cambiá 'dr-woman-bronzer' por el handle real del producto (lo ves en la URL: /products/HANDLE).
-     El precio, el precio tachado y el link al checkout se toman solos del producto.
-  2) Imagen en Contenido > Archivos: bronzer-producto.jpg (1500x1500). Es la foto oficial del frasco.
+     Precio, precio tachado, % de descuento y link directo al checkout se toman solos del producto.
+  2) Imagen en Contenido > Archivos: bronzer-producto.jpg (1500x1500, la foto oficial del frasco).
   3) Completá rating y cantidad de opiniones [ ] con datos reales.
 {% endcomment %}
 {%- assign bz_p = all_products['dr-woman-bronzer'] -%}
 {%- if bz_p.id -%}
-  {%- assign bz_v = bz_p.selected_or_first_available_variant -%}
-  {%- capture bz_url -%}/cart/{{ bz_v.id }}:1{%- endcapture -%}
+  {%- capture bz_url -%}/cart/{{ bz_p.selected_or_first_available_variant.id }}:1{%- endcapture -%}
 {%- else -%}
   {%- assign bz_url = '/products/dr-woman-bronzer' -%}
 {%- endif -%}
 <style>
-  .bz-prod{background:var(--bz-peach-light)}
-  .bz-prod .bz-wrap{text-align:center}
-  .bz-prod .bz-pill{background:#fff}
-  .bz-prod-img{position:relative;max-width:480px;margin:0 auto 20px}
-  .bz-prod-img .bz-img{margin:0;background:#fff}
-  .bz-stk{position:absolute;display:flex;align-items:center;gap:6px;background:#fff;border-radius:999px;padding:5px 6px 5px 12px;font-weight:800;font-size:14px;color:#111;box-shadow:0 6px 18px rgba(0,0,0,.15);white-space:nowrap}
-  .bz-stk b{border-radius:999px;padding:4px 10px}
-  .bz-stk-tt{top:12px;left:12px}.bz-stk-tt b{background:#111;color:#fff}
-  .bz-stk-ml{top:58px;left:12px}.bz-stk-ml b{background:#FFE600;color:#2D3277}
-  @media(min-width:750px){.bz-stk-ml{top:12px;left:auto;right:12px}}
-  .bz-prod h2{margin-bottom:4px}
-  .bz-prod-sub{color:var(--bz-muted);font-size:15px;margin-bottom:8px}
-  .bz-rating{font-size:14px;color:var(--bz-brown);margin-bottom:18px}
-  .bz-icons{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:420px;margin:0 auto 22px}
-  .bz-icons div{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--bz-brown)}
-  .bz-icons span{display:flex;margin:0 auto 6px;width:52px;height:52px;border-radius:50%;border:1.5px solid var(--bz-brown);align-items:center;justify-content:center;font-size:22px}
-  .bz-prod .bz-checks{text-align:left;max-width:420px;margin:0 auto 22px}
-  .bz-price{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:4px}
-  .bz-price s{color:var(--bz-muted);font-size:18px}
-  .bz-price strong{font-family:var(--font-heading-family,inherit);font-size:34px;color:var(--bz-brown)}
-  .bz-price em{font-style:normal;background:var(--bz-cta);color:#fff;font-weight:700;font-size:13px;padding:4px 8px;border-radius:6px}
-  .bz-cuotas{font-size:14px;color:var(--bz-muted);margin-bottom:18px}
+  .bz-pdp{display:grid;gap:30px}
+  @media(min-width:990px){.bz-pdp{grid-template-columns:1fr 1fr;gap:72px;align-items:center}}
+  .bz-pdp-img{position:relative}
+  .bz-pdp-img .bz-media{border-radius:28px;box-shadow:0 30px 60px -32px rgba(58,35,23,.5)}
+  .bz-seal{position:absolute;right:-8px;bottom:-14px;width:96px;height:96px;border-radius:50%;background:var(--bz-brown);color:#FBE9DF;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-size:10px;font-weight:700;letter-spacing:.14em;line-height:1.25;box-shadow:0 12px 24px -10px rgba(58,35,23,.6);transform:rotate(-8deg)}
+  .bz-seal b{font-family:var(--bz-head);font-size:26px;letter-spacing:0;color:#fff;line-height:1}
+  @media(min-width:990px){.bz-seal{width:120px;height:120px;right:-20px;bottom:-20px;font-size:11px}.bz-seal b{font-size:32px}}
+  .bz-buy .bz-brand{font-size:13px;font-weight:600;letter-spacing:.32em;color:var(--bz-brown);text-transform:uppercase}
+  .bz-buy h2{font-size:52px;line-height:1;margin:6px 0 6px}
+  @media(min-width:990px){.bz-buy h2{font-size:72px}}
+  .bz-buy .bz-tagline{font-family:var(--bz-head);font-style:italic;color:var(--bz-brown-2);font-size:18px;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+  .bz-buy .bz-tagline::before{content:"";width:24px;height:1px;background:currentColor}
+  .bz-rating{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--bz-brown);margin-bottom:22px}
+  .bz-trio{display:flex;gap:18px;margin-bottom:20px}
+  .bz-trio div{display:flex;flex-direction:column;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--bz-brown);text-align:center}
+  .bz-buy .bz-tags{margin-bottom:22px}
+  .bz-pricebox{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--bz-p1);border:1px solid var(--bz-line);border-radius:18px;padding:14px 18px;margin-bottom:14px}
+  .bz-pricebox .bz-pr{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .bz-pricebox s{color:var(--bz-muted);font-size:16px}
+  .bz-pricebox strong{font-family:var(--bz-head);font-size:32px;line-height:1;color:var(--bz-brown)}
+  .bz-pricebox em{font-style:normal;background:var(--bz-coral);color:#fff;font-weight:700;font-size:12px;letter-spacing:.06em;padding:5px 9px;border-radius:999px}
+  .bz-pricebox small{display:block;font-size:13px;color:var(--bz-muted);margin-top:4px}
+  .bz-trust{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px}
+  .bz-trust div{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;font-size:12px;line-height:1.3;color:var(--bz-muted)}
+  .bz-trust svg{width:22px;height:22px;color:var(--bz-brown)}
 </style>
 
 <div class="bz">
-  <section class="bz-sec bz-prod">
+  <section class="bz-sec bz-bg-white" id="producto">
     <div class="bz-wrap">
-      <span class="bz-pill">Lo que usan las que ya dejaron el autobronceante</span>
-      <div class="bz-prod-img">
-        <div class="bz-img bz-r11">
-          <img src="{{ 'bronzer-producto.jpg' | file_url }}" alt="Frasco de DR WOMAN Bronzer con cápsulas" width="1500" height="1500" loading="lazy">
+      <div class="bz-pdp">
+        <div class="bz-pdp-img">
+          <div class="bz-media bz-ar-11">
+            <img src="{{ 'bronzer-producto.jpg' | file_url }}" alt="Frasco de DR WOMAN Bronzer con cápsulas" width="1500" height="1500" loading="lazy" onerror="this.parentNode.classList.add('is-empty');this.remove()">
+            <span class="bz-media-ph">bronzer-producto.jpg</span>
+          </div>
+          <div class="bz-seal"><b>60</b>CÁPSULAS<br>2 MESES</div>
         </div>
-        {% comment %}
-          La foto oficial ya trae los stickers "Viral en TikTok" y "#1 en Mercado Libre".
-          Si usás una foto limpia del frasco (sin stickers), borrá las 2 líneas "comment" / "endcomment" que envuelven los 2 stickers de abajo.
-        {% endcomment %}
-        {% comment %}
-        <span class="bz-stk bz-stk-tt">🔥 Viral en <b>TikTok</b></span>
-        <span class="bz-stk bz-stk-ml">#1 en <b>Mercado Libre</b></span>
-        {% endcomment %}
+
+        <div class="bz-buy">
+          <span class="bz-eyebrow">Lo que usan las que dejaron el autobronceante</span>
+          <div class="bz-brand">DR WOMAN</div>
+          <h2>Bronzer</h2>
+          <div class="bz-tagline">Bronceado natural · Fórmula para mujeres</div>
+          <div class="bz-rating"><span class="bz-stars">★★★★★</span><b>[4,8]</b>· [+2.300] opiniones</div>
+
+          <div class="bz-trio">
+            <div><span class="bz-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M2.5 12H5M19 12h2.5M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></svg></span>Tono dorado</div>
+            <div><span class="bz-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 3l1.6 4.4L16 9l-4.4 1.6L10 15l-1.6-4.4L4 9l4.4-1.6zM17.5 13l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg></span>Antioxidante</div>
+            <div><span class="bz-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c4 4 6 7.5 6 10.5a6 6 0 0 1-12 0C6 10.5 8 7 12 3z"/><path d="M12 20V11M12 15l-3-2.5M12 13.5l2.5-2"/></svg></span>Piel sana</div>
+          </div>
+
+          <div class="bz-tags"><span class="bz-tag">Formulated in USA</span><span class="bz-tag">100% Woman</span><span class="bz-tag">Sin gluten</span></div>
+
+          <ul class="bz-checks">
+            <li>Tono dorado parejo, sin manchar nada</li>
+            <li>Betacaroteno + licopeno + extracto de cúrcuma</li>
+            <li>Vitaminas C, E, complejo B y ácido fólico</li>
+          </ul>
+
+          <div class="bz-pricebox">
+            <div>
+              <div class="bz-pr">
+                {%- if bz_p.id -%}
+                  {%- if bz_p.compare_at_price > bz_p.price -%}<s>{{ bz_p.compare_at_price | money }}</s>{%- endif -%}
+                  <strong>{{ bz_p.price | money }}</strong>
+                {%- else -%}
+                  <s>$XX.XXX</s><strong>$XX.XXX</strong>
+                {%- endif -%}
+              </div>
+              <small>3 cuotas sin interés · Envío gratis</small>
+            </div>
+            {%- if bz_p.compare_at_price > bz_p.price -%}
+              <em>-{{ bz_p.compare_at_price | minus: bz_p.price | times: 100 | divided_by: bz_p.compare_at_price | floor }}%</em>
+            {%- endif -%}
+          </div>
+
+          <a class="bz-btn bz-btn-block" href="{{ bz_url }}">Quiero mi Bronzer <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+
+          <div class="bz-trust">
+            <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg>Envío gratis a todo el país</div>
+            <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg>Pago 100% seguro</div>
+            <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7.5 3v5.5c0 4.5-3.2 8-7.5 9.5-4.3-1.5-7.5-5-7.5-9.5V6z"/><path d="M8.8 12.2l2.2 2.2 4.2-4.4"/></svg>Garantía de satisfacción</div>
+          </div>
+        </div>
       </div>
-
-      <h2>DR WOMAN Bronzer</h2>
-      <p class="bz-prod-sub">Bronceado natural · 60 cápsulas · 1 por día</p>
-      <p class="bz-rating"><span class="bz-stars">★★★★★</span> [4,8]/5 · [+2.300] opiniones</p>
-
-      <div class="bz-icons">
-        <div><span>☀</span>Tono dorado</div>
-        <div><span>✦</span>Antioxidante</div>
-        <div><span>🌿</span>Piel sana</div>
-      </div>
-
-      <ul class="bz-checks">
-        <li>Tono dorado parejo, sin manchar</li>
-        <li>Betacaroteno + licopeno + cúrcuma</li>
-        <li>Vitaminas C, E y complejo B</li>
-        <li>Sin gluten · Formulated in USA</li>
-        <li>Envío gratis a todo el país</li>
-      </ul>
-
-      <div class="bz-price">
-        {%- if bz_p.id -%}
-          {%- if bz_p.compare_at_price > bz_p.price -%}
-            <s>{{ bz_p.compare_at_price | money }}</s>
-            <strong>{{ bz_p.price | money }}</strong>
-            <em>-{{ bz_p.compare_at_price | minus: bz_p.price | times: 100 | divided_by: bz_p.compare_at_price | floor }}%</em>
-          {%- else -%}
-            <strong>{{ bz_p.price | money }}</strong>
-          {%- endif -%}
-        {%- else -%}
-          <s>$XX.XXX</s><strong>$XX.XXX</strong><em>-XX%</em>
-        {%- endif -%}
-      </div>
-      <p class="bz-cuotas">3 cuotas sin interés</p>
-
-      <a class="bz-btn" href="{{ bz_url }}">Quiero mi Bronzer →</a>
-      <div class="bz-micro"><span>🔒 Pago seguro</span><span>🚚 Envío gratis</span><span>↩ Garantía de satisfacción</span></div>
     </div>
   </section>
 </div>
