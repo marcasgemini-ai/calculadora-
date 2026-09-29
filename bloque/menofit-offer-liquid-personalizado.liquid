@@ -1,6 +1,7 @@
 {%- comment -%}
 OFERTA MENOFIT. Pegá TODO. Editá solo CONFIGURACIÓN. Guion (-) = vacío. Valores separados por |.
 Variantes del producto (opción Pack) en orden: 1 frasco, 2, 3, 6.
+pack_mode: 'discount' = agrega N unidades del frasco y el precio del pack lo pone un descuento automático (t_price) · 'variant' = cada pack es una variante.
 redirect: 'drawer' carrito lateral · 'cart' página del carrito · 'checkout'.
 {%- endcomment -%}
 {%- liquid
@@ -20,6 +21,8 @@ assign t_meta     = '6 frascos · 12 meses|3 frascos|2 frascos|1 frasco' | split
 assign t_badges   = 'Envío gratis, ⭐ Mejor precio, Pagás 3 llevás 6|🔥 Más comprado, Recomendado, Pagás 2 llevás 3|Envío gratis, 3 cuotas sin interés, 60% OFF 2da unidad|Envío gratis, 3 cuotas sin interés' | split: '|'
 assign t_subtitle = 'Para que se vuelva parte de tu día: un comprimido a la mañana y te olvidás de reponer por un año.|-|-|-' | split: '|'
 assign preselected = 2
+assign pack_mode = 'discount'
+assign t_price    = '117900|97790|78300|57900' | split: '|'
 assign bump_price = 23990
 assign bump_free_min = 6
 assign bump_text = 'Tenés <b>50% OFF</b> para bajar 6 kilos este verano con SLIMFIT'
@@ -53,6 +56,9 @@ if p > max_pos
 assign max_pos = p
 endif
 endfor
+if pack_mode == 'discount'
+assign max_pos = 1
+endif
 assign gift_count = g_title.size
 assign first_gift_min = g_min[0] | plus: 0
 assign missing_gifts = ''
@@ -133,13 +139,22 @@ style="--g-accent: {{ c_accent }}; --g-soft: {{ c_soft }}; --g-text: {{ c_text }
 {%- for t in t_pos -%}
 {%- liquid
 assign ti = forloop.index0
+assign bottles = t_bottles[ti] | plus: 0
+if pack_mode == 'discount'
+assign variant = product.variants[0]
+assign qty = bottles
+assign tier_price = t_price[ti] | plus: 0 | times: 100
+assign compare = variant.price | times: bottles
+else
 assign v_index = t | plus: 0 | minus: 1
 assign variant = product.variants[v_index]
-assign bottles = t_bottles[ti] | plus: 0
+assign qty = 1
+assign tier_price = variant.price
+assign compare = variant.compare_at_price | default: variant.price
+endif
 assign title = t_title[ti]
 assign subtitle = t_subtitle[ti] | strip
-assign compare = variant.compare_at_price | default: variant.price
-assign savings = compare | minus: variant.price
+assign savings = compare | minus: tier_price
 assign unlocked = 0
 for m in g_min
 assign mm = m | plus: 0
@@ -156,6 +171,7 @@ endif
 <div
 class="gt{% if forloop.index == preselected %} is-active{% endif %}"
 data-variant-id="{{ variant.id }}"
+data-qty="{{ qty }}"
 data-bottles="{{ bottles }}"
 data-name="{{ title | escape }}"
 >
@@ -176,7 +192,7 @@ data-name="{{ title | escape }}"
 </span>
 <span class="gt__price">
 {%- if savings > 0 -%}<s>{{ compare | money_without_trailing_zeros }}</s>{%- endif -%}
-<strong>{{ variant.price | money_without_trailing_zeros }}</strong>
+<strong>{{ tier_price | money_without_trailing_zeros }}</strong>
 </span>
 </label>
 {%- if bump_variant != blank -%}
@@ -343,7 +359,7 @@ cta.addEventListener('click', function () {
 var tier = active();
 var bottles = bottlesOf(tier);
 var offer = tier.dataset.name;
-var items = [{ id: Number(tier.dataset.variantId), quantity: 1, properties: { _oferta: offer } }];
+var items = [{ id: Number(tier.dataset.variantId), quantity: Number(tier.dataset.qty) || 1, properties: { _oferta: offer } }];
 if (bumpOn && bumpId) items.push({ id: bumpId, quantity: 1, properties: { _oferta: offer + ' · upsell' } });
 gifts.forEach(function (g) {
 if (g.variantId && bottles >= g.min) items.push({ id: g.variantId, quantity: 1, properties: { _regalo: offer } });
