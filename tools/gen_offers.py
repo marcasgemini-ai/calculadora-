@@ -76,7 +76,7 @@ PRODUCTS = {
         prices='104900|85900|69900|49900',
         g_title='Guía Protocolo Piel Firme 30+|Guía Alimentación antirretención|Viaje al Caribe para Enero',
         g_handle='guia-protocolo-piel-firme-30|guia-alimentacion-antirretencion|-', g_icon='book|leaf|sun',
-        g_image='https://cdn.shopify.com/s/files/1/0789/3421/2779/files/402ad5ac-ee84-45ff-a80e-1a9dc5eaf4c2.png?v=1790773661|https://cdn.shopify.com/s/files/1/0789/3421/2779/files/Imagen_de_ChatGPT_30_sept_2026_09_41_38.png?v=1790773663|https://cdn.shopify.com/s/files/1/0789/3421/2779/files/Imagen_de_ChatGPT_30_sept_2026_09_56_57.png?v=1790773668',
+        g_image='https://cdn.shopify.com/s/files/1/0789/3421/2779/files/402ad5ac-ee84-45ff-a80e-1a9dc5eaf4c2.png?v=1790773661|https://cdn.shopify.com/s/files/1/0789/3421/2779/files/Imagen_de_ChatGPT_30_sept_2026_09_38_05.png?v=1790773666|https://cdn.shopify.com/s/files/1/0789/3421/2779/files/Imagen_de_ChatGPT_30_sept_2026_09_56_57.png?v=1790773668',
         guarantee=('60 días para probarlo.', 'Si no sentís tus piernas más livianas, te devolvemos el dinero.'),
         trust='🥇 Top 1 en Mercado Libre|🚚 Envío gratis con seguimiento y fecha estimada'),
     'slimfit': dict(
@@ -91,7 +91,7 @@ PRODUCTS = {
         prices='125700|103200|83600|59700',
         g_title='Ebook Slimfit: hábitos y comidas para el día a día|Guía Recetas saciantes de verano|Viaje al Caribe para Enero',
         g_handle='ebook-slimfit-habitos-y-comidas|guia-recetas-saciantes-de-verano|-', g_icon='book|leaf|sun',
-        g_image='https://cdn.shopify.com/s/files/1/0789/3421/2779/files/Imagen_de_ChatGPT_30_sept_2026_09_44_20.png?v=1790773665|https://cdn.shopify.com/s/files/1/0789/3421/2779/files/Imagen_de_ChatGPT_30_sept_2026_09_44_15.png?v=1790773667|https://cdn.shopify.com/s/files/1/0789/3421/2779/files/Imagen_de_ChatGPT_30_sept_2026_09_57_22.png?v=1790773668',
+        g_image='https://cdn.shopify.com/s/files/1/0789/3421/2779/files/Imagen_de_ChatGPT_30_sept_2026_09_41_38.png?v=1790773663|https://cdn.shopify.com/s/files/1/0789/3421/2779/files/Imagen_de_ChatGPT_30_sept_2026_09_41_44.png?v=1790773668|https://cdn.shopify.com/s/files/1/0789/3421/2779/files/Imagen_de_ChatGPT_30_sept_2026_09_57_03.png?v=1790773668',
         guarantee=('60 días para probarlo.', 'Si no notás menos ansiedad por comer, te devolvemos el dinero.'),
         trust='🥇 Top 1 en Mercado Libre|🚚 Envío gratis con seguimiento'),
     'multimagnesio': dict(
