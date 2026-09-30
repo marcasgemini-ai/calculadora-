@@ -1,0 +1,116 @@
+{%- comment -%}
+CONTROL DEL UPSELL · Pegá TODO en una sección "Liquid personalizado" del PIE DE PÁGINA
+(así corre en todas las páginas, también con el carrito lateral abierto).
+Qué hace, cada vez que cambia el carrito:
+- El upsell (50% OFF o Regalo) queda siempre en cantidad 1.
+- "Regalo" solo si hay 6+ frascos de un producto; si baja de 6, se saca.
+- Si tenía el 50% OFF y sube a 6+, se cambia por el Regalo.
+- Si no queda ningún producto principal, se saca el upsell.
+{%- endcomment -%}
+{%- liquid
+assign guard_handles = 'slimfit-oferta-upsell,celufit-oferta-upsell' | split: ','
+assign guard_free_min = 6
+assign guard_json = ''
+for h in guard_handles
+  assign op = all_products[h]
+  if op != blank and op.variants.size >= 2
+    assign guard_json = guard_json | append: '{"product":' | append: op.id | append: ',"promo":' | append: op.variants[0].id | append: ',"gift":' | append: op.variants[1].id | append: '},'
+  endif
+endfor
+-%}
+<script>
+(function () {
+  if (window.__drwUpsellGuard) return;
+  window.__drwUpsellGuard = true;
+  var OFFERS = [{{ guard_json }}{}].filter(function (o) { return o.product; });
+  var FREE_MIN = {{ guard_free_min }};
+  if (!OFFERS.length) return;
+  var root = (window.Shopify && Shopify.routes && Shopify.routes.root) || '/';
+  var origFetch = window.fetch.bind(window);
+  var busy = false, again = false, timer = null;
+
+  function post(path, body) {
+    return origFetch(root + path, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(body)
+    }).then(function (r) { return r.json(); });
+  }
+
+  function refreshUI() {
+    if (/\/cart\/?$/.test(location.pathname)) { location.reload(); return; }
+    var drawer = document.querySelector('cart-drawer');
+    origFetch(root + '?sections=cart-drawer,cart-icon-bubble')
+      .then(function (r) { return r.json(); })
+      .then(function (sections) {
+        if (drawer && typeof drawer.renderContents === 'function') {
+          drawer.renderContents({ sections: sections });
+        } else {
+          document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
+        }
+      }).catch(function () {});
+  }
+
+  function check() {
+    if (busy) { again = true; return; }
+    busy = true;
+    origFetch(root + 'cart.js', { headers: { 'Accept': 'application/json' } })
+      .then(function (r) { return r.json(); })
+      .then(function (cart) {
+        var offerIds = OFFERS.map(function (o) { return o.product; });
+        var mainMax = 0, hasMain = false;
+        cart.items.forEach(function (it) {
+          if (offerIds.indexOf(it.product_id) === -1 && it.original_price > 0) {
+            hasMain = true;
+            if (it.quantity > mainMax) mainMax = it.quantity;
+          }
+        });
+        var updates = {}, adds = [], changed = false;
+        OFFERS.forEach(function (o) {
+          var lines = cart.items.filter(function (it) { return it.product_id === o.product; });
+          if (!lines.length) return;
+          var giftLine = null, promoLine = null;
+          lines.forEach(function (it) {
+            var keep = false;
+            if (it.variant_id === o.gift && !giftLine && hasMain && mainMax >= FREE_MIN) { giftLine = it; keep = true; }
+            if (it.variant_id === o.promo && !promoLine && hasMain) { promoLine = it; keep = true; }
+            var want = keep ? 1 : 0;
+            if (it.quantity !== want) { updates[it.key] = want; changed = true; }
+          });
+          // Ya tiene 6+: el 50% OFF pasa a Regalo
+          if (promoLine && mainMax >= FREE_MIN) {
+            updates[promoLine.key] = 0; changed = true;
+            if (!giftLine) adds.push({ id: o.gift, quantity: 1 });
+          }
+        });
+        if (!changed && !adds.length) return false;
+        var p = changed ? post('cart/update.js', { updates: updates }) : Promise.resolve();
+        return p.then(function () { return adds.length ? post('cart/add.js', { items: adds }) : null; })
+          .then(function () { return true; });
+      })
+      .then(function (didFix) { if (didFix) refreshUI(); })
+      .catch(function () {})
+      .then(function () {
+        busy = false;
+        if (again) { again = false; schedule(); }
+      });
+  }
+
+  function schedule() { clearTimeout(timer); timer = setTimeout(check, 150); }
+  var CART_RE = /\/cart\/(add|change|update|clear)(\.js)?(\?|$)/;
+
+  window.fetch = function (input, init) {
+    var url = typeof input === 'string' ? input : (input && input.url) || '';
+    var res = origFetch(input, init);
+    if (CART_RE.test(url)) res.then(schedule, function () {});
+    return res;
+  };
+  var xOpen = XMLHttpRequest.prototype.open;
+  XMLHttpRequest.prototype.open = function (m, url) {
+    if (CART_RE.test(String(url))) this.addEventListener('load', schedule);
+    return xOpen.apply(this, arguments);
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', schedule);
+  else schedule();
+})();
+</script>
