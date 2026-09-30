@@ -134,7 +134,7 @@ Si el bloque da "Algo salió mal" al guardar: **Editar código → Snippets → 
 
 ## Pendientes a revisar
 
-1. **Colores**: puse colores provisorios (Celufit verde agua `#1E8C8A`, Slimfit verde `#2F8F5B`, Multimagnesio azul `#2B5BA8`). Pasame el color de cada etiqueta y los regenero.
+1. **Colores**: Celufit `#FC4B91`, Slimfit `#F65E68`, Multimagnesio `#9DBAD5` (bordes, badges y fondos con el color exacto; textos y el botón de Multimagnesio en un tono más oscuro del mismo color para que se lean). Para cambiarlos: editá `main` en `tools/gen_offers.py` y corré `python3 tools/gen_offers.py`.
 2. **Menofit "1 comprimido al día"**: el bloque de beneficios de Menofit dice 1 comprimido; si son 2 por día, hay que corregirlo.
 3. **Sorteo**: bases y condiciones publicadas, con forma de participar sin compra.
 4. **Garantía de 60 días**: tiene que estar escrita en tu política de devoluciones.
