@@ -66,7 +66,7 @@ BADGES = ('Envío gratis, ⭐ Mejor precio, Pagás 3 llevás 6|🔥 Más comprad
 PRODUCTS = {
     'celufit': dict(
         name='CELUFIT', handle='drenaje-linfatico-y-celulitis', main='#FC4B91', heading='Elegí tu tratamiento', tip='',
-        bump_handle='slimfit-tratamiento-metabolico-para-mujeres-copia', bump_title='SLIMFIT', bump_price=29850,
+        bump_handle='slimfit-tratamiento-metabolico-para-mujeres-copia', bump_title='SLIMFIT', bump_price=29850, bump_offer='slimfit-oferta-upsell',
         bump_text='Tenés <b>50% OFF</b> en SLIMFIT para bajar kilos este verano',
         bump_text_free='🎁 <b>SLIMFIT de regalo</b> para bajar kilos este verano',
         titles='Piernas 6 meses|Protocolo Verano Completo|Protocolo 60 días|Protocolo 30 días',
@@ -81,7 +81,7 @@ PRODUCTS = {
         trust='🥇 Top 1 en Mercado Libre|🚚 Envío gratis con seguimiento y fecha estimada'),
     'slimfit': dict(
         name='SLIMFIT', handle='slimfit-tratamiento-metabolico-para-mujeres-copia', main='#F65E68', heading='Elegí tu tratamiento', tip='',
-        bump_handle='drenaje-linfatico-y-celulitis', bump_title='CELUFIT', bump_price=24950,
+        bump_handle='drenaje-linfatico-y-celulitis', bump_title='CELUFIT', bump_price=24950, bump_offer='celufit-oferta-upsell',
         bump_text='Tenés <b>50% OFF</b> en CELUFIT para lucir tus piernas este verano',
         bump_text_free='🎁 <b>CELUFIT de regalo</b> para lucir tus piernas este verano',
         titles='Transformación 6 meses|Protocolo Verano Completo|Protocolo 60 días|Protocolo 30 días',
@@ -96,7 +96,7 @@ PRODUCTS = {
         trust='🥇 Top 1 en Mercado Libre|🚚 Envío gratis con seguimiento'),
     'multimagnesio': dict(
         name='MULTIMAGNESIO', main='#9DBAD5', heading='Elegí tu tratamiento', tip='',
-        bump_handle='slimfit-tratamiento-metabolico-para-mujeres-copia', bump_title='SLIMFIT', bump_price=29850,
+        bump_handle='slimfit-tratamiento-metabolico-para-mujeres-copia', bump_title='SLIMFIT', bump_price=29850, bump_offer='slimfit-oferta-upsell',
         bump_text='Tenés <b>50% OFF</b> en SLIMFIT para bajar kilos este verano',
         bump_text_free='🎁 <b>SLIMFIT de regalo</b> para bajar kilos este verano',
         titles='Descanso 12 meses|Protocolo 180 días|Protocolo 120 días|Protocolo 60 días',
@@ -128,6 +128,7 @@ def main():
             't_title': "'%s' | split: '|'" % p['titles'], 't_meta': "'%s' | split: '|'" % p['meta'],
             't_badges': "'%s' | split: '|'" % BADGES, 't_subtitle': "'%s' | split: '|'" % q(p['subtitles']),
             't_price': "'%s' | split: '|'" % p['prices'], 'bump_price': str(p['bump_price']),
+            'bump_offer_handle': "'%s'" % p['bump_offer'],
             'bump_text': "'%s'" % p['bump_text'], 'bump_text_free': "'%s'" % p['bump_text_free'],
             'g_title': "'%s' | split: '|'" % p['g_title'], 'g_handle': "'%s' | split: '|'" % p['g_handle'],
             'g_icon': "'%s' | split: '|'" % p['g_icon'], 'g_image': "'%s' | split: '|'" % p['g_image'],

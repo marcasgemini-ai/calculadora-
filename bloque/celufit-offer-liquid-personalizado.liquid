@@ -3,6 +3,7 @@ OFERTA CELUFIT. Pegá TODO. Editá solo CONFIGURACIÓN. Guion (-) = vacío. Valo
 Variantes del producto (opción Pack) en orden: 1 frasco, 2, 3, 6.
 pack_mode: 'discount' = agrega N unidades del frasco y el precio del pack lo pone un descuento automático (t_price) · 'variant' = cada pack es una variante.
 proof: badges de arriba (separados por |) · trust: líneas debajo del botón (separadas por |). Vacío = no se muestra.
+bump_offer_handle: producto de oferta del upsell con 2 variantes (1ª = precio promo, 2ª = regalo $0). Si existe, el upsell se cobra con ese producto y no necesita descuentos.
 redirect: 'drawer' carrito lateral · 'cart' página del carrito · 'checkout'.
 {%- endcomment -%}
 {%- liquid
@@ -28,6 +29,7 @@ assign pack_mode = 'discount'
 assign t_price = '104900|85900|69900|49900' | split: '|'
 assign bump_price = 29850
 assign bump_free_min = 6
+assign bump_offer_handle = 'slimfit-oferta-upsell'
 assign bump_text = 'Tenés <b>50% OFF</b> en SLIMFIT para bajar kilos este verano'
 assign bump_text_free = '🎁 <b>SLIMFIT de regalo</b> para bajar kilos este verano'
 assign g_title = 'Guía Protocolo Piel Firme 30+|Guía Alimentación antirretención|Viaje al Caribe para Enero' | split: '|'
@@ -49,6 +51,18 @@ assign c_ink = '#601C37'
 {%- liquid
 assign bump_product = all_products[bump_handle]
 assign bump_variant = bump_product.selected_or_first_available_variant
+assign bump_mode = 'discount'
+assign bump_cents = bump_price | times: 100
+assign bump_free_id = ''
+if bump_offer_handle != ''
+assign bump_offer = all_products[bump_offer_handle]
+if bump_offer != blank and bump_offer.variants.size >= 2
+assign bump_mode = 'product'
+assign bump_variant_promo = bump_offer.variants[0]
+assign bump_cents = bump_variant_promo.price
+assign bump_free_id = bump_offer.variants[1].id
+endif
+endif
 if bump_title == blank
 assign bump_title = bump_product.title
 endif
@@ -127,6 +141,9 @@ assign gicon = g_icon[gi] | strip
 {%- if bump_variant == blank -%}
 <p style="margin:0 0 8px;padding:8px 10px;border-radius:6px;background:#fff4e5;color:#8a4b00;font-size:13px;">⚠️ Solo el editor ve esto: no se encontró el producto con handle "{{ bump_handle }}" ({{ bump_title }}). Corregí bump_handle.</p>
 {%- endif -%}
+{%- if bump_offer_handle != '' and bump_mode != 'product' -%}
+<p style="margin:0 0 8px;padding:8px 10px;border-radius:6px;background:#eef6ff;color:#1d4f91;font-size:13px;">ℹ️ Solo el editor ve esto: el upsell usa descuentos. Para que el precio salga seguro, creá el producto "{{ bump_offer_handle }}" con 2 variantes (1ª: precio promo · 2ª: regalo $0).</p>
+{%- endif -%}
 {%- if missing_gifts != '' -%}
 <p style="margin:0 0 8px;padding:8px 10px;border-radius:6px;background:#fff4e5;color:#8a4b00;font-size:13px;">⚠️ Solo el editor ve esto: estos regalos no se pueden agregar al carrito:{{ missing_gifts }}. Revisá que el handle sea exacto, que esté Activo, en Tienda online y sin seguimiento de stock.</p>
 {%- endif -%}
@@ -137,7 +154,8 @@ id="celufit-offer"
 class="go"
 lang="es"
 data-redirect="{{ redirect }}"
-data-bump-id="{{ bump_variant.id }}"
+data-bump-id="{% if bump_mode == 'product' %}{{ bump_variant_promo.id }}{% else %}{{ bump_variant.id }}{% endif %}"
+data-bump-free-id="{{ bump_free_id }}"
 data-bump-free-min="{{ bump_free_min }}"
 style="--g-accent: {{ c_accent }}; --g-soft: {{ c_soft }}; --g-text: {{ c_text }}; --g-ink: {{ c_ink }}; --g-cta: #FC4B91;"
 >
@@ -214,7 +232,7 @@ data-name="{{ title | escape }}"
 </span>
 <span class="gb__text">{% if bump_free %}{{ bump_text_free }}{% else %}{{ bump_text }}{% endif %}</span>
 <span class="gb__price">
-<strong>{% if bump_free %}GRATIS{% else %}{{ bump_price | times: 100 | money_without_trailing_zeros }}{% endif %}</strong>
+<strong>{% if bump_free %}GRATIS{% else %}{{ bump_cents | money_without_trailing_zeros }}{% endif %}</strong>
 <s>{{ bump_variant.price | money_without_trailing_zeros }}</s>
 </span>
 </div>
@@ -309,6 +327,7 @@ var tiers = Array.prototype.slice.call(root.querySelectorAll('.gt'));
 if (!tiers.length) return;
 var gifts = JSON.parse(root.querySelector('[data-glow-gifts]').textContent);
 var bumpId = Number(root.dataset.bumpId) || null;
+var bumpFreeId = Number(root.dataset.bumpFreeId) || null;
 var bumpFreeMin = Number(root.dataset.bumpFreeMin);
 var cta = root.querySelector('[data-glow-cta]');
 var errorEl = root.querySelector('[data-glow-error]');
@@ -374,7 +393,7 @@ var tier = active();
 var bottles = bottlesOf(tier);
 var offer = tier.dataset.name;
 var items = [{ id: Number(tier.dataset.variantId), quantity: Number(tier.dataset.qty) || 1, properties: { _oferta: offer } }];
-if (bumpOn && bumpId) items.push({ id: bumpId, quantity: 1, properties: { _oferta: offer + ' · upsell' } });
+if (bumpOn && bumpId) items.push({ id: (bottles >= bumpFreeMin && bumpFreeId) ? bumpFreeId : bumpId, quantity: 1, properties: { _oferta: offer + ' · upsell' } });
 var giftItems = [];
 gifts.forEach(function (g) {
 if (g.variantId && bottles >= g.min) giftItems.push({ id: g.variantId, quantity: 1, properties: { _regalo: offer } });
