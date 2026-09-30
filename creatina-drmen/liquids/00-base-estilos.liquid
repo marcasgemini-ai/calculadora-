@@ -1,25 +1,22 @@
 {%- comment -%}
   00 · BASE DE ESTILOS · PEGAR UNA SOLA VEZ, ARRIBA DE TODO
-  Carga tipografías + colores + botones que usan todas las secciones drm-*.
+  Usa la tipografía del tema + colores + botones que usan todas las secciones drm-*.
   Sin este bloque las demás secciones se ven sin formato.
 {%- endcomment -%}
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   .drm{
     --bg:#0B0B0C; --card:#161618; --card-2:#1E1E21; --ink:#F4F2EE; --muted:#A9A49B;
     --gold:#C9A45C; --gold-2:#E2C489; --red:#D9443A; --green:#3DB57E;
     --paper:#F4F1EC; --paper-ink:#141414; --line:rgba(255,255,255,.10);
-    font-family:Inter,system-ui,-apple-system,sans-serif; color:var(--ink); background:var(--bg);
+    font-family:var(--font-body-family,inherit); color:var(--ink); background:var(--bg);
     -webkit-font-smoothing:antialiased; line-height:1.5; width:100%; overflow-x:clip;
   }
   .drm *,.drm *::before,.drm *::after{box-sizing:border-box}
   .drm img,.drm video{max-width:100%;display:block}
   .drm--light{background:var(--paper);color:var(--paper-ink);--muted:#5E5A54;--line:rgba(0,0,0,.10);--card:#FFFFFF;--card-2:#EFEBE4}
   .drm-wrap{max-width:1120px;margin:0 auto;padding:64px 16px}
-  .drm-h{font-family:Oswald,Impact,sans-serif;text-transform:uppercase;letter-spacing:.01em;line-height:1.05;font-weight:700;margin:0 0 16px;color:inherit}
-  .drm-h2{font-size:clamp(30px,5.2vw,52px)}
+  .drm-h{font-family:var(--font-heading-family,inherit);font-style:var(--font-heading-style,normal);letter-spacing:-.01em;line-height:1.12;font-weight:var(--font-heading-weight,700);margin:0 0 16px;color:inherit}
+  .drm-h2{font-size:clamp(28px,4.6vw,46px)}
   .drm-h3{font-size:clamp(20px,2.6vw,24px)}
   .drm-eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700;margin:0 0 12px}
   .drm-lead{font-size:17px;line-height:1.6;color:var(--muted);max-width:660px;margin:0 0 36px}
@@ -27,7 +24,7 @@
   .drm-center .drm-lead{margin-left:auto;margin-right:auto}
   .drm-accent{color:var(--gold)}
   .drm-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:56px;padding:16px 32px;border:0;border-radius:999px;
-    background:var(--gold);color:#111;font:700 16px/1 Inter,sans-serif;text-transform:uppercase;letter-spacing:.06em;text-decoration:none;cursor:pointer;
+    background:var(--gold);color:#111;font:700 16px/1 var(--font-body-family,inherit);text-transform:uppercase;letter-spacing:.06em;text-decoration:none;cursor:pointer;
     transition:transform .15s ease,background .15s ease;box-shadow:0 10px 30px rgba(201,164,92,.25)}
   .drm-btn:hover{background:var(--gold-2);transform:translateY(-1px)}
   .drm-btn--block{width:100%}

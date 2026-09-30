@@ -10,15 +10,15 @@
     <div class="drm-cmp__scroll">
       <table class="drm-cmp__table">
         <thead>
-          <tr><th></th><th class="drm-cmp__us">DR.MEN<br>PURE Activator®</th><th>Creatina común<br>sin micronizar</th><th>Creatina sin<br>registro visible</th><th>Gomitas de<br>creatina</th></tr>
+          <tr><th></th><th class="drm-cmp__us">DR.MEN<br>PURE Activator®</th><th>Creatina común<br>sin micronizar</th><th>Gomitas de<br>creatina</th><th>Creatina con<br>sabor y agregados</th></tr>
         </thead>
         <tbody>
-          <tr><td>Micronizada · se mezcla fácil</td><td class="drm-cmp__us">✓</td><td>✕</td><td>?</td><td>—</td></tr>
+          <tr><td>Hiperfiltrada · se disuelve por completo</td><td class="drm-cmp__us">✓</td><td>✕</td><td>—</td><td>?</td></tr>
+          <tr><td>Sin arenilla en el fondo del vaso</td><td class="drm-cmp__us">✓</td><td>✕</td><td>—</td><td>?</td></tr>
+          <tr><td>Cero hinchazón ni pesadez</td><td class="drm-cmp__us">✓</td><td>✕</td><td>?</td><td>?</td></tr>
           <tr><td>5 g reales por porción</td><td class="drm-cmp__us">✓</td><td>✓</td><td>?</td><td>?</td></tr>
-          <tr><td>Análisis de laboratorio por lote</td><td class="drm-cmp__us">✓</td><td>✕</td><td>✕</td><td>✕</td></tr>
-          <tr><td>Registro ANMAT verificable</td><td class="drm-cmp__us">✓</td><td>✓</td><td>✕</td><td>?</td></tr>
-          <tr><td>Cero azúcar y agregados</td><td class="drm-cmp__us">✓</td><td>✓</td><td>?</td><td>✕</td></tr>
-          <tr><td>Garantía de {{ garantia_dias }} días</td><td class="drm-cmp__us">✓</td><td>?</td><td>✕</td><td>?</td></tr>
+          <tr><td>Cero azúcar y saborizantes</td><td class="drm-cmp__us">✓</td><td>✓</td><td>✕</td><td>✕</td></tr>
+          <tr><td>Garantía de {{ garantia_dias }} días</td><td class="drm-cmp__us">✓</td><td>?</td><td>?</td><td>?</td></tr>
         </tbody>
       </table>
     </div>
@@ -26,7 +26,7 @@
       <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
       <input type="hidden" name="quantity" value="1">
       <input type="hidden" name="return_to" value="/checkout">
-      <button type="submit" class="drm-btn">Quiero la verificada</button>
+      <button type="submit" class="drm-btn">Quiero la mía</button>
     </form>
   </div>
 </section>
@@ -34,12 +34,12 @@
   .drm-cmp__scroll{overflow-x:auto;margin:32px -16px 0;padding:0 16px}
   .drm-cmp__table{width:100%;min-width:620px;border-collapse:separate;border-spacing:0;font-size:14px;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.06)}
   .drm-cmp__table th,.drm-cmp__table td{padding:16px 12px;border-bottom:1px solid var(--line);text-align:center}
-  .drm-cmp__table th{font:600 13px/1.25 Inter,sans-serif;color:var(--muted);vertical-align:bottom}
+  .drm-cmp__table th{font:600 13px/1.25 var(--font-body-family,inherit);color:var(--muted);vertical-align:bottom}
   .drm-cmp__table td:first-child{text-align:left;font-weight:600}
   .drm-cmp__table tbody tr:last-child td{border-bottom:0}
   .drm-cmp__table td{font-size:18px;font-weight:700;color:#B8B2A8}
   .drm-cmp__table td:first-child{font-size:14px;color:var(--paper-ink)}
   .drm-cmp__us{background:#111 !important;color:var(--gold) !important}
-  th.drm-cmp__us{font:700 15px/1.2 Oswald,sans-serif !important;text-transform:uppercase;color:#fff !important}
+  th.drm-cmp__us{font:700 15px/1.2 var(--font-heading-family,inherit) !important;color:#fff !important}
   .drm-cmp__cta{margin-top:32px}
 </style>

@@ -1,18 +1,19 @@
 {%- comment -%}
-  20 · CTA FINAL (cierre con el enemigo + oferta)
+  20 · CTA FINAL + BARRA DE COMPRA FIJA EN CELULAR
+  Si el tema ya trae "sticky add to cart", borrá desde <div class="drm drm-sticky"> hasta el final.
   EDITAR: garantia_dias igual que en las secciones 04, 12, 16, 17 y 19.
 {%- endcomment -%}
 {%- assign garantia_dias = '60' -%}
 {%- assign variante = product.selected_or_first_available_variant -%}
 <section class="drm drm-final">
   <div class="drm-wrap drm-center">
-    <h2 class="drm-h drm-final__h">Dejá de tomar creatina <span>a ciegas.</span></h2>
-    <p class="drm-lead">Micronizada. Pura. Verificada. La tuya, con el análisis en la mano.</p>
+    <h2 class="drm-h drm-final__h">Tu creatina no es <span>solo creatina.</span></h2>
+    <p class="drm-lead">Hiperfiltrada. Absorción óptima. Cero hinchazón. Máxima eficacia.</p>
     <form method="post" action="/cart/add">
       <input type="hidden" name="id" value="{{ variante.id }}">
       <input type="hidden" name="quantity" value="1">
       <input type="hidden" name="return_to" value="/checkout">
-      <button type="submit" class="drm-btn">Quiero mi creatina verificada · {{ variante.price | money_without_trailing_zeros }}</button>
+      <button type="submit" class="drm-btn">Quiero mi PURE Activator · {{ variante.price | money_without_trailing_zeros }}</button>
     </form>
     <p class="drm-final__fine">Kit de Inicio con 4 regalos · Envío gratis · Garantía de {{ garantia_dias }} días</p>
   </div>

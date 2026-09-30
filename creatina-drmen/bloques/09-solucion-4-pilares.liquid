@@ -1,18 +1,24 @@
 {%- comment -%}
-  17 · GARANTÍA (como "The 90 Day Gains Guarantee" de Gains)
-  EDITAR: días y condiciones. Tiene que coincidir con la política de devoluciones real de la tienda.
+  09 · SOLUCIÓN: PURE ACTIVATOR® HIPERFILTRADA (los 4 pilares del ángulo)
+  Usa la imagen principal del producto automáticamente.
 {%- endcomment -%}
 <style>.drm{--bg:#0B0B0C;--card:#161618;--card-2:#1E1E21;--ink:#F4F2EE;--muted:#A9A49B;--gold:#C9A45C;--gold-2:#E2C489;--red:#D9443A;--green:#3DB57E;--paper:#F4F1EC;--paper-ink:#141414;--line:rgba(255,255,255,.10);font-family:var(--font-body-family,inherit);color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;line-height:1.5;width:100%;overflow-x:clip}.drm *,.drm *::before,.drm *::after{box-sizing:border-box}.drm img,.drm video{max-width:100%;display:block}.drm--light{background:var(--paper);color:var(--paper-ink);--muted:#5E5A54;--line:rgba(0,0,0,.10);--card:#FFFFFF;--card-2:#EFEBE4}.drm-wrap{max-width:1120px;margin:0 auto;padding:64px 16px}.drm-h{font-family:var(--font-heading-family,inherit);font-style:var(--font-heading-style,normal);letter-spacing:-.01em;line-height:1.12;font-weight:var(--font-heading-weight,700);margin:0 0 16px;color:inherit}.drm-h2{font-size:clamp(28px,4.6vw,46px)}.drm-h3{font-size:clamp(20px,2.6vw,24px)}.drm-eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700;margin:0 0 12px}.drm-lead{font-size:17px;line-height:1.6;color:var(--muted);max-width:660px;margin:0 0 36px}.drm-center{text-align:center}.drm-center .drm-lead{margin-left:auto;margin-right:auto}.drm-accent{color:var(--gold)}.drm-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:56px;padding:16px 32px;border:0;border-radius:999px;background:var(--gold);color:#111;font:700 16px/1 var(--font-body-family,inherit);text-transform:uppercase;letter-spacing:.06em;text-decoration:none;cursor:pointer;transition:transform .15s ease,background .15s ease;box-shadow:0 10px 30px rgba(201,164,92,.25)}.drm-btn:hover{background:var(--gold-2);transform:translateY(-1px)}.drm-btn--block{width:100%}.drm-ph{display:flex;align-items:center;justify-content:center;text-align:center;padding:16px;min-height:100%;width:100%;background:repeating-linear-gradient(45deg,var(--card),var(--card) 12px,var(--card-2) 12px,var(--card-2) 24px);color:var(--muted);font-size:13px;font-weight:600;border:1px dashed var(--line)}.drm-stars{display:inline-flex;gap:2px;color:var(--gold)}.drm-stars svg{width:16px;height:16px}@media (max-width:749px){.drm-wrap{padding:48px 16px}}</style>
-{%- assign garantia_dias = '60' -%}
-<section class="drm drm-guar">
-  <div class="drm-wrap">
-    <div class="drm-guar__box">
-      <div class="drm-guar__seal"><strong>{{ garantia_dias }}</strong><span>días</span><small>Garantía DR.MEN</small></div>
-      <div>
-        <h2 class="drm-h drm-h2">Garantía de {{ garantia_dias }} días</h2>
-        <p>Tomala todos los días durante {{ garantia_dias }} días. Si no te convence, escribinos y te devolvemos el dinero. Sin letra chica ni vueltas. Así de seguros estamos de lo que hay en el frasco.</p>
-      </div>
+<section class="drm drm-sol">
+  <div class="drm-wrap drm-sol__grid">
+    <div class="drm-sol__media">
+      {%- if product.featured_image -%}{{ product.featured_image | image_url: width: 900 | image_tag: loading: 'lazy', alt: product.title }}{%- else -%}<div class="drm-ph">Foto del frasco</div>{%- endif -%}
+    </div>
+    <div>
+      <p class="drm-eyebrow">La solución</p>
+      <h2 class="drm-h drm-h2">Creatina monohidrato <span class="drm-accent">hiperfiltrada</span></h2>
+      <p class="drm-lead">Todo lo bueno de la creatina, sin lo que te hacía dejarla.</p>
+      <ol class="drm-sol__list">
+        <li><span>01</span><div><h3>Hiperfiltrada</h3><p>Filtrado extra: solo queda la partícula más fina. Sin grumos ni arenilla.</p></div></li>
+        <li><span>02</span><div><h3>Absorción óptima</h3><p>Se disuelve por completo en agua. Lo que ponés en el vaso, lo tomás.</p></div></li>
+        <li><span>03</span><div><h3>Cero hinchazón</h3><p>Sin pesadez ni panza inflada. Liviana para tomarla todos los días.</p></div></li>
+        <li><span>04</span><div><h3>Máxima eficacia</h3><p>5 g reales de creatina monohidrato pura por porción. Sin rellenos ni azúcar.</p></div></li>
+      </ol>
     </div>
   </div>
 </section>
-<style>.drm-guar__box{display:flex;gap:40px;align-items:center;background:var(--card);border:1px solid rgba(201,164,92,.35);border-radius:24px;padding:40px}.drm-guar__box p{margin:0;font-size:17px;line-height:1.6;color:var(--muted)}.drm-guar__seal{flex:0 0 auto;width:150px;height:150px;border-radius:50%;border:3px solid var(--gold);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:inset 0 0 0 8px var(--bg),inset 0 0 0 10px rgba(201,164,92,.4)}.drm-guar__seal strong{font:700 52px/1 var(--font-heading-family,inherit);color:var(--gold)}.drm-guar__seal span{font:700 14px/1 var(--font-heading-family,inherit);text-transform:uppercase;letter-spacing:.1em}.drm-guar__seal small{font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-top:6px}@media (max-width:749px){.drm-guar__box{flex-direction:column;text-align:center;padding:28px 20px;gap:24px}}</style>
+<style>.drm-sol__grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center}.drm-sol__media{border-radius:20px;overflow:hidden;background:var(--card);aspect-ratio:4/5}.drm-sol__media img{width:100%;height:100%;object-fit:cover}.drm-sol__list{list-style:none;margin:0;padding:0;display:grid;gap:12px}.drm-sol__list li{display:flex;gap:18px;padding:18px 20px;border-radius:14px;background:var(--card);border:1px solid var(--line)}.drm-sol__list span{flex:0 0 auto;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:var(--gold);color:#111;font-weight:700;font-size:15px}.drm-sol__list h3{font-family:var(--font-heading-family,inherit);font-weight:var(--font-heading-weight,700);font-size:19px;line-height:1.2;margin:2px 0 4px;color:inherit}.drm-sol__list p{margin:0;font-size:15px;color:var(--muted)}@media (max-width:749px){.drm-sol__grid{grid-template-columns:1fr;gap:32px}.drm-sol__media{aspect-ratio:1}}</style>

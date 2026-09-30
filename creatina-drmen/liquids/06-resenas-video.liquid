@@ -5,13 +5,13 @@
 {%- endcomment -%}
 {%- assign v1 = '' -%}{%- assign v2 = '' -%}{%- assign v3 = '' -%}{%- assign v4 = '' -%}
 {%- assign cap1 = '"Por fin una que no me queda en el fondo del vaso."' -%}
-{%- assign cap2 = '"Escaneé el QR y vi el análisis de mi lote."' -%}
-{%- assign cap3 = '"La tomo todos los días, sin vueltas."' -%}
-{%- assign cap4 = '"Nunca había visto qué tenía mi creatina."' -%}
+{%- assign cap2 = '"Se disuelve al toque y no me cae pesada."' -%}
+{%- assign cap3 = '"Primera creatina que no me hincha."' -%}
+{%- assign cap4 = '"Nada que ver con la que tomaba antes."' -%}
 <section class="drm drm-vr">
   <div class="drm-wrap drm-center">
     <p class="drm-eyebrow">Clientes reales</p>
-    <h2 class="drm-h drm-h2">Lo que dicen los que <span class="drm-accent">ya la verificaron</span></h2>
+    <h2 class="drm-h drm-h2">Lo que dicen los que <span class="drm-accent">ya la probaron</span></h2>
     <div class="drm-vr__grid">
       {%- for i in (1..4) -%}
         {%- case i -%}{%- when 1 -%}{%- assign v = v1 -%}{%- assign c = cap1 -%}{%- when 2 -%}{%- assign v = v2 -%}{%- assign c = cap2 -%}{%- when 3 -%}{%- assign v = v3 -%}{%- assign c = cap3 -%}{%- else -%}{%- assign v = v4 -%}{%- assign c = cap4 -%}{%- endcase -%}

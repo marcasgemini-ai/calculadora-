@@ -13,8 +13,7 @@ def mini(css):
 
 base = open(os.path.join(src, "00-base-estilos.liquid"), encoding="utf-8").read()
 base_css = mini(re.search(r"<style>(.*?)</style>", base, re.S).group(1))
-fonts = '<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">'
-head = fonts + "\n<style>" + base_css + "</style>\n"
+head = "<style>" + base_css + "</style>\n"
 
 files = sorted(f for f in glob.glob(os.path.join(src, "*.liquid")) if not os.path.basename(f).startswith("00"))
 sticky = [f for f in files if os.path.basename(f).startswith("21")][0]

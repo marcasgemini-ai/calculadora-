@@ -27,6 +27,6 @@ for f in sorted(glob.glob(os.path.join(here, "..", "liquids", "*.liquid"))):
         html = f'<div style="max-width:480px;margin:0 auto;padding:16px;background:#fff;color:#141414">{html}</div>'
     parts.append(f"<!-- {name} -->\n{html}")
 page = ('<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
-        '<title>Preview PURE Activator</title><style>body{margin:0;background:#fff}</style></head><body>' + "\n".join(parts) + "</body></html>")
+        '<title>Preview PURE Activator</title><style>:root{--font-body-family:Helvetica,Arial,sans-serif;--font-heading-family:Helvetica,Arial,sans-serif;--font-heading-weight:700}body{margin:0;background:#fff;font-family:var(--font-body-family)}</style></head><body>' + "\n".join(parts) + "</body></html>")
 open(os.path.join(here, "preview.html"), "w", encoding="utf-8").write(page)
 print("ok", len(parts), "secciones")

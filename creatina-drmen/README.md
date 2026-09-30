@@ -1,14 +1,14 @@
 # DR.MEN · Creatina PURE Activator® · Página de producto "Creatina Verificada"
 
 Réplica de la estructura de la página de producto de Gains in Bulk (Instantized Creatine®) adaptada a Argentina.
-Categoría nueva: **Creatina Verificada**. Enemigo: **la creatina común / sin control** ("¿Alguien te dijo que la creatina es solo creatina?").
+Ángulo (el de Gains): **"Monohidrato de creatina hiperfiltrado para una absorción óptima, cero hinchazón y máxima eficacia."** Enemigo: la creatina común de partícula gruesa ("¿Te dijeron que la creatina es solo creatina?"). Tipografía: toma la del tema (`--font-heading-family` / `--font-body-family`).
 
 ## Título del producto (para cargar en Shopify)
 
-**Creatina PURE Activator® · Creatina Verificada · Micronizada 300 g**
+**Creatina Hiperfiltrada PURE Activator® · Monohidrato 300 g**
 
-- Título SEO: `Creatina Micronizada Verificada 300 g | DR.MEN PURE Activator®`
-- Meta descripción: `Creatina monohidrato micronizada con análisis de laboratorio por lote. 5 g reales por porción, cero agregados. Kit de Inicio con 4 regalos y envío gratis.`
+- Título SEO: `Creatina Monohidrato Hiperfiltrada 300 g | DR.MEN PURE Activator®`
+- Meta descripción: `Creatina monohidrato hiperfiltrada: se disuelve por completo, cero hinchazón, 5 g reales por porción. Kit de Inicio con 4 regalos y envío gratis.`
 
 ## Cómo instalar
 
@@ -31,13 +31,13 @@ Alternativa: carpeta `liquids/` (base 00 + 21 secciones):
 | 05 | cinta-claims | Debajo del bloque de producto | Logos Ironman · Flex · M&F |
 | 06 | resenas-video | | "Raving Reviews From Verified Customers" |
 | 07 | dolor-creencia | | **"Did Someone Tell You Creatine Was Just Creatine...?"** |
-| 08 | agitacion-anmat | | (nuevo: problema local) |
-| 09 | solucion-3-pilares | | Mecanismo "filtered 3X finer" |
+| 08 | hiperfiltrada-particula | | Mecanismo "filtered 3X finer" |
+| 09 | solucion-4-pilares | | Hiperfiltrada · absorción · cero hinchazón · eficacia |
 | 10 | prueba-del-vaso | | Demo del vaso transparente |
 | 11 | gente-real | | "Real people. Real gains." |
 | 12 | tabla-comparativa | | "The Choice is Clear" |
 | 13 | evidencia-ciencia | | "The Evidence is Overwhelming" |
-| 14 | verificada-qr-lote | | "Informed Sport · Clean gains. Zero guesswork." |
+| 14 | calidad-pureza | | "Informed Sport · Clean gains. Zero guesswork." |
 | 15 | modo-de-uso | | "One Scoop, Once a Day" |
 | 16 | precio-por-dia-oferta | | "Start For <$1/Day" |
 | 17 | garantia | | "The 90 Day Gains Guarantee" |
@@ -51,9 +51,8 @@ El precio, el tachado y el "menos de $X por día" salen solos del producto (prec
 
 ## Antes de publicar · checklist obligatorio
 
-- [ ] **Análisis de laboratorio independiente del lote actual** (pureza HPLC, contenido por porción, contaminantes). Sin esto la categoría no existe.
-- [ ] Página `/pages/lotes` con el PDF de cada lote + **QR en la etiqueta** que apunte ahí.
-- [ ] Completar laboratorio, RNPA y RNE en `14-verificada-qr-lote`.
+- [ ] Confirmar con el proveedor que el proceso justifica "hiperfiltrada" (dato de malla/mesh → variable `malla` en 08). La etiqueta hoy dice "MICRONIZADA": alinear.
+- [ ] Completar RNPA y RNE en `14-calidad-pureza` (y link a análisis si lo tienen).
 - [ ] Hacer **la prueba del vaso real** (5 g en 500 ml, 30 s) contra una creatina común sin micronizar. Si no se ve la diferencia, sacar la sección 10.
 - [ ] Días de garantía iguales en 01, 04, 12, 16, 17, 19 y 20 (`garantia_dias`) y en la política de devoluciones.
 - [ ] Valores de regalos en 03 (texto) y 16 (en centavos: `990000` = $9.900).

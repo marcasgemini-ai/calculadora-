@@ -1,0 +1,28 @@
+{%- comment -%}
+  08 · MECANISMO: HIPERFILTRADA (como el "filtered 3X finer than standard creatine" de Gains)
+  EDITAR: si el proveedor les da el dato de malla (mesh), completalo en "malla" (ej: '400').
+  Si queda vacío no se muestra ningún número. No inventar el dato.
+{%- endcomment -%}
+<style>.drm{--bg:#0B0B0C;--card:#161618;--card-2:#1E1E21;--ink:#F4F2EE;--muted:#A9A49B;--gold:#C9A45C;--gold-2:#E2C489;--red:#D9443A;--green:#3DB57E;--paper:#F4F1EC;--paper-ink:#141414;--line:rgba(255,255,255,.10);font-family:var(--font-body-family,inherit);color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;line-height:1.5;width:100%;overflow-x:clip}.drm *,.drm *::before,.drm *::after{box-sizing:border-box}.drm img,.drm video{max-width:100%;display:block}.drm--light{background:var(--paper);color:var(--paper-ink);--muted:#5E5A54;--line:rgba(0,0,0,.10);--card:#FFFFFF;--card-2:#EFEBE4}.drm-wrap{max-width:1120px;margin:0 auto;padding:64px 16px}.drm-h{font-family:var(--font-heading-family,inherit);font-style:var(--font-heading-style,normal);letter-spacing:-.01em;line-height:1.12;font-weight:var(--font-heading-weight,700);margin:0 0 16px;color:inherit}.drm-h2{font-size:clamp(28px,4.6vw,46px)}.drm-h3{font-size:clamp(20px,2.6vw,24px)}.drm-eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700;margin:0 0 12px}.drm-lead{font-size:17px;line-height:1.6;color:var(--muted);max-width:660px;margin:0 0 36px}.drm-center{text-align:center}.drm-center .drm-lead{margin-left:auto;margin-right:auto}.drm-accent{color:var(--gold)}.drm-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:56px;padding:16px 32px;border:0;border-radius:999px;background:var(--gold);color:#111;font:700 16px/1 var(--font-body-family,inherit);text-transform:uppercase;letter-spacing:.06em;text-decoration:none;cursor:pointer;transition:transform .15s ease,background .15s ease;box-shadow:0 10px 30px rgba(201,164,92,.25)}.drm-btn:hover{background:var(--gold-2);transform:translateY(-1px)}.drm-btn--block{width:100%}.drm-ph{display:flex;align-items:center;justify-content:center;text-align:center;padding:16px;min-height:100%;width:100%;background:repeating-linear-gradient(45deg,var(--card),var(--card) 12px,var(--card-2) 12px,var(--card-2) 24px);color:var(--muted);font-size:13px;font-weight:600;border:1px dashed var(--line)}.drm-stars{display:inline-flex;gap:2px;color:var(--gold)}.drm-stars svg{width:16px;height:16px}@media (max-width:749px){.drm-wrap{padding:48px 16px}}</style>
+{%- assign malla = '' -%}
+<section class="drm drm--light drm-mech">
+  <div class="drm-wrap drm-center">
+    <p class="drm-eyebrow">La diferencia está en el tamaño</p>
+    <h2 class="drm-h drm-h2">Hiperfiltrada: solo la partícula más fina</h2>
+    <p class="drm-lead">PURE Activator® pasa por un filtrado extra que deja solo la partícula más fina de creatina monohidrato. Por eso se disuelve por completo, se aprovecha mejor y no te cae pesada.</p>
+    <div class="drm-mech__row">
+      <div class="drm-mech__card">
+        <div class="drm-mech__dots drm-mech__dots--big" aria-hidden="true">{%- for i in (1..14) -%}<i></i>{%- endfor -%}</div>
+        <h3>Creatina común</h3>
+        <ul><li class="no">Partícula gruesa</li><li class="no">Queda en el fondo del vaso</li><li class="no">Pesadez e hinchazón</li></ul>
+      </div>
+      <div class="drm-mech__arrow" aria-hidden="true">→</div>
+      <div class="drm-mech__card drm-mech__card--us">
+        <div class="drm-mech__dots drm-mech__dots--fine" aria-hidden="true">{%- for i in (1..420) -%}<i></i>{%- endfor -%}</div>
+        <h3>PURE Activator® hiperfiltrada</h3>
+        <ul><li>Partícula ultra fina{% if malla != blank %} · malla {{ malla }}{% endif %}</li><li>Se disuelve por completo</li><li>Liviana, cero hinchazón</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+<style>.drm-mech__row{display:flex;align-items:stretch;justify-content:center;gap:24px;text-align:left}.drm-mech__card{flex:1;max-width:420px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px}.drm-mech__card--us{background:#111;color:var(--ink);border-color:rgba(201,164,92,.5)}.drm-mech__card h3{font-family:var(--font-heading-family,inherit);font-weight:var(--font-heading-weight,700);font-size:20px;margin:18px 0 10px;color:inherit}.drm-mech__card ul{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:15px}.drm-mech__card li::before{content:"✓";display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:var(--green);color:#fff;font-size:11px;margin-right:8px}.drm-mech__card li.no::before{content:"✕";background:var(--red)}.drm-mech__dots{height:150px;border-radius:14px;background:#EDE9E2;display:flex;flex-wrap:wrap;align-content:center;justify-content:center;padding:12px;overflow:hidden}.drm-mech__dots--big{gap:12px}.drm-mech__dots--big i{width:26px;height:26px;border-radius:40% 55% 45% 50%;background:#fff;box-shadow:inset -3px -3px 0 #D8D3C9}.drm-mech__dots--fine{gap:5px;background:#1B1B1E}.drm-mech__dots--fine i{width:6px;height:6px;border-radius:50%;background:var(--gold-2);opacity:.85}.drm-mech__arrow{align-self:center;font-size:32px;color:var(--gold);font-weight:700}@media (max-width:749px){.drm-mech__row{flex-direction:column;align-items:center}.drm-mech__card{width:100%}.drm-mech__arrow{transform:rotate(90deg)}}</style>

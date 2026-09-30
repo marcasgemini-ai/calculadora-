@@ -1,0 +1,42 @@
+{%- comment -%}
+  14 · CALIDAD Y PUREZA (reemplaza "Informed Sport · Clean gains. Zero guesswork." de Gains)
+  EDITAR: RNPA, RNE. Si tienen análisis de laboratorio, poné el link en url_analisis (si no, dejalo vacío).
+{%- endcomment -%}
+{%- assign rnpa = '[N° RNPA]' -%}
+{%- assign rne = '[N° RNE]' -%}
+{%- assign url_analisis = '' -%}
+{%- assign img_lab = '' -%}
+<section class="drm drm--light drm-lab">
+  <div class="drm-wrap drm-lab__grid">
+    <div class="drm-lab__media">
+      {%- if img_lab != blank -%}<img src="{{ img_lab | file_url }}" alt="Calidad creatina DR.MEN" loading="lazy">{%- else -%}<div class="drm-ph">Foto: producción / laboratorio<br>o polvo en macro</div>{%- endif -%}
+    </div>
+    <div>
+      <div class="drm-lab__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>Calidad DR.MEN</div>
+      <h2 class="drm-h drm-h2">Ganancias limpias.<br>Cero dudas.</h2>
+      <p class="drm-lead">Un solo ingrediente: creatina monohidrato hiperfiltrada. Nada más, nada menos.</p>
+      <ul class="drm-lab__list">
+        <li>100% creatina monohidrato</li>
+        <li>Sin azúcar, sin saborizantes, sin rellenos</li>
+        <li>Libre de gluten</li>
+        <li>Suplemento dietario con registro ANMAT</li>
+      </ul>
+      <div class="drm-lab__reg"><span>RNPA {{ rnpa }}</span><span>RNE {{ rne }}</span></div>
+      {%- if url_analisis != blank -%}<a class="drm-lab__link" href="{{ url_analisis }}">Ver análisis de laboratorio →</a>{%- endif -%}
+    </div>
+  </div>
+</section>
+<style>
+  .drm-lab__grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center}
+  .drm-lab__media{aspect-ratio:4/5;border-radius:20px;overflow:hidden}
+  .drm-lab__media img{width:100%;height:100%;object-fit:cover}
+  .drm-lab__badge{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:#111;color:var(--gold);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.1em;margin-bottom:18px}
+  .drm-lab__badge svg{width:18px;height:18px}
+  .drm-lab__list{list-style:none;margin:0 0 24px;padding:0;display:grid;gap:10px}
+  .drm-lab__list li{position:relative;padding-left:32px;font-size:15px}
+  .drm-lab__list li::before{content:"✓";position:absolute;left:0;top:0;width:22px;height:22px;border-radius:50%;background:var(--gold);color:#111;display:grid;place-items:center;font-size:12px;font-weight:800}
+  .drm-lab__reg{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+  .drm-lab__reg span{padding:6px 12px;border-radius:8px;background:var(--card-2);font-size:13px;font-weight:600}
+  .drm-lab__link{color:var(--paper-ink);font-weight:700;text-decoration:underline;text-underline-offset:4px}
+  @media (max-width:749px){.drm-lab__grid{grid-template-columns:1fr;gap:32px}.drm-lab__media{aspect-ratio:4/3}}
+</style>

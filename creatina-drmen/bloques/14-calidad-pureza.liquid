@@ -1,0 +1,30 @@
+{%- comment -%}
+  14 · CALIDAD Y PUREZA (reemplaza "Informed Sport · Clean gains. Zero guesswork." de Gains)
+  EDITAR: RNPA, RNE. Si tienen análisis de laboratorio, poné el link en url_analisis (si no, dejalo vacío).
+{%- endcomment -%}
+<style>.drm{--bg:#0B0B0C;--card:#161618;--card-2:#1E1E21;--ink:#F4F2EE;--muted:#A9A49B;--gold:#C9A45C;--gold-2:#E2C489;--red:#D9443A;--green:#3DB57E;--paper:#F4F1EC;--paper-ink:#141414;--line:rgba(255,255,255,.10);font-family:var(--font-body-family,inherit);color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;line-height:1.5;width:100%;overflow-x:clip}.drm *,.drm *::before,.drm *::after{box-sizing:border-box}.drm img,.drm video{max-width:100%;display:block}.drm--light{background:var(--paper);color:var(--paper-ink);--muted:#5E5A54;--line:rgba(0,0,0,.10);--card:#FFFFFF;--card-2:#EFEBE4}.drm-wrap{max-width:1120px;margin:0 auto;padding:64px 16px}.drm-h{font-family:var(--font-heading-family,inherit);font-style:var(--font-heading-style,normal);letter-spacing:-.01em;line-height:1.12;font-weight:var(--font-heading-weight,700);margin:0 0 16px;color:inherit}.drm-h2{font-size:clamp(28px,4.6vw,46px)}.drm-h3{font-size:clamp(20px,2.6vw,24px)}.drm-eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700;margin:0 0 12px}.drm-lead{font-size:17px;line-height:1.6;color:var(--muted);max-width:660px;margin:0 0 36px}.drm-center{text-align:center}.drm-center .drm-lead{margin-left:auto;margin-right:auto}.drm-accent{color:var(--gold)}.drm-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:56px;padding:16px 32px;border:0;border-radius:999px;background:var(--gold);color:#111;font:700 16px/1 var(--font-body-family,inherit);text-transform:uppercase;letter-spacing:.06em;text-decoration:none;cursor:pointer;transition:transform .15s ease,background .15s ease;box-shadow:0 10px 30px rgba(201,164,92,.25)}.drm-btn:hover{background:var(--gold-2);transform:translateY(-1px)}.drm-btn--block{width:100%}.drm-ph{display:flex;align-items:center;justify-content:center;text-align:center;padding:16px;min-height:100%;width:100%;background:repeating-linear-gradient(45deg,var(--card),var(--card) 12px,var(--card-2) 12px,var(--card-2) 24px);color:var(--muted);font-size:13px;font-weight:600;border:1px dashed var(--line)}.drm-stars{display:inline-flex;gap:2px;color:var(--gold)}.drm-stars svg{width:16px;height:16px}@media (max-width:749px){.drm-wrap{padding:48px 16px}}</style>
+{%- assign rnpa = '[N° RNPA]' -%}
+{%- assign rne = '[N° RNE]' -%}
+{%- assign url_analisis = '' -%}
+{%- assign img_lab = '' -%}
+<section class="drm drm--light drm-lab">
+  <div class="drm-wrap drm-lab__grid">
+    <div class="drm-lab__media">
+      {%- if img_lab != blank -%}<img src="{{ img_lab | file_url }}" alt="Calidad creatina DR.MEN" loading="lazy">{%- else -%}<div class="drm-ph">Foto: producción / laboratorio<br>o polvo en macro</div>{%- endif -%}
+    </div>
+    <div>
+      <div class="drm-lab__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>Calidad DR.MEN</div>
+      <h2 class="drm-h drm-h2">Ganancias limpias.<br>Cero dudas.</h2>
+      <p class="drm-lead">Un solo ingrediente: creatina monohidrato hiperfiltrada. Nada más, nada menos.</p>
+      <ul class="drm-lab__list">
+        <li>100% creatina monohidrato</li>
+        <li>Sin azúcar, sin saborizantes, sin rellenos</li>
+        <li>Libre de gluten</li>
+        <li>Suplemento dietario con registro ANMAT</li>
+      </ul>
+      <div class="drm-lab__reg"><span>RNPA {{ rnpa }}</span><span>RNE {{ rne }}</span></div>
+      {%- if url_analisis != blank -%}<a class="drm-lab__link" href="{{ url_analisis }}">Ver análisis de laboratorio →</a>{%- endif -%}
+    </div>
+  </div>
+</section>
+<style>.drm-lab__grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center}.drm-lab__media{aspect-ratio:4/5;border-radius:20px;overflow:hidden}.drm-lab__media img{width:100%;height:100%;object-fit:cover}.drm-lab__badge{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:#111;color:var(--gold);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.1em;margin-bottom:18px}.drm-lab__badge svg{width:18px;height:18px}.drm-lab__list{list-style:none;margin:0 0 24px;padding:0;display:grid;gap:10px}.drm-lab__list li{position:relative;padding-left:32px;font-size:15px}.drm-lab__list li::before{content:"✓";position:absolute;left:0;top:0;width:22px;height:22px;border-radius:50%;background:var(--gold);color:#111;display:grid;place-items:center;font-size:12px;font-weight:800}.drm-lab__reg{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}.drm-lab__reg span{padding:6px 12px;border-radius:8px;background:var(--card-2);font-size:13px;font-weight:600}.drm-lab__link{color:var(--paper-ink);font-weight:700;text-decoration:underline;text-underline-offset:4px}@media (max-width:749px){.drm-lab__grid{grid-template-columns:1fr;gap:32px}.drm-lab__media{aspect-ratio:4/3}}</style>

@@ -5,7 +5,6 @@
 {%- endcomment -%}
 {%- assign rating_score = '' -%}
 {%- assign rating_count = '' -%}
-{%- assign categoria = 'Creatina Verificada' -%}
 <div class="drm drm--light drm-bt">
   {%- if rating_score != blank -%}
   <div class="drm-bt__rating">
@@ -13,20 +12,19 @@
     <strong>{{ rating_score }}</strong> · {{ rating_count }} reseñas verificadas
   </div>
   {%- endif -%}
-  <p class="drm-bt__tag"><span>Nueva categoría</span> {{ categoria }}</p>
-  <p class="drm-bt__sub">La creatina micronizada que te muestra su análisis de laboratorio.</p>
+  <p class="drm-bt__sub">Monohidrato de creatina hiperfiltrado para una absorción óptima, cero hinchazón y máxima eficacia.</p>
   <ul class="drm-bt__list">
-    <li><b>Micronizada:</b> se mezcla fácil, sin grumos ni arenilla en el fondo del vaso.</li>
-    <li><b>5 g reales</b> de creatina monohidrato por porción. 60 porciones.</li>
-    <li><b>Cero agregados:</b> sin rellenos, sin azúcar, sin gluten.</li>
-    <li><b>Verificada por lote:</b> escaneá el QR del frasco y mirá su análisis.</li>
-    <li><b>Apoya la fuerza y el rendimiento</b> en entrenamientos intensos.</li>
+    <li><b>Hiperfiltrada:</b> partícula ultra fina que se disuelve por completo. Sin grumos ni arenilla.</li>
+    <li><b>Absorción óptima:</b> lo que se disuelve, lo tomás. Nada queda en el fondo del vaso.</li>
+    <li><b>Cero hinchazón:</b> sin pesadez ni panza inflada. Liviana para tomar todos los días.</li>
+    <li><b>Máxima eficacia:</b> 5 g reales de creatina monohidrato por porción. 60 porciones.</li>
+    <li><b>Pura:</b> sin sabor, sin azúcar, sin agregados, sin gluten.</li>
   </ul>
 </div>
 <style>
   .drm-bt{background:transparent;color:inherit;padding:4px 0 8px}
   .drm-bt__rating{display:flex;align-items:center;gap:8px;font-size:14px;margin-bottom:12px}
-  .drm-bt__tag{display:inline-flex;align-items:center;gap:8px;margin:0 0 10px;padding:6px 12px 6px 6px;border-radius:999px;background:rgba(201,164,92,.14);font:700 13px/1 Inter,sans-serif;text-transform:uppercase;letter-spacing:.06em}
+  .drm-bt__tag{display:inline-flex;align-items:center;gap:8px;margin:0 0 10px;padding:6px 12px 6px 6px;border-radius:999px;background:rgba(201,164,92,.14);font:700 13px/1 var(--font-body-family,inherit);text-transform:uppercase;letter-spacing:.06em}
   .drm-bt__tag span{background:var(--gold);color:#111;padding:5px 9px;border-radius:999px;font-size:11px}
   .drm-bt__sub{font-size:17px;font-weight:600;margin:0 0 14px}
   .drm-bt__list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
