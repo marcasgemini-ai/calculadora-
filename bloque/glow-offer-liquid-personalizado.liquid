@@ -62,8 +62,13 @@ assign first_gift_min = g_min[0] | plus: 0
 assign missing_gifts = ''
 for h in g_handle
 assign hh = h | strip
-if hh != '-' and hh != '' and all_products[hh] == blank
-assign missing_gifts = missing_gifts | append: ' "' | append: hh | append: '"'
+if hh != '-' and hh != ''
+assign gpx = all_products[hh]
+if gpx == blank
+assign missing_gifts = missing_gifts | append: ' "' | append: hh | append: '" (no existe)'
+elsif gpx.selected_or_first_available_variant.available != true
+assign missing_gifts = missing_gifts | append: ' "' | append: hh | append: '" (sin stock o en borrador)'
+endif
 endif
 endfor
 -%}
@@ -118,7 +123,7 @@ assign gicon = g_icon[gi] | strip
 <p style="margin:0 0 8px;padding:8px 10px;border-radius:6px;background:#fff4e5;color:#8a4b00;font-size:13px;">⚠️ Solo el editor ve esto: no se encontró el producto con handle "{{ bump_handle }}" ({{ bump_title }}). Corregí bump_handle.</p>
 {%- endif -%}
 {%- if missing_gifts != '' -%}
-<p style="margin:0 0 8px;padding:8px 10px;border-radius:6px;background:#fff4e5;color:#8a4b00;font-size:13px;">⚠️ Solo el editor ve esto: no se encontraron estos regalos:{{ missing_gifts }}. Se muestran, pero no se agregan al carrito.</p>
+<p style="margin:0 0 8px;padding:8px 10px;border-radius:6px;background:#fff4e5;color:#8a4b00;font-size:13px;">⚠️ Solo el editor ve esto: estos regalos no se pueden agregar al carrito:{{ missing_gifts }}. Revisá que el handle sea exacto, que esté Activo, en Tienda online y sin seguimiento de stock.</p>
 {%- endif -%}
 {%- endif -%}
 {%- if product.variants.size >= max_pos -%}
@@ -273,7 +278,10 @@ Con {{ gmin }} frascos
 assign gh = g_handle[forloop.index0] | strip
 assign gid = ''
 if gh != '-' and gh != ''
-assign gid = all_products[gh].selected_or_first_available_variant.id | append: ''
+assign gv = all_products[gh].selected_or_first_available_variant
+if gv.available
+assign gid = gv.id | append: ''
+endif
 endif
 -%}
 { "min": {{ g_min[forloop.index0] | plus: 0 }}, "variantId": {% if gid != '' %}{{ gid }}{% else %}null{% endif %} }{% unless forloop.last %},{% endunless %}
@@ -359,8 +367,9 @@ var bottles = bottlesOf(tier);
 var offer = tier.dataset.name;
 var items = [{ id: Number(tier.dataset.variantId), quantity: Number(tier.dataset.qty) || 1, properties: { _oferta: offer } }];
 if (bumpOn && bumpId) items.push({ id: bumpId, quantity: 1, properties: { _oferta: offer + ' · upsell' } });
+var giftItems = [];
 gifts.forEach(function (g) {
-if (g.variantId && bottles >= g.min) items.push({ id: g.variantId, quantity: 1, properties: { _regalo: offer } });
+if (g.variantId && bottles >= g.min) giftItems.push({ id: g.variantId, quantity: 1, properties: { _regalo: offer } });
 });
 var busyText = cta.querySelector('[data-glow-busy-text]');
 busyText.textContent = 'Agregando…';
@@ -375,11 +384,17 @@ payload.sections = ['cart-drawer', 'cart-icon-bubble'];
 payload.sections_url = window.location.pathname;
 }
 var cartData;
-fetch('{{ routes.cart_add_url }}.js', {
+var addUrl = '{{ routes.cart_add_url }}.js';
+var giftReq = giftItems.length ? fetch(addUrl, {
+method: 'POST',
+headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+body: JSON.stringify({ items: giftItems })
+}).catch(function () {}) : Promise.resolve();
+giftReq.then(function () { return fetch(addUrl, {
 method: 'POST',
 headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
 body: JSON.stringify(payload)
-})
+}); })
 .then(function (res) { return res.json().then(function (d) { if (!res.ok) throw d; return d; }); })
 .then(function (d) {
 cartData = d;
