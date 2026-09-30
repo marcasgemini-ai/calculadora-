@@ -106,7 +106,7 @@ PRODUCTS = {
         prices='117500|96400|78100|55800',
         g_title='Guía Protocolo Descanso y Energía|Guía Rutina nocturna anti-estrés|Viaje al Caribe para Enero',
         g_handle='guia-protocolo-descanso-y-energia|guia-rutina-nocturna-anti-estres|-', g_icon='book|leaf|sun',
-        g_image='https://cdn.shopify.com/s/files/1/0789/3421/2779/files/Imagen_de_ChatGPT_30_sept_2026_09_41_44.png?v=1790773668|https://cdn.shopify.com/s/files/1/0789/3421/2779/files/Imagen_de_ChatGPT_30_sept_2026_09_38_05.png?v=1790773666|https://cdn.shopify.com/s/files/1/0789/3421/2779/files/Imagen_de_ChatGPT_30_sept_2026_09_57_03.png?v=1790773668',
+        g_image='https://cdn.shopify.com/s/files/1/0789/3421/2779/files/Imagen_de_ChatGPT_30_sept_2026_09_44_20.png?v=1790773665|https://cdn.shopify.com/s/files/1/0789/3421/2779/files/Imagen_de_ChatGPT_30_sept_2026_09_44_15.png?v=1790773667|https://cdn.shopify.com/s/files/1/0789/3421/2779/files/Imagen_de_ChatGPT_30_sept_2026_09_57_22.png?v=1790773668',
         guarantee=('60 días para probarlo.', 'Si no notás que descansás mejor, te devolvemos el dinero.'),
         trust='🥇 Top 1 en Mercado Libre|🚚 Envío gratis con seguimiento'),
 }
