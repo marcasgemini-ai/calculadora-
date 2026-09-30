@@ -2,9 +2,9 @@
 CONTROL DEL UPSELL · Pegá TODO en una sección "Liquid personalizado" del PIE DE PÁGINA
 (así corre en todas las páginas, también con el carrito lateral abierto).
 Qué hace, cada vez que cambia el carrito:
-- El upsell (50% OFF o Regalo) queda siempre en cantidad 1.
-- "Regalo" solo si hay 6+ frascos de un producto; si baja de 6, se saca.
-- Si tenía el 50% OFF y sube a 6+, se cambia por el Regalo.
+- "Regalo" queda siempre en cantidad 1, y solo si hay 6+ frascos de un producto; si baja de 6, se saca.
+- El 50% OFF se puede llevar en la cantidad que quieran.
+- Si sube a 6+ y no tiene Regalo, 1 unidad del 50% OFF pasa a Regalo.
 - Si no queda ningún producto principal, se saca el upsell.
 {%- endcomment -%}
 {%- liquid
@@ -71,16 +71,15 @@ endfor
           if (!lines.length) return;
           var giftLine = null, promoLine = null;
           lines.forEach(function (it) {
-            var keep = false;
-            if (it.variant_id === o.gift && !giftLine && hasMain && mainMax >= FREE_MIN) { giftLine = it; keep = true; }
-            if (it.variant_id === o.promo && !promoLine && hasMain) { promoLine = it; keep = true; }
-            var want = keep ? 1 : 0;
+            var want = 0;
+            if (it.variant_id === o.gift && !giftLine && hasMain && mainMax >= FREE_MIN) { giftLine = it; want = 1; }
+            if (it.variant_id === o.promo && hasMain) { if (!promoLine) promoLine = it; want = it.quantity; }
             if (it.quantity !== want) { updates[it.key] = want; changed = true; }
           });
-          // Ya tiene 6+: el 50% OFF pasa a Regalo
-          if (promoLine && mainMax >= FREE_MIN) {
-            updates[promoLine.key] = 0; changed = true;
-            if (!giftLine) adds.push({ id: o.gift, quantity: 1 });
+          // Ya tiene 6+ y no tiene Regalo: 1 unidad del 50% OFF pasa a Regalo
+          if (promoLine && !giftLine && mainMax >= FREE_MIN) {
+            updates[promoLine.key] = promoLine.quantity - 1; changed = true;
+            adds.push({ id: o.gift, quantity: 1 });
           }
         });
         if (!changed && !adds.length) return false;
