@@ -65,7 +65,7 @@ BADGES = ('Envío gratis, ⭐ Mejor precio, Pagás 3 llevás 6|🔥 Más comprad
 
 PRODUCTS = {
     'celufit': dict(
-        name='CELUFIT', main='#FC4B91', heading='Elegí tu tratamiento', tip='',
+        name='CELUFIT', handle='drenaje-linfatico-y-celulitis', main='#FC4B91', heading='Elegí tu tratamiento', tip='',
         bump_handle='slimfit-tratamiento-metabolico-para-mujeres-copia', bump_title='SLIMFIT', bump_price=29850,
         bump_text='Tenés <b>50% OFF</b> en SLIMFIT para bajar kilos este verano',
         bump_text_free='🎁 <b>SLIMFIT de regalo</b> para bajar kilos este verano',
@@ -80,7 +80,7 @@ PRODUCTS = {
         guarantee=('60 días para probarlo.', 'Si no sentís tus piernas más livianas, te devolvemos el dinero.'),
         trust='🥇 Top 1 en Mercado Libre|🚚 Envío gratis con seguimiento y fecha estimada'),
     'slimfit': dict(
-        name='SLIMFIT', main='#F65E68', heading='Elegí tu tratamiento', tip='',
+        name='SLIMFIT', handle='slimfit-tratamiento-metabolico-para-mujeres-copia', main='#F65E68', heading='Elegí tu tratamiento', tip='',
         bump_handle='drenaje-linfatico-y-celulitis', bump_title='CELUFIT', bump_price=24950,
         bump_text='Tenés <b>50% OFF</b> en CELUFIT para lucir tus piernas este verano',
         bump_text_free='🎁 <b>CELUFIT de regalo</b> para lucir tus piernas este verano',
@@ -121,7 +121,7 @@ def main():
     for key, p in PRODUCTS.items():
         s = base
         cfg = {
-            'product_handle': "''",
+            'product_handle': "'%s'" % p.get('handle', ''),
             'bump_handle': "'%s'" % p['bump_handle'], 'bump_title': "'%s'" % p['bump_title'],
             'heading': "'%s'" % p['heading'], 'tip_title': "'%s'" % p['tip'],
             'proof': "'%s'" % PROOF, 'trust': "'%s'" % p['trust'],
