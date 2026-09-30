@@ -1,0 +1,35 @@
+{%- comment -%}
+  15 · MODO DE USO (como "One Scoop, Once a Day" de Gains)
+  EDITAR: fotos de cada paso (opcional).
+{%- endcomment -%}
+{%- assign p1 = '' -%}{%- assign p2 = '' -%}{%- assign p3 = '' -%}
+<section class="drm drm-use">
+  <div class="drm-wrap drm-center">
+    <p class="drm-eyebrow">Simple de verdad</p>
+    <h2 class="drm-h drm-h2">Una medida. <span class="drm-accent">Una vez por día.</span></h2>
+    <p class="drm-lead">Sin fase de carga, sin horarios raros. Lo que importa es la constancia.</p>
+    <div class="drm-use__grid">
+      {%- for i in (1..3) -%}
+        {%- case i -%}
+          {%- when 1 -%}{%- assign im = p1 -%}{%- assign t = 'Una medida (5 g)' -%}{%- assign d = 'Usá la medida que viene en el frasco.' -%}
+          {%- when 2 -%}{%- assign im = p2 -%}{%- assign t = 'En 500 ml de agua' -%}{%- assign d = 'O en tu bebida o batido. Revolvé 30 segundos.' -%}
+          {%- else -%}{%- assign im = p3 -%}{%- assign t = 'Todos los días' -%}{%- assign d = 'Entrenes o no. La constancia hace el trabajo.' -%}
+        {%- endcase -%}
+        <div class="drm-use__step">
+          <div class="drm-use__media">{%- if im != blank -%}<img src="{{ im | file_url }}" alt="{{ t }}" loading="lazy">{%- else -%}<div class="drm-ph">Foto paso {{ i }}</div>{%- endif -%}<span>Paso {{ i }}</span></div>
+          <h3 class="drm-h drm-h3">{{ t }}</h3>
+          <p>{{ d }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+<style>
+  .drm-use__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;text-align:left}
+  .drm-use__media{position:relative;aspect-ratio:4/5;border-radius:16px;overflow:hidden;margin-bottom:16px}
+  .drm-use__media img{width:100%;height:100%;object-fit:cover}
+  .drm-use__media span{position:absolute;top:12px;left:12px;background:var(--gold);color:#111;font:700 12px/1 Inter,sans-serif;text-transform:uppercase;letter-spacing:.1em;padding:7px 10px;border-radius:999px}
+  .drm-use__step h3{margin-bottom:6px}
+  .drm-use__step p{margin:0;color:var(--muted);font-size:15px}
+  @media (max-width:749px){.drm-use__grid{grid-template-columns:1fr}.drm-use__media{aspect-ratio:16/10}}
+</style>

@@ -1,0 +1,25 @@
+{%- comment -%}
+  11 · GENTE REAL (como "Real people. Real gains." de Gains)
+  EDITAR: fotos reales de clientes con permiso firmado. Sin "antes/después" con promesas de tiempo.
+{%- endcomment -%}
+{%- assign f1 = '' -%}{%- assign f2 = '' -%}{%- assign f3 = '' -%}{%- assign f4 = '' -%}{%- assign f5 = '' -%}
+<section class="drm drm-real">
+  <div class="drm-wrap drm-center">
+    <p class="drm-eyebrow">Comunidad DR.MEN</p>
+    <h2 class="drm-h drm-h2">Gente real. <span class="drm-accent">Constancia real.</span></h2>
+    <div class="drm-real__grid">
+      {%- for i in (1..5) -%}
+        {%- case i -%}{%- when 1 -%}{%- assign f = f1 -%}{%- when 2 -%}{%- assign f = f2 -%}{%- when 3 -%}{%- assign f = f3 -%}{%- when 4 -%}{%- assign f = f4 -%}{%- else -%}{%- assign f = f5 -%}{%- endcase -%}
+        <div class="drm-real__item">{%- if f != blank -%}<img src="{{ f | file_url }}" alt="Cliente DR.MEN" loading="lazy">{%- else -%}<div class="drm-ph">Foto cliente {{ i }}</div>{%- endif -%}</div>
+      {%- endfor -%}
+    </div>
+    <p class="drm-real__note">La creatina acompaña al entrenamiento y la alimentación. Los resultados varían según cada persona.</p>
+  </div>
+</section>
+<style>
+  .drm-real__grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:32px}
+  .drm-real__item{aspect-ratio:3/4;border-radius:14px;overflow:hidden}
+  .drm-real__item img{width:100%;height:100%;object-fit:cover}
+  .drm-real__note{font-size:12px;color:var(--muted);margin:18px 0 0}
+  @media (max-width:749px){.drm-real__grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin:32px -16px 0;padding:0 16px}.drm-real__item{flex:0 0 58%;scroll-snap-align:start}}
+</style>

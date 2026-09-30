@@ -1,0 +1,31 @@
+{%- comment -%}
+  18 · POR QUÉ NOS ELIGEN (como "Why 250K Choose us daily" de Gains)
+  EDITAR: pegar 3 reseñas REALES de clientes (texto + nombre + ciudad).
+  Mientras estén vacías se muestra un recuadro para completar. No inventar reseñas.
+{%- endcomment -%}
+{%- assign clientes = '' -%}
+{%- assign r1_texto = '' -%}{%- assign r1_nombre = '' -%}
+{%- assign r2_texto = '' -%}{%- assign r2_nombre = '' -%}
+{%- assign r3_texto = '' -%}{%- assign r3_nombre = '' -%}
+<section class="drm drm--light drm-why">
+  <div class="drm-wrap drm-center">
+    <p class="drm-eyebrow">Reseñas verificadas</p>
+    <h2 class="drm-h drm-h2">Por qué {% if clientes != blank %}{{ clientes }} personas {% endif %}la eligen</h2>
+    <div class="drm-why__grid">
+      {%- for i in (1..3) -%}
+        {%- case i -%}{%- when 1 -%}{%- assign t = r1_texto -%}{%- assign n = r1_nombre -%}{%- when 2 -%}{%- assign t = r2_texto -%}{%- assign n = r2_nombre -%}{%- else -%}{%- assign t = r3_texto -%}{%- assign n = r3_nombre -%}{%- endcase -%}
+        <div class="drm-why__card">
+          <span class="drm-stars">{%- for s in (1..5) -%}<svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L10 14.9l-5.2 2.8 1-5.9L1.5 7.7l5.9-.8z"/></svg>{%- endfor -%}</span>
+          {%- if t != blank -%}<p>"{{ t }}"</p><b>{{ n }}</b> <small>· Compra verificada</small>{%- else -%}<div class="drm-ph">Pegá acá la reseña real {{ i }}</div>{%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+<style>
+  .drm-why__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:32px;text-align:left}
+  .drm-why__card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:12px;min-height:200px}
+  .drm-why__card p{margin:0;font-size:15px;line-height:1.6;flex:1}
+  .drm-why__card small{color:var(--green);font-weight:600}
+  @media (max-width:749px){.drm-why__grid{grid-template-columns:1fr}}
+</style>

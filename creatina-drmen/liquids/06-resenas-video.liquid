@@ -1,0 +1,35 @@
+{%- comment -%}
+  06 · RESEÑAS EN VIDEO (como "Raving Reviews From Verified Customers" de Gains)
+  EDITAR: subí los videos (mp4 vertical, <20 MB) en Contenido > Archivos y poné el nombre exacto.
+  Usá SOLO videos de clientes reales o creadores con permiso.
+{%- endcomment -%}
+{%- assign v1 = '' -%}{%- assign v2 = '' -%}{%- assign v3 = '' -%}{%- assign v4 = '' -%}
+{%- assign cap1 = '"Por fin una que no me queda en el fondo del vaso."' -%}
+{%- assign cap2 = '"Escaneé el QR y vi el análisis de mi lote."' -%}
+{%- assign cap3 = '"La tomo todos los días, sin vueltas."' -%}
+{%- assign cap4 = '"Nunca había visto qué tenía mi creatina."' -%}
+<section class="drm drm-vr">
+  <div class="drm-wrap drm-center">
+    <p class="drm-eyebrow">Clientes reales</p>
+    <h2 class="drm-h drm-h2">Lo que dicen los que <span class="drm-accent">ya la verificaron</span></h2>
+    <div class="drm-vr__grid">
+      {%- for i in (1..4) -%}
+        {%- case i -%}{%- when 1 -%}{%- assign v = v1 -%}{%- assign c = cap1 -%}{%- when 2 -%}{%- assign v = v2 -%}{%- assign c = cap2 -%}{%- when 3 -%}{%- assign v = v3 -%}{%- assign c = cap3 -%}{%- else -%}{%- assign v = v4 -%}{%- assign c = cap4 -%}{%- endcase -%}
+        <figure class="drm-vr__card">
+          <div class="drm-vr__media">
+            {%- if v != blank -%}<video src="{{ v | file_url }}" playsinline muted loop autoplay preload="metadata"></video>{%- else -%}<div class="drm-ph">Video reseña {{ i }}<br>(9:16)</div>{%- endif -%}
+          </div>
+          <figcaption>{{ c }}</figcaption>
+        </figure>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+<style>
+  .drm-vr__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:32px}
+  .drm-vr__card{margin:0;text-align:left}
+  .drm-vr__media{aspect-ratio:9/16;border-radius:16px;overflow:hidden;background:var(--card)}
+  .drm-vr__media video{width:100%;height:100%;object-fit:cover}
+  .drm-vr__card figcaption{margin-top:10px;font-size:14px;color:var(--muted)}
+  @media (max-width:749px){.drm-vr__grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin:32px -16px 0;padding:0 16px}.drm-vr__card{flex:0 0 62%;scroll-snap-align:start}}
+</style>

@@ -1,0 +1,38 @@
+{%- comment -%}
+  03 · REGALOS DEL KIT DE INICIO (debajo del selector de cantidad / botón de compra)
+  Replica los "4 Free Gifts" de Gains. EDITAR: nombre, valor e imagen de cada regalo.
+  Imagen: subila en Contenido > Archivos y poné el nombre exacto del archivo (ej: 'shaker.png').
+{%- endcomment -%}
+{%- assign g1_nombre = 'Shaker DR.MEN' -%}{%- assign g1_valor = '$9.900' -%}{%- assign g1_img = '' -%}
+{%- assign g2_nombre = 'Embudo de viaje' -%}{%- assign g2_valor = '$4.900' -%}{%- assign g2_img = '' -%}
+{%- assign g3_nombre = 'Guía "Creatina sin mitos"' -%}{%- assign g3_valor = '$7.900' -%}{%- assign g3_img = '' -%}
+{%- assign g4_nombre = 'Envío gratis' -%}{%- assign g4_valor = '$6.500' -%}{%- assign g4_img = '' -%}
+<div class="drm drm--light drm-gifts">
+  <p class="drm-gifts__title">Tu Kit de Inicio incluye <b>4 regalos</b></p>
+  <div class="drm-gifts__grid">
+    {%- for i in (1..4) -%}
+      {%- case i -%}
+        {%- when 1 -%}{%- assign n = g1_nombre -%}{%- assign v = g1_valor -%}{%- assign im = g1_img -%}
+        {%- when 2 -%}{%- assign n = g2_nombre -%}{%- assign v = g2_valor -%}{%- assign im = g2_img -%}
+        {%- when 3 -%}{%- assign n = g3_nombre -%}{%- assign v = g3_valor -%}{%- assign im = g3_img -%}
+        {%- else -%}{%- assign n = g4_nombre -%}{%- assign v = g4_valor -%}{%- assign im = g4_img -%}
+      {%- endcase -%}
+      <div class="drm-gifts__item">
+        <div class="drm-gifts__img">{%- if im != blank -%}<img src="{{ im | file_url }}" alt="{{ n }}" loading="lazy">{%- else -%}<div class="drm-ph">Regalo {{ i }}</div>{%- endif -%}<span>GRATIS</span></div>
+        <p class="drm-gifts__name">{{ n }}</p>
+        <p class="drm-gifts__val"><s>{{ v }}</s></p>
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+<style>
+  .drm-gifts{background:transparent;color:inherit;padding:8px 0}
+  .drm-gifts__title{margin:0 0 12px;font-size:15px;text-align:center}
+  .drm-gifts__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .drm-gifts__item{text-align:center}
+  .drm-gifts__img{position:relative;aspect-ratio:1;border-radius:12px;overflow:hidden;border:1px solid rgba(0,0,0,.08);background:#F2EFEA}
+  .drm-gifts__img img{width:100%;height:100%;object-fit:cover}
+  .drm-gifts__img span{position:absolute;top:6px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;font:800 10px/1 Inter,sans-serif;letter-spacing:.08em;padding:4px 7px;border-radius:999px}
+  .drm-gifts__name{margin:8px 0 2px;font-size:12px;font-weight:600;line-height:1.25}
+  .drm-gifts__val{margin:0;font-size:12px;opacity:.6}
+</style>

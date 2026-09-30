@@ -1,0 +1,21 @@
+{%- comment -%}
+  01 · BARRA DE PROMO (arriba de todo, como el "$10 Off + 4 Free Gifts" de Gains)
+  EDITAR: textos de abajo.
+{%- endcomment -%}
+{%- assign promo_1 = 'Hasta 25% OFF + 4 regalos en tu Kit de Inicio' -%}
+{%- assign promo_2 = 'Envío gratis a todo el país' -%}
+{%- assign promo_3 = 'Garantía de 60 días' -%}
+<div class="drm drm-promo">
+  <div class="drm-promo__track">
+    {%- for i in (1..2) -%}
+      <span>{{ promo_1 }}</span><i>◆</i><span>{{ promo_2 }}</span><i>◆</i><span>{{ promo_3 }}</span><i>◆</i>
+    {%- endfor -%}
+  </div>
+</div>
+<style>
+  .drm-promo{background:var(--gold);color:#111;overflow:hidden;white-space:nowrap}
+  .drm-promo__track{display:inline-flex;gap:24px;align-items:center;padding:11px 0;font:700 13px/1 Inter,sans-serif;text-transform:uppercase;letter-spacing:.08em;animation:drmPromo 28s linear infinite}
+  .drm-promo__track i{font-style:normal;font-size:9px;opacity:.6}
+  @keyframes drmPromo{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @media (prefers-reduced-motion:reduce){.drm-promo__track{animation:none}}
+</style>

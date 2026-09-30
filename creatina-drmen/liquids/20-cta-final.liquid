@@ -1,0 +1,26 @@
+{%- comment -%}
+  20 · CTA FINAL (cierre con el enemigo + oferta)
+  EDITAR: garantia_dias igual que en las secciones 04, 12, 16, 17 y 19.
+{%- endcomment -%}
+{%- assign garantia_dias = '60' -%}
+{%- assign variante = product.selected_or_first_available_variant -%}
+<section class="drm drm-final">
+  <div class="drm-wrap drm-center">
+    <h2 class="drm-h drm-final__h">Dejá de tomar creatina <span>a ciegas.</span></h2>
+    <p class="drm-lead">Micronizada. Pura. Verificada. La tuya, con el análisis en la mano.</p>
+    <form method="post" action="/cart/add">
+      <input type="hidden" name="id" value="{{ variante.id }}">
+      <input type="hidden" name="quantity" value="1">
+      <input type="hidden" name="return_to" value="/checkout">
+      <button type="submit" class="drm-btn">Quiero mi creatina verificada · {{ variante.price | money_without_trailing_zeros }}</button>
+    </form>
+    <p class="drm-final__fine">Kit de Inicio con 4 regalos · Envío gratis · Garantía de {{ garantia_dias }} días</p>
+  </div>
+</section>
+<style>
+  .drm-final{background:radial-gradient(ellipse at 50% 0%,rgba(201,164,92,.22),transparent 60%),var(--bg)}
+  .drm-final .drm-wrap{padding-top:88px;padding-bottom:88px}
+  .drm-final__h{font-size:clamp(36px,7vw,72px)}
+  .drm-final__h span{color:var(--gold);display:block}
+  .drm-final__fine{margin:16px 0 0;font-size:13px;color:var(--muted)}
+</style>

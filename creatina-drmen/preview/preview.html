@@ -1,0 +1,572 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Preview PURE Activator</title><style>body{margin:0;background:#fff}</style></head><body><!-- 00-base-estilos.liquid -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  .drm{
+    --bg:#0B0B0C; --card:#161618; --card-2:#1E1E21; --ink:#F4F2EE; --muted:#A9A49B;
+    --gold:#C9A45C; --gold-2:#E2C489; --red:#D9443A; --green:#3DB57E;
+    --paper:#F4F1EC; --paper-ink:#141414; --line:rgba(255,255,255,.10);
+    font-family:Inter,system-ui,-apple-system,sans-serif; color:var(--ink); background:var(--bg);
+    -webkit-font-smoothing:antialiased; line-height:1.5; width:100%; overflow-x:clip;
+  }
+  .drm *,.drm *::before,.drm *::after{box-sizing:border-box}
+  .drm img,.drm video{max-width:100%;display:block}
+  .drm--light{background:var(--paper);color:var(--paper-ink);--muted:#5E5A54;--line:rgba(0,0,0,.10);--card:#FFFFFF;--card-2:#EFEBE4}
+  .drm-wrap{max-width:1120px;margin:0 auto;padding:64px 16px}
+  .drm-h{font-family:Oswald,Impact,sans-serif;text-transform:uppercase;letter-spacing:.01em;line-height:1.05;font-weight:700;margin:0 0 16px;color:inherit}
+  .drm-h2{font-size:clamp(30px,5.2vw,52px)}
+  .drm-h3{font-size:clamp(20px,2.6vw,24px)}
+  .drm-eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700;margin:0 0 12px}
+  .drm-lead{font-size:17px;line-height:1.6;color:var(--muted);max-width:660px;margin:0 0 36px}
+  .drm-center{text-align:center}
+  .drm-center .drm-lead{margin-left:auto;margin-right:auto}
+  .drm-accent{color:var(--gold)}
+  .drm-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:56px;padding:16px 32px;border:0;border-radius:999px;
+    background:var(--gold);color:#111;font:700 16px/1 Inter,sans-serif;text-transform:uppercase;letter-spacing:.06em;text-decoration:none;cursor:pointer;
+    transition:transform .15s ease,background .15s ease;box-shadow:0 10px 30px rgba(201,164,92,.25)}
+  .drm-btn:hover{background:var(--gold-2);transform:translateY(-1px)}
+  .drm-btn--block{width:100%}
+  .drm-ph{display:flex;align-items:center;justify-content:center;text-align:center;padding:16px;min-height:100%;width:100%;
+    background:repeating-linear-gradient(45deg,var(--card),var(--card) 12px,var(--card-2) 12px,var(--card-2) 24px);
+    color:var(--muted);font-size:13px;font-weight:600;border:1px dashed var(--line)}
+  .drm-stars{display:inline-flex;gap:2px;color:var(--gold)}
+  .drm-stars svg{width:16px;height:16px}
+  @media (max-width:749px){.drm-wrap{padding:48px 16px}}
+</style>
+<!-- 01-barra-promo.liquid -->
+<div class="drm drm-promo">
+  <div class="drm-promo__track"><span>Hasta 25% OFF + 4 regalos en tu Kit de Inicio</span><i>◆</i><span>Envío gratis a todo el país</span><i>◆</i><span>Garantía de 60 días</span><i>◆</i><span>Hasta 25% OFF + 4 regalos en tu Kit de Inicio</span><i>◆</i><span>Envío gratis a todo el país</span><i>◆</i><span>Garantía de 60 días</span><i>◆</i></div>
+</div>
+<style>
+  .drm-promo{background:var(--gold);color:#111;overflow:hidden;white-space:nowrap}
+  .drm-promo__track{display:inline-flex;gap:24px;align-items:center;padding:11px 0;font:700 13px/1 Inter,sans-serif;text-transform:uppercase;letter-spacing:.08em;animation:drmPromo 28s linear infinite}
+  .drm-promo__track i{font-style:normal;font-size:9px;opacity:.6}
+  @keyframes drmPromo{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @media (prefers-reduced-motion:reduce){.drm-promo__track{animation:none}}
+</style>
+<!-- 02-bajo-titulo-beneficios.liquid -->
+<div style="max-width:480px;margin:0 auto;padding:16px;background:#fff;color:#141414"><div class="drm drm--light drm-bt"><p class="drm-bt__tag"><span>Nueva categoría</span> Creatina Verificada</p>
+  <p class="drm-bt__sub">La creatina micronizada que te muestra su análisis de laboratorio.</p>
+  <ul class="drm-bt__list">
+    <li><b>Micronizada:</b> se mezcla fácil, sin grumos ni arenilla en el fondo del vaso.</li>
+    <li><b>5 g reales</b> de creatina monohidrato por porción. 60 porciones.</li>
+    <li><b>Cero agregados:</b> sin rellenos, sin azúcar, sin gluten.</li>
+    <li><b>Verificada por lote:</b> escaneá el QR del frasco y mirá su análisis.</li>
+    <li><b>Apoya la fuerza y el rendimiento</b> en entrenamientos intensos.</li>
+  </ul>
+</div>
+<style>
+  .drm-bt{background:transparent;color:inherit;padding:4px 0 8px}
+  .drm-bt__rating{display:flex;align-items:center;gap:8px;font-size:14px;margin-bottom:12px}
+  .drm-bt__tag{display:inline-flex;align-items:center;gap:8px;margin:0 0 10px;padding:6px 12px 6px 6px;border-radius:999px;background:rgba(201,164,92,.14);font:700 13px/1 Inter,sans-serif;text-transform:uppercase;letter-spacing:.06em}
+  .drm-bt__tag span{background:var(--gold);color:#111;padding:5px 9px;border-radius:999px;font-size:11px}
+  .drm-bt__sub{font-size:17px;font-weight:600;margin:0 0 14px}
+  .drm-bt__list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+  .drm-bt__list li{position:relative;padding-left:30px;font-size:15px;line-height:1.45}
+  .drm-bt__list li::before{content:"";position:absolute;left:0;top:1px;width:20px;height:20px;border-radius:50%;background:var(--green) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='white'%3E%3Cpath d='M8 13.2 4.8 10l-1.2 1.2L8 15.6l8.4-8.4-1.2-1.2z'/%3E%3C/svg%3E") center/16px no-repeat}
+</style>
+</div>
+<!-- 03-regalos-kit.liquid -->
+<div style="max-width:480px;margin:0 auto;padding:16px;background:#fff;color:#141414"><div class="drm drm--light drm-gifts">
+  <p class="drm-gifts__title">Tu Kit de Inicio incluye <b>4 regalos</b></p>
+  <div class="drm-gifts__grid"><div class="drm-gifts__item">
+        <div class="drm-gifts__img"><div class="drm-ph">Regalo 1</div><span>GRATIS</span></div>
+        <p class="drm-gifts__name">Shaker DR.MEN</p>
+        <p class="drm-gifts__val"><s>$9.900</s></p>
+      </div><div class="drm-gifts__item">
+        <div class="drm-gifts__img"><div class="drm-ph">Regalo 2</div><span>GRATIS</span></div>
+        <p class="drm-gifts__name">Embudo de viaje</p>
+        <p class="drm-gifts__val"><s>$4.900</s></p>
+      </div><div class="drm-gifts__item">
+        <div class="drm-gifts__img"><div class="drm-ph">Regalo 3</div><span>GRATIS</span></div>
+        <p class="drm-gifts__name">Guía "Creatina sin mitos"</p>
+        <p class="drm-gifts__val"><s>$7.900</s></p>
+      </div><div class="drm-gifts__item">
+        <div class="drm-gifts__img"><div class="drm-ph">Regalo 4</div><span>GRATIS</span></div>
+        <p class="drm-gifts__name">Envío gratis</p>
+        <p class="drm-gifts__val"><s>$6.500</s></p>
+      </div></div>
+</div>
+<style>
+  .drm-gifts{background:transparent;color:inherit;padding:8px 0}
+  .drm-gifts__title{margin:0 0 12px;font-size:15px;text-align:center}
+  .drm-gifts__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .drm-gifts__item{text-align:center}
+  .drm-gifts__img{position:relative;aspect-ratio:1;border-radius:12px;overflow:hidden;border:1px solid rgba(0,0,0,.08);background:#F2EFEA}
+  .drm-gifts__img img{width:100%;height:100%;object-fit:cover}
+  .drm-gifts__img span{position:absolute;top:6px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;font:800 10px/1 Inter,sans-serif;letter-spacing:.08em;padding:4px 7px;border-radius:999px}
+  .drm-gifts__name{margin:8px 0 2px;font-size:12px;font-weight:600;line-height:1.25}
+  .drm-gifts__val{margin:0;font-size:12px;opacity:.6}
+</style></div>
+<!-- 04-confianza-iconos.liquid -->
+<div style="max-width:480px;margin:0 auto;padding:16px;background:#fff;color:#141414"><div class="drm drm--light drm-trust">
+  <div class="drm-trust__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="1.7"/><circle cx="17" cy="17.5" r="1.7"/></svg><span>Envío gratis</span></div>
+  <div class="drm-trust__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span>Garantía 60 días</span></div>
+  <div class="drm-trust__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg><span>3 cuotas sin interés</span></div>
+  <div class="drm-trust__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.8 3h10.4a2 2 0 0 0 1.8-3l-5-9V3"/><path d="M7.5 15h9"/></svg><span>Análisis por lote</span></div>
+</div>
+<style>
+  .drm-trust{background:transparent;color:inherit;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:14px 0;border-top:1px solid rgba(0,0,0,.08);border-bottom:1px solid rgba(0,0,0,.08);margin:8px 0}
+  .drm-trust__item{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;font-size:12px;font-weight:600;line-height:1.2}
+  .drm-trust__item svg{width:26px;height:26px;color:var(--gold)}
+</style>
+</div>
+<!-- 05-cinta-claims.liquid -->
+<div class="drm drm-strip">
+  <div class="drm-strip__track"><span>100% creatina monohidrato</span><b>✦</b><span>5 g reales por porción</span><b>✦</b><span>Micronizada</span><b>✦</b><span>Cero agregados</span><b>✦</b><span>Análisis por lote</span><b>✦</b><span>Sin gluten</span><b>✦</b><span>100% creatina monohidrato</span><b>✦</b><span>5 g reales por porción</span><b>✦</b><span>Micronizada</span><b>✦</b><span>Cero agregados</span><b>✦</b><span>Análisis por lote</span><b>✦</b><span>Sin gluten</span><b>✦</b></div>
+</div>
+<style>
+  .drm-strip{overflow:hidden;white-space:nowrap;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .drm-strip__track{display:inline-flex;align-items:center;gap:28px;padding:22px 0;font:600 22px/1 Oswald,Impact,sans-serif;text-transform:uppercase;letter-spacing:.04em;animation:drmStrip 34s linear infinite}
+  .drm-strip__track b{color:var(--gold);font-size:14px}
+  @keyframes drmStrip{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @media (prefers-reduced-motion:reduce){.drm-strip__track{animation:none}}
+</style>
+<!-- 06-resenas-video.liquid -->
+<section class="drm drm-vr">
+  <div class="drm-wrap drm-center">
+    <p class="drm-eyebrow">Clientes reales</p>
+    <h2 class="drm-h drm-h2">Lo que dicen los que <span class="drm-accent">ya la verificaron</span></h2>
+    <div class="drm-vr__grid"><figure class="drm-vr__card">
+          <div class="drm-vr__media"><div class="drm-ph">Video reseña 1<br>(9:16)</div></div>
+          <figcaption>"Por fin una que no me queda en el fondo del vaso."</figcaption>
+        </figure><figure class="drm-vr__card">
+          <div class="drm-vr__media"><div class="drm-ph">Video reseña 2<br>(9:16)</div></div>
+          <figcaption>"Escaneé el QR y vi el análisis de mi lote."</figcaption>
+        </figure><figure class="drm-vr__card">
+          <div class="drm-vr__media"><div class="drm-ph">Video reseña 3<br>(9:16)</div></div>
+          <figcaption>"La tomo todos los días, sin vueltas."</figcaption>
+        </figure><figure class="drm-vr__card">
+          <div class="drm-vr__media"><div class="drm-ph">Video reseña 4<br>(9:16)</div></div>
+          <figcaption>"Nunca había visto qué tenía mi creatina."</figcaption>
+        </figure></div>
+  </div>
+</section>
+<style>
+  .drm-vr__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:32px}
+  .drm-vr__card{margin:0;text-align:left}
+  .drm-vr__media{aspect-ratio:9/16;border-radius:16px;overflow:hidden;background:var(--card)}
+  .drm-vr__media video{width:100%;height:100%;object-fit:cover}
+  .drm-vr__card figcaption{margin-top:10px;font-size:14px;color:var(--muted)}
+  @media (max-width:749px){.drm-vr__grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin:32px -16px 0;padding:0 16px}.drm-vr__card{flex:0 0 62%;scroll-snap-align:start}}
+</style>
+<!-- 07-dolor-creencia.liquid -->
+<section class="drm drm-pain">
+  <div class="drm-wrap drm-pain__grid">
+    <div>
+      <p class="drm-eyebrow">No toda la creatina es igual</p>
+      <h2 class="drm-h drm-h2">¿Alguien te dijo que la creatina <span class="drm-accent">es solo creatina?</span></h2>
+      <p class="drm-lead">Y por eso compraste la más barata. Es el error más común. Lo que cambia entre una y otra es cómo está molida, qué tiene adentro y si alguien lo controló. Si te pasa alguna de estas, no es tu culpa: es tu creatina.</p>
+      <div class="drm-pain__cards">
+        <div class="drm-pain__card"><span>01</span><h3>Arenilla en el fondo del vaso</h3><p>La creatina común tiene partícula gruesa: no se integra, queda abajo y terminás tirando parte de la dosis.</p></div>
+        <div class="drm-pain__card"><span>02</span><h3>Te cae pesada</h3><p>El polvo mal disuelto a muchos les cae pesado. Y la terminan dejando a las dos semanas.</p></div>
+        <div class="drm-pain__card"><span>03</span><h3>No sabés qué tiene</h3><p>"100% pura" lo puede decir cualquier etiqueta. ¿Viste alguna vez el análisis de la tuya?</p></div>
+        <div class="drm-pain__card"><span>04</span><h3>Meses tomando, cero cambios</h3><p>Si la dosis no es la que dice o la cortás a mitad de camino, no hay constancia que alcance.</p></div>
+      </div>
+      <p class="drm-pain__punch">El problema no es la creatina.<br><span class="drm-accent">Es la que estás tomando.</span></p>
+    </div>
+    <div class="drm-pain__media"><div class="drm-ph">Foto: vaso con creatina común<br>sin disolver en el fondo</div></div>
+  </div>
+</section>
+<style>
+  .drm-pain__grid{display:grid;grid-template-columns:1.25fr .9fr;gap:48px;align-items:center}
+  .drm-pain__cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .drm-pain__card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+  .drm-pain__card span{font:700 13px/1 Oswald,sans-serif;color:var(--red);letter-spacing:.1em}
+  .drm-pain__card h3{font:700 18px/1.2 Oswald,sans-serif;text-transform:uppercase;margin:8px 0 6px}
+  .drm-pain__card p{margin:0;font-size:14px;color:var(--muted);line-height:1.5}
+  .drm-pain__punch{font:700 clamp(24px,3.4vw,32px)/1.15 Oswald,sans-serif;text-transform:uppercase;margin:32px 0 0}
+  .drm-pain__media{aspect-ratio:4/5;border-radius:20px;overflow:hidden}
+  .drm-pain__media img{width:100%;height:100%;object-fit:cover}
+  @media (max-width:749px){.drm-pain__grid{grid-template-columns:1fr;gap:32px}.drm-pain__cards{grid-template-columns:1fr}.drm-pain__media{order:-1;aspect-ratio:4/3}}
+</style>
+<!-- 08-agitacion-anmat.liquid -->
+<section class="drm drm--light drm-agit">
+  <div class="drm-wrap drm-center">
+    <p class="drm-eyebrow">Lo que pasa en Argentina</p>
+    <h2 class="drm-h drm-h2">Comprás polvo blanco.<br>Y confiás en la etiqueta.</h2>
+    <p class="drm-lead">La creatina se volvió el suplemento de moda y hoy la vende cualquiera. Nadie te muestra qué hay adentro del frasco.</p>
+    <div class="drm-agit__grid">
+      <div class="drm-agit__item"><strong>2025</strong><p>ANMAT prohibió en todo el país una creatina que usaba <b>números de registro falsos</b>.</p><small>Disp. ANMAT 6195/2025</small></div>
+      <div class="drm-agit__item"><strong>RNPA</strong><p>Un número de registro falso en la etiqueta <b>no se detecta a simple vista</b>. Hay que ir a verificarlo.</p><small>¿Verificaste el de la tuya?</small></div>
+      <div class="drm-agit__item"><strong>?</strong><p>Pureza, contenido real por porción y contaminantes: <b>la pregunta que nadie te deja responder</b>.</p><small>Hasta ahora</small></div>
+    </div>
+  </div>
+</section>
+<style>
+  .drm-agit__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;text-align:left}
+  .drm-agit__item{background:var(--card);border-radius:16px;padding:24px;border:1px solid var(--line)}
+  .drm-agit__item strong{display:block;font:700 56px/1 Oswald,sans-serif;color:var(--red);margin-bottom:10px}
+  .drm-agit__item p{margin:0 0 12px;font-size:15px;line-height:1.5}
+  .drm-agit__item small{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+  @media (max-width:749px){.drm-agit__grid{grid-template-columns:1fr}}
+</style>
+<!-- 09-solucion-3-pilares.liquid -->
+<section class="drm drm-sol">
+  <div class="drm-wrap drm-sol__grid">
+    <div class="drm-sol__media"><img src="../assets/drmen-creatina.webp" alt=""></div>
+    <div>
+      <p class="drm-eyebrow">La solución</p>
+      <h2 class="drm-h drm-h2">Por eso creamos la <span class="drm-accent">Creatina Verificada</span></h2>
+      <p class="drm-lead">No es otra creatina más. Es la primera de DR.MEN pensada para que no tengas que confiar a ciegas.</p>
+      <ol class="drm-sol__list">
+        <li><span>01</span><div><h3>Micronizada</h3><p>Partícula fina que se mezcla fácil con agua. Sin grumos, sin arenilla, sin tirar la mitad de la dosis.</p></div></li>
+        <li><span>02</span><div><h3>Pura</h3><p>100% creatina monohidrato. 5 g por porción. Nada de rellenos, azúcares ni saborizantes.</p></div></li>
+        <li><span>03</span><div><h3>Verificada</h3><p>Cada lote pasa por un análisis de laboratorio. Escaneás el QR del frasco y ves el resultado de <b>tu</b> lote.</p></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<style>
+  .drm-sol__grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center}
+  .drm-sol__media{border-radius:20px;overflow:hidden;background:var(--card);aspect-ratio:4/5}
+  .drm-sol__media img{width:100%;height:100%;object-fit:cover}
+  .drm-sol__list{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+  .drm-sol__list li{display:flex;gap:18px;padding:20px;border-radius:14px;background:var(--card);border:1px solid var(--line)}
+  .drm-sol__list span{flex:0 0 auto;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--gold);color:#111;font:700 16px/1 Oswald,sans-serif}
+  .drm-sol__list h3{font:700 20px/1.1 Oswald,sans-serif;text-transform:uppercase;margin:2px 0 6px}
+  .drm-sol__list p{margin:0;font-size:15px;color:var(--muted)}
+  @media (max-width:749px){.drm-sol__grid{grid-template-columns:1fr;gap:32px}.drm-sol__media{aspect-ratio:1}}
+</style>
+
+<!-- 10-prueba-del-vaso.liquid -->
+<section class="drm drm--light drm-glass">
+  <div class="drm-wrap drm-center">
+    <p class="drm-eyebrow">Hacé la prueba en tu casa</p>
+    <h2 class="drm-h drm-h2">La prueba del vaso</h2>
+    <p class="drm-lead">5 g en 500 ml de agua a temperatura ambiente. Revolvé 30 segundos. Mirá el fondo.</p><div class="drm-glass__row">
+      <figure class="drm-glass__fig">
+        <div class="drm-glass__cup drm-glass__cup--bad"><i></i><b></b></div>
+        <figcaption><strong>Creatina común</strong><span class="drm-glass__x">✕</span> Turbia · arenilla en el fondo</figcaption>
+      </figure>
+      <div class="drm-glass__vs">VS</div>
+      <figure class="drm-glass__fig">
+        <div class="drm-glass__cup drm-glass__cup--good"><i></i></div>
+        <figcaption><strong>PURE Activator®</strong><span class="drm-glass__ok">✓</span> Se integra · fondo limpio</figcaption>
+      </figure>
+    </div></div>
+</section>
+<style>
+  .drm-glass__row{display:flex;align-items:center;justify-content:center;gap:40px}
+  .drm-glass__fig{margin:0;display:flex;flex-direction:column;align-items:center;gap:18px}
+  .drm-glass__cup{position:relative;width:150px;height:210px;border:4px solid rgba(0,0,0,.18);border-top:0;border-radius:0 0 28px 28px;clip-path:polygon(0 0,100% 0,90% 100%,10% 100%);overflow:hidden;background:rgba(255,255,255,.6)}
+  .drm-glass__cup i{position:absolute;left:0;right:0;bottom:0;height:78%;background:linear-gradient(180deg,rgba(170,210,235,.55),rgba(150,195,225,.75))}
+  .drm-glass__cup--bad i{background:linear-gradient(180deg,rgba(215,215,210,.75),rgba(200,198,190,.9))}
+  .drm-glass__cup--bad b{position:absolute;left:10%;right:10%;bottom:0;height:16%;background:radial-gradient(circle at 20% 40%,#fff 2px,transparent 3px) 0 0/9px 8px,#E9E6DE;border-radius:40% 40% 0 0}
+  .drm-glass__fig figcaption{font-size:14px;color:var(--muted);max-width:200px}
+  .drm-glass__fig strong{display:block;font:700 20px/1.2 Oswald,sans-serif;text-transform:uppercase;color:var(--paper-ink);margin-bottom:4px}
+  .drm-glass__x,.drm-glass__ok{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;color:#fff;font-size:11px;margin-right:6px;vertical-align:-3px}
+  .drm-glass__x{background:var(--red)}.drm-glass__ok{background:var(--green)}
+  .drm-glass__vs{font:700 28px/1 Oswald,sans-serif;color:var(--gold)}
+  .drm-glass__video{max-width:420px;margin:0 auto;border-radius:20px;overflow:hidden}
+  @media (max-width:749px){.drm-glass__row{gap:14px}.drm-glass__cup{width:110px;height:160px}.drm-glass__vs{font-size:20px}}
+</style>
+<!-- 11-gente-real.liquid -->
+<section class="drm drm-real">
+  <div class="drm-wrap drm-center">
+    <p class="drm-eyebrow">Comunidad DR.MEN</p>
+    <h2 class="drm-h drm-h2">Gente real. <span class="drm-accent">Constancia real.</span></h2>
+    <div class="drm-real__grid"><div class="drm-real__item"><div class="drm-ph">Foto cliente 1</div></div><div class="drm-real__item"><div class="drm-ph">Foto cliente 2</div></div><div class="drm-real__item"><div class="drm-ph">Foto cliente 3</div></div><div class="drm-real__item"><div class="drm-ph">Foto cliente 4</div></div><div class="drm-real__item"><div class="drm-ph">Foto cliente 5</div></div></div>
+    <p class="drm-real__note">La creatina acompaña al entrenamiento y la alimentación. Los resultados varían según cada persona.</p>
+  </div>
+</section>
+<style>
+  .drm-real__grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:32px}
+  .drm-real__item{aspect-ratio:3/4;border-radius:14px;overflow:hidden}
+  .drm-real__item img{width:100%;height:100%;object-fit:cover}
+  .drm-real__note{font-size:12px;color:var(--muted);margin:18px 0 0}
+  @media (max-width:749px){.drm-real__grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin:32px -16px 0;padding:0 16px}.drm-real__item{flex:0 0 58%;scroll-snap-align:start}}
+</style>
+<!-- 12-tabla-comparativa.liquid -->
+<section class="drm drm--light drm-cmp">
+  <div class="drm-wrap drm-center">
+    <p class="drm-eyebrow">Compará vos</p>
+    <h2 class="drm-h drm-h2">La elección es clara</h2>
+    <div class="drm-cmp__scroll">
+      <table class="drm-cmp__table">
+        <thead>
+          <tr><th></th><th class="drm-cmp__us">DR.MEN<br>PURE Activator®</th><th>Creatina común<br>sin micronizar</th><th>Creatina sin<br>registro visible</th><th>Gomitas de<br>creatina</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Micronizada · se mezcla fácil</td><td class="drm-cmp__us">✓</td><td>✕</td><td>?</td><td>—</td></tr>
+          <tr><td>5 g reales por porción</td><td class="drm-cmp__us">✓</td><td>✓</td><td>?</td><td>?</td></tr>
+          <tr><td>Análisis de laboratorio por lote</td><td class="drm-cmp__us">✓</td><td>✕</td><td>✕</td><td>✕</td></tr>
+          <tr><td>Registro ANMAT verificable</td><td class="drm-cmp__us">✓</td><td>✓</td><td>✕</td><td>?</td></tr>
+          <tr><td>Cero azúcar y agregados</td><td class="drm-cmp__us">✓</td><td>✓</td><td>?</td><td>✕</td></tr>
+          <tr><td>Garantía de 60 días</td><td class="drm-cmp__us">✓</td><td>?</td><td>✕</td><td>?</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <form method="post" action="/cart/add" class="drm-cmp__cta">
+      <input type="hidden" name="id" value="123">
+      <input type="hidden" name="quantity" value="1">
+      <input type="hidden" name="return_to" value="/checkout">
+      <button type="submit" class="drm-btn">Quiero la verificada</button>
+    </form>
+  </div>
+</section>
+<style>
+  .drm-cmp__scroll{overflow-x:auto;margin:32px -16px 0;padding:0 16px}
+  .drm-cmp__table{width:100%;min-width:620px;border-collapse:separate;border-spacing:0;font-size:14px;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.06)}
+  .drm-cmp__table th,.drm-cmp__table td{padding:16px 12px;border-bottom:1px solid var(--line);text-align:center}
+  .drm-cmp__table th{font:600 13px/1.25 Inter,sans-serif;color:var(--muted);vertical-align:bottom}
+  .drm-cmp__table td:first-child{text-align:left;font-weight:600}
+  .drm-cmp__table tbody tr:last-child td{border-bottom:0}
+  .drm-cmp__table td{font-size:18px;font-weight:700;color:#B8B2A8}
+  .drm-cmp__table td:first-child{font-size:14px;color:var(--paper-ink)}
+  .drm-cmp__us{background:#111 !important;color:var(--gold) !important}
+  th.drm-cmp__us{font:700 15px/1.2 Oswald,sans-serif !important;text-transform:uppercase;color:#fff !important}
+  .drm-cmp__cta{margin-top:32px}
+</style>
+
+<!-- 13-evidencia-ciencia.liquid -->
+<section class="drm drm-sci">
+  <div class="drm-wrap drm-sci__grid">
+    <div>
+      <p class="drm-eyebrow">+30 años de estudios</p>
+      <h2 class="drm-h drm-h2">La evidencia <span class="drm-accent">es contundente</span></h2>
+      <p class="drm-lead">La creatina monohidrato es uno de los suplementos más estudiados del deporte. No es moda: es ciencia con décadas de respaldo.</p>
+      <ul class="drm-sci__list">
+        <li>Apoya la fuerza y la potencia en esfuerzos cortos e intensos.</li>
+        <li>Ayuda a sostener el rendimiento serie tras serie.</li>
+        <li>Acompaña el desarrollo muscular junto al entrenamiento de fuerza.</li>
+        <li>El monohidrato es la forma de creatina con más respaldo científico.</li>
+      </ul>
+      <p class="drm-sci__src">Referencia: International Society of Sports Nutrition, posición oficial sobre creatina (Kreider et al., 2017).</p>
+    </div>
+    <div class="drm-sci__media"><div class="drm-ph">Foto: polvo de creatina en macro<br>o frasco en entorno de laboratorio</div></div>
+  </div>
+</section>
+<style>
+  .drm-sci__grid{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center}
+  .drm-sci__list{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+  .drm-sci__list li{padding:14px 16px 14px 48px;position:relative;background:var(--card);border:1px solid var(--line);border-radius:12px;font-size:15px}
+  .drm-sci__list li::before{content:"✓";position:absolute;left:16px;top:50%;transform:translateY(-50%);width:22px;height:22px;border-radius:50%;background:var(--gold);color:#111;display:grid;place-items:center;font-size:12px;font-weight:800}
+  .drm-sci__src{font-size:12px;color:var(--muted);margin:18px 0 0}
+  .drm-sci__media{aspect-ratio:1;border-radius:20px;overflow:hidden}
+  .drm-sci__media img{width:100%;height:100%;object-fit:cover}
+  @media (max-width:749px){.drm-sci__grid{grid-template-columns:1fr;gap:32px}}
+</style>
+<!-- 14-verificada-qr-lote.liquid -->
+<section class="drm drm--light drm-lab">
+  <div class="drm-wrap drm-lab__grid">
+    <div class="drm-lab__media"><div class="drm-ph">Foto: mano escaneando el QR<br>del frasco con el celular</div></div>
+    <div>
+      <div class="drm-lab__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>Creatina Verificada</div>
+      <h2 class="drm-h drm-h2">Escaneá. Mirá tu lote.<br>Decidí vos.</h2>
+      <p class="drm-lead">Cero confianza a ciegas. Cada lote de PURE Activator® se analiza en [Nombre del laboratorio independiente] y el resultado queda publicado para que lo veas.</p>
+      <ol class="drm-lab__steps">
+        <li><b>Buscá el número de lote</b> en la base del frasco.</li>
+        <li><b>Escaneá el QR</b> de la etiqueta con tu celular.</li>
+        <li><b>Mirá el análisis:</b> pureza, contenido por porción y control de contaminantes.</li>
+      </ol>
+      <div class="drm-lab__reg"><span>RNPA [N° RNPA]</span><span>RNE [N° RNE]</span></div>
+      <a class="drm-lab__link" href="/pages/lotes">Ver análisis de todos los lotes →</a>
+    </div>
+  </div>
+</section>
+<style>
+  .drm-lab__grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center}
+  .drm-lab__media{aspect-ratio:4/5;border-radius:20px;overflow:hidden}
+  .drm-lab__media img{width:100%;height:100%;object-fit:cover}
+  .drm-lab__badge{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:#111;color:var(--gold);font:700 12px/1 Inter,sans-serif;text-transform:uppercase;letter-spacing:.1em;margin-bottom:18px}
+  .drm-lab__badge svg{width:18px;height:18px}
+  .drm-lab__steps{margin:0 0 24px;padding:0;list-style:none;counter-reset:s;display:grid;gap:12px}
+  .drm-lab__steps li{counter-increment:s;position:relative;padding-left:44px;font-size:15px;line-height:1.5}
+  .drm-lab__steps li::before{content:counter(s);position:absolute;left:0;top:-2px;width:30px;height:30px;border-radius:50%;background:var(--gold);color:#111;display:grid;place-items:center;font:700 14px/1 Oswald,sans-serif}
+  .drm-lab__reg{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+  .drm-lab__reg span{padding:6px 12px;border-radius:8px;background:var(--card-2);font-size:13px;font-weight:600}
+  .drm-lab__link{color:var(--paper-ink);font-weight:700;text-decoration:underline;text-underline-offset:4px}
+  @media (max-width:749px){.drm-lab__grid{grid-template-columns:1fr;gap:32px}.drm-lab__media{aspect-ratio:4/3}}
+</style>
+
+<!-- 15-modo-de-uso.liquid -->
+<section class="drm drm-use">
+  <div class="drm-wrap drm-center">
+    <p class="drm-eyebrow">Simple de verdad</p>
+    <h2 class="drm-h drm-h2">Una medida. <span class="drm-accent">Una vez por día.</span></h2>
+    <p class="drm-lead">Sin fase de carga, sin horarios raros. Lo que importa es la constancia.</p>
+    <div class="drm-use__grid"><div class="drm-use__step">
+          <div class="drm-use__media"><div class="drm-ph">Foto paso 1</div><span>Paso 1</span></div>
+          <h3 class="drm-h drm-h3">Una medida (5 g)</h3>
+          <p>Usá la medida que viene en el frasco.</p>
+        </div><div class="drm-use__step">
+          <div class="drm-use__media"><div class="drm-ph">Foto paso 2</div><span>Paso 2</span></div>
+          <h3 class="drm-h drm-h3">En 500 ml de agua</h3>
+          <p>O en tu bebida o batido. Revolvé 30 segundos.</p>
+        </div><div class="drm-use__step">
+          <div class="drm-use__media"><div class="drm-ph">Foto paso 3</div><span>Paso 3</span></div>
+          <h3 class="drm-h drm-h3">Todos los días</h3>
+          <p>Entrenes o no. La constancia hace el trabajo.</p>
+        </div></div>
+  </div>
+</section>
+<style>
+  .drm-use__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;text-align:left}
+  .drm-use__media{position:relative;aspect-ratio:4/5;border-radius:16px;overflow:hidden;margin-bottom:16px}
+  .drm-use__media img{width:100%;height:100%;object-fit:cover}
+  .drm-use__media span{position:absolute;top:12px;left:12px;background:var(--gold);color:#111;font:700 12px/1 Inter,sans-serif;text-transform:uppercase;letter-spacing:.1em;padding:7px 10px;border-radius:999px}
+  .drm-use__step h3{margin-bottom:6px}
+  .drm-use__step p{margin:0;color:var(--muted);font-size:15px}
+  @media (max-width:749px){.drm-use__grid{grid-template-columns:1fr}.drm-use__media{aspect-ratio:16/10}}
+</style>
+<!-- 16-precio-por-dia-oferta.liquid -->
+<section class="drm drm-offer" id="drm-oferta">
+  <div class="drm-wrap drm-offer__grid">
+    <div>
+      <p class="drm-eyebrow">Kit de Inicio</p>
+      <h2 class="drm-h drm-h2">Empezá por menos de <span class="drm-accent">$584</span> por día</h2>
+      <p class="drm-lead">Todo lo que necesitás para arrancar y no dejarla a mitad de camino.</p>
+      <div class="drm-offer__box">
+        <div class="drm-offer__row"><span>PURE Activator® 300 g · 60 porciones</span><b>$45.990</b></div>
+        <div class="drm-offer__row"><span>Shaker DR.MEN</span><b><s>$9.900</s> GRATIS</b></div>
+        <div class="drm-offer__row"><span>Embudo de viaje</span><b><s>$4.900</s> GRATIS</b></div>
+        <div class="drm-offer__row"><span>Guía "Creatina sin mitos" (PDF)</span><b><s>$7.900</s> GRATIS</b></div>
+        <div class="drm-offer__row"><span>Envío a todo el país</span><b><s>$6.500</s> GRATIS</b></div>
+        <div class="drm-offer__row"><span>Garantía de 60 días</span><b>INCLUIDA</b></div>
+        <div class="drm-offer__total"><span>Total</span><div><s>$75.190</s><strong>$34.990</strong></div></div>
+        <form method="post" action="/cart/add">
+          <input type="hidden" name="id" value="123">
+          <input type="hidden" name="quantity" value="1">
+          <input type="hidden" name="return_to" value="/checkout">
+          <button type="submit" class="drm-btn drm-btn--block">Quiero mi Kit de Inicio</button>
+        </form>
+        <p class="drm-offer__fine">Pago seguro · Envío gratis · Garantía de 60 días</p>
+      </div>
+    </div>
+    <div class="drm-offer__media"><img src="../assets/drmen-creatina.webp" alt=""></div>
+  </div>
+</section>
+<style>
+  .drm-offer__grid{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center}
+  .drm-offer__box{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px}
+  .drm-offer__row{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px dashed var(--line);font-size:15px}
+  .drm-offer__row b{white-space:nowrap;color:var(--green)}
+  .drm-offer__row:first-child b{color:var(--ink)}
+  .drm-offer__row s{color:var(--muted);font-weight:500;margin-right:6px}
+  .drm-offer__total{display:flex;justify-content:space-between;align-items:flex-end;padding:18px 0 20px;font:700 18px/1 Oswald,sans-serif;text-transform:uppercase}
+  .drm-offer__total s{display:block;text-align:right;color:var(--muted);font:500 14px/1.4 Inter,sans-serif}
+  .drm-offer__total strong{font-size:34px;color:var(--gold)}
+  .drm-offer__fine{margin:12px 0 0;text-align:center;font-size:12px;color:var(--muted)}
+  .drm-offer__media{aspect-ratio:4/5;border-radius:20px;overflow:hidden;background:var(--card)}
+  .drm-offer__media img{width:100%;height:100%;object-fit:cover}
+  @media (max-width:749px){.drm-offer__grid{grid-template-columns:1fr;gap:32px}.drm-offer__media{order:-1;aspect-ratio:1}}
+</style>
+<!-- 17-garantia.liquid -->
+<section class="drm drm-guar">
+  <div class="drm-wrap">
+    <div class="drm-guar__box">
+      <div class="drm-guar__seal"><strong>60</strong><span>días</span><small>Garantía DR.MEN</small></div>
+      <div>
+        <h2 class="drm-h drm-h2">Garantía de 60 días</h2>
+        <p>Tomala todos los días durante 60 días. Si no te convence, escribinos y te devolvemos el dinero. Sin letra chica ni vueltas. Así de seguros estamos de lo que hay en el frasco.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .drm-guar__box{display:flex;gap:40px;align-items:center;background:var(--card);border:1px solid rgba(201,164,92,.35);border-radius:24px;padding:40px}
+  .drm-guar__box p{margin:0;font-size:17px;line-height:1.6;color:var(--muted)}
+  .drm-guar__seal{flex:0 0 auto;width:150px;height:150px;border-radius:50%;border:3px solid var(--gold);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:inset 0 0 0 8px var(--bg),inset 0 0 0 10px rgba(201,164,92,.4)}
+  .drm-guar__seal strong{font:700 52px/1 Oswald,sans-serif;color:var(--gold)}
+  .drm-guar__seal span{font:700 14px/1 Oswald,sans-serif;text-transform:uppercase;letter-spacing:.1em}
+  .drm-guar__seal small{font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-top:6px}
+  @media (max-width:749px){.drm-guar__box{flex-direction:column;text-align:center;padding:28px 20px;gap:24px}}
+</style>
+
+<!-- 18-por-que-nos-eligen.liquid -->
+<section class="drm drm--light drm-why">
+  <div class="drm-wrap drm-center">
+    <p class="drm-eyebrow">Reseñas verificadas</p>
+    <h2 class="drm-h drm-h2">Por qué la eligen</h2>
+    <div class="drm-why__grid"><div class="drm-why__card">
+          <span class="drm-stars"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L10 14.9l-5.2 2.8 1-5.9L1.5 7.7l5.9-.8z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L10 14.9l-5.2 2.8 1-5.9L1.5 7.7l5.9-.8z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L10 14.9l-5.2 2.8 1-5.9L1.5 7.7l5.9-.8z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L10 14.9l-5.2 2.8 1-5.9L1.5 7.7l5.9-.8z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L10 14.9l-5.2 2.8 1-5.9L1.5 7.7l5.9-.8z"/></svg></span><div class="drm-ph">Pegá acá la reseña real 1</div></div><div class="drm-why__card">
+          <span class="drm-stars"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L10 14.9l-5.2 2.8 1-5.9L1.5 7.7l5.9-.8z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L10 14.9l-5.2 2.8 1-5.9L1.5 7.7l5.9-.8z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L10 14.9l-5.2 2.8 1-5.9L1.5 7.7l5.9-.8z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L10 14.9l-5.2 2.8 1-5.9L1.5 7.7l5.9-.8z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L10 14.9l-5.2 2.8 1-5.9L1.5 7.7l5.9-.8z"/></svg></span><div class="drm-ph">Pegá acá la reseña real 2</div></div><div class="drm-why__card">
+          <span class="drm-stars"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L10 14.9l-5.2 2.8 1-5.9L1.5 7.7l5.9-.8z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L10 14.9l-5.2 2.8 1-5.9L1.5 7.7l5.9-.8z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L10 14.9l-5.2 2.8 1-5.9L1.5 7.7l5.9-.8z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L10 14.9l-5.2 2.8 1-5.9L1.5 7.7l5.9-.8z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L10 14.9l-5.2 2.8 1-5.9L1.5 7.7l5.9-.8z"/></svg></span><div class="drm-ph">Pegá acá la reseña real 3</div></div></div>
+  </div>
+</section>
+<style>
+  .drm-why__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:32px;text-align:left}
+  .drm-why__card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:12px;min-height:200px}
+  .drm-why__card p{margin:0;font-size:15px;line-height:1.6;flex:1}
+  .drm-why__card small{color:var(--green);font-weight:600}
+  @media (max-width:749px){.drm-why__grid{grid-template-columns:1fr}}
+</style>
+<!-- 19-preguntas-frecuentes.liquid -->
+<section class="drm drm-faq">
+  <div class="drm-wrap">
+    <div class="drm-center">
+      <p class="drm-eyebrow">Sacate las dudas</p>
+      <h2 class="drm-h drm-h2">Preguntas frecuentes</h2>
+    </div>
+    <div class="drm-faq__list">
+      <details open><summary>¿Qué significa "Creatina Verificada"?</summary><p>Que no te pedimos que confíes: cada lote se analiza en un laboratorio independiente y el resultado queda publicado. Escaneás el QR del frasco y ves el análisis de tu lote.</p></details>
+      <details><summary>¿Qué diferencia hay con una creatina común?</summary><p>La nuestra es micronizada (partícula más fina, se mezcla mucho mejor), tiene 5 g reales de creatina monohidrato por porción, no tiene agregados y te mostramos el análisis. La mayoría no te muestra nada.</p></details>
+      <details><summary>¿Hace falta hacer fase de carga?</summary><p>No. Con una medida de 5 g todos los días alcanza. Lo importante es la constancia.</p></details>
+      <details><summary>¿Cuándo la tomo? ¿Y los días que no entreno?</summary><p>Cuando te quede cómodo, antes o después de entrenar. Los días de descanso también: la clave es no cortarla.</p></details>
+      <details><summary>¿Hincha o retiene líquido?</summary><p>La creatina hace que el músculo guarde más agua dentro de la célula, que es parte de cómo funciona. Tomarla bien disuelta y con buena hidratación ayuda a que caiga liviana.</p></details>
+      <details><summary>¿Sirve para mujeres?</summary><p>Sí. La creatina monohidrato es para cualquier adulto que entrene. Si tenés alguna condición médica, consultá con tu médico antes de tomarla.</p></details>
+      <details><summary>¿Tiene registro ANMAT?</summary><p>Sí. Es un suplemento dietario con RNPA y RNE que podés verificar. Los números están en la etiqueta y en esta página.</p></details>
+      <details><summary>¿Y si no me convence?</summary><p>Tenés 60 días de garantía. Escribinos y te devolvemos el dinero.</p></details>
+    </div>
+  </div>
+</section>
+<style>
+  .drm-faq__list{max-width:760px;margin:32px auto 0;display:grid;gap:10px}
+  .drm-faq details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:0 20px}
+  .drm-faq summary{cursor:pointer;list-style:none;padding:18px 32px 18px 0;position:relative;font-weight:700;font-size:16px}
+  .drm-faq summary::-webkit-details-marker{display:none}
+  .drm-faq summary::after{content:"+";position:absolute;right:0;top:50%;transform:translateY(-50%);font-size:24px;color:var(--gold);font-weight:400}
+  .drm-faq details[open] summary::after{content:"–"}
+  .drm-faq details p{margin:0 0 18px;color:var(--muted);font-size:15px;line-height:1.6}
+</style>
+
+<!-- 20-cta-final.liquid -->
+<section class="drm drm-final">
+  <div class="drm-wrap drm-center">
+    <h2 class="drm-h drm-final__h">Dejá de tomar creatina <span>a ciegas.</span></h2>
+    <p class="drm-lead">Micronizada. Pura. Verificada. La tuya, con el análisis en la mano.</p>
+    <form method="post" action="/cart/add">
+      <input type="hidden" name="id" value="123">
+      <input type="hidden" name="quantity" value="1">
+      <input type="hidden" name="return_to" value="/checkout">
+      <button type="submit" class="drm-btn">Quiero mi creatina verificada · $34.990</button>
+    </form>
+    <p class="drm-final__fine">Kit de Inicio con 4 regalos · Envío gratis · Garantía de 60 días</p>
+  </div>
+</section>
+<style>
+  .drm-final{background:radial-gradient(ellipse at 50% 0%,rgba(201,164,92,.22),transparent 60%),var(--bg)}
+  .drm-final .drm-wrap{padding-top:88px;padding-bottom:88px}
+  .drm-final__h{font-size:clamp(36px,7vw,72px)}
+  .drm-final__h span{color:var(--gold);display:block}
+  .drm-final__fine{margin:16px 0 0;font-size:13px;color:var(--muted)}
+</style>
+
+<!-- 21-barra-compra-fija-mobile.liquid -->
+<div class="drm drm-sticky" id="drm-sticky" aria-hidden="true">
+  <div class="drm-sticky__info"><b>PURE Activator®</b><span>$34.990 · 4 regalos</span></div>
+  <form method="post" action="/cart/add">
+    <input type="hidden" name="id" value="123">
+    <input type="hidden" name="quantity" value="1">
+    <input type="hidden" name="return_to" value="/checkout">
+    <button type="submit" class="drm-btn">Comprar</button>
+  </form>
+</div>
+<style>
+  .drm-sticky{position:fixed;left:0;right:0;bottom:0;z-index:50;display:none;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:rgba(11,11,12,.96);border-top:1px solid var(--line);transform:translateY(110%);transition:transform .25s ease}
+  .drm-sticky.is-on{transform:none}
+  .drm-sticky__info{display:flex;flex-direction:column;font-size:13px;line-height:1.3}
+  .drm-sticky__info span{color:var(--muted)}
+  .drm-sticky .drm-btn{min-height:46px;padding:12px 24px;font-size:14px}
+  @media (max-width:749px){.drm-sticky{display:flex}}
+</style>
+<script>
+  (function(){
+    var bar=document.getElementById('drm-sticky'); if(!bar) return;
+    function onScroll(){ var on=window.scrollY>700; bar.classList.toggle('is-on',on); bar.setAttribute('aria-hidden',on?'false':'true'); }
+    window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+  })();
+</script>
+</body></html>

@@ -1,0 +1,32 @@
+{%- comment -%}
+  19 · PREGUNTAS FRECUENTES (rompe objeciones antes del checkout)
+  EDITAR: respuestas según su política real (envíos, garantía, RNPA).
+{%- endcomment -%}
+{%- assign garantia_dias = '60' -%}
+<section class="drm drm-faq">
+  <div class="drm-wrap">
+    <div class="drm-center">
+      <p class="drm-eyebrow">Sacate las dudas</p>
+      <h2 class="drm-h drm-h2">Preguntas frecuentes</h2>
+    </div>
+    <div class="drm-faq__list">
+      <details open><summary>¿Qué significa "Creatina Verificada"?</summary><p>Que no te pedimos que confíes: cada lote se analiza en un laboratorio independiente y el resultado queda publicado. Escaneás el QR del frasco y ves el análisis de tu lote.</p></details>
+      <details><summary>¿Qué diferencia hay con una creatina común?</summary><p>La nuestra es micronizada (partícula más fina, se mezcla mucho mejor), tiene 5 g reales de creatina monohidrato por porción, no tiene agregados y te mostramos el análisis. La mayoría no te muestra nada.</p></details>
+      <details><summary>¿Hace falta hacer fase de carga?</summary><p>No. Con una medida de 5 g todos los días alcanza. Lo importante es la constancia.</p></details>
+      <details><summary>¿Cuándo la tomo? ¿Y los días que no entreno?</summary><p>Cuando te quede cómodo, antes o después de entrenar. Los días de descanso también: la clave es no cortarla.</p></details>
+      <details><summary>¿Hincha o retiene líquido?</summary><p>La creatina hace que el músculo guarde más agua dentro de la célula, que es parte de cómo funciona. Tomarla bien disuelta y con buena hidratación ayuda a que caiga liviana.</p></details>
+      <details><summary>¿Sirve para mujeres?</summary><p>Sí. La creatina monohidrato es para cualquier adulto que entrene. Si tenés alguna condición médica, consultá con tu médico antes de tomarla.</p></details>
+      <details><summary>¿Tiene registro ANMAT?</summary><p>Sí. Es un suplemento dietario con RNPA y RNE que podés verificar. Los números están en la etiqueta y en esta página.</p></details>
+      <details><summary>¿Y si no me convence?</summary><p>Tenés {{ garantia_dias }} días de garantía. Escribinos y te devolvemos el dinero.</p></details>
+    </div>
+  </div>
+</section>
+<style>
+  .drm-faq__list{max-width:760px;margin:32px auto 0;display:grid;gap:10px}
+  .drm-faq details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:0 20px}
+  .drm-faq summary{cursor:pointer;list-style:none;padding:18px 32px 18px 0;position:relative;font-weight:700;font-size:16px}
+  .drm-faq summary::-webkit-details-marker{display:none}
+  .drm-faq summary::after{content:"+";position:absolute;right:0;top:50%;transform:translateY(-50%);font-size:24px;color:var(--gold);font-weight:400}
+  .drm-faq details[open] summary::after{content:"–"}
+  .drm-faq details p{margin:0 0 18px;color:var(--muted);font-size:15px;line-height:1.6}
+</style>

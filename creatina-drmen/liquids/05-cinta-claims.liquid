@@ -1,0 +1,18 @@
+{%- comment -%}
+  05 · CINTA DE CLAIMS (reemplaza la fila de logos de medios "Ironman · Flex · Muscle&Fitness")
+  Cuando tengan prensa/atletas reales, cambiar por logos.
+{%- endcomment -%}
+<div class="drm drm-strip">
+  <div class="drm-strip__track">
+    {%- for i in (1..2) -%}
+    <span>100% creatina monohidrato</span><b>✦</b><span>5 g reales por porción</span><b>✦</b><span>Micronizada</span><b>✦</b><span>Cero agregados</span><b>✦</b><span>Análisis por lote</span><b>✦</b><span>Sin gluten</span><b>✦</b>
+    {%- endfor -%}
+  </div>
+</div>
+<style>
+  .drm-strip{overflow:hidden;white-space:nowrap;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .drm-strip__track{display:inline-flex;align-items:center;gap:28px;padding:22px 0;font:600 22px/1 Oswald,Impact,sans-serif;text-transform:uppercase;letter-spacing:.04em;animation:drmStrip 34s linear infinite}
+  .drm-strip__track b{color:var(--gold);font-size:14px}
+  @keyframes drmStrip{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @media (prefers-reduced-motion:reduce){.drm-strip__track{animation:none}}
+</style>

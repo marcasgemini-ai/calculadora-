@@ -1,0 +1,29 @@
+{%- comment -%}
+  21 · BARRA DE COMPRA FIJA EN CELULAR (aparece al bajar, lleva a la oferta)
+  Si el tema ya trae "sticky add to cart", no pegar este.
+{%- endcomment -%}
+{%- assign variante = product.selected_or_first_available_variant -%}
+<div class="drm drm-sticky" id="drm-sticky" aria-hidden="true">
+  <div class="drm-sticky__info"><b>PURE Activator®</b><span>{{ variante.price | money_without_trailing_zeros }} · 4 regalos</span></div>
+  <form method="post" action="/cart/add">
+    <input type="hidden" name="id" value="{{ variante.id }}">
+    <input type="hidden" name="quantity" value="1">
+    <input type="hidden" name="return_to" value="/checkout">
+    <button type="submit" class="drm-btn">Comprar</button>
+  </form>
+</div>
+<style>
+  .drm-sticky{position:fixed;left:0;right:0;bottom:0;z-index:50;display:none;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:rgba(11,11,12,.96);border-top:1px solid var(--line);transform:translateY(110%);transition:transform .25s ease}
+  .drm-sticky.is-on{transform:none}
+  .drm-sticky__info{display:flex;flex-direction:column;font-size:13px;line-height:1.3}
+  .drm-sticky__info span{color:var(--muted)}
+  .drm-sticky .drm-btn{min-height:46px;padding:12px 24px;font-size:14px}
+  @media (max-width:749px){.drm-sticky{display:flex}}
+</style>
+<script>
+  (function(){
+    var bar=document.getElementById('drm-sticky'); if(!bar) return;
+    function onScroll(){ var on=window.scrollY>700; bar.classList.toggle('is-on',on); bar.setAttribute('aria-hidden',on?'false':'true'); }
+    window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+  })();
+</script>
