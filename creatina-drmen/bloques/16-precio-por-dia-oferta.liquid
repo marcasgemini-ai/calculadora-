@@ -1,0 +1,48 @@
+{%- comment -%}
+  16 · OFERTA "EMPEZÁ POR MENOS DE $X POR DÍA" (como "Start For <$1/Day" de Gains)
+  El precio sale solo del producto. EDITAR: porciones, valores de los regalos (en pesos, sin puntos).
+  El botón agrega el producto y lleva directo al checkout.
+{%- endcomment -%}
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>.drm{--bg:#0B0B0C;--card:#161618;--card-2:#1E1E21;--ink:#F4F2EE;--muted:#A9A49B;--gold:#C9A45C;--gold-2:#E2C489;--red:#D9443A;--green:#3DB57E;--paper:#F4F1EC;--paper-ink:#141414;--line:rgba(255,255,255,.10);font-family:Inter,system-ui,-apple-system,sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;line-height:1.5;width:100%;overflow-x:clip}.drm *,.drm *::before,.drm *::after{box-sizing:border-box}.drm img,.drm video{max-width:100%;display:block}.drm--light{background:var(--paper);color:var(--paper-ink);--muted:#5E5A54;--line:rgba(0,0,0,.10);--card:#FFFFFF;--card-2:#EFEBE4}.drm-wrap{max-width:1120px;margin:0 auto;padding:64px 16px}.drm-h{font-family:Oswald,Impact,sans-serif;text-transform:uppercase;letter-spacing:.01em;line-height:1.05;font-weight:700;margin:0 0 16px;color:inherit}.drm-h2{font-size:clamp(30px,5.2vw,52px)}.drm-h3{font-size:clamp(20px,2.6vw,24px)}.drm-eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700;margin:0 0 12px}.drm-lead{font-size:17px;line-height:1.6;color:var(--muted);max-width:660px;margin:0 0 36px}.drm-center{text-align:center}.drm-center .drm-lead{margin-left:auto;margin-right:auto}.drm-accent{color:var(--gold)}.drm-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:56px;padding:16px 32px;border:0;border-radius:999px;background:var(--gold);color:#111;font:700 16px/1 Inter,sans-serif;text-transform:uppercase;letter-spacing:.06em;text-decoration:none;cursor:pointer;transition:transform .15s ease,background .15s ease;box-shadow:0 10px 30px rgba(201,164,92,.25)}.drm-btn:hover{background:var(--gold-2);transform:translateY(-1px)}.drm-btn--block{width:100%}.drm-ph{display:flex;align-items:center;justify-content:center;text-align:center;padding:16px;min-height:100%;width:100%;background:repeating-linear-gradient(45deg,var(--card),var(--card) 12px,var(--card-2) 12px,var(--card-2) 24px);color:var(--muted);font-size:13px;font-weight:600;border:1px dashed var(--line)}.drm-stars{display:inline-flex;gap:2px;color:var(--gold)}.drm-stars svg{width:16px;height:16px}@media (max-width:749px){.drm-wrap{padding:48px 16px}}</style>
+{%- assign porciones = 60 -%}
+{%- assign valor_shaker = 990000 -%}
+{%- assign valor_embudo = 490000 -%}
+{%- assign valor_guia = 790000 -%}
+{%- assign valor_envio = 650000 -%}
+{%- assign garantia_dias = '60' -%}
+{%- assign variante = product.selected_or_first_available_variant -%}
+{%- comment -%} Redondea hacia arriba al peso siguiente para que "menos de" sea siempre cierto {%- endcomment -%}
+{%- assign por_dia = variante.price | divided_by: 100 | divided_by: porciones | plus: 1 | times: 100 -%}
+{%- assign valor_total = variante.price | plus: valor_shaker | plus: valor_embudo | plus: valor_guia | plus: valor_envio -%}
+{%- if variante.compare_at_price > variante.price -%}{%- assign valor_total = valor_total | minus: variante.price | plus: variante.compare_at_price -%}{%- endif -%}
+{%- assign img_kit = '' -%}
+<section class="drm drm-offer" id="drm-oferta">
+  <div class="drm-wrap drm-offer__grid">
+    <div>
+      <p class="drm-eyebrow">Kit de Inicio</p>
+      <h2 class="drm-h drm-h2">Empezá por menos de <span class="drm-accent">{{ por_dia | money_without_trailing_zeros }}</span> por día</h2>
+      <p class="drm-lead">Todo lo que necesitás para arrancar y no dejarla a mitad de camino.</p>
+      <div class="drm-offer__box">
+        <div class="drm-offer__row"><span>PURE Activator® 300 g · {{ porciones }} porciones</span><b>{{ variante.compare_at_price | default: variante.price | money_without_trailing_zeros }}</b></div>
+        <div class="drm-offer__row"><span>Shaker DR.MEN</span><b><s>{{ valor_shaker | money_without_trailing_zeros }}</s> GRATIS</b></div>
+        <div class="drm-offer__row"><span>Embudo de viaje</span><b><s>{{ valor_embudo | money_without_trailing_zeros }}</s> GRATIS</b></div>
+        <div class="drm-offer__row"><span>Guía "Creatina sin mitos" (PDF)</span><b><s>{{ valor_guia | money_without_trailing_zeros }}</s> GRATIS</b></div>
+        <div class="drm-offer__row"><span>Envío a todo el país</span><b><s>{{ valor_envio | money_without_trailing_zeros }}</s> GRATIS</b></div>
+        <div class="drm-offer__row"><span>Garantía de {{ garantia_dias }} días</span><b>INCLUIDA</b></div>
+        <div class="drm-offer__total"><span>Total</span><div><s>{{ valor_total | money_without_trailing_zeros }}</s><strong>{{ variante.price | money_without_trailing_zeros }}</strong></div></div>
+        <form method="post" action="/cart/add">
+          <input type="hidden" name="id" value="{{ variante.id }}">
+          <input type="hidden" name="quantity" value="1">
+          <input type="hidden" name="return_to" value="/checkout">
+          <button type="submit" class="drm-btn drm-btn--block">Quiero mi Kit de Inicio</button>
+        </form>
+        <p class="drm-offer__fine">Pago seguro · Envío gratis · Garantía de {{ garantia_dias }} días</p>
+      </div>
+    </div>
+    <div class="drm-offer__media">
+      {%- if img_kit != blank -%}<img src="{{ img_kit | file_url }}" alt="Kit de Inicio DR.MEN" loading="lazy">{%- elsif product.featured_image -%}{{ product.featured_image | image_url: width: 900 | image_tag: loading: 'lazy', alt: product.title }}{%- else -%}<div class="drm-ph">Foto del kit:<br>frasco + shaker + embudo + guía</div>{%- endif -%}
+    </div>
+  </div>
+</section>
+<style>.drm-offer__grid{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center}.drm-offer__box{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px}.drm-offer__row{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px dashed var(--line);font-size:15px}.drm-offer__row b{white-space:nowrap;color:var(--green)}.drm-offer__row:first-child b{color:var(--ink)}.drm-offer__row s{color:var(--muted);font-weight:500;margin-right:6px}.drm-offer__total{display:flex;justify-content:space-between;align-items:flex-end;padding:18px 0 20px;font:700 18px/1 Oswald,sans-serif;text-transform:uppercase}.drm-offer__total s{display:block;text-align:right;color:var(--muted);font:500 14px/1.4 Inter,sans-serif}.drm-offer__total strong{font-size:34px;color:var(--gold)}.drm-offer__fine{margin:12px 0 0;text-align:center;font-size:12px;color:var(--muted)}.drm-offer__media{aspect-ratio:4/5;border-radius:20px;overflow:hidden;background:var(--card)}.drm-offer__media img{width:100%;height:100%;object-fit:cover}@media (max-width:749px){.drm-offer__grid{grid-template-columns:1fr;gap:32px}.drm-offer__media{order:-1;aspect-ratio:1}}</style>

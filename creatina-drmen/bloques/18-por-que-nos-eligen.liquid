@@ -1,0 +1,27 @@
+{%- comment -%}
+  18 · POR QUÉ NOS ELIGEN (como "Why 250K Choose us daily" de Gains)
+  EDITAR: pegar 3 reseñas REALES de clientes (texto + nombre + ciudad).
+  Mientras estén vacías se muestra un recuadro para completar. No inventar reseñas.
+{%- endcomment -%}
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>.drm{--bg:#0B0B0C;--card:#161618;--card-2:#1E1E21;--ink:#F4F2EE;--muted:#A9A49B;--gold:#C9A45C;--gold-2:#E2C489;--red:#D9443A;--green:#3DB57E;--paper:#F4F1EC;--paper-ink:#141414;--line:rgba(255,255,255,.10);font-family:Inter,system-ui,-apple-system,sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;line-height:1.5;width:100%;overflow-x:clip}.drm *,.drm *::before,.drm *::after{box-sizing:border-box}.drm img,.drm video{max-width:100%;display:block}.drm--light{background:var(--paper);color:var(--paper-ink);--muted:#5E5A54;--line:rgba(0,0,0,.10);--card:#FFFFFF;--card-2:#EFEBE4}.drm-wrap{max-width:1120px;margin:0 auto;padding:64px 16px}.drm-h{font-family:Oswald,Impact,sans-serif;text-transform:uppercase;letter-spacing:.01em;line-height:1.05;font-weight:700;margin:0 0 16px;color:inherit}.drm-h2{font-size:clamp(30px,5.2vw,52px)}.drm-h3{font-size:clamp(20px,2.6vw,24px)}.drm-eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700;margin:0 0 12px}.drm-lead{font-size:17px;line-height:1.6;color:var(--muted);max-width:660px;margin:0 0 36px}.drm-center{text-align:center}.drm-center .drm-lead{margin-left:auto;margin-right:auto}.drm-accent{color:var(--gold)}.drm-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:56px;padding:16px 32px;border:0;border-radius:999px;background:var(--gold);color:#111;font:700 16px/1 Inter,sans-serif;text-transform:uppercase;letter-spacing:.06em;text-decoration:none;cursor:pointer;transition:transform .15s ease,background .15s ease;box-shadow:0 10px 30px rgba(201,164,92,.25)}.drm-btn:hover{background:var(--gold-2);transform:translateY(-1px)}.drm-btn--block{width:100%}.drm-ph{display:flex;align-items:center;justify-content:center;text-align:center;padding:16px;min-height:100%;width:100%;background:repeating-linear-gradient(45deg,var(--card),var(--card) 12px,var(--card-2) 12px,var(--card-2) 24px);color:var(--muted);font-size:13px;font-weight:600;border:1px dashed var(--line)}.drm-stars{display:inline-flex;gap:2px;color:var(--gold)}.drm-stars svg{width:16px;height:16px}@media (max-width:749px){.drm-wrap{padding:48px 16px}}</style>
+{%- assign clientes = '' -%}
+{%- assign r1_texto = '' -%}{%- assign r1_nombre = '' -%}
+{%- assign r2_texto = '' -%}{%- assign r2_nombre = '' -%}
+{%- assign r3_texto = '' -%}{%- assign r3_nombre = '' -%}
+<section class="drm drm--light drm-why">
+  <div class="drm-wrap drm-center">
+    <p class="drm-eyebrow">Reseñas verificadas</p>
+    <h2 class="drm-h drm-h2">Por qué {% if clientes != blank %}{{ clientes }} personas {% endif %}la eligen</h2>
+    <div class="drm-why__grid">
+      {%- for i in (1..3) -%}
+        {%- case i -%}{%- when 1 -%}{%- assign t = r1_texto -%}{%- assign n = r1_nombre -%}{%- when 2 -%}{%- assign t = r2_texto -%}{%- assign n = r2_nombre -%}{%- else -%}{%- assign t = r3_texto -%}{%- assign n = r3_nombre -%}{%- endcase -%}
+        <div class="drm-why__card">
+          <span class="drm-stars">{%- for s in (1..5) -%}<svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L10 14.9l-5.2 2.8 1-5.9L1.5 7.7l5.9-.8z"/></svg>{%- endfor -%}</span>
+          {%- if t != blank -%}<p>"{{ t }}"</p><b>{{ n }}</b> <small>· Compra verificada</small>{%- else -%}<div class="drm-ph">Pegá acá la reseña real {{ i }}</div>{%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+<style>.drm-why__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:32px;text-align:left}.drm-why__card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:12px;min-height:200px}.drm-why__card p{margin:0;font-size:15px;line-height:1.6;flex:1}.drm-why__card small{color:var(--green);font-weight:600}@media (max-width:749px){.drm-why__grid{grid-template-columns:1fr}}</style>

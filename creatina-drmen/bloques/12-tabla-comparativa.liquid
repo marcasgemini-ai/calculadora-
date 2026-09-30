@@ -1,0 +1,35 @@
+{%- comment -%}
+  12 · TABLA COMPARATIVA (como "The Choice is Clear" de Gains)
+  Se compara contra TIPOS de producto, nunca contra marcas.
+{%- endcomment -%}
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>.drm{--bg:#0B0B0C;--card:#161618;--card-2:#1E1E21;--ink:#F4F2EE;--muted:#A9A49B;--gold:#C9A45C;--gold-2:#E2C489;--red:#D9443A;--green:#3DB57E;--paper:#F4F1EC;--paper-ink:#141414;--line:rgba(255,255,255,.10);font-family:Inter,system-ui,-apple-system,sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;line-height:1.5;width:100%;overflow-x:clip}.drm *,.drm *::before,.drm *::after{box-sizing:border-box}.drm img,.drm video{max-width:100%;display:block}.drm--light{background:var(--paper);color:var(--paper-ink);--muted:#5E5A54;--line:rgba(0,0,0,.10);--card:#FFFFFF;--card-2:#EFEBE4}.drm-wrap{max-width:1120px;margin:0 auto;padding:64px 16px}.drm-h{font-family:Oswald,Impact,sans-serif;text-transform:uppercase;letter-spacing:.01em;line-height:1.05;font-weight:700;margin:0 0 16px;color:inherit}.drm-h2{font-size:clamp(30px,5.2vw,52px)}.drm-h3{font-size:clamp(20px,2.6vw,24px)}.drm-eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700;margin:0 0 12px}.drm-lead{font-size:17px;line-height:1.6;color:var(--muted);max-width:660px;margin:0 0 36px}.drm-center{text-align:center}.drm-center .drm-lead{margin-left:auto;margin-right:auto}.drm-accent{color:var(--gold)}.drm-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:56px;padding:16px 32px;border:0;border-radius:999px;background:var(--gold);color:#111;font:700 16px/1 Inter,sans-serif;text-transform:uppercase;letter-spacing:.06em;text-decoration:none;cursor:pointer;transition:transform .15s ease,background .15s ease;box-shadow:0 10px 30px rgba(201,164,92,.25)}.drm-btn:hover{background:var(--gold-2);transform:translateY(-1px)}.drm-btn--block{width:100%}.drm-ph{display:flex;align-items:center;justify-content:center;text-align:center;padding:16px;min-height:100%;width:100%;background:repeating-linear-gradient(45deg,var(--card),var(--card) 12px,var(--card-2) 12px,var(--card-2) 24px);color:var(--muted);font-size:13px;font-weight:600;border:1px dashed var(--line)}.drm-stars{display:inline-flex;gap:2px;color:var(--gold)}.drm-stars svg{width:16px;height:16px}@media (max-width:749px){.drm-wrap{padding:48px 16px}}</style>
+{%- assign garantia_dias = '60' -%}
+<section class="drm drm--light drm-cmp">
+  <div class="drm-wrap drm-center">
+    <p class="drm-eyebrow">Compará vos</p>
+    <h2 class="drm-h drm-h2">La elección es clara</h2>
+    <div class="drm-cmp__scroll">
+      <table class="drm-cmp__table">
+        <thead>
+          <tr><th></th><th class="drm-cmp__us">DR.MEN<br>PURE Activator®</th><th>Creatina común<br>sin micronizar</th><th>Creatina sin<br>registro visible</th><th>Gomitas de<br>creatina</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Micronizada · se mezcla fácil</td><td class="drm-cmp__us">✓</td><td>✕</td><td>?</td><td>—</td></tr>
+          <tr><td>5 g reales por porción</td><td class="drm-cmp__us">✓</td><td>✓</td><td>?</td><td>?</td></tr>
+          <tr><td>Análisis de laboratorio por lote</td><td class="drm-cmp__us">✓</td><td>✕</td><td>✕</td><td>✕</td></tr>
+          <tr><td>Registro ANMAT verificable</td><td class="drm-cmp__us">✓</td><td>✓</td><td>✕</td><td>?</td></tr>
+          <tr><td>Cero azúcar y agregados</td><td class="drm-cmp__us">✓</td><td>✓</td><td>?</td><td>✕</td></tr>
+          <tr><td>Garantía de {{ garantia_dias }} días</td><td class="drm-cmp__us">✓</td><td>?</td><td>✕</td><td>?</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <form method="post" action="/cart/add" class="drm-cmp__cta">
+      <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+      <input type="hidden" name="quantity" value="1">
+      <input type="hidden" name="return_to" value="/checkout">
+      <button type="submit" class="drm-btn">Quiero la verificada</button>
+    </form>
+  </div>
+</section>
+<style>.drm-cmp__scroll{overflow-x:auto;margin:32px -16px 0;padding:0 16px}.drm-cmp__table{width:100%;min-width:620px;border-collapse:separate;border-spacing:0;font-size:14px;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.06)}.drm-cmp__table th,.drm-cmp__table td{padding:16px 12px;border-bottom:1px solid var(--line);text-align:center}.drm-cmp__table th{font:600 13px/1.25 Inter,sans-serif;color:var(--muted);vertical-align:bottom}.drm-cmp__table td:first-child{text-align:left;font-weight:600}.drm-cmp__table tbody tr:last-child td{border-bottom:0}.drm-cmp__table td{font-size:18px;font-weight:700;color:#B8B2A8}.drm-cmp__table td:first-child{font-size:14px;color:var(--paper-ink)}.drm-cmp__us{background:#111 !important;color:var(--gold) !important}th.drm-cmp__us{font:700 15px/1.2 Oswald,sans-serif !important;text-transform:uppercase;color:#fff !important}.drm-cmp__cta{margin-top:32px}</style>

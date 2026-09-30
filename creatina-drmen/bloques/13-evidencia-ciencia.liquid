@@ -1,0 +1,28 @@
+{%- comment -%}
+  13 · EVIDENCIA (como "The Evidence is Overwhelming" de Gains)
+  Claims genéricos de creatina monohidrato respaldados por la posición oficial ISSN (Kreider et al., 2017).
+  No agregar porcentajes de fuerza ni plazos ("en 30 días").
+{%- endcomment -%}
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>.drm{--bg:#0B0B0C;--card:#161618;--card-2:#1E1E21;--ink:#F4F2EE;--muted:#A9A49B;--gold:#C9A45C;--gold-2:#E2C489;--red:#D9443A;--green:#3DB57E;--paper:#F4F1EC;--paper-ink:#141414;--line:rgba(255,255,255,.10);font-family:Inter,system-ui,-apple-system,sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;line-height:1.5;width:100%;overflow-x:clip}.drm *,.drm *::before,.drm *::after{box-sizing:border-box}.drm img,.drm video{max-width:100%;display:block}.drm--light{background:var(--paper);color:var(--paper-ink);--muted:#5E5A54;--line:rgba(0,0,0,.10);--card:#FFFFFF;--card-2:#EFEBE4}.drm-wrap{max-width:1120px;margin:0 auto;padding:64px 16px}.drm-h{font-family:Oswald,Impact,sans-serif;text-transform:uppercase;letter-spacing:.01em;line-height:1.05;font-weight:700;margin:0 0 16px;color:inherit}.drm-h2{font-size:clamp(30px,5.2vw,52px)}.drm-h3{font-size:clamp(20px,2.6vw,24px)}.drm-eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700;margin:0 0 12px}.drm-lead{font-size:17px;line-height:1.6;color:var(--muted);max-width:660px;margin:0 0 36px}.drm-center{text-align:center}.drm-center .drm-lead{margin-left:auto;margin-right:auto}.drm-accent{color:var(--gold)}.drm-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:56px;padding:16px 32px;border:0;border-radius:999px;background:var(--gold);color:#111;font:700 16px/1 Inter,sans-serif;text-transform:uppercase;letter-spacing:.06em;text-decoration:none;cursor:pointer;transition:transform .15s ease,background .15s ease;box-shadow:0 10px 30px rgba(201,164,92,.25)}.drm-btn:hover{background:var(--gold-2);transform:translateY(-1px)}.drm-btn--block{width:100%}.drm-ph{display:flex;align-items:center;justify-content:center;text-align:center;padding:16px;min-height:100%;width:100%;background:repeating-linear-gradient(45deg,var(--card),var(--card) 12px,var(--card-2) 12px,var(--card-2) 24px);color:var(--muted);font-size:13px;font-weight:600;border:1px dashed var(--line)}.drm-stars{display:inline-flex;gap:2px;color:var(--gold)}.drm-stars svg{width:16px;height:16px}@media (max-width:749px){.drm-wrap{padding:48px 16px}}</style>
+{%- assign img_ciencia = '' -%}
+<section class="drm drm-sci">
+  <div class="drm-wrap drm-sci__grid">
+    <div>
+      <p class="drm-eyebrow">+30 años de estudios</p>
+      <h2 class="drm-h drm-h2">La evidencia <span class="drm-accent">es contundente</span></h2>
+      <p class="drm-lead">La creatina monohidrato es uno de los suplementos más estudiados del deporte. No es moda: es ciencia con décadas de respaldo.</p>
+      <ul class="drm-sci__list">
+        <li>Apoya la fuerza y la potencia en esfuerzos cortos e intensos.</li>
+        <li>Ayuda a sostener el rendimiento serie tras serie.</li>
+        <li>Acompaña el desarrollo muscular junto al entrenamiento de fuerza.</li>
+        <li>El monohidrato es la forma de creatina con más respaldo científico.</li>
+      </ul>
+      <p class="drm-sci__src">Referencia: International Society of Sports Nutrition, posición oficial sobre creatina (Kreider et al., 2017).</p>
+    </div>
+    <div class="drm-sci__media">
+      {%- if img_ciencia != blank -%}<img src="{{ img_ciencia | file_url }}" alt="Creatina DR.MEN en laboratorio" loading="lazy">{%- else -%}<div class="drm-ph">Foto: polvo de creatina en macro<br>o frasco en entorno de laboratorio</div>{%- endif -%}
+    </div>
+  </div>
+</section>
+<style>.drm-sci__grid{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center}.drm-sci__list{list-style:none;margin:0;padding:0;display:grid;gap:12px}.drm-sci__list li{padding:14px 16px 14px 48px;position:relative;background:var(--card);border:1px solid var(--line);border-radius:12px;font-size:15px}.drm-sci__list li::before{content:"✓";position:absolute;left:16px;top:50%;transform:translateY(-50%);width:22px;height:22px;border-radius:50%;background:var(--gold);color:#111;display:grid;place-items:center;font-size:12px;font-weight:800}.drm-sci__src{font-size:12px;color:var(--muted);margin:18px 0 0}.drm-sci__media{aspect-ratio:1;border-radius:20px;overflow:hidden}.drm-sci__media img{width:100%;height:100%;object-fit:cover}@media (max-width:749px){.drm-sci__grid{grid-template-columns:1fr;gap:32px}}</style>

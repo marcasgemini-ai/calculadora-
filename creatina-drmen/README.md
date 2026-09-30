@@ -12,6 +12,10 @@ Categoría nueva: **Creatina Verificada**. Enemigo: **la creatina común / sin c
 
 ## Cómo instalar
 
+**Recomendado: carpeta `bloques/`** → 20 bloques autocontenidos (cada uno trae sus estilos). Se pegan de a uno en "Liquid personalizado" y funcionan solos, en cualquier orden. El bloque 20 incluye la barra de compra fija para celular. Se regeneran con `python3 preview/standalone.py`.
+
+Alternativa: carpeta `liquids/` (base 00 + 21 secciones):
+
 1. Tienda online → Personalizar → plantilla de **Producto** (conviene duplicarla como `producto-creatina` y asignarla solo a este producto).
 2. Pegá cada archivo `.liquid` en un bloque/sección **"Liquid personalizado"** (Custom Liquid), en este orden.
 3. **`00-base-estilos` va una sola vez, antes que todos.** Sin ese bloque las demás secciones se ven sin formato.

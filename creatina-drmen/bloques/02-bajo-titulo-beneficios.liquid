@@ -1,0 +1,28 @@
+{%- comment -%}
+  02 · DEBAJO DEL TÍTULO DEL PRODUCTO (bloque de beneficios, como los bullets de Gains)
+  Ubicación: dentro de la info del producto, justo debajo del título y el precio.
+  EDITAR: rating_score y rating_count SOLO con datos reales (si quedan vacíos, no se muestran).
+{%- endcomment -%}
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>.drm{--bg:#0B0B0C;--card:#161618;--card-2:#1E1E21;--ink:#F4F2EE;--muted:#A9A49B;--gold:#C9A45C;--gold-2:#E2C489;--red:#D9443A;--green:#3DB57E;--paper:#F4F1EC;--paper-ink:#141414;--line:rgba(255,255,255,.10);font-family:Inter,system-ui,-apple-system,sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;line-height:1.5;width:100%;overflow-x:clip}.drm *,.drm *::before,.drm *::after{box-sizing:border-box}.drm img,.drm video{max-width:100%;display:block}.drm--light{background:var(--paper);color:var(--paper-ink);--muted:#5E5A54;--line:rgba(0,0,0,.10);--card:#FFFFFF;--card-2:#EFEBE4}.drm-wrap{max-width:1120px;margin:0 auto;padding:64px 16px}.drm-h{font-family:Oswald,Impact,sans-serif;text-transform:uppercase;letter-spacing:.01em;line-height:1.05;font-weight:700;margin:0 0 16px;color:inherit}.drm-h2{font-size:clamp(30px,5.2vw,52px)}.drm-h3{font-size:clamp(20px,2.6vw,24px)}.drm-eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700;margin:0 0 12px}.drm-lead{font-size:17px;line-height:1.6;color:var(--muted);max-width:660px;margin:0 0 36px}.drm-center{text-align:center}.drm-center .drm-lead{margin-left:auto;margin-right:auto}.drm-accent{color:var(--gold)}.drm-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:56px;padding:16px 32px;border:0;border-radius:999px;background:var(--gold);color:#111;font:700 16px/1 Inter,sans-serif;text-transform:uppercase;letter-spacing:.06em;text-decoration:none;cursor:pointer;transition:transform .15s ease,background .15s ease;box-shadow:0 10px 30px rgba(201,164,92,.25)}.drm-btn:hover{background:var(--gold-2);transform:translateY(-1px)}.drm-btn--block{width:100%}.drm-ph{display:flex;align-items:center;justify-content:center;text-align:center;padding:16px;min-height:100%;width:100%;background:repeating-linear-gradient(45deg,var(--card),var(--card) 12px,var(--card-2) 12px,var(--card-2) 24px);color:var(--muted);font-size:13px;font-weight:600;border:1px dashed var(--line)}.drm-stars{display:inline-flex;gap:2px;color:var(--gold)}.drm-stars svg{width:16px;height:16px}@media (max-width:749px){.drm-wrap{padding:48px 16px}}</style>
+{%- assign rating_score = '' -%}
+{%- assign rating_count = '' -%}
+{%- assign categoria = 'Creatina Verificada' -%}
+<div class="drm drm--light drm-bt">
+  {%- if rating_score != blank -%}
+  <div class="drm-bt__rating">
+    <span class="drm-stars">{%- for i in (1..5) -%}<svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L10 14.9l-5.2 2.8 1-5.9L1.5 7.7l5.9-.8z"/></svg>{%- endfor -%}</span>
+    <strong>{{ rating_score }}</strong> · {{ rating_count }} reseñas verificadas
+  </div>
+  {%- endif -%}
+  <p class="drm-bt__tag"><span>Nueva categoría</span> {{ categoria }}</p>
+  <p class="drm-bt__sub">La creatina micronizada que te muestra su análisis de laboratorio.</p>
+  <ul class="drm-bt__list">
+    <li><b>Micronizada:</b> se mezcla fácil, sin grumos ni arenilla en el fondo del vaso.</li>
+    <li><b>5 g reales</b> de creatina monohidrato por porción. 60 porciones.</li>
+    <li><b>Cero agregados:</b> sin rellenos, sin azúcar, sin gluten.</li>
+    <li><b>Verificada por lote:</b> escaneá el QR del frasco y mirá su análisis.</li>
+    <li><b>Apoya la fuerza y el rendimiento</b> en entrenamientos intensos.</li>
+  </ul>
+</div>
+<style>.drm-bt{background:transparent;color:inherit;padding:4px 0 8px}.drm-bt__rating{display:flex;align-items:center;gap:8px;font-size:14px;margin-bottom:12px}.drm-bt__tag{display:inline-flex;align-items:center;gap:8px;margin:0 0 10px;padding:6px 12px 6px 6px;border-radius:999px;background:rgba(201,164,92,.14);font:700 13px/1 Inter,sans-serif;text-transform:uppercase;letter-spacing:.06em}.drm-bt__tag span{background:var(--gold);color:#111;padding:5px 9px;border-radius:999px;font-size:11px}.drm-bt__sub{font-size:17px;font-weight:600;margin:0 0 14px}.drm-bt__list{list-style:none;margin:0;padding:0;display:grid;gap:10px}.drm-bt__list li{position:relative;padding-left:30px;font-size:15px;line-height:1.45}.drm-bt__list li::before{content:"";position:absolute;left:0;top:1px;width:20px;height:20px;border-radius:50%;background:var(--green) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='white'%3E%3Cpath d='M8 13.2 4.8 10l-1.2 1.2L8 15.6l8.4-8.4-1.2-1.2z'/%3E%3C/svg%3E") center/16px no-repeat}</style>
