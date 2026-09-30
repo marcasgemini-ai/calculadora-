@@ -58,6 +58,15 @@ assign bump_cents = bump_variant_promo.price
 assign bump_free_id = bump_offer.variants[1].id
 endif
 endif
+assign bump_orig = bump_variant.price
+if bump_mode == 'product' and bump_variant == blank
+assign bump_product = bump_offer
+assign bump_variant = bump_variant_promo
+assign bump_orig = bump_variant_promo.compare_at_price
+if bump_orig == blank or bump_orig <= bump_cents
+assign bump_orig = bump_cents | times: 2
+endif
+endif
 if bump_title == blank
 assign bump_title = bump_product.title
 endif
@@ -227,7 +236,7 @@ data-name="{{ title | escape }}"
 <span class="gb__text">{% if bump_free %}{{ bump_text_free }}{% else %}{{ bump_text }}{% endif %}</span>
 <span class="gb__price">
 <strong>{% if bump_free %}GRATIS{% else %}{{ bump_cents | money_without_trailing_zeros }}{% endif %}</strong>
-<s>{{ bump_variant.price | money_without_trailing_zeros }}</s>
+<s>{{ bump_orig | money_without_trailing_zeros }}</s>
 </span>
 </div>
 {%- endif -%}
