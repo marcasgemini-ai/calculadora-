@@ -1,0 +1,66 @@
+{%- comment -%}
+  LISTICLE METABOMEN +40 · LIQUID 00 · OCULTAR HEADER Y FOOTER (solo en esta página)
+  Pegalo como PRIMERA sección "Liquid personalizado" del template del listicle.
+  Como va adentro de ese template, solo afecta a esta página: el resto de la tienda queda igual.
+
+  mostrar_barra = true  -> deja una barra mínima arriba con el logo (sin menú ni links), estilo nota.
+  mostrar_barra = false -> no queda nada arriba.
+  En el editor de Shopify el header y el footer se siguen viendo, para que puedas editar; en la tienda real se ocultan.
+{%- endcomment -%}
+
+{%- assign mostrar_barra = true -%}
+{%- assign barra_texto = 'DR.MEN · Salud masculina' -%}
+{%- assign logo_url = '' -%}
+
+{%- unless request.design_mode -%}
+<style>
+  /* header, barra de anuncios y footer (Dawn y la mayoría de los themes 2.0) */
+  .shopify-section-group-header-group,
+  .shopify-section-group-footer-group,
+  #shopify-section-header,
+  #shopify-section-footer,
+  #shopify-section-announcement-bar,
+  .shopify-section-header,
+  .shopify-section-footer,
+  .announcement-bar-section,
+  .announcement-bar,
+  sticky-header,
+  header.header,
+  .site-header,
+  #header,
+  .header-wrapper,
+  footer,
+  .footer,
+  .site-footer,
+  #footer,
+  /* botones flotantes del theme que molestan en el listicle */
+  .header__icon--cart,
+  cart-notification { display: none !important; }
+
+  /* quita el espacio que reservan algunos themes para el header fijo */
+  body, main, #MainContent, .main-content { padding-top: 0 !important; margin-top: 0 !important; }
+  :root { --header-height: 0px !important; --announcement-height: 0px !important; }
+
+</style>
+
+<script>
+  /* respaldo: si el theme usa otros nombres, oculta toda sección que esté fuera del contenido de la página */
+  document.addEventListener('DOMContentLoaded', function () {
+    var main = document.querySelector('main, #MainContent');
+    if (!main) return;
+    document.querySelectorAll('body > .shopify-section, body > div > .shopify-section').forEach(function (s) {
+      if (!main.contains(s) && !s.contains(main)) s.style.display = 'none';
+    });
+  });
+</script>
+{%- endunless -%}
+
+{%- if mostrar_barra -%}
+  <style>
+  .mlx-top { background: #0E0F11; color: #fff; text-align: center; padding: 10px 16px; font-family: var(--font-body-family, inherit); font-size: 12px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+  .mlx-top img { display: inline-block; height: 26px; width: auto; vertical-align: middle; }
+  </style>
+  <div class="mlx-top">
+    {%- if logo_url != blank -%}<img src="{{ logo_url }}" alt="DR.MEN" width="120" height="26">{%- else -%}{{ barra_texto }}{%- endif -%}
+  </div>
+{%- endif -%}

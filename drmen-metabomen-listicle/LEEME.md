@@ -5,10 +5,11 @@ Se vende desde el listicle: la oferta (bloque 09) agrega al carrito y va directo
 
 ## Cómo se arma
 1. Shopify > Tienda online > Personalizar > crear un **template de página** nuevo (ej. `page.listicle-metabomen`).
-2. Agregar 10 secciones **Liquid personalizado**, en este orden, pegando cada archivo:
+2. Agregar 11 secciones **Liquid personalizado**, en este orden, pegando cada archivo:
 
 | # | Archivo | Qué es |
 |---|---|---|
+| 00 | `00-ocultar-header-footer.liquid` | Oculta header, barra de anuncios y footer **solo en esta página** (en el editor se siguen viendo) |
 | 01 | `01-estilos-hero.liquid` | **Va primero**: tiene los estilos de todos los bloques (menos el 09) + hero |
 | 02 | `02-razon-1-grasa.liquid` | Misma dieta, 55% menos grasa |
 | 03 | `03-razon-2-hambre.liquid` | Leptina, grelina, antojos |
@@ -21,7 +22,8 @@ Se vende desde el listicle: la oferta (bloque 09) agrega al carrito y va directo
 | 10 | `10-faq-garantia-sticky.liquid` | FAQ + garantía + fuentes + barra fija en celular |
 
 3. Crear la página (Páginas > Agregar) y asignarle ese template. Esa URL va en los anuncios.
-4. Quitar margen o padding de las secciones del theme si quedan espacios de más.
+4. Si el template trae la sección "Página" (título + contenido), eliminala o dejala vacía.
+5. Quitar margen o padding de las secciones del theme si quedan espacios de más.
 
 ## Lo que hay que completar antes de publicar
 - **09 · `producto_handle`**: el handle real de Metabomen (por defecto `metabomen`).
