@@ -26,13 +26,23 @@ Square 1:1 format, 1080x1080. Amateur smartphone photo taken by someone else fro
 Square 1:1 format, 1080x1080. Amateur mirror selfie in a small Argentine bathroom with old white and light-blue tiles: a 47-year-old man in a white undershirt, side profile, struggling to button his jeans over his belly, holding the phone in one hand, reflected in a slightly dirty mirror with toothpaste spots. Shaving cream, a toothbrush cup and a hanging towel in the background, cold fluorescent light. Real dad bod, relatable, not humiliating. Taken with a mid-range Android phone, slightly tilted, mild digital noise and grain, JPEG compression. Real skin with pores, body hair, wrinkles, stubble, a few grey hairs. Ordinary Argentine middle-class home, nothing staged. Candid, looks like a photo sent on WhatsApp. No text, no watermark, no logos. Avoid: studio lighting, professional photography, model, perfect or airbrushed skin, six-pack, stock photo look, cinematic color grading, 3D render, illustration, CGI, plastic skin, extra fingers, deformed hands, luxury bathroom.
 ```
 
+### 4b · Razón 4, el sueño profundo y los años (bloque 05 · `img`, va arriba del gráfico)
+```
+Square 1:1 format, 1080x1080. Amateur smartphone photo of a 48-year-old Argentine man with a belly, grey stubble and tired eyes, sitting on a worn sofa in his living room at night under a warm ceiling bulb, holding an old printed 10x15 photo of himself at 25: slim, smiling, at a beach or a football match. We see both his current face and the old photo clearly. Nostalgic, slightly sad expression. Behind him a TV on standby, a mate and a remote control on a small table. Taken with a mid-range Android phone, slightly tilted, mild digital noise and grain, JPEG compression. Real skin with pores, wrinkles, grey hairs, under-eye bags. Ordinary Argentine middle-class home, nothing staged. Candid, looks like a photo a friend sent on WhatsApp. No text, no watermark, no logos. Avoid: studio lighting, professional photography, model, perfect or airbrushed skin, stock photo look, cinematic color grading, 3D render, illustration, CGI, plastic skin, extra fingers, deformed hands, two different people looking unrelated, luxury interior.
+```
+
+### 4c · Razón 5, la dieta que no alcanza (bloque 06 · `img`, alternativa a la placa)
+```
+Square 1:1 format, 1080x1080. Amateur smartphone photo of a 44-year-old Argentine man with a belly, sitting at his office desk at lunchtime, looking bored and frustrated at a plastic tupperware with plain lettuce, tomato and a boiled egg, while a coworker's hand in the frame holds a milanesa sandwich. Open-plan office with cheap desks, a computer monitor, a mate and a thermos on the desk, fluorescent light. Taken with a mid-range Android phone, slightly tilted, mild digital noise and grain, JPEG compression. Real skin with pores, wrinkles, stubble. Candid, unposed, relatable and a bit funny, looks like a photo a coworker sent on WhatsApp. No text, no watermark, no logos. Avoid: studio lighting, professional photography, model, perfect or airbrushed skin, stock photo look, cinematic color grading, 3D render, illustration, CGI, plastic skin, extra fingers, deformed hands, luxury office.
+```
+
 ### 5 · Frasco para el CTA intermedio (bloque 04 · `img_frasco`)
 Este va limpio, sin estilo celular, con fondo transparente.
 ```
 Square 1:1 format, 1080x1080. Clean product packshot of the attached black supplement bottle "METABOMEN" by DR.MEN, front-facing, three beige capsules and a little powder at the base, isolated on a transparent background, soft studio light, ultra sharp label, keep the label text exactly as in the reference, no extra text, no watermark. Avoid: distorted or changed label text, extra bottles, props, colored background, 3D render look.
 ```
 
-### 6 · Producto en la vida real (bloque 06 · `img`, alternativa a la placa)
+### 6 · Producto en la vida real (bloque 06 · `img`, otra alternativa)
 ```
 Square 1:1 format, 1080x1080. Amateur smartphone photo of the attached black supplement bottle "METABOMEN" (keep the label exactly as reference) standing on an Argentine kitchen counter in the morning, next to a mate with bombilla and a thermos, a toast with butter on a plate, keys, a wallet and a phone with a cracked screen protector. Natural window light, slightly overexposed background, everyday breakfast mess. Taken quickly with one hand on a mid-range Android phone, slightly tilted, mild digital noise and grain, JPEG compression. Ordinary Argentine middle-class home, nothing staged. Looks like a photo sent on WhatsApp. No text, no watermark, no logos except the supplement bottle. Avoid: studio lighting, professional product photography, styled props, stock photo look, cinematic color grading, 3D render, CGI, distorted label text, luxury interior.
 ```

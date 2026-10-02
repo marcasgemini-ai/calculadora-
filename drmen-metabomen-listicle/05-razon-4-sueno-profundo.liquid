@@ -1,11 +1,15 @@
 {%- comment -%}
   LISTICLE METABOMEN +40 · LIQUID 05 de 10 · RAZÓN 4 (sueño profundo y envejecimiento)
-  Necesita el bloque 01 arriba (estilos). El gráfico se arma con CSS, no necesita imagen.
+  Necesita el bloque 01 arriba (estilos). El gráfico se arma con CSS.
+  img (opcional): foto arriba del gráfico. Vacía = solo se ve el gráfico.
 {%- endcomment -%}
+
+{%- assign img = '' -%}
 
 <div class="ml">
   <div class="ml-reason is-rev">
     <div class="ml-media">
+      {%- if img != blank -%}<img src="{{ img }}" alt="Hombre de +40 mirando una foto suya de joven" loading="lazy" width="1080" height="1080" style="margin-bottom:14px">{%- endif -%}
       <div class="ml-chart">
         <p class="ml-chart__t">Sueño profundo en hombres sanos (% de la noche)</p>
         <div class="ml-bar">
