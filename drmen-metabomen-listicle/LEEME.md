@@ -9,7 +9,7 @@ Se vende desde el listicle: la oferta (bloque 09) agrega al carrito y va directo
 
 | # | Archivo | Qué es |
 |---|---|---|
-| 00 | `00-ocultar-header-footer.liquid` | Oculta header, barra de anuncios y footer **solo en esta página** (en el editor se siguen viendo) |
+| 00 | `00-ocultar-header-footer.liquid` | Oculta header, ticker, footer y popup **solo en esta página** (theme Shrine; también en el editor) |
 | 01 | `01-estilos-hero.liquid` | **Va primero**: tiene los estilos de todos los bloques (menos el 09) + hero |
 | 02 | `02-razon-1-grasa.liquid` | Misma dieta, 55% menos grasa |
 | 03 | `03-razon-2-hambre.liquid` | Leptina, grelina, antojos |
