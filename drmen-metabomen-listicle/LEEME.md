@@ -15,7 +15,7 @@ Se vende desde el listicle: la oferta (bloque 09) agrega al carrito y va directo
 | 03 | `03-razon-2-hambre.liquid` | Leptina, grelina, antojos |
 | 04 | `04-razon-3-testosterona-cta.liquid` | Testosterona + CTA intermedio |
 | 05 | `05-razon-4-sueno-profundo.liquid` | Sueño profundo, gráfico 18,9% contra 3,4% |
-| 06 | `06-razon-5-metabomen.liquid` | Presentación del producto, 14 activos |
+| 06 | `06-razon-5-metabomen.liquid` | Razón 5: cortisol y panza + presentación del producto, 14 activos |
 | 07 | `07-antes-despues-resenas.liquid` | Dato 83% + antes/después + reseñas |
 | 08 | `08-comparativa-rutina.liquid` | Tabla comparativa + rutina día/noche |
 | 09 | `09-oferta.liquid` | Packs + upsell TESTO BOOST + regalos (se compra acá) |
