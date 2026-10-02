@@ -1,0 +1,83 @@
+{%- comment -%}
+  LISTICLE METABOMEN +40 · LIQUID 10 de 10 · FAQ + GARANTÍA + FUENTES + BARRA FIJA MOBILE
+  Necesita el bloque 01 arriba (estilos). Va ÚLTIMO.
+  La barra fija aparece en celular y se esconde sola cuando se ve la oferta (bloque 09).
+  FAQ: separá preguntas y respuestas con | (mismo orden).
+{%- endcomment -%}
+
+{%- assign cta_url = '#oferta' -%}
+{%- assign sticky_texto = 'Protocolo +40 · 3 frascos' -%}
+{%- assign sticky_precio = '$101.900 · Envío gratis' -%}
+{%- assign registro = '[RNPA / registro ANMAT]' -%}
+
+{%- assign faq_p = '¿Cómo se toma?|¿En cuánto tiempo voy a notar algo?|¿Lo puedo tomar de noche?|¿Tiene contraindicaciones?|¿Qué pasa si no me sirve?|¿Cuánto tarda el envío?' | split: '|' -%}
+{%- assign faq_r = '[X] cápsulas por la mañana, con el desayuno, todos los días. Cada frasco trae 60 cápsulas.|Cada cuerpo es distinto. La mayoría de los hombres nos cuenta que nota más energía durante el día en las primeras semanas. Por eso recomendamos el protocolo de 90 días: es el tiempo para sostener el hábito.|No lo recomendamos: contiene té verde y naranja amarga, que pueden interferir con el descanso. Tomalo a la mañana y dejá la noche para dormir.|Es un suplemento dietario, no un medicamento. Si tomás medicación, tenés presión alta, problemas cardíacos o alguna condición de salud, consultá a tu médico antes de empezar. No recomendado para menores de 18 años.|Tenés 60 días de garantía. Si no notás más energía en tu día, te devolvemos el dinero.|Envío gratis a todo el país, con seguimiento y fecha estimada de entrega.' | split: '|' -%}
+
+<div class="ml" style="padding-top:52px;padding-bottom:110px">
+  <div class="ml-center">
+    <h2 class="ml-h2">Preguntas <span>frecuentes</span></h2>
+  </div>
+
+  <div class="ml-faq">
+    {%- for p in faq_p -%}
+      <details{% if forloop.first %} open{% endif %}>
+        <summary>{{ p }}</summary>
+        <div>{{ faq_r[forloop.index0] }}</div>
+      </details>
+    {%- endfor -%}
+  </div>
+
+  <div class="ml-mid" style="margin:34px auto 0;max-width:760px;grid-template-columns:70px 1fr">
+    <div style="font-size:52px;line-height:1;text-align:center">🛡️</div>
+    <div>
+      <h3>60 días de garantía, sin vueltas</h3>
+      <p style="margin-bottom:12px">Probalo dos meses. Si no notás más energía en tu día, te devolvemos el dinero. El riesgo lo corremos nosotros.</p>
+      <a class="ml-btn" href="{{ cta_url }}">Ver la oferta →</a>
+    </div>
+  </div>
+
+  <div class="ml-legal">
+    <p><b>Fuentes:</b> Nedeltcheva A. et al. Insufficient sleep undermines dietary efforts to reduce adiposity. <i>Ann Intern Med</i> 2010;153(7):435-441 · Spiegel K. et al. Sleep curtailment in healthy young men is associated with decreased leptin levels, elevated ghrelin levels, and increased hunger and appetite. <i>Ann Intern Med</i> 2004;141(11):846-850 · Leproult R., Van Cauter E. Effect of 1 week of sleep restriction on testosterone levels in young healthy men. <i>JAMA</i> 2011;305(21):2173-2174 · Van Cauter E. et al. Age-related changes in slow wave sleep and REM sleep and relationship with growth hormone and cortisol levels in healthy men. <i>JAMA</i> 2000;284(7):861-868.</p>
+    <p>Los estudios citados analizan los efectos del sueño en el organismo y no evaluaron Metabomen. Metabomen es un suplemento dietario: no es un medicamento y no reemplaza una alimentación variada y equilibrada ni un estilo de vida saludable. Consultá a tu médico. Mantener fuera del alcance de los niños. {{ registro }}. Los resultados pueden variar de persona a persona.</p>
+  </div>
+</div>
+
+<div class="ml-band ml-sticky" id="mlSticky">
+  <span><b id="mlStickyName">{{ sticky_texto }}</b><span id="mlStickyPrice" style="display:block;color:#A7AEB5">{{ sticky_precio }}</span></span>
+  <a class="ml-btn" href="{{ cta_url }}">Comprar</a>
+</div>
+
+<script>
+  (function () {
+    var bar = document.getElementById('mlSticky');
+    if (!bar) return;
+    var offer = document.getElementById('oferta');
+    var hero = document.querySelector('.ml-hero');
+    var offerVisible = false, heroVisible = true;
+    function upd() { bar.classList.toggle('is-hidden', offerVisible || heroVisible); }
+    if ('IntersectionObserver' in window) {
+      if (offer) new IntersectionObserver(function (e) { offerVisible = e[0].isIntersecting; upd(); }, { threshold: 0.05 }).observe(offer);
+      if (hero) new IntersectionObserver(function (e) { heroVisible = e[0].isIntersecting; upd(); }, { threshold: 0.1 }).observe(hero);
+      else heroVisible = false;
+    } else { heroVisible = false; }
+    upd();
+
+    /* muestra el pack elegido en la oferta */
+    function setPack(name, price) {
+      if (name) document.getElementById('mlStickyName').textContent = name;
+      if (price) document.getElementById('mlStickyPrice').textContent = price + ' · Envío gratis';
+    }
+    var on = document.querySelector('#dmBuyForm .dmo-card.is-on');
+    if (on) setPack(on.dataset.name, on.dataset.price);
+    document.addEventListener('dm:pack', function (e) { setPack(e.detail.name, e.detail.price); });
+
+    /* scroll suave hacia la oferta */
+    document.querySelectorAll('a[href="#oferta"]').forEach(function (a) {
+      a.addEventListener('click', function (ev) {
+        if (!offer) return;
+        ev.preventDefault();
+        offer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  })();
+</script>

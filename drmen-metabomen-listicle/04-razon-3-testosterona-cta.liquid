@@ -1,0 +1,36 @@
+{%- comment -%}
+  LISTICLE METABOMEN +40 · LIQUID 04 de 10 · RAZÓN 3 (testosterona) + CTA intermedio
+  Necesita el bloque 01 arriba (estilos).
+{%- endcomment -%}
+
+{%- assign img = '' -%}
+{%- assign img_frasco = '' -%}
+{%- assign cta_url = '#oferta' -%}
+{%- assign cta_precio = 'Pack x3 a $101.900' -%}
+
+<div class="ml">
+  <div class="ml-reason">
+    <div class="ml-media">
+      {%- if img != blank -%}<img src="{{ img }}" alt="Hombre cansado a la tarde" loading="lazy" width="1080" height="1080">{%- else -%}<div class="ml-ph">IMAGEN 4 · Hombre de 45 en la oficina a las 16 h, cansado, con el tercer café del día. Tono frío, luz de tarde.</div>{%- endif -%}
+      <span class="ml-tag is-red">Publicado en JAMA</span>
+    </div>
+    <div>
+      <div class="ml-kicker"><b>3</b> Razón número 3</div>
+      <h2>Una semana durmiendo mal te "envejece" <span>10 años de testosterona</span></h2>
+      <p>Un estudio publicado en <i>JAMA</i> hizo dormir 5 horas durante una semana a hombres jóvenes y sanos. Su testosterona de día <b>cayó entre 10% y 15%</b>: lo que normalmente se pierde en 10 a 15 años.</p>
+      <p>Y después de los 40 ya arrancás con menos. Menos testosterona es <b>menos energía, menos músculo y más grasa en la panza.</b></p>
+      <div class="ml-bridge"><b>Por eso Metabomen tiene Zinc:</b> el zinc contribuye al mantenimiento de niveles normales de testosterona. Además suma <b>Magnesio, Vitamina C y B3</b>, que contribuyen a disminuir el cansancio y la fatiga.</div>
+      <p class="ml-src" style="margin-top:14px !important">Leproult R., Van Cauter E. <i>JAMA</i>, 2011; 305(21): 2173-2174.</p>
+    </div>
+  </div>
+
+  <div class="ml-mid">
+    {%- if img_frasco != blank -%}<img src="{{ img_frasco }}" alt="Metabomen de DR.MEN" loading="lazy" width="320" height="320">{%- else -%}<div class="ml-ph">FRASCO METABOMEN (fondo transparente)</div>{%- endif -%}
+    <div>
+      <h3>¿Ya te viste en estas 3 razones?</h3>
+      <p>Metabomen junta 14 activos en 1 cápsula, formulados para el cuerpo del hombre de +40. Hoy con precio especial para lectores de esta nota.</p>
+      <a class="ml-btn" href="{{ cta_url }}">Quiero mi Metabomen →</a>
+      <div class="ml-under">{{ cta_precio }} · Envío gratis · 60 días de garantía</div>
+    </div>
+  </div>
+</div>

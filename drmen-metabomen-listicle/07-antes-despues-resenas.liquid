@@ -1,0 +1,55 @@
+{%- comment -%}
+  LISTICLE METABOMEN +40 · LIQUID 07 de 10 · PRUEBA SOCIAL: dato 83% + ANTES / DESPUÉS + RESEÑAS
+  Necesita el bloque 01 arriba (estilos).
+  IMPORTANTE: solo clientes reales, con permiso por escrito para usar fotos y nombre.
+  Separá cada campo con | (mismo orden en todas las listas). Fotos vacías = recuadro punteado.
+  Agregá o sacá testimonios sumando/quitando un elemento en TODAS las listas.
+{%- endcomment -%}
+
+{%- assign dato_numero = '83%' -%}
+{%- assign dato_texto = 'de los usuarios reportaron más energía durante el día' -%}
+
+{%- assign t_antes = '||' | split: '|' -%}
+{%- assign t_despues = '||' | split: '|' -%}
+{%- assign t_nombre = '[Nombre], 44 · [Ciudad]|[Nombre], 51 · [Ciudad]|[Nombre], 47 · [Ciudad]' | split: '|' -%}
+{%- assign t_semanas = '8 semanas|12 semanas|6 semanas' | split: '|' -%}
+{%- assign t_texto = '"[Reseña real del cliente: idealmente sobre energía, cansancio a la tarde, picoteo nocturno, panza]"|"[Reseña real]"|"[Reseña real]"' | split: '|' -%}
+
+{%- assign cta_url = '#oferta' -%}
+
+<div class="ml-band is-soft">
+  <div class="ml" style="padding-top:52px;padding-bottom:52px">
+    <div class="ml-center">
+      <h2 class="ml-h2">Hombres de +40 que <span>volvieron a sentirse bien</span></h2>
+      <p class="ml-lead">Lo que más nos cuentan no son los kilos: es llegar a la tarde con energía, dejar el picoteo nocturno y volver a verse firmes en el espejo.</p>
+    </div>
+
+    <div class="ml-big"><b>{{ dato_numero }}</b><span>{{ dato_texto }}</span></div>
+
+    <div class="ml-cards">
+      {%- for nombre in t_nombre -%}
+        {%- assign k = forloop.index0 -%}
+        <div class="ml-card">
+          <div class="ml-ba">
+            <div>
+              {%- if t_antes[k] != blank -%}<img src="{{ t_antes[k] }}" alt="Antes" loading="lazy" width="300" height="400">{%- else -%}<div class="ml-ph">FOTO ANTES (real)</div>{%- endif -%}
+              <span class="ml-ba__l">Antes</span>
+            </div>
+            <div>
+              {%- if t_despues[k] != blank -%}<img src="{{ t_despues[k] }}" alt="Después" loading="lazy" width="300" height="400">{%- else -%}<div class="ml-ph">FOTO DESPUÉS (real)</div>{%- endif -%}
+              <span class="ml-ba__l is-after">Después</span>
+            </div>
+          </div>
+          <span class="ml-card__w">⏱ {{ t_semanas[k] }}</span>
+          <div class="ml-stars">★★★★★</div>
+          <p class="ml-card__q">{{ t_texto[k] }}</p>
+          <div class="ml-card__n">{{ nombre }}</div>
+          <div class="ml-card__v">✔ Compra verificada</div>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <p class="ml-under ml-center" style="margin-top:14px">Los resultados pueden variar de persona a persona. Acompañá con alimentación equilibrada, descanso y actividad física.</p>
+    <div class="ml-center" style="margin-top:22px"><a class="ml-btn" href="{{ cta_url }}">Quiero empezar hoy →</a></div>
+  </div>
+</div>
