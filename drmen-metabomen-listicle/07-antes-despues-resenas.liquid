@@ -1,15 +1,21 @@
 {%- comment -%}
-  LISTICLE METABOMEN +40 · LIQUID 07 de 10 · PRUEBA SOCIAL
+  LISTICLE METABOMEN +40 · LIQUID 07 de 10 · DOLOR + ANTES / DESPUÉS + RESEÑAS
   Necesita el bloque 01 arriba (estilos).
 
-  Funciona YA, sin reseñas: muestra el dato 83% + "Un día con Metabomen" (rutina, no testimonios).
-  RESEÑAS REALES: cuando las tengas, completá las listas de abajo (separadas por |, mismo orden).
-  Mientras r_texto esté vacío, las tarjetas de reseñas no se muestran.
-  Fotos: cliente con el frasco (r_foto). Vacía = no se muestra foto.
+  ANTES / DESPUÉS: img_antes e img_despues (fotos reales de clientes, con permiso). Vacías = recuadro punteado.
+  El texto de las columnas "Hoy" / "Con el protocolo" va al dolor sin atribuirlo a ninguna persona.
+  RESEÑAS REALES: completá las listas (separadas por |, mismo orden). Vacías = las tarjetas no se muestran.
 {%- endcomment -%}
+
+{%- assign img_antes = '' -%}
+{%- assign img_despues = '' -%}
+{%- assign ba_pie = '' -%}
 
 {%- assign dato_numero = '83%' -%}
 {%- assign dato_texto = 'de los usuarios reportaron más energía durante el día' -%}
+
+{%- assign dolor = 'Te despertás a las 3 de la mañana y mirás el techo hasta que suena la alarma|Necesitás 3 cafés para llegar a la tarde y a las 16 h igual te apagás|A las 23 h terminás en la heladera, aunque te prometiste que hoy no|Te ponés la camisa de hace dos años y no cierra igual|Te ves en una foto y pensás: "¿cuándo envejecí tanto?"|Llegás a casa sin ganas de nada. Ni de entrenar, ni de salir, ni de tu pareja' | split: '|' -%}
+{%- assign alivio = 'Arrancás la mañana con otra energía|Llegás a la tarde sin el bajón de siempre|Picoteás menos de noche|Volvés a sentirte firme en la ropa|Te ves más descansado en el espejo|Te quedan ganas para lo que importa' | split: '|' -%}
 
 {%- assign r_texto = '' -%}
 {%- assign r_nombre = '' -%}
@@ -23,29 +29,58 @@
 {%- assign rs = r_semanas | split: '|' -%}
 {%- assign rf = r_foto | split: '|' -%}
 
+<style>
+  .ml-pain { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; }
+  .ml-pain__col { border-radius: 16px; padding: 20px; }
+  .ml-pain__col.is-bad { background: var(--ml-black); color: #fff; }
+  .ml-pain__col.is-good { background: #fff; border: 2px solid var(--ml-red); }
+  .ml-pain__h { font-size: 13px; font-weight: 900; text-transform: uppercase; letter-spacing: .08em; margin: 0 0 12px !important; }
+  .is-bad .ml-pain__h { color: #FF6B62; }
+  .is-good .ml-pain__h { color: var(--ml-red); }
+  .ml-pain ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .ml-pain li { display: flex; gap: 10px; font-size: 15.5px; line-height: 1.4; margin: 0; }
+  .is-bad li::before { content: '✕'; color: #FF6B62; font-weight: 900; }
+  .is-good li::before { content: '✔'; color: var(--ml-good); font-weight: 900; }
+  .ml-bawide { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; max-width: 640px; margin: 28px auto 0; }
+  .ml-bawide > div { position: relative; }
+  .ml-bawide img, .ml-bawide .ml-ph { aspect-ratio: 4 / 5; object-fit: cover; border-radius: 12px; }
+  @media (max-width: 749px) { .ml-pain { grid-template-columns: 1fr; } }
+</style>
+
 <div class="ml-band is-soft">
   <div class="ml" style="padding-top:52px;padding-bottom:52px">
     <div class="ml-center">
-      <h2 class="ml-h2">Un día con <span>Metabomen</span></h2>
-      <p class="ml-lead">No es una pastilla mágica: es un apoyo diario más una rutina simple. Así se ve un día del protocolo +40.</p>
+      <h2 class="ml-h2">¿Cuántas de estas <span>te pasan?</span></h2>
+      <p class="ml-lead">Si marcaste 3 o más, no es la edad ni la falta de voluntad. Es el círculo de dormir mal, tener menos energía y acumular panza.</p>
     </div>
+
+    <div class="ml-pain">
+      <div class="ml-pain__col is-bad">
+        <p class="ml-pain__h">Hoy</p>
+        <ul>{%- for d in dolor -%}<li>{{ d }}</li>{%- endfor -%}</ul>
+      </div>
+      <div class="ml-pain__col is-good">
+        <p class="ml-pain__h">Lo que buscás con el protocolo +40</p>
+        <ul>{%- for a in alivio -%}<li>{{ a }}</li>{%- endfor -%}</ul>
+      </div>
+    </div>
+
+    <div class="ml-bawide">
+      <div>
+        {%- if img_antes != blank -%}<img src="{{ img_antes }}" alt="Antes" loading="lazy" width="600" height="750">{%- else -%}<div class="ml-ph">FOTO ANTES (cliente real, con permiso)</div>{%- endif -%}
+        <span class="ml-ba__l">Antes</span>
+      </div>
+      <div>
+        {%- if img_despues != blank -%}<img src="{{ img_despues }}" alt="Después" loading="lazy" width="600" height="750">{%- else -%}<div class="ml-ph">FOTO DESPUÉS (cliente real, con permiso)</div>{%- endif -%}
+        <span class="ml-ba__l is-after">Después</span>
+      </div>
+    </div>
+    {%- if ba_pie != blank -%}<p class="ml-under ml-center">{{ ba_pie }}</p>{%- endif -%}
 
     <div class="ml-big"><b>{{ dato_numero }}</b><span>{{ dato_texto }}</span></div>
 
-    <div class="ml-steps">
-      <div class="ml-step"><b>☀️ 8:00 · Desayuno</b><h3>Metabomen</h3><p>Una toma con el desayuno. Zinc, magnesio, vitaminas C y B3, té verde y resveratrol para arrancar el día.</p></div>
-      <div class="ml-step"><b>🕑 14:00 · Después de comer</b><h3>Último café del día</h3><p>Cortás la cafeína temprano para no robarle horas a la noche.</p></div>
-      <div class="ml-step"><b>🕓 16:00 · La hora crítica</b><h3>Sin bajón</h3><p>Magnesio, vitamina C y B3 contribuyen a disminuir el cansancio y la fatiga.</p></div>
-      <div class="ml-step"><b>🍽️ 21:00 · Cena</b><h3>2 horas antes de dormir</h3><p>Cena liviana y temprana: menos pesadez y menos picoteo a la noche.</p></div>
-      <div class="ml-step"><b>📵 23:15 · Sin pantallas</b><h3>45 minutos offline</h3><p>La luz del celular le dice al cerebro que todavía es de día.</p></div>
-      <div class="ml-step"><b>🌙 0:00 · A dormir</b><h3>Mismo horario siempre</h3><p>También el fin de semana. Así el cuerpo recupera el sueño profundo.</p></div>
-    </div>
-
     {%- if r_texto != blank -%}
-      <div class="ml-center" style="margin-top:44px">
-        <h2 class="ml-h2" style="font-size:clamp(22px,3.4vw,32px)">Lo que nos cuentan <span>nuestros clientes</span></h2>
-      </div>
-      <div class="ml-cards" style="margin-top:18px">
+      <div class="ml-cards">
         {%- for texto in rt -%}
           {%- assign k = forloop.index0 -%}
           <div class="ml-card">
@@ -61,6 +96,6 @@
     {%- endif -%}
 
     <p class="ml-under ml-center" style="margin-top:14px">Los resultados pueden variar de persona a persona. Acompañá con alimentación equilibrada, descanso y actividad física.</p>
-    <div class="ml-center" style="margin-top:22px"><a class="ml-btn" href="{{ cta_url }}">Empezar mi protocolo →</a></div>
+    <div class="ml-center" style="margin-top:22px"><a class="ml-btn" href="{{ cta_url }}">Quiero salir de este círculo →</a></div>
   </div>
 </div>
