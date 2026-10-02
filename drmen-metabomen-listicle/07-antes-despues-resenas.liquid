@@ -11,11 +11,12 @@
 {%- assign img_despues = '' -%}
 {%- assign ba_pie = '' -%}
 
-{%- assign dato_numero = '83%' -%}
-{%- assign dato_texto = 'de los usuarios reportaron más energía durante el día' -%}
+{%- comment -%} Dato opcional (dejalo vacío para ocultar la banda). Tiene que salir de una encuesta real a clientes. {%- endcomment -%}
+{%- assign dato_numero = '' -%}
+{%- assign dato_texto = '' -%}
 
-{%- assign dolor = 'Te despertás a las 3 de la mañana y mirás el techo hasta que suena la alarma|Necesitás 3 cafés para llegar a la tarde y a las 16 h igual te apagás|A las 23 h terminás en la heladera, aunque te prometiste que hoy no|Te ponés la camisa de hace dos años y no cierra igual|Te ves en una foto y pensás: "¿cuándo envejecí tanto?"|Llegás a casa sin ganas de nada. Ni de entrenar, ni de salir, ni de tu pareja' | split: '|' -%}
-{%- assign alivio = 'Arrancás la mañana con otra energía|Llegás a la tarde sin el bajón de siempre|Picoteás menos de noche|Volvés a sentirte firme en la ropa|Te ves más descansado en el espejo|Te quedan ganas para lo que importa' | split: '|' -%}
+{%- assign dolor = 'Te despertás a las 3 de la mañana y mirás el techo hasta que suena la alarma|Hiciste dieta mil veces y la balanza no se mueve|A las 23 h terminás en la heladera, aunque te prometiste que hoy no|Te ponés la camisa de hace dos años y no cierra igual|Te ves en una foto y pensás: "¿cuándo envejecí tanto?"|En la playa no te sacás la remera' | split: '|' -%}
+{%- assign alivio = 'Te abrochás el pantalón sin aguantar la respiración|Que la balanza por fin empiece a moverse|Dejar el picoteo de la noche|La camisa vuelve a cerrar sin tirar en la panza|Verte más firme en las fotos|Sacarte la remera en la playa sin pensarlo' | split: '|' -%}
 
 {%- assign r_texto = '' -%}
 {%- assign r_nombre = '' -%}
@@ -51,7 +52,7 @@
   <div class="ml" style="padding-top:52px;padding-bottom:52px">
     <div class="ml-center">
       <h2 class="ml-h2">¿Cuántas de estas <span>te pasan?</span></h2>
-      <p class="ml-lead">Si marcaste 3 o más, no es la edad ni la falta de voluntad. Es el círculo de dormir mal, tener menos energía y acumular panza.</p>
+      <p class="ml-lead">Si marcaste 3 o más, no es la edad ni la falta de voluntad. Es el círculo de dormir mal, comer de más a la noche y acumular panza.</p>
     </div>
 
     <div class="ml-pain">
@@ -77,7 +78,7 @@
     </div>
     {%- if ba_pie != blank -%}<p class="ml-under ml-center">{{ ba_pie }}</p>{%- endif -%}
 
-    <div class="ml-big"><b>{{ dato_numero }}</b><span>{{ dato_texto }}</span></div>
+    {%- if dato_numero != blank -%}<div class="ml-big"><b>{{ dato_numero }}</b><span>{{ dato_texto }}</span></div>{%- endif -%}
 
     {%- if r_texto != blank -%}
       <div class="ml-cards">
@@ -96,6 +97,6 @@
     {%- endif -%}
 
     <p class="ml-under ml-center" style="margin-top:14px">Los resultados pueden variar de persona a persona. Acompañá con alimentación equilibrada, descanso y actividad física.</p>
-    <div class="ml-center" style="margin-top:22px"><a class="ml-btn" href="{{ cta_url }}">Quiero salir de este círculo →</a></div>
+    <div class="ml-center" style="margin-top:22px"><a class="ml-btn" href="{{ cta_url }}">Quiero bajar la panza →</a></div>
   </div>
 </div>

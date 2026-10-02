@@ -29,10 +29,10 @@ Se vende desde el listicle: la oferta (bloque 09) agrega al carrito y va directo
 - **Imágenes**: cada `img... = ''` muestra un recuadro punteado que dice qué foto va.
 - **07 · antes/después y reseñas**: SOLO clientes reales, con permiso por escrito.
 - **01**: cantidad de clientes (`cant_clientes`). **10**: número de RNPA/ANMAT (`registro`).
-- **Dato 83%**: tener a mano de dónde sale (encuesta a clientes) por si lo piden Meta o ANMAT.
+- **Dato de encuesta (bloque 07)**: oculto por defecto; si lo usás, que salga de una encuesta real.
 - Precios de los packs: los mismos de la página de producto (descuentos automáticos o variantes).
 
 ## Notas de compliance
-- Los claims de ingredientes usan frases aprobadas (zinc → testosterona normal; magnesio, vit. C, B3 → cansancio y fatiga; vit. C → estrés oxidativo).
-- No se promete bajar de peso; los estudios citados hablan del sueño, no de Metabomen (aclarado en el pie).
+- Los claims de ingredientes usan frases aprobadas (zinc → testosterona normal; vit. C → estrés oxidativo). Té verde, naranja amarga y cetona de frambuesa se presentan como "los extractos más usados en fórmulas para el control de peso", sin prometer kilos.
+- El foco es la panza y el peso, pero no se promete una cantidad de kilos ni un plazo; los estudios citados hablan del sueño, no de Metabomen (aclarado en el pie).
 - Lleva té verde y naranja amarga, por eso se indica tomarlo **a la mañana**.
