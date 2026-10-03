@@ -1,11 +1,11 @@
 # Landing METABOMEN +40 · estilo TALA para hombres · Shopify
 
-Misma estructura que la landing de TALA, adaptada a hombres +40. Ángulo: **"No es la edad. Es el desgaste."**
+Misma estructura que la landing de TALA, adaptada a hombres +40. Ángulo: **envejecimiento** · titular "Tenés 45. ¿Por qué te sentís de 60?" · concepto "No es la edad. Es el desgaste."
 Se compra en la misma página (sección 08) y va directo al checkout.
 
 ## Cómo se arma
 1. Tienda online > Personalizar > nuevo **template de página** (ej. `page.metabomen-40`).
-2. Agregar 16 secciones **Liquid personalizado** en este orden:
+2. Agregar 17 secciones **Liquid personalizado** en este orden:
 
 | # | Archivo | Sección (equivalente en TALA) |
 |---|---|---|
@@ -13,6 +13,7 @@ Se compra en la misma página (sección 08) y va directo al checkout.
 | 01 | `01-estilos-hero.liquid` | **Estilos de todo** + hero con foto de fondo, titular y CTA |
 | 02 | `02-resultados-clientes.liquid` | Carrusel "Resultados de clientes reales" (antes/después) |
 | 03 | `03-beneficios-iconos.liquid` | 4 beneficios con ícono |
+| 03b | `03b-el-desgaste-explicado.liquid` | NUEVA · La ciencia del desgaste: sueño profundo, testosterona, cortisol, hormona de crecimiento |
 | 04 | `04-antes-despues-destacado.liquid` | Antes/después grande + testimonio + mini producto |
 | 05 | `05-timeline-que-vas-a-notar.liquid` | Línea de tiempo "qué vas a notar" |
 | 06 | `06-los-numeros.liquid` | "Los números hablan" (barras de encuesta) |

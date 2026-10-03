@@ -1,0 +1,63 @@
+{%- comment -%}
+  LANDING METABOMEN +40 · LIQUID 03b · "EL DESGASTE DE LOS 40, EXPLICADO" (la ciencia del ángulo envejecimiento)
+  Necesita el 01 arriba. Va entre el 03 y el 04. Datos con fuente: no los cambies sin cambiar la fuente.
+{%- endcomment -%}
+
+{%- assign eyebrow = 'Por qué te sentís más viejo' -%}
+{%- assign titulo = 'No es la edad. <em>Es el desgaste.</em>' -%}
+{%- assign bajada = 'A los 45 tenés los mismos años que tus amigos. Lo que cambia es cuánto se desgastó tu cuerpo. Esto es lo que dicen los estudios:' -%}
+{%- assign cta_url = '#oferta' -%}
+
+{%- assign d_num = '-80%|-15%|+45%|↓' | split: '|' -%}
+{%- assign d_titulo = 'de sueño profundo|de testosterona|de cortisol a la noche|hormona de crecimiento' | split: '|' -%}
+{%- assign d_texto = 'Entre los 20 y los 40 años, el sueño profundo pasa de casi 19% de la noche a apenas 3,4%. Es la fase en la que el cuerpo se repara.|Una sola semana durmiendo 5 horas bajó la testosterona entre 10% y 15%: lo que normalmente se pierde en 10 a 15 años.|Después de una noche corta, la hormona del estrés queda alta hasta la noche siguiente: entre 37% y 45% más.|Se libera durante el sueño profundo. Cuando el sueño profundo cae, cae con él. Es la que sostiene el músculo y repara.' | split: '|' -%}
+{%- assign d_fuente = 'Van Cauter E. et al. JAMA, 2000|Leproult R., Van Cauter E. JAMA, 2011|Leproult R. et al. Sleep, 1997|Van Cauter E. et al. JAMA, 2000' | split: '|' -%}
+
+{%- assign remate = 'Por eso a los 45 te levantás cansado, te cuesta arrancar, la panza aparece aunque comas igual y en las fotos te ves más grande. <b>No es la edad: es el desgaste. Y el desgaste se puede acompañar todos los días.</b>' -%}
+
+<style>
+  .dt-des { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .dt-des__c { background: #17191C; border: 1px solid #2A2E33; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; }
+  .dt-des__c b { font-family: var(--dt-head); font-size: 46px; line-height: 1; color: var(--dt-red); }
+  .dt-des__c h3 { font-size: 15px; margin: 6px 0 10px; color: #fff; }
+  .dt-des__c p { font-size: 13.5px; color: #B9BEC4; line-height: 1.5; flex: 1; }
+  .dt-des__c small { font-size: 11px; color: #7E848B; border-top: 1px solid #2A2E33; padding-top: 8px; }
+  .dt-des__chart { background: #17191C; border: 1px solid #2A2E33; border-radius: 16px; padding: 18px; margin-top: 14px; }
+  .dt-des__chart p { font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #A9AEB4; margin-bottom: 12px !important; }
+  .dt-des__row { display: grid; grid-template-columns: 110px 1fr 54px; gap: 10px; align-items: center; font-size: 13.5px; margin-bottom: 10px; color: #E4E6E8; }
+  .dt-des__bar { height: 22px; background: #26292E; border-radius: 6px; overflow: hidden; }
+  .dt-des__bar div { height: 100%; background: #E4E6E8; border-radius: 6px; }
+  .dt-des__bar div.is-red { background: var(--dt-red); }
+  .dt-des__remate { max-width: 760px; margin: 26px auto 20px !important; text-align: center; font-size: 17px; color: #D5D8DC; }
+  .dt-des__remate b { color: #fff; }
+  @media (max-width: 899px) { .dt-des { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px) { .dt-des { grid-template-columns: 1fr; } .dt-des__row { grid-template-columns: 90px 1fr 46px; } }
+</style>
+
+<div class="dt-band is-dark">
+  <div class="dt dt-sec">
+    <div class="dt-head">
+      <span class="dt-eyebrow">{{ eyebrow }}</span>
+      <h2 class="dt-h2">{{ titulo }}</h2>
+      <p class="dt-lead">{{ bajada }}</p>
+    </div>
+    <div class="dt-des">
+      {%- for n in d_num -%}
+        {%- assign k = forloop.index0 -%}
+        <div class="dt-des__c">
+          <b>{{ n }}</b>
+          <h3>{{ d_titulo[k] }}</h3>
+          <p>{{ d_texto[k] }}</p>
+          <small>{{ d_fuente[k] }}</small>
+        </div>
+      {%- endfor -%}
+    </div>
+    <div class="dt-des__chart">
+      <p>Sueño profundo en hombres sanos · % de la noche</p>
+      <div class="dt-des__row"><span>16 a 25 años</span><div class="dt-des__bar"><div style="width:100%"></div></div><span>18,9%</span></div>
+      <div class="dt-des__row"><span>36 a 50 años</span><div class="dt-des__bar"><div class="is-red" style="width:18%"></div></div><span>3,4%</span></div>
+    </div>
+    <p class="dt-des__remate">{{ remate }}</p>
+    <div class="dt-center"><a class="dt-btn is-full" href="{{ cta_url }}">Quiero empezar hoy</a></div>
+  </div>
+</div>
