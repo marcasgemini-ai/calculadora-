@@ -45,7 +45,7 @@
       {%- for n in d_num -%}
         {%- assign k = forloop.index0 -%}
         <div class="dt-des__c">
-          <b>{%- if n == 'baja' -%}<svg class="dt-ic" style="width:44px;height:44px;stroke-width:2.2"><use href="#dti-arrowdown"/></svg>{%- else -%}{{ n }}{%- endif -%}</b>
+          <b>{%- if n == 'baja' -%}<svg class="dt-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:44px;height:44px;stroke-width:2.2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>{%- else -%}{{ n }}{%- endif -%}</b>
           <h3>{{ d_titulo[k] }}</h3>
           <p>{{ d_texto[k] }}</p>
           <small>{{ d_fuente[k] }}</small>
