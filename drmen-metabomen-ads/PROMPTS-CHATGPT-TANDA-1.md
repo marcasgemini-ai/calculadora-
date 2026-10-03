@@ -1,4 +1,5 @@
 # Metabomen Ads · Batch 1 · ChatGPT image prompts (English)
+Ángulo 100% envejecimiento (nada de energía). Cuadrado 1:1. Sin oferta.
 
 ## Paso a paso (igual para los 5)
 1. Abrí un **chat nuevo** en ChatGPT por cada anuncio.
@@ -14,7 +15,7 @@
 
 ---
 
-## AD 1 · "Así me sentía / Así me siento" (3D figure style)
+## AD 1 · "Así me veía / Así me veo" (3D figure style)
 **Adjuntar:** Archivo A (frasco) + Archivo B (anuncio RYZE "2025 ME / 2026 ME").
 
 ```
@@ -27,15 +28,15 @@ STYLE: clean white background, premium 3D collectible-figure render style (like 
 
 LAYOUT:
 - Top: two equal columns, each with a large bold condensed uppercase title (Oswald-style font):
-  - Left title in medium grey: "ASÍ ME SENTÍA"
-  - Right title in red #E1261C: "ASÍ ME SIENTO"
+  - Left title in medium grey: "ASÍ ME VEÍA"
+  - Right title in red #E1261C: "ASÍ ME VEO"
 - Under each title, a rounded-corner image card with a thin light-grey border:
-  - LEFT card: a 3D figure of a 45-year-old man with grey hair and a short grey beard, slight belly, tired face with dark circles, slumped on a dark grey sofa, wrinkled grey t-shirt, dim cold grey lighting.
-  - RIGHT card: the SAME 3D figure of the SAME 45-year-old man (same face, same grey hair and beard), now sitting upright and smiling confidently, black shirt, bright warm living room, holding the Metabomen bottle from the first image.
+  - LEFT card: a 3D figure of a 45-year-old man who looks older than his age: dull grey skin, deep dark circles, sagging posture, slight belly, messy grey hair, slumped on a dark grey sofa, wrinkled grey t-shirt, dim cold grey lighting.
+  - RIGHT card: the SAME 3D figure of the SAME 45-year-old man (same face, same grey hair and beard), now looking fresh and youthful for his age: rested face, healthy skin glow, upright posture, neat hair, confident smile, fitted black shirt, bright warm living room, holding the Metabomen bottle from the first image.
 - Under each card, centered black text in 2 lines:
-  - Left: "Cansado, pesado y sin resto"
-  - Right: "Con energía y ganas de nuevo"
-- Bottom: a full-width black band. On the left, bold condensed uppercase text: "NO ES LA EDAD." in white and "ES EL DESGASTE." in red #E1261C. On the right side of the band, the Metabomen bottle large, with two beige capsules next to it.
+  - Left: "Apagado, gris y más viejo"
+  - Right: "Más joven, firme y con ganas"
+- Bottom: a full-width black band. On the left, bold condensed uppercase text: "VOLVÉ A SENTIRTE" in white and "MÁS JOVEN." in red #E1261C. On the right side of the band, the Metabomen bottle large, with two beige capsules next to it.
 
 RULES: No prices, no discounts, no percentages, no extra logos. All text in Spanish exactly as written above, spelled correctly with accents.
 ```
@@ -62,7 +63,7 @@ LAYOUT:
   - 2nd, black line: man at 35, shoulders slightly dropped, a little belly.
   - 3rd, red #E1261C line: man at 45, hunched, visible belly, head slightly down.
   - Small black labels under each: "25 años", "35 años", "45 años".
-- Bottom left, bold condensed uppercase: "DORMÍS MENOS." in black, and below it "TE REPARÁS MENOS." in red #E1261C. Below that, small grey text: "A los 40 perdiste más del 80% del sueño profundo."
+- Bottom left, bold condensed uppercase: "DORMÍS MENOS." in black, and below it "ENVEJECÉS MÁS RÁPIDO." in red #E1261C. Below that, small grey text: "A los 40 perdiste más del 80% del sueño profundo."
 - Bottom right: the Metabomen bottle, large, with a few beige capsules and a small bunch of red grapes next to it.
 
 RULES: No prices, no discounts, no gifts, no extra logos. All text in Spanish exactly as written above, spelled correctly with accents.
@@ -84,8 +85,8 @@ On his right, on a concrete cube, the Metabomen bottle.
 
 TEXT at the bottom over a black gradient, centered, bold condensed uppercase font (Oswald-style):
 - Large, white: "METABOMEN"
-- Below, large: "TENÉS 45." in white and "NO TE RINDAS." in red #E1261C
-- Below, small white sans-serif text: "Fórmula premium argentina para el hombre +40."
+- Below, large: "LA EDAD ES UN NÚMERO." in white and "EL DESGASTE, NO." in red #E1261C
+- Below, small white sans-serif text: "La fórmula premium argentina para el hombre que no quiere envejecer antes de tiempo."
 - A white rectangular button with black text: "CONOCÉ METABOMEN"
 
 RULES: No prices, no discounts, no real people, no names. All text in Spanish exactly as written above, spelled correctly with accents.
@@ -137,15 +138,15 @@ TEXT:
 - Top left, black, bold condensed: "DR.MEN"
 - Top right, headline in 4 lines, bold condensed uppercase (Oswald-style), black, last line in red #E1261C:
   "EL SUPLEMENTO"
-  "PREMIUM PARA"
-  "EL HOMBRE"
+  "ANTI-DESGASTE"
+  "PARA EL HOMBRE"
   "DE +40"
 - Under the headline, a 3-item list, each item with a black circle containing a white checkmark on the left, separated by thin grey lines:
-  "Ayuda a combatir el cansancio*"
+  "Resveratrol: el antioxidante de la uva"
+  "Vitamina C contra el estrés oxidativo*"
   "Zinc para tu testosterona*"
-  "14 activos en 1 cápsula"
-- Bottom right: a white rounded card with a soft shadow, a small red checkmark icon, small grey text "FORMULADO PARA", below it large bold black "EL HOMBRE +40", and below small grey "Fórmula premium argentina".
-- Very small grey footnote at the bottom: "*Magnesio, vitamina C y B3 contribuyen a disminuir el cansancio. El zinc contribuye a niveles normales de testosterona."
+- Bottom right: a white rounded card with a soft shadow, a small red checkmark icon, small grey text "FORMULADO PARA", below it large bold black "NO ENVEJECER ANTES DE TIEMPO", and below small grey "Fórmula premium argentina +40".
+- Very small grey footnote at the bottom: "*La vitamina C contribuye a proteger las células frente al estrés oxidativo. El zinc contribuye a niveles normales de testosterona."
 
 RULES: No prices, no discounts, no real people, no names. All text in Spanish exactly as written above, spelled correctly with accents.
 ```
