@@ -1,0 +1,57 @@
+{%- comment -%}
+  LANDING METABOMEN +40 · LIQUID 11 · INGREDIENTES + CAJA "LO QUE VAS A ENCONTRAR EN LA ETIQUETA"
+  Necesita el 01 arriba. Separá con | (mismo orden).
+  i_dosis: completá con la dosis real de la etiqueta (dejá '' si no la querés mostrar).
+  etiqueta: verificá cada punto antes de publicar (RNPA, lote y vencimiento iguales en caja y frasco, etc.).
+{%- endcomment -%}
+
+{%- assign eyebrow = 'La fórmula' -%}
+{%- assign titulo = '14 activos. <em>Cero vueltas.</em>' -%}
+{%- assign bajada = 'Elegimos ingredientes con función clara para el hombre de +40. Esto es lo que hay en cada cápsula.' -%}
+
+{%- assign i_icono = '🔩|🧪|🍊|🍃|🍇|💪|🧠|🍓' | split: '|' -%}
+{%- assign i_nombre = 'Zinc|Magnesio|Vitamina C|Té verde|Resveratrol + semilla de uva|L-Arginina|Ginkgo biloba|Naranja amarga + cetona de frambuesa' | split: '|' -%}
+{%- assign i_dosis = '[X] mg|[X] mg|[X] mg|[X] mg|[X] mg|[X] mg|[X] mg|[X] mg' | split: '|' -%}
+{%- assign i_texto = 'Contribuye a mantener niveles normales de testosterona.|Contribuye a disminuir el cansancio y la fatiga.|Contribuye a disminuir el cansancio y a proteger las células frente al estrés oxidativo.|Extracto vegetal clásico de las fórmulas de apoyo metabólico.|Los antioxidantes de la uva, para el hombre que no quiere envejecer antes de tiempo.|Aminoácido elegido por hombres activos.|Extracto de hoja usado hace siglos.|Extractos vegetales usados en fórmulas para el control de peso.' | split: '|' -%}
+
+{%- assign etiqueta_titulo = 'Lo que vas a encontrar en la etiqueta' -%}
+{%- assign etiqueta = 'RNPA vigente ([número])|Lote y vencimiento iguales en caja y frasco|Laboratorio habilitado ([nombre])|Sin gluten|Lista completa de ingredientes y dosis|Contraindicaciones claras' | split: '|' -%}
+
+<style>
+  .dt-ing { background: #fff; border: 1px solid var(--dt-line); border-radius: 16px; padding: 18px; height: 100%; }
+  .dt-ing__i { width: 46px; height: 46px; border-radius: 50%; background: var(--dt-ink); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 12px; }
+  .dt-ing h3 { font-size: 18px; margin-bottom: 2px; }
+  .dt-ing small { display: block; font-size: 12px; font-weight: 800; color: var(--dt-red); margin-bottom: 8px; }
+  .dt-ing p { font-size: 14px; color: var(--dt-muted); margin: 0 !important; line-height: 1.45; }
+  .dt-etq { background: var(--dt-black); color: #fff; border-radius: 18px; padding: 22px; margin-top: 22px; }
+  .dt-etq p { font-family: var(--dt-head); font-size: 18px; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 14px !important; text-align: center; }
+  .dt-etq ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px; }
+  .dt-etq li { display: flex; gap: 8px; font-size: 14.5px; margin: 0; }
+  .dt-etq li::before { content: '✔'; color: #6BD39A; font-weight: 900; }
+  @media (max-width: 749px) { .dt-etq ul { grid-template-columns: 1fr; } }
+</style>
+
+<div class="dt-band">
+  <div class="dt dt-sec">
+    <div class="dt-head">
+      <span class="dt-eyebrow">{{ eyebrow }}</span>
+      <h2 class="dt-h2">{{ titulo }}</h2>
+      <p class="dt-lead">{{ bajada }}</p>
+    </div>
+    <div class="dt-scroll">
+      {%- for n in i_nombre -%}
+        {%- assign k = forloop.index0 -%}
+        <div class="dt-ing">
+          <div class="dt-ing__i">{{ i_icono[k] }}</div>
+          <h3>{{ n }}</h3>
+          {%- if i_dosis[k] != blank -%}<small>{{ i_dosis[k] }} por cápsula</small>{%- endif -%}
+          <p>{{ i_texto[k] }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+    <div class="dt-etq">
+      <p>{{ etiqueta_titulo }}</p>
+      <ul>{%- for e in etiqueta -%}<li>{{ e }}</li>{%- endfor -%}</ul>
+    </div>
+  </div>
+</div>

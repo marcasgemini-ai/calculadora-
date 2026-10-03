@@ -1,0 +1,51 @@
+{%- comment -%}
+  LANDING METABOMEN +40 · LIQUID 14 · PREGUNTAS FRECUENTES + "¿TODAVÍA TENÉS DUDAS?"
+  Necesita el 01 arriba. Son las preguntas reales que se repiten en las reseñas de la categoría.
+  Separá preguntas y respuestas con | (mismo orden). Completá lo que está entre corchetes.
+{%- endcomment -%}
+
+{%- assign eyebrow = 'Sin vueltas' -%}
+{%- assign titulo = 'Preguntas <em>frecuentes</em>' -%}
+{%- assign whatsapp = '549XXXXXXXXXX' -%}
+{%- assign cta_url = '#oferta' -%}
+
+{%- assign f_icono = '🧾|🔬|⏱️|🥗|☀️|❤️|🎂|🛡️' | split: '|' -%}
+{%- assign f_p = '¿Es original? ¿Tiene registro?|¿Qué tiene adentro cada cápsula?|¿En cuánto tiempo voy a notar algo?|¿Sirve si no hago dieta ni gimnasio?|¿Cómo y cuándo se toma?|¿Tiene contraindicaciones?|¿Sirve después de los 50?|¿Y si no me sirve?' | split: '|' -%}
+{%- assign f_r = 'Sí. Metabomen tiene RNPA [número] y se elabora en [laboratorio habilitado]. El lote y el vencimiento están impresos y coinciden en la caja y en el frasco. Si algo no te cierra, escribinos por WhatsApp con una foto y te respondemos.|14 activos: vitamina C, B3, magnesio, zinc, L-arginina, resveratrol, extracto de té verde, semilla de uva, ginkgo biloba, naranja amarga, cetona de frambuesa y [completar]. Las dosis están en la etiqueta y en la sección "La fórmula" de esta página.|Lo primero que nos cuentan los clientes es más energía, muchas veces en la primera o segunda semana. Lo demás lleva más tiempo y depende de cada uno: por eso recomendamos el protocolo de 90 días.|No es mágico. Si no cambiás nada, lo que más vas a notar es en la energía del día. Para ver cambios en la panza, acompañalo con alimentación ordenada y algo de movimiento: Metabomen te da el empuje para sostenerlo.|[X] cápsula por día, a la mañana y con el desayuno. No lo tomes en ayunas si tenés el estómago sensible, ni después del mediodía: lleva té verde y naranja amarga.|Es un suplemento dietario, no un medicamento. No lo tomes si tenés presión alta, problemas cardíacos, gastritis o úlcera, si sos sensible a la cafeína, o si tomás medicación, sin consultar antes a tu médico. No apto para menores de 18.|Sí, está pensado para el hombre de +40. Igual, después de los 50 es más común tomar medicación: consultá a tu médico antes de empezar.|Tenés 60 días de garantía. Si no quedás conforme, nos escribís por WhatsApp y te devolvemos el dinero. Sin preguntas raras.' | split: '|' -%}
+
+<style>
+  .dt-faq { max-width: 780px; margin: 0 auto; }
+  .dt-faq details { border-bottom: 1px solid var(--dt-line); }
+  .dt-faq summary { cursor: pointer; list-style: none; display: flex; gap: 12px; align-items: center; padding: 16px 36px 16px 2px; font-weight: 700; font-size: 15.5px; position: relative; }
+  .dt-faq summary::-webkit-details-marker { display: none; }
+  .dt-faq summary::after { content: '+'; position: absolute; right: 4px; top: 50%; transform: translateY(-50%); font-size: 24px; color: var(--dt-red); font-weight: 400; }
+  .dt-faq details[open] summary::after { content: '–'; }
+  .dt-faq summary span { font-size: 20px; }
+  .dt-faq details > div { padding: 0 2px 16px 34px; color: var(--dt-muted); font-size: 15px; }
+  .dt-dudas { max-width: 480px; margin: 34px auto 0; text-align: center; }
+  .dt-dudas p { font-weight: 700; font-size: 15px; margin-bottom: 12px !important; }
+  .dt-dudas a.dt-wa-link { display: inline-block; margin-top: 12px; color: var(--dt-good) !important; font-weight: 800; font-size: 14px; text-decoration: none !important; }
+</style>
+
+<div class="dt-band">
+  <div class="dt dt-sec">
+    <div class="dt-head">
+      <span class="dt-eyebrow">{{ eyebrow }}</span>
+      <h2 class="dt-h2">{{ titulo }}</h2>
+    </div>
+    <div class="dt-faq">
+      {%- for p in f_p -%}
+        {%- assign k = forloop.index0 -%}
+        <details{% if forloop.first %} open{% endif %}>
+          <summary><span>{{ f_icono[k] }}</span>{{ p }}</summary>
+          <div>{{ f_r[k] }}</div>
+        </details>
+      {%- endfor -%}
+    </div>
+    <div class="dt-dudas">
+      <p>¿Todavía tenés dudas? Normal. Preguntanos lo que quieras.</p>
+      <a class="dt-btn is-dark is-full" href="{{ cta_url }}">Elegir mi pack ahora</a>
+      <a class="dt-wa-link" href="https://wa.me/{{ whatsapp }}?text={{ 'Hola! Tengo una consulta sobre Metabomen' | url_encode }}" target="_blank" rel="noopener">💬 Consultanos por WhatsApp →</a>
+    </div>
+  </div>
+</div>

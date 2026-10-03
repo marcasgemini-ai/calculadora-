@@ -1,0 +1,47 @@
+{%- comment -%}
+  LANDING METABOMEN +40 · LIQUID 06 · LOS NÚMEROS (barras de encuesta)
+  Necesita el 01 arriba.
+  IMPORTANTE: los porcentajes tienen que salir de una encuesta REAL a clientes. Completá n_encuesta y los %.
+  Mientras diga [XX], la sección muestra los recuadros para que veas el diseño.
+{%- endcomment -%}
+
+{%- assign eyebrow = 'Encuesta a [N] clientes' -%}
+{%- assign titulo = 'Los números <em>hablan</em>' -%}
+{%- assign bajada = 'Les preguntamos a hombres que toman Metabomen hace más de 30 días qué notaron.' -%}
+
+{%- assign n_pct = '[XX]|[XX]|[XX]|[XX]' | split: '|' -%}
+{%- assign n_titulo = 'Más energía durante el día|Menos bajón a la tarde|Menos sensación de hinchazón|Lo volverían a comprar' | split: '|' -%}
+{%- assign n_texto = 'Llegan al final del día con más resto.|Llegan a la tarde sin arrastrarse.|Se sienten menos pesados después del primer mes.|Repiten o ya compraron el pack de 3.' | split: '|' -%}
+{%- assign nota = 'Encuesta realizada a [N] clientes de DR.MEN que tomaron Metabomen por al menos 30 días, [mes/año]. Resultados autorreportados; pueden variar de persona a persona.' -%}
+
+<style>
+  .dt-num { max-width: 760px; margin: 0 auto; display: grid; gap: 18px; }
+  .dt-num__bar { height: 44px; border-radius: 999px; background: #E3DED5; overflow: hidden; }
+  .dt-num__fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--dt-black), #3A3F45); color: #fff; display: flex; align-items: center; padding-left: 18px; font-family: var(--dt-head); font-size: 20px; }
+  .dt-num__fill.is-red { background: linear-gradient(90deg, var(--dt-red-dark), var(--dt-red)); }
+  .dt-num h3 { font-size: 16px; margin: 8px 0 2px; }
+  .dt-num p { font-size: 13.5px; color: var(--dt-muted); margin: 0 !important; }
+  .dt-num__nota { max-width: 760px; margin: 22px auto 0 !important; font-size: 11.5px; color: var(--dt-muted); }
+</style>
+
+<div class="dt-band is-sand">
+  <div class="dt dt-sec">
+    <div class="dt-head">
+      <span class="dt-eyebrow">{{ eyebrow }}</span>
+      <h2 class="dt-h2">{{ titulo }}</h2>
+      <p class="dt-lead">{{ bajada }}</p>
+    </div>
+    <div class="dt-num">
+      {%- for t in n_titulo -%}
+        {%- assign k = forloop.index0 -%}
+        <div>
+          {%- assign w = n_pct[k] | plus: 0 -%}{%- if w < 1 -%}{%- assign w = 75 -%}{%- endif -%}
+          <div class="dt-num__bar"><div class="dt-num__fill{% if forloop.first %} is-red{% endif %}" style="width:{{ w }}%">{{ n_pct[k] }}%</div></div>
+          <h3>{{ t }}</h3>
+          <p>{{ n_texto[k] }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+    <p class="dt-num__nota">{{ nota }}</p>
+  </div>
+</div>

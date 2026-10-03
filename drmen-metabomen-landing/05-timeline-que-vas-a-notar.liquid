@@ -1,0 +1,53 @@
+{%- comment -%}
+  LANDING METABOMEN +40 · LIQUID 05 · LÍNEA DE TIEMPO "QUÉ VAS A NOTAR"
+  Necesita el 01 arriba. Basado en lo que cuentan los clientes en las reseñas.
+  Cada etapa: etiqueta | título | bajada | 3 puntos separados por ~
+{%- endcomment -%}
+
+{%- assign eyebrow = 'Paso a paso' -%}
+{%- assign titulo = 'Qué cuentan los hombres que <em>toman Metabomen</em>' -%}
+{%- assign cta_url = '#oferta' -%}
+
+{%- assign e_tag = 'Día 1|Semana 1|Semanas 2 y 3|Mes 1|Meses 2 y 3|Mes 6 en adelante' | split: '|' -%}
+{%- assign e_titulo = 'Arranca la rutina|Los primeros cambios|El bajón de la tarde se achica|Te sentís menos pesado|El hábito se instala|Lo sostenés' | split: '|' -%}
+{%- assign e_bajada = '1 cápsula con el desayuno y el mate. Nada más.|Lo primero que nos cuentan: más resto durante el día.|Llegás a la tarde sin arrastrarte.|La sensación de hinchazón empieza a ceder.|Con alimentación y movimiento, el cambio se ve en el espejo.|Es parte de tu mañana, como el mate.' | split: '|' -%}
+{%- assign e_puntos = 'Se toma en 5 segundos~Sin sabor, sin preparación~Siempre a la mañana, nunca de noche|Te levantás más despejado~Te cuesta menos arrancar~Más ganas de hacer cosas|Llegás al final del día con resto~Menos ganas de picotear~Más foco en el laburo|Menos sensación de pesadez~La ropa empieza a calzar mejor~Te animás a moverte más|Más firme y más despierto~Te ves más descansado~Los de tu casa lo notan|Energía constante, no picos~Rutina simple de sostener~Ya no querés volver atrás' | split: '|' -%}
+
+<style>
+  .dt-tl { position: relative; max-width: 760px; margin: 0 auto; padding-left: 34px; }
+  .dt-tl::before { content: ''; position: absolute; left: 11px; top: 6px; bottom: 6px; width: 2px; background: var(--dt-line); }
+  .dt-tl__s { position: relative; margin-bottom: 26px; }
+  .dt-tl__s::before { content: ''; position: absolute; left: -30px; top: 4px; width: 18px; height: 18px; border-radius: 50%; background: var(--dt-ink); border: 4px solid var(--dt-cream); box-shadow: 0 0 0 2px var(--dt-ink); }
+  .dt-tl__s:last-child::before { background: var(--dt-red); box-shadow: 0 0 0 2px var(--dt-red); }
+  .dt-tl__tag { font-family: var(--dt-head); font-size: 15px; text-transform: uppercase; letter-spacing: .06em; color: var(--dt-red); margin-bottom: 8px; }
+  .dt-tl__box { background: #fff; border: 1px solid var(--dt-line); border-radius: 14px; padding: 14px 16px; }
+  .dt-tl__box h3 { font-size: 19px; margin-bottom: 2px; }
+  .dt-tl__box > p { font-size: 14px; color: var(--dt-muted); margin-bottom: 10px !important; }
+  .dt-tl__box ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .dt-tl__box li { display: flex; gap: 8px; font-size: 14.5px; margin: 0; }
+  .dt-tl__box li::before { content: '✔'; color: var(--dt-good); font-weight: 900; }
+</style>
+
+<div class="dt-band is-cream">
+  <div class="dt dt-sec">
+    <div class="dt-head">
+      <span class="dt-eyebrow">{{ eyebrow }}</span>
+      <h2 class="dt-h2">{{ titulo }}</h2>
+    </div>
+    <div class="dt-tl">
+      {%- for tag in e_tag -%}
+        {%- assign k = forloop.index0 -%}
+        <div class="dt-tl__s">
+          <div class="dt-tl__tag">{{ tag }}</div>
+          <div class="dt-tl__box">
+            <h3>{{ e_titulo[k] }}</h3>
+            <p>{{ e_bajada[k] }}</p>
+            <ul>{%- assign pts = e_puntos[k] | split: '~' -%}{%- for p in pts -%}<li>{{ p }}</li>{%- endfor -%}</ul>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+    <p class="dt-under">Basado en lo que nos cuentan nuestros clientes. Cada cuerpo es distinto y los resultados pueden variar. Acompañá con alimentación equilibrada y actividad física.</p>
+    <div class="dt-center" style="margin-top:22px"><a class="dt-btn is-full" href="{{ cta_url }}">Empezá tu cambio hoy</a></div>
+  </div>
+</div>

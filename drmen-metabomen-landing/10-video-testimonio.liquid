@@ -1,0 +1,46 @@
+{%- comment -%}
+  LANDING METABOMEN +40 · LIQUID 10 · VIDEO TESTIMONIO
+  Necesita el 01 arriba.
+  video_url: link .mp4 subido a Shopify (Contenido > Archivos). Vacío = recuadro punteado.
+  poster_url: imagen de portada del video (opcional).
+  Cliente real, con permiso por escrito.
+{%- endcomment -%}
+
+{%- assign video_url = '' -%}
+{%- assign poster_url = '' -%}
+{%- assign eyebrow = 'La historia de un cliente' -%}
+{%- assign nombre = '[Nombre]' -%}
+{%- assign detalle = '[Ocupación] · [Edad] años · [Ciudad]' -%}
+{%- assign historia = '[Historia real del cliente, en primera persona: cómo se sentía antes, por qué lo probó, qué notó y en cuánto tiempo.]' -%}
+{%- assign aclaracion = 'Testimonio real de un cliente. Los resultados pueden variar de persona a persona.' -%}
+{%- assign cta_url = '#oferta' -%}
+
+<style>
+  .dt-vid video, .dt-vid .dt-ph { aspect-ratio: 9 / 16; max-height: 640px; width: auto; max-width: 100%; margin: 0 auto; border-radius: 18px; object-fit: cover; background: #000; }
+  .dt-vid__t h2 { font-size: clamp(36px, 5vw, 54px); margin-bottom: 4px; }
+  .dt-vid__d { font-size: 12.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--dt-muted); margin-bottom: 16px !important; }
+  .dt-vid__h { font-size: 16.5px; line-height: 1.6; }
+  .dt-vid__a { font-size: 12px; color: var(--dt-muted); }
+</style>
+
+<div class="dt-band is-cream">
+  <div class="dt dt-sec">
+    <div class="dt-grid-2">
+      <div class="dt-vid">
+        {%- if video_url != blank -%}
+          <video src="{{ video_url }}" {% if poster_url != blank %}poster="{{ poster_url }}"{% endif %} controls playsinline preload="metadata"></video>
+        {%- else -%}
+          <div class="dt-ph is-story">VIDEO VERTICAL (9:16) · Cliente real de 45-55 contando su experiencia a cámara, en su casa o en el auto. 30-60 segundos.</div>
+        {%- endif -%}
+      </div>
+      <div class="dt-vid__t">
+        <span class="dt-eyebrow">{{ eyebrow }}</span>
+        <h2>{{ nombre }}</h2>
+        <p class="dt-vid__d">{{ detalle }}</p>
+        <p class="dt-vid__h">"{{ historia }}"</p>
+        <p class="dt-vid__a">{{ aclaracion }}</p>
+        <a class="dt-btn is-dark" href="{{ cta_url }}">Quiero lo mismo que {{ nombre }} →</a>
+      </div>
+    </div>
+  </div>
+</div>

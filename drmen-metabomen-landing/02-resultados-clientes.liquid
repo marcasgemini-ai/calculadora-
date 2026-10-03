@@ -1,0 +1,43 @@
+{%- comment -%}
+  LANDING METABOMEN +40 · LIQUID 02 · RESULTADOS DE CLIENTES REALES (carrusel antes / después)
+  Necesita el 01 arriba.
+  SOLO clientes reales, con permiso por escrito. Separá con | (mismo orden en todas las listas).
+  Para sumar una tarjeta, agregá un elemento en TODAS las listas. Fotos vacías = recuadro punteado.
+{%- endcomment -%}
+
+{%- assign eyebrow = 'Lo que nos mandan' -%}
+{%- assign titulo = 'Resultados de <em>clientes reales</em>' -%}
+
+{%- assign r_antes = '|||' -%}
+{%- assign r_despues = '|||' -%}
+{%- assign r_texto = '[Reseña real del cliente]|[Reseña real del cliente]|[Reseña real del cliente]|[Reseña real del cliente]' -%}
+{%- assign r_nombre = '[Nombre], 46 · [Ciudad]|[Nombre], 52 · [Ciudad]|[Nombre], 44 · [Ciudad]|[Nombre], 49 · [Ciudad]' -%}
+
+{%- assign ra = r_antes | split: '|' -%}
+{%- assign rd = r_despues | split: '|' -%}
+{%- assign rt = r_texto | split: '|' -%}
+{%- assign rn = r_nombre | split: '|' -%}
+
+<div class="dt-band is-cream">
+  <div class="dt dt-sec">
+    <div class="dt-head">
+      <span class="dt-eyebrow">{{ eyebrow }}</span>
+      <h2 class="dt-h2">{{ titulo }}</h2>
+    </div>
+    <div class="dt-scroll">
+      {%- for texto in rt -%}
+        {%- assign k = forloop.index0 -%}
+        <div class="dt-card">
+          <div class="dt-ba">
+            <div>{%- if ra[k] != blank -%}<img src="{{ ra[k] }}" alt="Antes" loading="lazy" width="400" height="500">{%- else -%}<div class="dt-ph">FOTO ANTES (real)</div>{%- endif -%}<span class="dt-ba__l">Antes</span></div>
+            <div>{%- if rd[k] != blank -%}<img src="{{ rd[k] }}" alt="Después" loading="lazy" width="400" height="500">{%- else -%}<div class="dt-ph">FOTO DESPUÉS (real)</div>{%- endif -%}<span class="dt-ba__l is-after">Después</span></div>
+          </div>
+          <div class="dt-stars">★★★★★</div>
+          <p class="dt-quote">"{{ texto }}"</p>
+          <div class="dt-who">— {{ rn[k] }} · <span class="dt-verified">✔ Compra verificada</span></div>
+        </div>
+      {%- endfor -%}
+    </div>
+    <p class="dt-under">Los resultados pueden variar de persona a persona.</p>
+  </div>
+</div>

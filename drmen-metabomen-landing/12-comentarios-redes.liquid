@@ -1,0 +1,46 @@
+{%- comment -%}
+  LANDING METABOMEN +40 · LIQUID 12 · COMENTARIOS EN REDES
+  Necesita el 01 arriba. Copiá comentarios REALES de Instagram/Facebook/TikTok (con permiso del autor o
+  con el nombre tapado). Separá con | (mismo orden). Avatar vacío = inicial del nombre.
+{%- endcomment -%}
+
+{%- assign eyebrow = 'Lo que dicen en redes' -%}
+{%- assign titulo = 'Comentarios <em>reales</em>' -%}
+
+{%- assign s_nombre = '[@usuario]|[@usuario]|[@usuario]|[@usuario]' | split: '|' -%}
+{%- assign s_red = 'Instagram|Facebook|TikTok|Instagram' | split: '|' -%}
+{%- assign s_texto = '[Comentario real]|[Comentario real]|[Comentario real]|[Comentario real]' | split: '|' -%}
+{%- assign s_likes = '[X]|[X]|[X]|[X]' | split: '|' -%}
+{%- assign s_avatar = '' | split: '|' -%}
+
+<style>
+  .dt-soc { background: #fff; border: 1px solid var(--dt-line); border-radius: 16px; padding: 16px; height: 100%; display: flex; flex-direction: column; }
+  .dt-soc__h { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .dt-soc__h img, .dt-soc__h i { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; background: var(--dt-sand); display: flex; align-items: center; justify-content: center; font-style: normal; font-weight: 800; flex: 0 0 auto; }
+  .dt-soc__h b { display: block; font-size: 14px; }
+  .dt-soc__h small { font-size: 12px; color: var(--dt-muted); }
+  .dt-soc p { font-size: 14.5px; flex: 1; }
+  .dt-soc__f { display: flex; gap: 16px; font-size: 12.5px; color: var(--dt-muted); border-top: 1px solid var(--dt-line); padding-top: 10px; }
+</style>
+
+<div class="dt-band is-cream">
+  <div class="dt dt-sec">
+    <div class="dt-head">
+      <span class="dt-eyebrow">{{ eyebrow }}</span>
+      <h2 class="dt-h2">{{ titulo }}</h2>
+    </div>
+    <div class="dt-scroll">
+      {%- for n in s_nombre -%}
+        {%- assign k = forloop.index0 -%}
+        <div class="dt-soc">
+          <div class="dt-soc__h">
+            {%- if s_avatar[k] != blank -%}<img src="{{ s_avatar[k] }}" alt="" width="38" height="38" loading="lazy">{%- else -%}<i>{{ n | remove: '@' | remove: '[' | slice: 0 | upcase }}</i>{%- endif -%}
+            <div><b>{{ n }}</b><small>{{ s_red[k] }}</small></div>
+          </div>
+          <p>{{ s_texto[k] }}</p>
+          <div class="dt-soc__f"><span>❤️ {{ s_likes[k] }}</span><span>💬 Responder</span></div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>

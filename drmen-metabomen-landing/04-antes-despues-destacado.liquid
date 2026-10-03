@@ -1,0 +1,62 @@
+{%- comment -%}
+  LANDING METABOMEN +40 · LIQUID 04 · ANTES / DESPUÉS DESTACADO + TESTIMONIO + MINI PRODUCTO
+  Necesita el 01 arriba. Fotos y testimonio: cliente real, con permiso por escrito.
+{%- endcomment -%}
+
+{%- assign eyebrow = 'Resultados reales' -%}
+{%- assign titulo = 'El antes y después <em>de verdad</em>' -%}
+{%- assign img_antes = '' -%}
+{%- assign img_despues = '' -%}
+{%- assign t_nombre = '[Nombre], 47 años' -%}
+{%- assign t_detalle = '[Ciudad] · Cliente desde [mes/año]' -%}
+{%- assign t_texto = '[Testimonio real del cliente: qué le pasaba antes, qué notó y en cuánto tiempo, con sus palabras.]' -%}
+{%- assign img_frasco = '' -%}
+{%- assign mini_kicker = 'El que usó ' -%}
+{%- assign mini_titulo = 'METABOMEN · 60 cápsulas' -%}
+{%- assign mini_precio = 'Desde $58.990' -%}
+{%- assign cta_url = '#oferta' -%}
+
+<style>
+  .dt-feat__img { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; border-radius: 18px; overflow: hidden; }
+  .dt-feat__img > div { position: relative; }
+  .dt-feat__img img, .dt-feat__img .dt-ph { aspect-ratio: 4 / 5; object-fit: cover; border-radius: 0; }
+  .dt-feat__t h3 { font-size: 22px; margin-bottom: 2px; }
+  .dt-feat__d { font-size: 12.5px; color: var(--dt-muted); margin-bottom: 12px !important; }
+  .dt-feat__q { font-size: 17px; font-weight: 600; line-height: 1.5; border-left: 3px solid var(--dt-red); padding-left: 14px; }
+  .dt-mini { display: grid; grid-template-columns: 90px 1fr; gap: 14px; align-items: center; background: #fff; border: 1px solid var(--dt-line); border-radius: 16px; padding: 12px; margin-top: 18px; }
+  .dt-mini img, .dt-mini .dt-ph { border-radius: 10px; font-size: 10px; padding: 6px; }
+  .dt-mini small { display: block; font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--dt-muted); }
+  .dt-mini b { display: block; font-family: var(--dt-head); font-size: 18px; text-transform: uppercase; }
+  .dt-mini span { display: block; font-size: 13px; color: var(--dt-muted); margin-bottom: 8px; }
+  .dt-mini .dt-btn { padding: 11px 16px; font-size: 13px; box-shadow: none; width: 100%; }
+</style>
+
+<div class="dt-band is-cream">
+  <div class="dt dt-sec">
+    <div class="dt-head">
+      <span class="dt-eyebrow">{{ eyebrow }}</span>
+      <h2 class="dt-h2">{{ titulo }}</h2>
+    </div>
+    <div class="dt-grid-2">
+      <div class="dt-feat__img">
+        <div>{%- if img_antes != blank -%}<img src="{{ img_antes }}" alt="Antes" loading="lazy" width="600" height="750">{%- else -%}<div class="dt-ph">FOTO ANTES (real)</div>{%- endif -%}<span class="dt-ba__l">Antes</span></div>
+        <div>{%- if img_despues != blank -%}<img src="{{ img_despues }}" alt="Después" loading="lazy" width="600" height="750">{%- else -%}<div class="dt-ph">FOTO DESPUÉS (real)</div>{%- endif -%}<span class="dt-ba__l is-after">Después</span></div>
+      </div>
+      <div class="dt-feat__t">
+        <div class="dt-stars">★★★★★</div>
+        <h3>{{ t_nombre }}</h3>
+        <p class="dt-feat__d">{{ t_detalle }} · <span class="dt-verified">✔ Compra verificada</span></p>
+        <p class="dt-feat__q">"{{ t_texto }}"</p>
+        <div class="dt-mini">
+          {%- if img_frasco != blank -%}<img src="{{ img_frasco }}" alt="Metabomen" loading="lazy" width="180" height="180">{%- else -%}<div class="dt-ph">FRASCO</div>{%- endif -%}
+          <div>
+            <small>{{ mini_kicker }}{{ t_nombre | split: ',' | first }}</small>
+            <b>{{ mini_titulo }}</b>
+            <span>{{ mini_precio }}</span>
+            <a class="dt-btn is-dark" href="{{ cta_url }}">Comprar ahora</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

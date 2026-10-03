@@ -1,0 +1,21 @@
+{%- comment -%}
+  LANDING METABOMEN +40 · LIQUID 09 · CINTA EN MOVIMIENTO CON LA MARCA
+  Necesita el 01 arriba. Textos separados por |.
+{%- endcomment -%}
+
+{%- assign textos = 'METABOMEN|DR.MEN|BUILT FOR MEN|FÓRMULA PREMIUM +40' | split: '|' -%}
+
+<style>
+  .dt-tick { background: var(--dt-black); color: #fff; overflow: hidden; padding: 14px 0; }
+  .dt-tick__row { display: flex; width: max-content; animation: dtTick 28s linear infinite; }
+  .dt-tick__row span { font-family: var(--dt-head); font-size: 20px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; padding: 0 22px; white-space: nowrap; }
+  .dt-tick__row span::after { content: '✦'; color: var(--dt-red); margin-left: 44px; }
+  @keyframes dtTick { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) { .dt-tick__row { animation: none; } }
+</style>
+
+<div class="dt-band dt-tick" aria-hidden="true">
+  <div class="dt-tick__row">
+    {%- for n in (1..4) -%}{%- for t in textos -%}<span>{{ t }}</span>{%- endfor -%}{%- endfor -%}
+  </div>
+</div>

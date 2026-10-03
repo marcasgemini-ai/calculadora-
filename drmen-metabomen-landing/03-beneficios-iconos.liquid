@@ -1,0 +1,30 @@
+{%- comment -%}
+  LANDING METABOMEN +40 · LIQUID 03 · 4 BENEFICIOS CON ÍCONO
+  Necesita el 01 arriba. Separá con | (mismo orden). "Hecho en Argentina": dejalo solo si es verdad.
+{%- endcomment -%}
+
+{%- assign b_icono = '⚡|🔩|☀️|🇦🇷' | split: '|' -%}
+{%- assign b_titulo = 'Menos cansancio|Testosterona normal|1 cápsula por la mañana|Fórmula premium argentina' | split: '|' -%}
+{%- assign b_texto = 'Magnesio, vitamina C y B3 contribuyen a disminuir el cansancio y la fatiga.|El zinc contribuye a mantener niveles normales de testosterona.|Con el desayuno. Sin polvos, sin preparaciones, sin vueltas.|14 activos en una cápsula, formulada solo para hombres.' | split: '|' -%}
+
+<style>
+  .dt-ben { text-align: center; padding: 6px; }
+  .dt-ben__i { width: 64px; height: 64px; margin: 0 auto 12px; border-radius: 50%; background: var(--dt-ink); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 28px; }
+  .dt-ben h3 { font-size: 17px; margin-bottom: 6px; }
+  .dt-ben p { font-size: 13.5px; color: var(--dt-muted); margin: 0 !important; line-height: 1.45; }
+</style>
+
+<div class="dt-band">
+  <div class="dt dt-sec">
+    <div class="dt-grid-4">
+      {%- for t in b_titulo -%}
+        {%- assign k = forloop.index0 -%}
+        <div class="dt-ben">
+          <div class="dt-ben__i">{{ b_icono[k] }}</div>
+          <h3>{{ t }}</h3>
+          <p>{{ b_texto[k] }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
