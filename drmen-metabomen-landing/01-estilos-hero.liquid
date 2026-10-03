@@ -112,10 +112,8 @@
   .dt-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
   .dt-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
 
-  /* barra fija mobile + whatsapp */
+  /* barra fija mobile */
   .dt-sticky { display: none; }
-  .dt-wa { position: fixed; right: 16px; bottom: 18px; z-index: 60; width: 56px; height: 56px; border-radius: 50%; background: #25D366; color: #fff !important; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 18px rgba(0,0,0,.25); text-decoration: none !important; }
-  .dt-wa svg { width: 30px; height: 30px; fill: #fff; }
 
   @media (max-width: 749px) {
     .dt-sec { padding-top: 42px; padding-bottom: 42px; }
@@ -131,7 +129,6 @@
     .dt-sticky > span { flex: 1; color: #fff; font-size: 12.5px; line-height: 1.25; font-family: var(--dt-body); }
     .dt-sticky > span b { display: block; font-size: 14px; }
     .dt-sticky .dt-btn { width: auto; padding: 12px 16px; font-size: 13px; box-shadow: none; }
-    .dt-wa { bottom: 84px; width: 52px; height: 52px; }
   }
 </style>
 

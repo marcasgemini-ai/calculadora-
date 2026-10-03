@@ -25,13 +25,13 @@ Se compra en la misma página (sección 08) y va directo al checkout.
 | 12 | `12-comentarios-redes.liquid` | Comentarios en redes |
 | 13 | `13-ugc-confianza.liquid` | Fotos de clientes + puntos de confianza |
 | 14 | `14-faq-dudas.liquid` | Preguntas frecuentes + "¿todavía tenés dudas?" |
-| 15 | `15-garantia-sticky-whatsapp.liquid` | Garantía 60 días + sellos + barra fija celular + botón WhatsApp |
+| 15 | `15-garantia-sticky.liquid` | Garantía 60 días + sellos + barra fija celular |
 
 3. Páginas > Agregar > asignar el template. Esa URL va en los anuncios.
 
 ## Completar antes de publicar
 - **08**: `producto_handle` (por defecto `metabomen`). La galería toma sola las fotos del producto.
-- **14 y 15**: número de `whatsapp` (formato 549 + área + número, sin espacios).
+- **14 y 15**: tu email de contacto donde dice [email de contacto].
 - **Todo lo que está [entre corchetes]**: RNPA, laboratorio, dosis (11), cantidad de clientes (01), condiciones de la garantía (15).
 - **Antes/después, reseñas, video, comentarios y fotos de clientes (02, 04, 07, 10, 12, 13)**: SOLO clientes reales, con permiso por escrito.
 - **06 · números**: tienen que salir de una encuesta real a clientes. Mientras digan [XX] se ven los recuadros.
