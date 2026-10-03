@@ -23,9 +23,7 @@
   .dt-tl__box { background: #fff; border: 1px solid var(--dt-line); border-radius: 14px; padding: 14px 16px; }
   .dt-tl__box h3 { font-size: 19px; margin-bottom: 2px; }
   .dt-tl__box > p { font-size: 14px; color: var(--dt-muted); margin-bottom: 10px !important; }
-  .dt-tl__box ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
-  .dt-tl__box li { display: flex; gap: 8px; font-size: 14.5px; margin: 0; }
-  .dt-tl__box li::before { content: '✔'; color: var(--dt-good); font-weight: 900; }
+  .dt-tl__box li { font-size: 14.5px; }
 </style>
 
 <div class="dt-band is-cream">
@@ -42,7 +40,7 @@
           <div class="dt-tl__box">
             <h3>{{ e_titulo[k] }}</h3>
             <p>{{ e_bajada[k] }}</p>
-            <ul>{%- assign pts = e_puntos[k] | split: '~' -%}{%- for p in pts -%}<li>{{ p }}</li>{%- endfor -%}</ul>
+            <ul class="dt-chk">{%- assign pts = e_puntos[k] | split: '~' -%}{%- for p in pts -%}<li>{{ p }}</li>{%- endfor -%}</ul>
           </div>
         </div>
       {%- endfor -%}

@@ -9,7 +9,7 @@
 {%- assign titulo = '14 activos para el <em>desgaste de los 40</em>' -%}
 {%- assign bajada = 'Elegimos ingredientes para lo que más se desgasta después de los 40. Esto es lo que hay en cada cápsula.' -%}
 
-{%- assign i_icono = '🍇|🍊|🔩|🧪|🧠|💪|🍃|🍓' | split: '|' -%}
+{%- assign i_icono = 'grape|citrus|hex|drop|bulb|dumbbell|leaf|berry' | split: '|' -%}
 {%- assign i_nombre = 'Resveratrol + semilla de uva|Vitamina C|Zinc|Magnesio|Ginkgo biloba|L-Arginina|Té verde|Naranja amarga + cetona de frambuesa' | split: '|' -%}
 {%- assign i_dosis = '[X] mg|[X] mg|[X] mg|[X] mg|[X] mg|[X] mg|[X] mg|[X] mg' | split: '|' -%}
 {%- assign i_texto = 'Los antioxidantes de la uva, los mismos que se estudian en el mundo de la longevidad.|Contribuye a proteger las células frente al estrés oxidativo y a disminuir el cansancio.|Contribuye a mantener niveles normales de testosterona, que bajan con los años.|Contribuye a disminuir el cansancio y la fatiga.|Extracto de hoja usado hace siglos.|Aminoácido elegido por hombres activos.|Extracto vegetal clásico de las fórmulas de apoyo metabólico.|Extractos vegetales usados en fórmulas para el control de peso.' | split: '|' -%}
@@ -20,15 +20,16 @@
 <style>
   .dt-ing { background: #fff; border: 1px solid var(--dt-line); border-radius: 16px; padding: 18px; height: 100%; }
   .dt-ing__i { width: 46px; height: 46px; border-radius: 50%; background: var(--dt-ink); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 12px; }
+  .dt-ing__i .dt-ic { width: 24px; height: 24px; }
   .dt-ing h3 { font-size: 18px; margin-bottom: 2px; }
   .dt-ing small { display: block; font-size: 12px; font-weight: 800; color: var(--dt-red); margin-bottom: 8px; }
   .dt-ing p { font-size: 14px; color: var(--dt-muted); margin: 0 !important; line-height: 1.45; }
   .dt-etq { background: var(--dt-black); color: #fff; border-radius: 18px; padding: 22px; margin-top: 22px; }
   .dt-etq p { font-family: var(--dt-head); font-size: 18px; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 14px !important; text-align: center; }
-  .dt-etq ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px; }
-  .dt-etq li { display: flex; gap: 8px; font-size: 14.5px; margin: 0; }
-  .dt-etq li::before { content: '✔'; color: #6BD39A; font-weight: 900; }
-  @media (max-width: 749px) { .dt-etq ul { grid-template-columns: 1fr; } }
+  .dt-etq ul.dt-chk { grid-template-columns: 1fr 1fr; gap: 10px 20px; }
+  .dt-etq li { font-size: 14.5px; }
+  .dt-etq li::before { background: #6BD39A !important; }
+  @media (max-width: 749px) { .dt-etq ul.dt-chk { grid-template-columns: 1fr; } }
 </style>
 
 <div class="dt-band">
@@ -42,7 +43,7 @@
       {%- for n in i_nombre -%}
         {%- assign k = forloop.index0 -%}
         <div class="dt-ing">
-          <div class="dt-ing__i">{{ i_icono[k] }}</div>
+          <div class="dt-ing__i"><svg class="dt-ic"><use href="#dti-{{ i_icono[k] }}"/></svg></div>
           <h3>{{ n }}</h3>
           {%- if i_dosis[k] != blank -%}<small>{{ i_dosis[k] }} por cápsula</small>{%- endif -%}
           <p>{{ i_texto[k] }}</p>
@@ -51,7 +52,7 @@
     </div>
     <div class="dt-etq">
       <p>{{ etiqueta_titulo }}</p>
-      <ul>{%- for e in etiqueta -%}<li>{{ e }}</li>{%- endfor -%}</ul>
+      <ul class="dt-chk">{%- for e in etiqueta -%}<li>{{ e }}</li>{%- endfor -%}</ul>
     </div>
   </div>
 </div>

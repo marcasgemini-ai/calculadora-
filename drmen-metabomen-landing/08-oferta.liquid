@@ -1,6 +1,7 @@
 {%- comment -%}
   LANDING METABOMEN +40 · LIQUID 08 · BLOQUE DE COMPRA (galería + packs + upsell + regalos)
   Funciona solo: trae sus propios estilos. Todos los botones de la landing bajan acá con #oferta.
+  ÍCONOS: usa el set de íconos SVG del bloque 01 (dti-...).
   GALERÍA: usa las fotos del producto en Shopify (hasta 6). Si querés otras, completá galeria_urls separadas por |.
 
   PRODUCTO: en una página (template de página) Shopify no tiene "product", así que lo busca por producto_handle.
@@ -26,9 +27,12 @@
 {%- assign resena_img = '' -%}
 
 {%- comment -%} ===== BADGES DE ARRIBA (dejá '' para ocultar uno) ===== {%- endcomment -%}
-{%- assign badge_1 = '🏆 Más comprado en Mercado Libre' -%}
-{%- assign badge_2 = '📸 Viral en Instagram' -%}
-{%- assign badge_3 = '🔥 Viral en TikTok' -%}
+{%- assign badge_1 = 'Más comprado en Mercado Libre' -%}
+{%- assign badge_1_icono = 'trophy' -%}
+{%- assign badge_2 = 'Viral en Instagram' -%}
+{%- assign badge_2_icono = 'camera' -%}
+{%- assign badge_3 = 'Viral en TikTok' -%}
+{%- assign badge_3_icono = 'flame' -%}
 
 {%- comment -%} ===== GENERAL ===== {%- endcomment -%}
 {%- assign pack_elegido = 2 -%}
@@ -43,7 +47,7 @@
 
 {%- comment -%} ===== REGALOS (en orden). desde = frascos mínimos · regalos_img: URL o '-' para usar el ícono ===== {%- endcomment -%}
 {%- assign regalos_img = '-|-|https://cdn.shopify.com/s/files/1/0995/7126/9912/files/fdb87291-c520-4fac-b5ac-920cf3f4fd4a.png?v=1790807043' | split: '|' -%}
-{%- assign regalos_icono = '📋|🥗|✈️' | split: '|' -%}
+{%- assign regalos_icono = 'book|utensils|plane' | split: '|' -%}
 {%- assign regalos_corto = 'Guía Vitalidad +40|Guía Alimentación metabólica|Viaje al Caribe para Enero' | split: '|' -%}
 {%- assign regalos_etiqueta = 'Gratis|Gratis|Sorteo' | split: '|' -%}
 {%- assign regalos_tachado = '$25.000|$20.000|-' | split: '|' -%}
@@ -154,17 +158,19 @@
   .dmx__ph { aspect-ratio: 1 / 1; border: 2px dashed #C8C1B5; background: #EAE4DA; color: #5B554D; display: flex; align-items: center; justify-content: center; text-align: center; padding: 16px; font-size: 13px; font-weight: 600; }
   .dmx__ul { list-style: none; padding: 0; margin: 20px 0 0; display: grid; gap: 8px; }
   .dmx__ul li { display: flex; gap: 10px; font-size: 15px; color: #D5DADF; line-height: 1.4; margin: 0; }
-  .dmx__ul li::before { content: '✔'; color: var(--dm-red); font-weight: 900; }
+
   .dmx__panel { color: var(--dm-ink); }
 
   /* ===== estilos de la oferta (iguales a la página de producto) ===== */
   .dm-tbadges { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 12px; font-family: var(--font-body-family, inherit); }
-  .dm-tbadges span { display: inline-flex; align-items: center; gap: 4px; background: var(--dm-black, #0E0F11); color: #fff; font-size: 12px; font-weight: 700; padding: 6px 11px; border-radius: 999px; line-height: 1; }
+  .dm-tbadges .dt-ic { width: 14px; height: 14px; }
+  .dm-tbadges span { display: inline-flex; align-items: center; gap: 6px; background: var(--dm-black, #0E0F11); color: #fff; font-size: 12px; font-weight: 700; padding: 6px 11px; border-radius: 999px; line-height: 1; }
   .dm-tbadges span:first-child { background: #FFE600; color: #2D3277; }
 
   .dm-below { font-family: var(--font-body-family, inherit); color: var(--dm-ink, #15171A); margin: 12px 0 0; display: grid; gap: 8px; }
   .dm-below__row { display: flex; align-items: flex-start; gap: 10px; border: 1px solid var(--dm-line, #E2E6EA); border-radius: 10px; padding: 10px 12px; font-size: 13.5px; line-height: 1.4; background: #fff; }
-  .dm-below__row span:first-child { flex: 0 0 auto; font-size: 18px; line-height: 1.1; }
+  .dm-below__row > span:first-child { flex: 0 0 auto; line-height: 1; color: var(--dm-ink); }
+  .dm-below__row > span:first-child .dt-ic { width: 20px; height: 20px; }
   .dm-below__row b { display: block; font-size: 14px; }
   .dm-below__row.is-ml { background: #FFFBD6; border-color: #F2E27A; }
 
@@ -210,7 +216,8 @@
 
   .dmo-gifts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
   .dmo-gift { position: relative; border: 1px solid var(--dm-line); border-radius: 9px; background: #fff; padding: 7px 6px 6px; text-align: center; line-height: 1.15; min-width: 0; }
-  .dmo-gift__i { display: block; font-size: 16px; margin-bottom: 3px; }
+  .dmo-gift__i { display: block; margin-bottom: 4px; color: var(--dm-ink); }
+  .dmo-gift__i .dt-ic { width: 22px; height: 22px; }
   .dmo-gift__img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 6px; margin: 0 0 5px; background: var(--dm-soft); }
   .dmo-gift.is-lock .dmo-gift__img { opacity: .4; filter: grayscale(1); }
   .dmo-gift__n { display: block; font-size: 10.5px; font-weight: 700; color: var(--dm-ink); }
@@ -218,7 +225,12 @@
   .dmo-gift__v s { color: #9AA1A8; font-weight: 400; margin-left: 3px; text-transform: none; }
   .dmo-gift.is-lock { background: #F6F7F9; border-style: dashed; }
   .dmo-gift.is-lock .dmo-gift__i, .dmo-gift.is-lock .dmo-gift__n { opacity: .45; }
-  .dmo-gift__lock { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); font-size: 18px; }
+  .dmo-gift__lock { position: absolute; top: 14px; left: 50%; transform: translateX(-50%); color: var(--dm-ink); }
+  .dmo-gift__lock .dt-ic { width: 20px; height: 20px; }
+  .dmo-gift__v .dt-ic { width: 10px; height: 10px; }
+  .dmo-gh { display: inline-flex; align-items: center; gap: 6px; }
+  .dmo-gh .dt-ic { width: 14px; height: 14px; }
+  .dmx-rev .dt-ic { width: 12px; height: 12px; color: #2F8A5B; }
   .dmo-gift.is-lock .dmo-gift__v { color: #8A9199; }
   .dmo-gifts__h { display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: 800; margin: 0 0 6px; }
   .dmo-gifts__h span { color: var(--dm-muted); font-weight: 600; }
@@ -265,7 +277,7 @@
     <h2 class="dmx-ttl">{{ titulo_producto }}</h2>
     <p class="dmx-rate"><b>★★★★★</b> {{ rating }} · {{ cant_resenas }}</p>
     {%- unless prod and prod.id -%}
-      {%- if request.design_mode -%}<p style="background:#FDECEC;color:#9B1C1C;border:1px solid #F5B5B5;border-radius:8px;padding:10px;font-size:13px;margin:0;">⚠️ Solo lo ves vos en el editor: no se encontró el producto <b>{{ producto_handle }}</b>. Revisá el handle en "producto_handle" y que el producto esté publicado en Tienda online.</p>{%- endif -%}
+      {%- if request.design_mode -%}<p style="background:#FDECEC;color:#9B1C1C;border:1px solid #F5B5B5;border-radius:8px;padding:10px;font-size:13px;margin:0;">Atención, solo lo ves vos en el editor: no se encontró el producto <b>{{ producto_handle }}</b>. Revisá el handle en "producto_handle" y que el producto esté publicado en Tienda online.</p>{%- endif -%}
     {%- else -%}
 
 {%- assign v0 = prod.selected_or_first_available_variant -%}
@@ -283,13 +295,13 @@
 {%- endif -%}
 
 <div class="dm-tbadges">
-  {%- if badge_1 != blank -%}<span>{{ badge_1 }}</span>{%- endif -%}
-  {%- if badge_2 != blank -%}<span>{{ badge_2 }}</span>{%- endif -%}
-  {%- if badge_3 != blank -%}<span>{{ badge_3 }}</span>{%- endif -%}
+  {%- if badge_1 != blank -%}<span><svg class="dt-ic"><use href="#dti-{{ badge_1_icono }}"/></svg>{{ badge_1 }}</span>{%- endif -%}
+  {%- if badge_2 != blank -%}<span><svg class="dt-ic"><use href="#dti-{{ badge_2_icono }}"/></svg>{{ badge_2 }}</span>{%- endif -%}
+  {%- if badge_3 != blank -%}<span><svg class="dt-ic"><use href="#dti-{{ badge_3_icono }}"/></svg>{{ badge_3 }}</span>{%- endif -%}
 </div>
 
 <div class="dmo" data-bump-handle="{{ bump_handle }}">
-  {%- if request.design_mode -%}<p class="dmo-adm" id="dmBumpAdm" style="display:none;background:#FDECEC;color:#9B1C1C;border:1px solid #F5B5B5;border-radius:8px;padding:8px 10px;font-size:12px;margin:0 0 8px;">⚠️ Solo lo ves vos en el editor: no se encontró el upsell <b>{{ bump_handle }}</b>. Revisá que el producto esté Activo y publicado en Tienda online.</p>{%- endif -%}
+  {%- if request.design_mode -%}<p class="dmo-adm" id="dmBumpAdm" style="display:none;background:#FDECEC;color:#9B1C1C;border:1px solid #F5B5B5;border-radius:8px;padding:8px 10px;font-size:12px;margin:0 0 8px;">Atención, solo lo ves vos en el editor: no se encontró el upsell <b>{{ bump_handle }}</b>. Revisá que el producto esté Activo y publicado en Tienda online.</p>{%- endif -%}
   <div class="dmo__ttl">{{ separador }}</div>
   <form id="dmBuyForm" data-checkout="{% if ir_a_checkout %}1{% else %}0{% endif %}" onsubmit="return false;">
 
@@ -344,7 +356,7 @@
           {%- assign abiertos = 0 -%}
           {%- for d in regalos_desde -%}{%- assign dn = d | plus: 0 | minus: 1 -%}{%- if frascos > dn -%}{%- assign abiertos = abiertos | plus: 1 -%}{%- endif -%}{%- endfor -%}
           {%- assign hay_sorteo = false -%}
-          <div class="dmo-gifts__h">🎁 {% if abiertos > 0 %}{{ abiertos }}/{{ regalos_corto.size }} regalos incluidos{% else %}Regalos desde {{ regalos_desde | first }} frascos{% endif %}<span>{% if abiertos < regalos_corto.size %}Desbloqueá más con 3 frascos{% endif %}</span></div>
+          <div class="dmo-gifts__h"><span class="dmo-gh"><svg class="dt-ic"><use href="#dti-gift"/></svg> {% if abiertos > 0 %}{{ abiertos }}/{{ regalos_corto.size }} regalos incluidos{% else %}Regalos desde {{ regalos_desde | first }} frascos{% endif %}</span><span>{% if abiertos < regalos_corto.size %}Desbloqueá más con 3 frascos{% endif %}</span></div>
           <div class="dmo-gifts">
             {%- for nombre in regalos_corto -%}
               {%- assign k = forloop.index0 -%}
@@ -352,9 +364,9 @@
               {%- assign dn_menos = dn | minus: 1 -%}
               {%- if frascos > dn_menos -%}
                 {%- if regalos_etiqueta[k] == 'Sorteo' -%}{%- assign hay_sorteo = true -%}{%- endif -%}
-                <div class="dmo-gift">{%- if regalos_img[k] != '-' and regalos_img[k] != blank -%}<img class="dmo-gift__img" src="{{ regalos_img[k] }}" alt="{{ nombre | escape }}" loading="lazy" width="120" height="120">{%- else -%}<span class="dmo-gift__i">{{ regalos_icono[k] }}</span>{%- endif -%}<span class="dmo-gift__n">{{ nombre }}</span><span class="dmo-gift__v">{{ regalos_etiqueta[k] }}{%- if regalos_tachado[k] != '-' and regalos_tachado[k] != blank -%}<s>{{ regalos_tachado[k] }}</s>{%- endif -%}</span></div>
+                <div class="dmo-gift">{%- if regalos_img[k] != '-' and regalos_img[k] != blank -%}<img class="dmo-gift__img" src="{{ regalos_img[k] }}" alt="{{ nombre | escape }}" loading="lazy" width="120" height="120">{%- else -%}<span class="dmo-gift__i"><svg class="dt-ic"><use href="#dti-{{ regalos_icono[k] }}"/></svg></span>{%- endif -%}<span class="dmo-gift__n">{{ nombre }}</span><span class="dmo-gift__v">{{ regalos_etiqueta[k] }}{%- if regalos_tachado[k] != '-' and regalos_tachado[k] != blank -%}<s>{{ regalos_tachado[k] }}</s>{%- endif -%}</span></div>
               {%- else -%}
-                <div class="dmo-gift is-lock">{%- if regalos_img[k] != '-' and regalos_img[k] != blank -%}<img class="dmo-gift__img" src="{{ regalos_img[k] }}" alt="{{ nombre | escape }}" loading="lazy" width="120" height="120"><span class="dmo-gift__lock">🔒</span>{%- else -%}<span class="dmo-gift__i">{{ regalos_icono[k] }}</span>{%- endif -%}<span class="dmo-gift__n">{{ nombre }}</span><span class="dmo-gift__v">🔒 con {{ dn }} frascos</span></div>
+                <div class="dmo-gift is-lock">{%- if regalos_img[k] != '-' and regalos_img[k] != blank -%}<img class="dmo-gift__img" src="{{ regalos_img[k] }}" alt="{{ nombre | escape }}" loading="lazy" width="120" height="120"><span class="dmo-gift__lock"><svg class="dt-ic"><use href="#dti-lock"/></svg></span>{%- else -%}<span class="dmo-gift__i"><svg class="dt-ic"><use href="#dti-{{ regalos_icono[k] }}"/></svg></span>{%- endif -%}<span class="dmo-gift__n">{{ nombre }}</span><span class="dmo-gift__v"><svg class="dt-ic"><use href="#dti-lock"/></svg> con {{ dn }} frascos</span></div>
               {%- endif -%}
             {%- endfor -%}
           </div>
@@ -371,14 +383,14 @@
     <div class="dmo-err" id="dmOfferErr">No pudimos agregarlo al carrito. Probá de nuevo o escribinos por WhatsApp.</div>
   </form>
   <div class="dm-below">
-    {%- if linea_ml != blank -%}<div class="dm-below__row is-ml"><span>🏆</span><span><b>{{ linea_ml }}</b></span></div>{%- endif -%}
-    <div class="dm-below__row"><span>🛡️</span><span><b>{{ garantia_dias }} días para probarlo</b>{{ garantia_texto }}</span></div>
-    <div class="dm-below__row"><span>🚚</span><span><b>{{ envio_texto | split: ' · ' | first }}</b>{{ envio_texto | split: ' · ' | last }}</span></div>
+    {%- if linea_ml != blank -%}<div class="dm-below__row is-ml"><span><svg class="dt-ic"><use href="#dti-trophy"/></svg></span><span><b>{{ linea_ml }}</b></span></div>{%- endif -%}
+    <div class="dm-below__row"><span><svg class="dt-ic"><use href="#dti-shield"/></svg></span><span><b>{{ garantia_dias }} días para probarlo</b>{{ garantia_texto }}</span></div>
+    <div class="dm-below__row"><span><svg class="dt-ic"><use href="#dti-truck"/></svg></span><span><b>{{ envio_texto | split: ' · ' | first }}</b>{{ envio_texto | split: ' · ' | last }}</span></div>
   </div>
 </div>
 
     {%- endunless -%}
-    <div class="dmx-rev">{%- if resena_img != blank -%}<img src="{{ resena_img }}" alt="" width="40" height="40" loading="lazy">{%- else -%}<i>{{ resena_nombre | slice: 0 }}</i>{%- endif -%}<div>"{{ resena_texto }}"<small><b style="color:#E9A23B">★★★★★</b> {{ resena_nombre }} · ✔ Compra verificada</small></div></div>
+    <div class="dmx-rev">{%- if resena_img != blank -%}<img src="{{ resena_img }}" alt="" width="40" height="40" loading="lazy">{%- else -%}<i>{{ resena_nombre | slice: 0 }}</i>{%- endif -%}<div>"{{ resena_texto }}"<small><b style="color:#E9A23B">★★★★★</b> {{ resena_nombre }} · <svg class="dt-ic"><use href="#dti-badge"/></svg> Compra verificada</small></div></div>
     </div>
   </div>
 </section>

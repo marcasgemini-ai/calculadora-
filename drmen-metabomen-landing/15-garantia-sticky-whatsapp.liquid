@@ -13,7 +13,7 @@
 {%- assign bajada = 'Si en 60 días no quedás conforme, te devolvemos el 100% del dinero. Sin vueltas.' -%}
 {%- assign pasos_t = 'Cómo funciona la garantía' -%}
 {%- assign pasos = 'Probá Metabomen todos los días, a la mañana, durante el tiempo que quieras dentro de los 60 días.|Si no quedás conforme, escribinos por WhatsApp con tu número de pedido.|Te devolvemos el dinero en [X] días hábiles. [Completar: si hay que devolver el frasco o no.]' | split: '|' -%}
-{%- assign sellos_i = '🇦🇷|🧾|🚚|💳|🛡️|💬' | split: '|' -%}
+{%- assign sellos_i = 'pin|badge|truck|card|shield|chat' | split: '|' -%}
 {%- assign sellos = 'Fórmula premium argentina|RNPA [número]|Envío gratis|3 cuotas sin interés|60 días de garantía|Atención por WhatsApp' | split: '|' -%}
 {%- assign sticky_t = 'Protocolo +40 · 3 frascos' -%}
 {%- assign sticky_p = '$101.900 · Envío gratis' -%}
@@ -37,7 +37,7 @@
 <div class="dt-band is-dark">
   <div class="dt dt-sec" style="padding-bottom:110px">
     <div class="dt-gar">
-      <div class="dt-gar__i">🛡️</div>
+      <div class="dt-gar__i"><svg class="dt-ic" style="width:34px;height:34px;stroke-width:1.5"><use href="#dti-shield"/></svg></div>
       <span class="dt-eyebrow">Garantía DR.MEN</span>
       <h2>{{ titulo }}</h2>
       <p class="dt-lead">{{ bajada }}</p>
@@ -46,7 +46,7 @@
         <ol>{%- for p in pasos -%}<li>{{ p }}</li>{%- endfor -%}</ol>
       </div>
       <div class="dt-sellos">
-        {%- for s in sellos -%}<div><span>{{ sellos_i[forloop.index0] }}</span>{{ s }}</div>{%- endfor -%}
+        {%- for s in sellos -%}<div><svg class="dt-ic" style="width:20px;height:20px;color:var(--dt-red)"><use href="#dti-{{ sellos_i[forloop.index0] }}"/></svg>{{ s }}</div>{%- endfor -%}
       </div>
       <a class="dt-btn is-light is-full" href="{{ cta_url }}">Empezar ahora</a>
       <p class="dt-legal">{{ legal }}</p>

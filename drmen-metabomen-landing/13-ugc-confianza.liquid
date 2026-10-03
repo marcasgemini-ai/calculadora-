@@ -10,7 +10,7 @@
 {%- assign u_img = '||||||' | split: '|' -%}
 {%- assign u_user = '[@cliente]|[@cliente]|[@cliente]|[@cliente]|[@cliente]|[@cliente]' | split: '|' -%}
 
-{%- assign confianza_icono = '🧾|🚚|💳|💬' | split: '|' -%}
+{%- assign confianza_icono = 'badge|truck|card|chat' | split: '|' -%}
 {%- assign confianza = 'Producto registrado: RNPA [número]|Envío gratis con seguimiento a todo el país|Pagás con Mercado Pago, tarjeta o transferencia|Atención por WhatsApp de lunes a sábado' | split: '|' -%}
 {%- assign nota = 'Metabomen es un suplemento dietario. No es un medicamento ni reemplaza una alimentación variada y equilibrada. Consultá a tu médico, sobre todo si tomás medicación o tenés presión alta o problemas cardíacos.' -%}
 
@@ -21,7 +21,8 @@
   .dt-ugc span { position: absolute; left: 8px; bottom: 8px; background: rgba(14,15,17,.75); color: #fff; font-size: 10.5px; font-weight: 700; padding: 3px 8px; border-radius: 999px; }
   .dt-conf { max-width: 760px; margin: 30px auto 0; display: grid; gap: 10px; }
   .dt-conf div { display: flex; gap: 12px; align-items: center; font-size: 15px; font-weight: 600; }
-  .dt-conf div span { font-size: 20px; }
+  .dt-conf div span { width: 40px; height: 40px; border-radius: 50%; background: var(--dt-ink); color: #fff; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+  .dt-conf div span .dt-ic { width: 20px; height: 20px; }
   .dt-conf__nota { max-width: 760px; margin: 18px auto 0 !important; background: #fff; border: 1px solid var(--dt-line); border-radius: 12px; padding: 14px 16px; font-size: 13px; color: var(--dt-muted); }
   @media (max-width: 749px) { .dt-ugc { grid-template-columns: repeat(3, 1fr); gap: 6px; } }
 </style>
@@ -39,7 +40,7 @@
       {%- endfor -%}
     </div>
     <div class="dt-conf">
-      {%- for c in confianza -%}<div><span>{{ confianza_icono[forloop.index0] }}</span>{{ c }}</div>{%- endfor -%}
+      {%- for c in confianza -%}<div><span><svg class="dt-ic"><use href="#dti-{{ confianza_icono[forloop.index0] }}"/></svg></span>{{ c }}</div>{%- endfor -%}
     </div>
     <p class="dt-conf__nota">{{ nota }}</p>
   </div>

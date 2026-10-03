@@ -8,7 +8,7 @@
 {%- assign bajada = 'A los 45 tenés los mismos años que tus amigos. Lo que cambia es cuánto se desgastó tu cuerpo. Esto es lo que dicen los estudios:' -%}
 {%- assign cta_url = '#oferta' -%}
 
-{%- assign d_num = '-80%|-15%|+45%|↓' | split: '|' -%}
+{%- assign d_num = '-80%|-15%|+45%|baja' | split: '|' -%}
 {%- assign d_titulo = 'de sueño profundo|de testosterona|de cortisol a la noche|hormona de crecimiento' | split: '|' -%}
 {%- assign d_texto = 'Entre los 20 y los 40 años, el sueño profundo pasa de casi 19% de la noche a apenas 3,4%. Es la fase en la que el cuerpo se repara.|Una sola semana durmiendo 5 horas bajó la testosterona entre 10% y 15%: lo que normalmente se pierde en 10 a 15 años.|Después de una noche corta, la hormona del estrés queda alta hasta la noche siguiente: entre 37% y 45% más.|Se libera durante el sueño profundo. Cuando el sueño profundo cae, cae con él. Es la que sostiene el músculo y repara.' | split: '|' -%}
 {%- assign d_fuente = 'Van Cauter E. et al. JAMA, 2000|Leproult R., Van Cauter E. JAMA, 2011|Leproult R. et al. Sleep, 1997|Van Cauter E. et al. JAMA, 2000' | split: '|' -%}
@@ -45,7 +45,7 @@
       {%- for n in d_num -%}
         {%- assign k = forloop.index0 -%}
         <div class="dt-des__c">
-          <b>{{ n }}</b>
+          <b>{%- if n == 'baja' -%}<svg class="dt-ic" style="width:44px;height:44px;stroke-width:2.2"><use href="#dti-arrowdown"/></svg>{%- else -%}{{ n }}{%- endif -%}</b>
           <h3>{{ d_titulo[k] }}</h3>
           <p>{{ d_texto[k] }}</p>
           <small>{{ d_fuente[k] }}</small>

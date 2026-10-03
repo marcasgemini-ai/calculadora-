@@ -35,3 +35,7 @@ Se compra en la misma página (sección 08) y va directo al checkout.
 - **Todo lo que está [entre corchetes]**: RNPA, laboratorio, dosis (11), cantidad de clientes (01), condiciones de la garantía (15).
 - **Antes/después, reseñas, video, comentarios y fotos de clientes (02, 04, 07, 10, 12, 13)**: SOLO clientes reales, con permiso por escrito.
 - **06 · números**: tienen que salir de una encuesta real a clientes. Mientras digan [XX] se ven los recuadros.
+
+## Íconos (sin emojis)
+Todos los íconos son SVG de línea y salen del bloque **01** (por eso el 01 tiene que estar siempre). Para cambiar uno, escribí el nombre en la lista de íconos de cada bloque:
+`arrowdown, badge, berry, bolt, book, bulb, calendar, camera, card, chat, check, citrus, clock, drop, dumbbell, flame, flask, gift, grape, heart, hex, hourglass, leaf, lock, pin, plane, pulse, shield, sun, trophy, truck, user, utensils`
