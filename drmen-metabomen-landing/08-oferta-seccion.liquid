@@ -2,14 +2,15 @@
   LANDING METABOMEN · LIQUID 08 · SECCIÓN DE COMPRA (galería + título + oferta + reseña)
   La oferta de adentro es la MISMA que anda en la página de producto (mismos textos, mismo carrito).
   Como en una página no existe "product", busca el producto sola.
-  - Primero por producto_handle. Si no lo encuentra, lo busca por nombre (buscar_nombre) en todos los productos.
+  - Primero por nombre (buscar_nombre): tiene que ser el MISMO producto que figura en los descuentos automáticos.
+    Si no lo encuentra por nombre, usa producto_handle.
   - En el editor (solo vos) te muestra qué producto encontró y su handle.
   Todos los botones de la landing / advertorial bajan acá con #oferta. Usá una sola oferta por página.
   El carrito y el upsell funcionan igual que en la página de producto (mismo código).
 {%- endcomment -%}
 
 {%- assign producto_handle = 'metabomen' -%}
-{%- assign buscar_nombre = 'metabomen' -%}
+{%- assign buscar_nombre = 'Metabomen | Fórmula todo en uno' -%}
 {%- assign galeria_urls = '' -%}
 {%- assign titulo_producto = 'METABOMEN · Fórmula premium para evitar el envejecimiento de los +40' -%}
 {%- assign rating = '4,8' -%}
@@ -116,15 +117,15 @@
 {%- if product and product.id -%}
   {%- assign prod = product -%}
 {%- else -%}
-  {%- assign prod = all_products[producto_handle] -%}
+  {%- comment -%} 1) por nombre: el mismo producto que tienen los descuentos automáticos {%- endcomment -%}
+  {%- assign bn = buscar_nombre | downcase -%}
+  {%- for pp in collections.all.products -%}
+    {%- assign pt = pp.title | downcase -%}
+    {%- if pt contains bn -%}{%- assign prod = pp -%}{%- break -%}{%- endif -%}
+  {%- endfor -%}
+  {%- comment -%} 2) si no lo encontró por nombre, por handle {%- endcomment -%}
   {%- unless prod and prod.id -%}
-    {%- assign bn = buscar_nombre | downcase -%}
-    {%- for pp in collections.all.products -%}
-      {%- assign pt = pp.title | downcase -%}
-      {%- if pt contains bn -%}
-        {%- unless pt contains 'upsell' -%}{%- assign prod = pp -%}{%- break -%}{%- endunless -%}
-      {%- endif -%}
-    {%- endfor -%}
+    {%- assign prod = all_products[producto_handle] -%}
   {%- endunless -%}
 {%- endif -%}
 
