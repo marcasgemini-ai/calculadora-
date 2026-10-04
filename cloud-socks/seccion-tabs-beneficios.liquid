@@ -1,0 +1,134 @@
+{%- comment -%} Cloud Socks · Pestañas de beneficios (sección con panel editable) {%- endcomment -%}
+<style>
+  #cs-tabs-{{ section.id }} { --cs-azul: #1B2A4A; --cs-crema: #F5F1E8; --cs-borde: rgba(27,42,74,.14);
+    padding: 40px 16px; color: var(--cs-azul); font-family: inherit; }
+  #cs-tabs-{{ section.id }} .cs-tabs-wrap { max-width: 1120px; margin: 0 auto; }
+
+  #cs-tabs-{{ section.id }} .cs-tablist { display: flex; justify-content: flex-start; gap: 6px; margin: 0 0 28px;
+    overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; padding: 2px; }
+  #cs-tabs-{{ section.id }} .cs-tablist::-webkit-scrollbar { display: none; }
+  #cs-tabs-{{ section.id }} .cs-tab:first-child { margin-left: auto; }
+  #cs-tabs-{{ section.id }} .cs-tab:last-child { margin-right: auto; }
+  #cs-tabs-{{ section.id }} .cs-tab { flex: 0 0 auto; appearance: none; cursor: pointer; font: inherit;
+    font-size: 13px; font-weight: 500; letter-spacing: .01em; color: var(--cs-azul);
+    background: transparent; border: 1px solid var(--cs-borde); border-radius: 999px;
+    padding: 9px 13px; transition: background .25s ease, color .25s ease, border-color .25s ease; }
+  #cs-tabs-{{ section.id }} .cs-tab:hover { border-color: var(--cs-azul); }
+  #cs-tabs-{{ section.id }} .cs-tab[aria-selected="true"] { background: var(--cs-azul); color: var(--cs-crema); border-color: var(--cs-azul); }
+  #cs-tabs-{{ section.id }} .cs-tab:focus-visible { outline: 2px solid var(--cs-azul); outline-offset: 3px; }
+
+  #cs-tabs-{{ section.id }} .cs-panel { display: grid; grid-template-columns: 1fr; gap: 24px; align-items: center; }
+  #cs-tabs-{{ section.id }} .cs-panel[hidden] { display: none; }
+  #cs-tabs-{{ section.id }} .cs-panel.is-active { animation: csFade .45s ease both; }
+  @keyframes csFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  #cs-tabs-{{ section.id }} .cs-media { border-radius: 18px; overflow: hidden; aspect-ratio: 1 / 1; background: var(--cs-crema); }
+  #cs-tabs-{{ section.id }} .cs-media .cs-placeholder { width: 100%; height: 100%; fill: rgba(27,42,74,.3); }
+  #cs-tabs-{{ section.id }} .cs-p p { margin: 0 0 14px; }
+  #cs-tabs-{{ section.id }} .cs-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  #cs-tabs-{{ section.id }} .cs-kicker { font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; opacity: .6; margin: 0 0 10px; }
+  #cs-tabs-{{ section.id }} .cs-h { font-family: var(--font-heading-family, inherit); font-weight: var(--font-heading-weight, 600);
+    font-size: clamp(26px, 6.5vw, 40px); line-height: 1.15; letter-spacing: -.01em; margin: 0 0 16px; color: inherit; }
+  #cs-tabs-{{ section.id }} .cs-p { font-size: 15px; line-height: 1.7; margin: 0 0 14px; opacity: .85; }
+  #cs-tabs-{{ section.id }} .cs-p strong { font-weight: 600; opacity: 1; }
+  #cs-tabs-{{ section.id }} .cs-tagline { margin: 20px 0 0; padding: 14px 0 0; border-top: 1px solid var(--cs-borde);
+    font-size: 15px; font-weight: 600; line-height: 1.5; }
+
+  @media screen and (min-width: 750px) {
+    #cs-tabs-{{ section.id }} { padding: 72px 24px; }
+    #cs-tabs-{{ section.id }} .cs-tablist { gap: 12px; margin-bottom: 48px; }
+    #cs-tabs-{{ section.id }} .cs-tab { font-size: 15px; padding: 12px 26px; }
+    #cs-tabs-{{ section.id }} .cs-panel { grid-template-columns: 1fr 1fr; gap: 64px; }
+    #cs-tabs-{{ section.id }} .cs-media { border-radius: 24px; }
+    #cs-tabs-{{ section.id }} .cs-p, #cs-tabs-{{ section.id }} .cs-tagline { font-size: 17px; }
+  }
+  @media (prefers-reduced-motion: reduce) { #cs-tabs-{{ section.id }} .cs-panel.is-active { animation: none; } }
+</style>
+
+<div id="cs-tabs-{{ section.id }}">
+  <div class="cs-tabs-wrap">
+    <div class="cs-tablist" role="tablist" aria-label="Beneficios">
+      {%- for block in section.blocks -%}
+        <button class="cs-tab" role="tab" id="cs-tab-{{ block.id }}" aria-controls="cs-panel-{{ block.id }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"{% unless forloop.first %} tabindex="-1"{% endunless %} {{ block.shopify_attributes }}>{{ block.settings.pestana | escape }}</button>
+      {%- endfor -%}
+    </div>
+    {%- for block in section.blocks -%}
+      <div class="cs-panel{% if forloop.first %} is-active{% endif %}" role="tabpanel" id="cs-panel-{{ block.id }}" aria-labelledby="cs-tab-{{ block.id }}"{% unless forloop.first %} hidden{% endunless %}>
+        <div class="cs-media">
+          {%- if block.settings.imagen != blank -%}
+            {{ block.settings.imagen | image_url: width: 1200 | image_tag: loading: 'lazy', sizes: '(min-width: 750px) 560px, 100vw', widths: '400, 600, 800, 1200' }}
+          {%- else -%}
+            {{ 'image' | placeholder_svg_tag: 'cs-placeholder' }}
+          {%- endif -%}
+        </div>
+        <div>
+          {%- if block.settings.etiqueta != blank -%}<p class="cs-kicker">{{ block.settings.etiqueta | escape }}</p>{%- endif -%}
+          <h2 class="cs-h">{{ block.settings.titulo | escape }}</h2>
+          <div class="cs-p">{{ block.settings.texto }}</div>
+          {%- if block.settings.cierre != blank -%}<p class="cs-tagline">{{ block.settings.cierre | escape }}</p>{%- endif -%}
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+<script>
+  (function () {
+    var root = document.getElementById('cs-tabs-{{ section.id }}');
+    if (!root) return;
+    var tabs = Array.prototype.slice.call(root.querySelectorAll('.cs-tab'));
+    function activar(tab, foco) {
+      tabs.forEach(function (t) {
+        var on = t === tab, panel = document.getElementById(t.getAttribute('aria-controls'));
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.tabIndex = on ? 0 : -1;
+        panel.hidden = !on;
+        panel.classList.toggle('is-active', on);
+      });
+      if (foco) tab.focus();
+      tab.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+    }
+    tabs.forEach(function (t, i) {
+      t.addEventListener('click', function () { activar(t, false); });
+      t.addEventListener('keydown', function (e) {
+        var n = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (n) { e.preventDefault(); activar(tabs[(i + n + tabs.length) % tabs.length], true); }
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Cloud · Pestañas beneficios",
+  "tag": "section",
+  "class": "section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "pestana",
+      "name": "Pestaña",
+      "settings": [
+        { "type": "text", "id": "pestana", "label": "Nombre del botón", "default": "Beneficio" },
+        { "type": "image_picker", "id": "imagen", "label": "Imagen", "info": "Recomendado: 1200 x 1200 px" },
+        { "type": "text", "id": "etiqueta", "label": "Etiqueta chica (opcional)" },
+        { "type": "text", "id": "titulo", "label": "Título", "default": "Título" },
+        { "type": "richtext", "id": "texto", "label": "Texto", "default": "<p>Texto del beneficio.</p>" },
+        { "type": "text", "id": "cierre", "label": "Frase de cierre (opcional)" }
+      ]
+    }
+  ],
+  "max_blocks": 5,
+  "presets": [
+    {
+      "name": "Cloud · Pestañas beneficios",
+      "blocks": [
+        {"type": "pestana", "settings": {"pestana": "Dedos libres", "etiqueta": "Comodidad", "titulo": "Chau a los dedos apretados", "texto": "<p>Los dedos apretados dentro de la zapatilla generan presión, incomodidad y dolor de pies, sobre todo después de caminar o pasar muchas horas parado.</p><p>Por eso creamos <strong>Cloud Socks™</strong>, con <strong>más espacio en la zona de los dedos</strong> para que se acomoden de forma natural, como cuando caminás descalzo.</p>", "cierre": "Más espacio para tus dedos. Menos dolor de pies."}},
+        {"type": "pestana", "settings": {"pestana": "Secos y frescos", "etiqueta": "Frescura", "titulo": "Pies secos y frescos", "texto": "<p>Hechas con un material pensado para mantener tus pies <strong>secos y frescos todo el día</strong>. Absorben la transpiración y controlan la humedad.</p><p>Así no terminás con los pies húmedos ni con ese olor incómodo cuando te sacás las zapatillas.</p>", "cierre": "Menos humedad. Menos olor. Más frescura todo el día."}},
+        {"type": "pestana", "settings": {"pestana": "Más resistentes", "etiqueta": "Calidad", "titulo": "Medias realmente únicas", "texto": "<p><strong>Acolchadas en la planta</strong> para que cada paso se sienta suave, incluso después de muchas horas de pie.</p><p><strong>Reforzadas en la punta y el talón</strong>, justo donde las medias comunes se rompen primero.</p>", "cierre": "Más cómodas, más resistentes. Hechas para reemplazar a tus medias de siempre."}}
+      ]
+    }
+  ]
+}
+{% endschema %}

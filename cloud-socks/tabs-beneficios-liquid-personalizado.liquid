@@ -1,0 +1,122 @@
+{%- comment -%}
+  Cloud Socks · Pestañas de beneficios · Para pegar en un bloque "Liquid personalizado".
+  IMÁGENES: subilas en Contenido → Archivos con estos nombres exactos (o cambiá los nombres acá abajo).
+  Tamaño recomendado: 1200 x 1200 px (cuadradas).
+{%- endcomment -%}
+{%- assign img1 = 'cloud-dedos.jpg' -%}
+{%- assign img2 = 'cloud-secos.jpg' -%}
+{%- assign img3 = 'cloud-resistentes.jpg' -%}
+
+<style>
+  #cs-tabs { --cs-azul: #1B2A4A; --cs-crema: #F5F1E8; --cs-borde: rgba(27,42,74,.14);
+    padding: 40px 16px; color: var(--cs-azul); font-family: inherit; }
+  #cs-tabs .cs-tabs-wrap { max-width: 1120px; margin: 0 auto; }
+
+  #cs-tabs .cs-tablist { display: flex; justify-content: flex-start; gap: 6px; margin: 0 0 28px;
+    overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; padding: 2px; }
+  #cs-tabs .cs-tablist::-webkit-scrollbar { display: none; }
+  #cs-tabs .cs-tab:first-child { margin-left: auto; }
+  #cs-tabs .cs-tab:last-child { margin-right: auto; }
+  #cs-tabs .cs-tab { flex: 0 0 auto; appearance: none; cursor: pointer; font: inherit;
+    font-size: 13px; font-weight: 500; letter-spacing: .01em; color: var(--cs-azul);
+    background: transparent; border: 1px solid var(--cs-borde); border-radius: 999px;
+    padding: 9px 13px; transition: background .25s ease, color .25s ease, border-color .25s ease; }
+  #cs-tabs .cs-tab:hover { border-color: var(--cs-azul); }
+  #cs-tabs .cs-tab[aria-selected="true"] { background: var(--cs-azul); color: var(--cs-crema); border-color: var(--cs-azul); }
+  #cs-tabs .cs-tab:focus-visible { outline: 2px solid var(--cs-azul); outline-offset: 3px; }
+
+  #cs-tabs .cs-panel { display: grid; grid-template-columns: 1fr; gap: 24px; align-items: center; }
+  #cs-tabs .cs-panel[hidden] { display: none; }
+  #cs-tabs .cs-panel.is-active { animation: csFade .45s ease both; }
+  @keyframes csFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  #cs-tabs .cs-media { border-radius: 18px; overflow: hidden; aspect-ratio: 1 / 1; background: var(--cs-crema); }
+  #cs-tabs .cs-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  #cs-tabs .cs-kicker { font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; opacity: .6; margin: 0 0 10px; }
+  #cs-tabs .cs-h { font-family: var(--font-heading-family, inherit); font-weight: var(--font-heading-weight, 600);
+    font-size: clamp(26px, 6.5vw, 40px); line-height: 1.15; letter-spacing: -.01em; margin: 0 0 16px; color: inherit; }
+  #cs-tabs .cs-p { font-size: 15px; line-height: 1.7; margin: 0 0 14px; opacity: .85; }
+  #cs-tabs .cs-p strong { font-weight: 600; opacity: 1; }
+  #cs-tabs .cs-tagline { margin: 20px 0 0; padding: 14px 0 0; border-top: 1px solid var(--cs-borde);
+    font-size: 15px; font-weight: 600; line-height: 1.5; }
+
+  @media screen and (min-width: 750px) {
+    #cs-tabs { padding: 72px 24px; }
+    #cs-tabs .cs-tablist { gap: 12px; margin-bottom: 48px; }
+    #cs-tabs .cs-tab { font-size: 15px; padding: 12px 26px; }
+    #cs-tabs .cs-panel { grid-template-columns: 1fr 1fr; gap: 64px; }
+    #cs-tabs .cs-media { border-radius: 24px; }
+    #cs-tabs .cs-p, #cs-tabs .cs-tagline { font-size: 17px; }
+  }
+  @media (prefers-reduced-motion: reduce) { #cs-tabs .cs-panel.is-active { animation: none; } }
+</style>
+
+<div id="cs-tabs">
+  <div class="cs-tabs-wrap">
+    <div class="cs-tablist" role="tablist" aria-label="Beneficios de Cloud Socks">
+      <button class="cs-tab" role="tab" id="cs-tab-1" aria-controls="cs-panel-1" aria-selected="true">Dedos libres</button>
+      <button class="cs-tab" role="tab" id="cs-tab-2" aria-controls="cs-panel-2" aria-selected="false" tabindex="-1">Secos y frescos</button>
+      <button class="cs-tab" role="tab" id="cs-tab-3" aria-controls="cs-panel-3" aria-selected="false" tabindex="-1">Más resistentes</button>
+    </div>
+
+    <div class="cs-panel is-active" role="tabpanel" id="cs-panel-1" aria-labelledby="cs-tab-1">
+      <div class="cs-media"><img src="{{ img1 | file_img_url: '1200x' }}" alt="Pie con espacio para los dedos dentro de la zapatilla" loading="lazy" width="1200" height="1200"></div>
+      <div>
+        <p class="cs-kicker">Comodidad</p>
+        <h2 class="cs-h">Chau a los dedos apretados</h2>
+        <p class="cs-p">Los dedos apretados dentro de la zapatilla generan presión, incomodidad y dolor de pies, sobre todo después de caminar o pasar muchas horas parado.</p>
+        <p class="cs-p">Por eso creamos <strong>Cloud Socks™</strong>, con <strong>más espacio en la zona de los dedos</strong> para que se acomoden de forma natural, como cuando caminás descalzo.</p>
+        <p class="cs-tagline">Más espacio para tus dedos. Menos dolor de pies.</p>
+      </div>
+    </div>
+
+    <div class="cs-panel" role="tabpanel" id="cs-panel-2" aria-labelledby="cs-tab-2" hidden>
+      <div class="cs-media"><img src="{{ img2 | file_img_url: '1200x' }}" alt="Pies secos y frescos con Cloud Socks" loading="lazy" width="1200" height="1200"></div>
+      <div>
+        <p class="cs-kicker">Frescura</p>
+        <h2 class="cs-h">Pies secos y frescos</h2>
+        <p class="cs-p">Hechas con un material pensado para mantener tus pies <strong>secos y frescos todo el día</strong>. Absorben la transpiración y controlan la humedad.</p>
+        <p class="cs-p">Así no terminás con los pies húmedos ni con ese olor incómodo cuando te sacás las zapatillas.</p>
+        <p class="cs-tagline">Menos humedad. Menos olor. Más frescura todo el día.</p>
+      </div>
+    </div>
+
+    <div class="cs-panel" role="tabpanel" id="cs-panel-3" aria-labelledby="cs-tab-3" hidden>
+      <div class="cs-media"><img src="{{ img3 | file_img_url: '1200x' }}" alt="Talón y punta reforzados de Cloud Socks" loading="lazy" width="1200" height="1200"></div>
+      <div>
+        <p class="cs-kicker">Calidad</p>
+        <h2 class="cs-h">Medias realmente únicas</h2>
+        <p class="cs-p"><strong>Acolchadas en la planta</strong> para que cada paso se sienta suave, incluso después de muchas horas de pie.</p>
+        <p class="cs-p"><strong>Reforzadas en la punta y el talón</strong>, justo donde las medias comunes se rompen primero.</p>
+        <p class="cs-tagline">Más cómodas, más resistentes. Hechas para reemplazar a tus medias de siempre.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var root = document.getElementById('cs-tabs');
+    if (!root) return;
+    var tabs = Array.prototype.slice.call(root.querySelectorAll('.cs-tab'));
+    function activar(tab, foco) {
+      tabs.forEach(function (t) {
+        var on = t === tab, panel = document.getElementById(t.getAttribute('aria-controls'));
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.tabIndex = on ? 0 : -1;
+        panel.hidden = !on;
+        panel.classList.toggle('is-active', on);
+      });
+      if (foco) tab.focus();
+      tab.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+    }
+    tabs.forEach(function (t, i) {
+      t.addEventListener('click', function () { activar(t, false); });
+      t.addEventListener('keydown', function (e) {
+        var n = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (n) { e.preventDefault(); activar(tabs[(i + n + tabs.length) % tabs.length], true); }
+      });
+    });
+  })();
+</script>
