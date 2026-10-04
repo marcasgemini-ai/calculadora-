@@ -1,0 +1,128 @@
+{% comment %}
+  SUAVELAND · CLOUD SOCKS · TABLA COMPARATIVA
+  Para el bloque "Liquid personalizado".
+  - Hereda las fuentes del theme
+  - Sin scroll horizontal, sin texto cortado
+  - Columnas: desktop 56/22/22 · mobile 58/21/21
+{% endcomment %}
+
+<style>
+  .sl-cmp { --sl-texto: #111111; --sl-suave: #6B6B6B; --sl-linea: rgba(17,17,17,.08);
+    --sl-destacado: #111111; --sl-no: #B5483A;
+    box-sizing: border-box; width: 100%; margin: 0; padding: 0 16px; color: var(--sl-texto); font-family: inherit; }
+  .sl-cmp *, .sl-cmp *::before, .sl-cmp *::after { box-sizing: border-box; }
+  .sl-cmp__wrap { max-width: 980px; margin: 0 auto; }
+
+  .sl-cmp__card { background: #FFFFFF; border: 1px solid var(--sl-linea); border-radius: 24px;
+    padding: 8px; box-shadow: 0 1px 2px rgba(17,17,17,.04), 0 18px 40px -24px rgba(17,17,17,.18); }
+
+  .sl-cmp__table { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; margin: 0; }
+  .sl-cmp__table col.c1 { width: 58%; }
+  .sl-cmp__table col.c2, .sl-cmp__table col.c3 { width: 21%; }
+
+  .sl-cmp__table th, .sl-cmp__table td { padding: 0; border: 0; vertical-align: middle; background: transparent; }
+
+  /* ENCABEZADOS */
+  .sl-cmp__th-empty { padding: 18px 12px 14px 14px !important; text-align: left; }
+  .sl-cmp__eyebrow { display: block; font-size: 10px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--sl-suave); }
+
+  .sl-cmp__th-cloud { background: var(--sl-destacado) !important; color: #FFFFFF; text-align: center;
+    border-radius: 16px 16px 0 0; padding: 18px 4px 14px !important; }
+  .sl-cmp__brand { display: block; font-family: var(--font-heading-family, inherit); font-weight: var(--font-heading-weight, 600);
+    font-size: 14px; line-height: 1.1; letter-spacing: -.01em; }
+  .sl-cmp__sub { display: block; margin-top: 4px; font-size: 8px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; opacity: .6; }
+
+  .sl-cmp__th-common { text-align: center; padding: 18px 4px 14px !important; }
+  .sl-cmp__common { display: block; font-size: 11px; font-weight: 500; line-height: 1.2; color: var(--sl-suave); }
+
+  /* FILAS */
+  .sl-cmp__feature { text-align: left; padding: 16px 10px 16px 14px !important; border-top: 1px solid var(--sl-linea) !important; }
+  .sl-cmp__title { display: block; font-size: 13.5px; font-weight: 500; line-height: 1.35; color: var(--sl-texto); }
+  .sl-cmp__desc { display: none; margin-top: 4px; font-size: 12.5px; line-height: 1.45; color: var(--sl-suave); }
+
+  .sl-cmp__yes { background: var(--sl-destacado) !important; text-align: center; padding: 14px 2px !important;
+    border-top: 1px solid rgba(255,255,255,.1) !important; }
+  .sl-cmp__no { text-align: center; padding: 14px 2px !important; border-top: 1px solid var(--sl-linea) !important; }
+  .sl-cmp__row:last-child .sl-cmp__yes { border-radius: 0 0 16px 16px; }
+
+  .sl-cmp__icon { width: 24px; height: 24px; display: inline-block; vertical-align: middle; }
+  .sl-cmp__icon svg { width: 100%; height: 100%; display: block; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .sl-cmp__yes .sl-cmp__icon svg { stroke: #FFFFFF; }
+  .sl-cmp__no .sl-cmp__icon svg { stroke: var(--sl-no); opacity: .85; }
+
+  @media screen and (max-width: 360px) {
+    .sl-cmp { padding: 0 10px; }
+    .sl-cmp__title { font-size: 12.5px; }
+    .sl-cmp__brand { font-size: 12.5px; }
+    .sl-cmp__common { font-size: 10px; }
+  }
+
+  @media screen and (min-width: 750px) {
+    .sl-cmp { padding: 0 24px; }
+    .sl-cmp__card { padding: 12px; border-radius: 28px; }
+    .sl-cmp__table col.c1 { width: 56%; }
+    .sl-cmp__table col.c2, .sl-cmp__table col.c3 { width: 22%; }
+    .sl-cmp__th-empty { padding: 28px 20px 22px 28px !important; }
+    .sl-cmp__eyebrow { font-size: 11px; }
+    .sl-cmp__th-cloud { border-radius: 20px 20px 0 0; padding: 28px 8px 22px !important; }
+    .sl-cmp__th-common { padding: 28px 8px 22px !important; }
+    .sl-cmp__brand { font-size: 20px; }
+    .sl-cmp__sub { font-size: 9px; margin-top: 6px; }
+    .sl-cmp__common { font-size: 14px; }
+    .sl-cmp__feature { padding: 22px 20px 22px 28px !important; }
+    .sl-cmp__title { font-size: 16px; }
+    .sl-cmp__desc { display: block; }
+    .sl-cmp__yes, .sl-cmp__no { padding: 22px 8px !important; }
+    .sl-cmp__row:last-child .sl-cmp__yes { border-radius: 0 0 20px 20px; }
+    .sl-cmp__icon { width: 28px; height: 28px; }
+  }
+</style>
+
+<section class="sl-cmp">
+  <div class="sl-cmp__wrap">
+    <div class="sl-cmp__card">
+      <table class="sl-cmp__table">
+        <colgroup><col class="c1"><col class="c2"><col class="c3"></colgroup>
+        <thead>
+          <tr>
+            <th class="sl-cmp__th-empty" scope="col"><span class="sl-cmp__eyebrow">Comparativa</span></th>
+            <th class="sl-cmp__th-cloud" scope="col"><span class="sl-cmp__brand">Cloud Socks™</span><span class="sl-cmp__sub">Suaveland</span></th>
+            <th class="sl-cmp__th-common" scope="col"><span class="sl-cmp__common">Medias comunes</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="sl-cmp__row">
+            <td class="sl-cmp__feature"><span class="sl-cmp__title">Más espacio para tus dedos</span><span class="sl-cmp__desc">Se acomodan con libertad, sin presión.</span></td>
+            <td class="sl-cmp__yes"><span class="sl-cmp__icon" aria-label="Sí"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10.5"/><path d="M7.5 12.5l3 3 6-6.5"/></svg></span></td>
+            <td class="sl-cmp__no"><span class="sl-cmp__icon" aria-label="No"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10.5"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7"/></svg></span></td>
+          </tr>
+          <tr class="sl-cmp__row">
+            <td class="sl-cmp__feature"><span class="sl-cmp__title">Pies secos y frescos</span><span class="sl-cmp__desc">Absorben la humedad durante el día.</span></td>
+            <td class="sl-cmp__yes"><span class="sl-cmp__icon" aria-label="Sí"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10.5"/><path d="M7.5 12.5l3 3 6-6.5"/></svg></span></td>
+            <td class="sl-cmp__no"><span class="sl-cmp__icon" aria-label="No"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10.5"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7"/></svg></span></td>
+          </tr>
+          <tr class="sl-cmp__row">
+            <td class="sl-cmp__feature"><span class="sl-cmp__title">Planta acolchada</span><span class="sl-cmp__desc">Una sensación más suave en cada paso.</span></td>
+            <td class="sl-cmp__yes"><span class="sl-cmp__icon" aria-label="Sí"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10.5"/><path d="M7.5 12.5l3 3 6-6.5"/></svg></span></td>
+            <td class="sl-cmp__no"><span class="sl-cmp__icon" aria-label="No"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10.5"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7"/></svg></span></td>
+          </tr>
+          <tr class="sl-cmp__row">
+            <td class="sl-cmp__feature"><span class="sl-cmp__title">Punta y talón reforzados</span><span class="sl-cmp__desc">Justo donde las medias comunes se rompen.</span></td>
+            <td class="sl-cmp__yes"><span class="sl-cmp__icon" aria-label="Sí"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10.5"/><path d="M7.5 12.5l3 3 6-6.5"/></svg></span></td>
+            <td class="sl-cmp__no"><span class="sl-cmp__icon" aria-label="No"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10.5"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7"/></svg></span></td>
+          </tr>
+          <tr class="sl-cmp__row">
+            <td class="sl-cmp__feature"><span class="sl-cmp__title">Sin mal olor al final del día</span><span class="sl-cmp__desc">Frescura desde la mañana hasta la noche.</span></td>
+            <td class="sl-cmp__yes"><span class="sl-cmp__icon" aria-label="Sí"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10.5"/><path d="M7.5 12.5l3 3 6-6.5"/></svg></span></td>
+            <td class="sl-cmp__no"><span class="sl-cmp__icon" aria-label="No"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10.5"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7"/></svg></span></td>
+          </tr>
+          <tr class="sl-cmp__row">
+            <td class="sl-cmp__feature"><span class="sl-cmp__title">Cómodas todo el día</span><span class="sl-cmp__desc">Trabajo, caminatas, entrenamiento o descanso.</span></td>
+            <td class="sl-cmp__yes"><span class="sl-cmp__icon" aria-label="Sí"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10.5"/><path d="M7.5 12.5l3 3 6-6.5"/></svg></span></td>
+            <td class="sl-cmp__no"><span class="sl-cmp__icon" aria-label="No"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10.5"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7"/></svg></span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
