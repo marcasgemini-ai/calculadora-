@@ -1,0 +1,124 @@
+{% comment %}
+  SUAVELAND · CLOUD SOCKS · BANNER PRINCIPAL (hero)
+  Para el bloque "Liquid personalizado" (ancho completo, arriba de todo).
+  1) Subí las imágenes en Contenido → Archivos y pegá los enlaces abajo.
+     - Computadora: horizontal, 1920 x 820 px, con espacio libre a la IZQUIERDA para el texto.
+     - Celular: vertical/cuadrada, 1080 x 1080 px.
+  2) Completá oferta, reseñas y enlace. Lo que dejes vacío no se muestra.
+{% endcomment %}
+
+{%- assign hero_img_desktop = '' -%}
+{%- assign hero_img_mobile  = '' -%}
+{%- assign hero_eyebrow     = 'La primera media de Argentina con punta ancha' -%}
+{%- assign hero_titulo      = 'Chau dedos apretados' -%}
+{%- assign hero_oferta      = '' -%}  {%- comment -%} Ej: 3x2 en todos los packs + envío gratis {%- endcomment -%}
+{%- assign hero_resenas     = '' -%}  {%- comment -%} Ej: +1.200 clientes felices (solo si es real) {%- endcomment -%}
+{%- assign hero_boton       = 'Quiero mis Cloud Socks' -%}
+{%- assign hero_link        = '/collections/all' -%}
+{%- assign hero_garantia    = '60 días de garantía sin riesgo' -%}
+{%- assign hero_sello       = 'Punta ancha' -%}  {%- comment -%} Texto del sello redondo. Vacío = sin sello {%- endcomment -%}
+
+<section class="sl-hero">
+  <div class="sl-hero__media">
+    {%- if hero_img_desktop != blank -%}
+      <picture>
+        {%- if hero_img_mobile != blank -%}<source media="(max-width: 749px)" srcset="{{ hero_img_mobile }}">{%- endif -%}
+        <img src="{{ hero_img_desktop }}" alt="Cloud Socks™ con punta ancha" width="1920" height="820" fetchpriority="high">
+      </picture>
+    {%- endif -%}
+    {%- if hero_sello != blank -%}
+      <span class="sl-hero__seal" aria-hidden="true"><span>{{ hero_sello }}</span></span>
+    {%- endif -%}
+  </div>
+
+  <div class="sl-hero__content">
+   <div class="sl-hero__col">
+    {%- if hero_eyebrow != blank -%}<p class="sl-hero__eyebrow">{{ hero_eyebrow }}</p>{%- endif -%}
+    <h1 class="sl-hero__title">{{ hero_titulo }}</h1>
+    {%- if hero_oferta != blank -%}<p class="sl-hero__offer">{{ hero_oferta }}</p>{%- endif -%}
+
+    {%- if hero_resenas != blank -%}
+      <p class="sl-hero__reviews">
+        <span class="sl-hero__stars" aria-hidden="true">★★★★★</span>
+        <span>{{ hero_resenas }}</span>
+      </p>
+    {%- endif -%}
+
+    <a class="sl-hero__btn" href="{{ hero_link }}">
+      {{ hero_boton }}
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+
+    {%- if hero_garantia != blank -%}
+      <p class="sl-hero__guarantee">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.3 1.7 2.8-.2.9 2.7 2.4 1.5-.6 2.8 1.2 2.6-2 2 .1 2.8-2.7.8-1.4 2.5-2.8-.5L12 23l-2.2-1.8-2.8.5-1.4-2.5-2.7-.8.1-2.8-2-2 1.2-2.6-.6-2.8 2.4-1.5.9-2.7 2.8.2z"/><path d="M8.5 12.3l2.3 2.3 4.7-4.9"/></svg>
+        {{ hero_garantia }}
+      </p>
+    {%- endif -%}
+   </div>
+  </div>
+</section>
+
+<style>
+  .sl-hero { --sl-negro: #111111; position: relative; width: 100%; margin: 0; overflow: hidden;
+    background: #F4F4F2; color: var(--sl-negro); font-family: inherit; }
+  .sl-hero * { box-sizing: border-box; }
+
+  /* IMAGEN */
+  .sl-hero__media { position: relative; width: 100%; aspect-ratio: 1 / 1; background: #ECECEA; }
+  .sl-hero__media img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+
+  /* SELLO REDONDO */
+  .sl-hero__seal { position: absolute; top: 16px; right: 16px; width: 86px; height: 86px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; text-align: center; padding: 10px;
+    background: var(--sl-negro); color: #FFFFFF; transform: rotate(-10deg);
+    box-shadow: 0 0 0 4px rgba(255,255,255,.9), 0 10px 24px -10px rgba(0,0,0,.5); }
+  .sl-hero__seal::before { content: ''; position: absolute; inset: 5px; border-radius: 50%; border: 1px dashed rgba(255,255,255,.45); }
+  .sl-hero__seal span { font-family: var(--font-heading-family, inherit); font-weight: 700; font-size: 13px;
+    line-height: 1.05; letter-spacing: .04em; text-transform: uppercase; }
+
+  /* TEXTO */
+  .sl-hero__content { position: relative; padding: 28px 20px 34px; text-align: center; }
+  .sl-hero__eyebrow { margin: 0 0 10px; font-size: 11px; font-weight: 600; letter-spacing: .16em;
+    text-transform: uppercase; color: rgba(17,17,17,.62); }
+  .sl-hero__title { margin: 0; font-family: var(--font-heading-family, inherit); font-weight: var(--font-heading-weight, 700);
+    font-size: clamp(38px, 11vw, 84px); line-height: .98; letter-spacing: -.035em; text-transform: uppercase; color: var(--sl-negro); }
+  .sl-hero__offer { margin: 14px 0 0; font-family: var(--font-heading-family, inherit); font-weight: 600;
+    font-size: clamp(19px, 5.2vw, 30px); line-height: 1.2; letter-spacing: -.01em; color: var(--sl-negro); }
+
+  .sl-hero__reviews { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 16px 0 0;
+    font-size: 14px; color: rgba(17,17,17,.8); }
+  .sl-hero__stars { color: var(--sl-negro); letter-spacing: 2px; font-size: 15px; }
+
+  .sl-hero__btn { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; max-width: 440px;
+    margin: 22px auto 0; min-height: 58px; padding: 0 28px; border-radius: 999px;
+    background: var(--sl-negro); color: #FFFFFF; text-decoration: none;
+    font-family: var(--font-heading-family, inherit); font-weight: 700; font-size: 14px;
+    letter-spacing: .08em; text-transform: uppercase;
+    box-shadow: 0 14px 30px -14px rgba(0,0,0,.55); transition: transform .2s ease, box-shadow .2s ease; }
+  .sl-hero__btn:hover { transform: translateY(-2px); box-shadow: 0 18px 34px -14px rgba(0,0,0,.6); }
+  .sl-hero__btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2;
+    stroke-linecap: round; stroke-linejoin: round; transition: transform .2s ease; }
+  .sl-hero__btn:hover svg { transform: translateX(3px); }
+
+  .sl-hero__guarantee { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 14px 0 0;
+    font-size: 13.5px; color: rgba(17,17,17,.78); }
+  .sl-hero__guarantee svg { width: 18px; height: 18px; flex: 0 0 18px; fill: var(--sl-negro);
+    stroke: #FFFFFF; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* COMPUTADORA: imagen de fondo + texto a la izquierda con degradé */
+  @media screen and (min-width: 750px) {
+    .sl-hero { min-height: clamp(520px, 43vw, 820px); display: flex; align-items: center; }
+    .sl-hero__media { position: absolute; inset: 0; aspect-ratio: auto; }
+    .sl-hero__media::after { content: ''; position: absolute; inset: 0;
+      background: linear-gradient(90deg, #F4F4F2 0%, rgba(244,244,242,.92) 30%, rgba(244,244,242,0) 58%); }
+    .sl-hero__seal { top: 12%; right: auto; left: 54%; width: 118px; height: 118px; z-index: 2; }
+    .sl-hero__seal span { font-size: 17px; }
+    .sl-hero__content { z-index: 2; width: 100%; max-width: 1280px; margin: 0 auto; padding: 64px 48px; }
+    .sl-hero__col { width: 560px; max-width: 46%; text-align: center; }
+    .sl-hero__eyebrow { font-size: 13px; margin-bottom: 14px; }
+    .sl-hero__reviews { font-size: 16px; margin-top: 22px; }
+    .sl-hero__btn { margin-top: 26px; min-height: 64px; font-size: 15px; }
+    .sl-hero__guarantee { font-size: 15px; margin-top: 16px; }
+  }
+</style>
