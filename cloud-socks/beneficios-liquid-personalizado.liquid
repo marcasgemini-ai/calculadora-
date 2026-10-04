@@ -21,17 +21,17 @@
     font-size: clamp(16px, 4vw, 24px); line-height: 1.4; margin: 10px 0 0; opacity: .85;
   }
   #cs-benef-cs1 .cs-grid {
-    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px; margin: 28px 0 0; padding: 0; list-style: none;
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px; margin: 24px 0 0; padding: 0; list-style: none;
   }
   #cs-benef-cs1 .cs-card {
     background: #1B2A4A;
     color: #F5F1E8;
     border-radius: 20px;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 12px; padding: 22px 12px; min-height: 160px; margin: 0;
+    gap: 10px; padding: 16px 6px; min-height: 132px; margin: 0;
   }
-  #cs-benef-cs1 .cs-icono { width: 44px; height: 44px; flex-shrink: 0; }
+  #cs-benef-cs1 .cs-icono { width: 36px; height: 36px; flex-shrink: 0; }
   #cs-benef-cs1 .cs-icono svg {
     width: 100%; height: 100%; display: block;
     fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round;
@@ -39,11 +39,15 @@
   #cs-benef-cs1 .cs-icono img { width: 100%; height: 100%; object-fit: contain; display: block; }
   #cs-benef-cs1 .cs-card p {
     margin: 0; color: inherit; font-family: inherit; font-weight: 600;
-    font-size: 15px; line-height: 1.3; text-wrap: balance;
+    font-size: 13px; line-height: 1.25; text-wrap: balance; overflow-wrap: anywhere; hyphens: auto;
   }
   #cs-benef-cs1 .cs-pie { font-size: 14px; margin: 24px 0 0; opacity: .85; }
   #cs-benef-cs1 .cs-pie p { margin: 0; }
   #cs-benef-cs1 .cs-pie a { color: inherit; text-decoration: underline; }
+
+  @media screen and (max-width: 340px) {
+    #cs-benef-cs1 .cs-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
 
   @media screen and (min-width: 750px) {
     #cs-benef-cs1 { padding: 64px 24px; }

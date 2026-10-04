@@ -27,17 +27,17 @@
     font-size: clamp(16px, 4vw, 24px); line-height: 1.4; margin: 10px 0 0; opacity: .85;
   }
   #cs-benef-{{ section.id }} .cs-grid {
-    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px; margin: 28px 0 0; padding: 0; list-style: none;
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px; margin: 24px 0 0; padding: 0; list-style: none;
   }
   #cs-benef-{{ section.id }} .cs-card {
     background: {{ section.settings.color_tarjeta }};
     color: {{ section.settings.color_tarjeta_texto }};
     border-radius: {{ section.settings.radio }}px;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 12px; padding: 22px 12px; min-height: 160px; margin: 0;
+    gap: 10px; padding: 16px 6px; min-height: 132px; margin: 0;
   }
-  #cs-benef-{{ section.id }} .cs-icono { width: 44px; height: 44px; flex-shrink: 0; }
+  #cs-benef-{{ section.id }} .cs-icono { width: 36px; height: 36px; flex-shrink: 0; }
   #cs-benef-{{ section.id }} .cs-icono svg {
     width: 100%; height: 100%; display: block;
     fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round;
@@ -45,11 +45,15 @@
   #cs-benef-{{ section.id }} .cs-icono img { width: 100%; height: 100%; object-fit: contain; display: block; }
   #cs-benef-{{ section.id }} .cs-card p {
     margin: 0; color: inherit; font-family: inherit; font-weight: 600;
-    font-size: 15px; line-height: 1.3; text-wrap: balance;
+    font-size: 13px; line-height: 1.25; text-wrap: balance; overflow-wrap: anywhere; hyphens: auto;
   }
   #cs-benef-{{ section.id }} .cs-pie { font-size: 14px; margin: 24px 0 0; opacity: .85; }
   #cs-benef-{{ section.id }} .cs-pie p { margin: 0; }
   #cs-benef-{{ section.id }} .cs-pie a { color: inherit; text-decoration: underline; }
+
+  @media screen and (max-width: 340px) {
+    #cs-benef-{{ section.id }} .cs-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
 
   @media screen and (min-width: 750px) {
     #cs-benef-{{ section.id }} { padding: {{ section.settings.padding_desktop }}px 24px; }
