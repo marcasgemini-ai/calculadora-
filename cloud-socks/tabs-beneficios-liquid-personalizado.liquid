@@ -1,11 +1,11 @@
 {%- comment -%}
-  Cloud Socks · Pestañas de beneficios · Para pegar en un bloque "Liquid personalizado".
-  IMÁGENES: subilas en Contenido → Archivos con estos nombres exactos (o cambiá los nombres acá abajo).
-  Tamaño recomendado: 1200 x 1200 px (cuadradas).
+  CLOUD SOCKS · PESTAÑAS DE BENEFICIOS · Para el bloque "Liquid personalizado".
+  IMÁGENES: subilas en Contenido → Archivos, tocá "Copiar enlace" y pegá cada enlace entre las comillas de abajo.
+  Si dejás una vacía, se muestra un recuadro crema en su lugar.
 {%- endcomment -%}
-{%- assign img1 = 'cloud-dedos.jpg' -%}
-{%- assign img2 = 'cloud-secos.jpg' -%}
-{%- assign img3 = 'cloud-resistentes.jpg' -%}
+{%- assign img1 = '' -%}
+{%- assign img2 = '' -%}
+{%- assign img3 = '' -%}
 
 <style>
   #cs-tabs { --cs-azul: #1B2A4A; --cs-crema: #F5F1E8; --cs-borde: rgba(27,42,74,.14);
@@ -61,7 +61,7 @@
     </div>
 
     <div class="cs-panel is-active" role="tabpanel" id="cs-panel-1" aria-labelledby="cs-tab-1">
-      <div class="cs-media"><img src="{{ img1 | file_img_url: '1200x' }}" alt="Pie con espacio para los dedos dentro de la zapatilla" loading="lazy" width="1200" height="1200"></div>
+      <div class="cs-media">{%- if img1 != blank -%}<img src="{{ img1 }}" alt="Pie con espacio para los dedos dentro de la zapatilla" loading="lazy" width="1200" height="1200">{%- endif -%}</div>
       <div>
         <p class="cs-kicker">Comodidad</p>
         <h2 class="cs-h">Chau a los dedos apretados</h2>
@@ -72,7 +72,7 @@
     </div>
 
     <div class="cs-panel" role="tabpanel" id="cs-panel-2" aria-labelledby="cs-tab-2" hidden>
-      <div class="cs-media"><img src="{{ img2 | file_img_url: '1200x' }}" alt="Pies secos y frescos con Cloud Socks" loading="lazy" width="1200" height="1200"></div>
+      <div class="cs-media">{%- if img2 != blank -%}<img src="{{ img2 }}" alt="Pies secos y frescos con Cloud Socks" loading="lazy" width="1200" height="1200">{%- endif -%}</div>
       <div>
         <p class="cs-kicker">Frescura</p>
         <h2 class="cs-h">Pies secos y frescos</h2>
@@ -83,7 +83,7 @@
     </div>
 
     <div class="cs-panel" role="tabpanel" id="cs-panel-3" aria-labelledby="cs-tab-3" hidden>
-      <div class="cs-media"><img src="{{ img3 | file_img_url: '1200x' }}" alt="Talón y punta reforzados de Cloud Socks" loading="lazy" width="1200" height="1200"></div>
+      <div class="cs-media">{%- if img3 != blank -%}<img src="{{ img3 }}" alt="Talón y punta reforzados de Cloud Socks" loading="lazy" width="1200" height="1200">{%- endif -%}</div>
       <div>
         <p class="cs-kicker">Calidad</p>
         <h2 class="cs-h">Medias realmente únicas</h2>
