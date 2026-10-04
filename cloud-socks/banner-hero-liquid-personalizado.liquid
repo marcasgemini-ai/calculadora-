@@ -7,8 +7,8 @@
   2) Completá oferta, reseñas y enlace. Lo que dejes vacío no se muestra.
 {% endcomment %}
 
-{%- assign hero_img_desktop = '' -%}
-{%- assign hero_img_mobile  = '' -%}
+{%- assign hero_img_desktop = 'https://cdn.shopify.com/s/files/1/0838/4738/1165/files/Calcetines_Cloud_Socks_junto_al_lago_2.png?v=1791154317' -%}
+{%- assign hero_img_mobile  = '' -%}  {%- comment -%} Opcional. Vacío = usa la de computadora, centrada en las medias {%- endcomment -%}
 {%- assign hero_eyebrow     = 'La primera media de Argentina con punta ancha' -%}
 {%- assign hero_titulo      = 'Chau dedos apretados' -%}
 {%- assign hero_oferta      = '' -%}  {%- comment -%} Ej: 3x2 en todos los packs + envío gratis {%- endcomment -%}
@@ -67,7 +67,7 @@
   /* ---------- CELULAR (base) ---------- */
   .sl-hero__media { position: relative; width: 100%; aspect-ratio: 1 / 1; background: #ECECEA; }
   .sl-hero__media picture, .sl-hero__media img { display: block; width: 100%; height: 100%; }
-  .sl-hero__media img { object-fit: cover; object-position: center; }
+  .sl-hero__media img { object-fit: cover; object-position: var(--sl-foco, 70%) center; }
 
   .sl-hero__seal { position: absolute; z-index: 2; top: 14px; right: 14px; width: 82px; height: 82px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center; text-align: center; padding: 10px;
@@ -127,6 +127,7 @@
   @media screen and (min-width: 990px) {
     .sl-hero { min-height: clamp(540px, 42vw, 800px); display: flex; align-items: center; }
     .sl-hero__media { position: absolute; inset: 0; aspect-ratio: auto; }
+    .sl-hero__media img { object-position: center; }
     .sl-hero__media::after { content: ''; position: absolute; inset: 0; z-index: 1;
       background: linear-gradient(90deg, var(--sl-fondo) 0%, rgba(244,244,242,.94) 32%, rgba(244,244,242,0) 60%); }
     .sl-hero__seal { top: 13%; right: auto; left: 52%; width: clamp(104px, 8vw, 128px); height: clamp(104px, 8vw, 128px); }
