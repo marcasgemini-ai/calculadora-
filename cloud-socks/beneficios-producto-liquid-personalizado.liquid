@@ -1,0 +1,73 @@
+{% comment %}
+  SUAVELAND · CLOUD SOCKS · BENEFICIOS PREMIUM (3)
+  Para el bloque "Liquid personalizado" de la página de producto.
+  Íconos de línea fina dentro de un círculo suave. Hereda las fuentes del theme.
+{% endcomment %}
+
+<ul class="sl-benefits" role="list">
+
+  <li class="sl-benefits__item">
+    <span class="sl-benefits__icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z"/><path d="M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z"/><path d="M16 17h4"/><path d="M4 13h4"/></svg>
+    </span>
+    <div class="sl-benefits__copy">
+      <span class="sl-benefits__title">Chau dedos apretados</span>
+      <span class="sl-benefits__desc">Más espacio para tus dedos: sin presión, dolor ni ampollas.</span>
+    </div>
+  </li>
+
+  <li class="sl-benefits__item">
+    <span class="sl-benefits__icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
+    </span>
+    <div class="sl-benefits__copy">
+      <span class="sl-benefits__title">Llegás a la noche sin dolor de pies</span>
+      <span class="sl-benefits__desc">Suavidad tipo nube en cada paso, todo el día.</span>
+    </div>
+  </li>
+
+  <li class="sl-benefits__item">
+    <span class="sl-benefits__icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M12.8 19.6A2 2 0 1 0 14 16H2"/><path d="M17.5 8a2.5 2.5 0 1 1 2 4H2"/><path d="M9.8 4.4A2 2 0 1 1 11 8H2"/></svg>
+    </span>
+    <div class="sl-benefits__copy">
+      <span class="sl-benefits__title">Secos, frescos y sin olor</span>
+      <span class="sl-benefits__desc">Absorben la transpiración y frenan el olor.</span>
+    </div>
+  </li>
+
+</ul>
+
+<style>
+  .sl-benefits { width: 100%; margin: 8px 0 14px; padding: 0; list-style: none; font-family: inherit; color: #111111; }
+  .sl-benefits, .sl-benefits * { box-sizing: border-box; }
+
+  .sl-benefits__item { display: flex; align-items: center; gap: 14px; margin: 0; padding: 12px 0;
+    list-style: none; border-top: 1px solid rgba(17,17,17,.07); }
+  .sl-benefits__item:first-child { border-top: 0; padding-top: 2px; }
+  .sl-benefits__item:last-child { padding-bottom: 0; }
+  .sl-benefits__item::before, .sl-benefits__item::marker { content: none; display: none; }
+
+  /* ÍCONO EN CÍRCULO SUAVE */
+  .sl-benefits__icon { flex: 0 0 42px; width: 42px; height: 42px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: #F3EFE9; box-shadow: inset 0 0 0 1px rgba(17,17,17,.05); color: #111111; }
+  .sl-benefits__icon svg { display: block; width: 20px; height: 20px;
+    fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* TEXTO */
+  .sl-benefits__copy { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .sl-benefits__title { display: block; font-family: inherit; font-size: 15px; font-weight: 600;
+    line-height: 1.3; letter-spacing: -.01em; color: #111111; }
+  .sl-benefits__desc { display: block; font-family: inherit; font-size: 13.5px; font-weight: 400;
+    line-height: 1.4; color: rgba(17,17,17,.6); }
+
+  @media screen and (max-width: 749px) {
+    .sl-benefits { margin: 6px 0 12px; }
+    .sl-benefits__item { gap: 12px; padding: 10px 0; }
+    .sl-benefits__icon { flex-basis: 38px; width: 38px; height: 38px; }
+    .sl-benefits__icon svg { width: 18px; height: 18px; }
+    .sl-benefits__title { font-size: 14.5px; }
+    .sl-benefits__desc { font-size: 13px; }
+  }
+</style>
