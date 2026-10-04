@@ -1,0 +1,471 @@
+{%- comment -%}
+  LANDING METABOMEN · LIQUID 08 · SECCIÓN DE COMPRA (galería + título + oferta + reseña)
+  La oferta de adentro es la MISMA que anda en la página de producto (mismos textos, mismo carrito).
+  Como en una página no existe "product", busca el producto sola.
+  - Primero por producto_handle. Si no lo encuentra, lo busca por nombre (buscar_nombre) en todos los productos.
+  - En el editor (solo vos) te muestra qué producto encontró y su handle.
+  Todos los botones de la landing / advertorial bajan acá con #oferta. Usá una sola oferta por página.
+  El carrito y el upsell funcionan igual que en la página de producto (mismo código).
+{%- endcomment -%}
+
+{%- assign producto_handle = 'metabomen' -%}
+{%- assign buscar_nombre = 'metabomen' -%}
+{%- assign galeria_urls = '' -%}
+{%- assign titulo_producto = 'METABOMEN · Fórmula premium para evitar el envejecimiento de los +40' -%}
+{%- assign rating = '4,8' -%}
+{%- assign cant_resenas = '+5346 reseñas' -%}
+{%- assign resena_texto = 'No quería parecer de 30. Quería dejar de parecer de 55 teniendo 44. Hoy siento que mi aspecto acompaña mucho más mi edad y me veo considerablemente más joven que antes.' -%}
+{%- assign resena_nombre = 'Pablo, 44 · Mendoza' -%}
+{%- assign resena_img = '' -%}
+
+{%- comment -%} ===== BADGES DE ARRIBA (dejá '' para ocultar uno) ===== {%- endcomment -%}
+{%- assign badge_1 = '🏆 Más comprado en Mercado Libre' -%}
+{%- assign badge_2 = '📸 Viral en Instagram' -%}
+{%- assign badge_3 = '🔥 Viral en TikTok' -%}
+
+{%- comment -%} ===== GENERAL ===== {%- endcomment -%}
+{%- assign pack_elegido = 2 -%}
+{%- assign bump_nombre = 'TESTO BOOST' -%}
+{%- assign bump_handle = 'testo-boost-upsell' -%}
+{%- assign bump_id_50 = '' -%}
+{%- assign bump_id_gratis = '' -%}
+{%- assign bump_img = '' -%}
+{%- assign ir_a_checkout = true -%}
+{%- assign boton_texto = 'Quiero mi protocolo' -%}
+{%- assign bases_sorteo_url = '/pages/bases-y-condiciones' -%}
+
+{%- comment -%} ===== REGALOS (en orden). desde = frascos mínimos · regalos_img: URL o '-' para usar el ícono ===== {%- endcomment -%}
+{%- assign regalos_img = '-|-|https://cdn.shopify.com/s/files/1/0995/7126/9912/files/fdb87291-c520-4fac-b5ac-920cf3f4fd4a.png?v=1790807043' | split: '|' -%}
+{%- assign regalos_icono = '⚡|🥗|✈️' | split: '|' -%}
+{%- assign regalos_corto = 'Guía Protocolo Energía Masculina|Guía Alimentación metabólica|Viaje al Caribe para Enero' | split: '|' -%}
+{%- assign regalos_etiqueta = 'Gratis|Gratis|Sorteo' | split: '|' -%}
+{%- assign regalos_tachado = '$25.000|$20.000|-' | split: '|' -%}
+{%- assign regalos_desde = '2|3|3' | split: '|' -%}
+
+{%- comment -%} ===== DEBAJO DEL BOTÓN (dejá linea_ml en '' para ocultarla) ===== {%- endcomment -%}
+{%- assign linea_ml = 'Top 1 en Mercado Libre' -%}
+{%- assign garantia_dias = '60' -%}
+{%- assign garantia_texto = 'Si no notás más energía en tu día, te devolvemos el dinero.' -%}
+{%- assign envio_texto = 'Envío gratis · con seguimiento y fecha estimada de entrega' -%}
+
+{%- comment -%} ===== PACK 1 ===== {%- endcomment -%}
+{%- assign p1_titulo = 'Energía 6 meses' -%}
+{%- assign p1_sub = '6 frascos' -%}
+{%- assign p1_cantidad = 6 -%}
+{%- assign p1_variante = '' -%}
+{%- assign p1_precio = '$124.200' -%}
+{%- assign p1_tachado = '$353.940' -%}
+{%- assign p1_ahorro = 'Ahorrás $229.740' -%}
+{%- assign p1_por_dia = '$690/día' -%}
+{%- assign p1_cinta = '' -%}
+{%- assign p1_badges = 'Envío gratis|Mejor precio|Pagás 3 llevás 6' -%}
+{%- assign p1_bajada = 'Seis meses con energía de sobra: llegás al verano y la sostenés hasta el otoño.' -%}
+{%- assign p1_bump = 'TESTO BOOST para más vitalidad y empuje' -%}
+{%- assign p1_bump_precio = 'GRATIS' -%}
+{%- assign p1_bump_tachado = '$47.600' -%}
+
+{%- comment -%} ===== PACK 2 ===== {%- endcomment -%}
+{%- assign p2_titulo = 'Protocolo Verano Completo' -%}
+{%- assign p2_sub = '3 frascos (90 días)' -%}
+{%- assign p2_cantidad = 3 -%}
+{%- assign p2_variante = '' -%}
+{%- assign p2_precio = '$101.900' -%}
+{%- assign p2_tachado = '$176.970' -%}
+{%- assign p2_ahorro = 'Ahorrás $75.070' -%}
+{%- assign p2_por_dia = '$1.132/día' -%}
+{%- assign p2_cinta = 'Más comprado' -%}
+{%- assign p2_badges = 'Más comprado|Recomendado|Pagás 2 llevás 3' -%}
+{%- assign p2_bajada = 'Empezás ahora y llegás a enero con más energía y menos pesadez.' -%}
+{%- assign p2_bump = 'Tenés 50% OFF en TESTO BOOST para más vitalidad y empuje' -%}
+{%- assign p2_bump_precio = '$23.800' -%}
+{%- assign p2_bump_tachado = '$47.600' -%}
+
+{%- comment -%} ===== PACK 3 ===== {%- endcomment -%}
+{%- assign p3_titulo = 'Protocolo 60 días' -%}
+{%- assign p3_sub = '2 frascos' -%}
+{%- assign p3_cantidad = 2 -%}
+{%- assign p3_variante = '' -%}
+{%- assign p3_precio = '$82.600' -%}
+{%- assign p3_tachado = '$117.980' -%}
+{%- assign p3_ahorro = 'Ahorrás $35.380' -%}
+{%- assign p3_por_dia = '$1.377/día' -%}
+{%- assign p3_cinta = '' -%}
+{%- assign p3_badges = 'Envío gratis|3 cuotas sin interés|60% OFF segunda unidad' -%}
+{%- assign p3_bajada = '' -%}
+{%- assign p3_bump = 'Tenés 50% OFF en TESTO BOOST para más vitalidad y empuje' -%}
+{%- assign p3_bump_precio = '$23.800' -%}
+{%- assign p3_bump_tachado = '$47.600' -%}
+
+{%- comment -%} ===== PACK 4 ===== {%- endcomment -%}
+{%- assign p4_titulo = 'Protocolo 30 días' -%}
+{%- assign p4_sub = '1 frasco' -%}
+{%- assign p4_cantidad = 1 -%}
+{%- assign p4_variante = '' -%}
+{%- assign p4_precio = '$58.990' -%}
+{%- assign p4_tachado = '' -%}
+{%- assign p4_ahorro = '' -%}
+{%- assign p4_por_dia = '$1.966/día' -%}
+{%- assign p4_cinta = '' -%}
+{%- assign p4_badges = 'Envío gratis|3 cuotas sin interés' -%}
+{%- assign p4_bajada = '' -%}
+{%- assign p4_bump = 'Tenés 50% OFF en TESTO BOOST para más vitalidad y empuje' -%}
+{%- assign p4_bump_precio = '$23.800' -%}
+{%- assign p4_bump_tachado = '$47.600' -%}
+
+{%- comment -%} ===== BUSCA EL PRODUCTO ===== {%- endcomment -%}
+{%- if product and product.id -%}
+  {%- assign prod = product -%}
+{%- else -%}
+  {%- assign prod = all_products[producto_handle] -%}
+  {%- unless prod and prod.id -%}
+    {%- assign bn = buscar_nombre | downcase -%}
+    {%- for pp in collections.all.products -%}
+      {%- assign pt = pp.title | downcase -%}
+      {%- if pt contains bn -%}
+        {%- unless pt contains 'upsell' -%}{%- assign prod = pp -%}{%- break -%}{%- endunless -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endunless -%}
+{%- endif -%}
+
+<style>
+  :root {
+    --dm-black: #0E0F11;
+    --dm-ink: #15171A;
+    --dm-soft: #F3F5F7;
+    --dm-line: #E2E6EA;
+    --dm-muted: #6B7178;
+    --dm-good: #2F8A5B;
+    --dm-bad: #C23B3B;
+  }
+  .dmw { background: #F4F1EC; padding: 48px 16px; scroll-margin-top: 20px; }
+  .dmw__in { max-width: 1120px; margin: 0 auto; display: grid; grid-template-columns: 1fr 470px; gap: 44px; align-items: start; font-family: var(--font-body-family, inherit); color: var(--dm-ink); }
+  .dmw-gal__main img, .dmw-gal__main .dmw__ph { display: block; width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 18px; background: #fff; }
+  .dmw__ph { border: 2px dashed #C8C1B5; background: #EAE4DA !important; color: #5B554D; display: flex !important; align-items: center; justify-content: center; text-align: center; padding: 16px; font-size: 13px; font-weight: 600; }
+  .dmw-gal__th { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-top: 10px; }
+  .dmw-gal__th button { padding: 0; border: 2px solid transparent; border-radius: 10px; overflow: hidden; background: #fff; cursor: pointer; aspect-ratio: 1 / 1; }
+  .dmw-gal__th button.is-on { border-color: var(--dm-ink); }
+  .dmw-gal__th img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .dmw-rev { display: flex; gap: 12px; align-items: flex-start; background: #fff; border: 1px solid var(--dm-line); border-radius: 12px; padding: 12px; margin-top: 12px; font-size: 13.5px; line-height: 1.45; }
+  .dmw-rev img, .dmw-rev i { width: 40px; height: 40px; border-radius: 50%; flex: 0 0 auto; object-fit: cover; background: #E3DED5; display: flex; align-items: center; justify-content: center; font-style: normal; font-weight: 800; }
+  .dmw-rev small { display: block; color: var(--dm-muted); margin-top: 4px; }
+  @media (max-width: 899px) { .dmw__in { grid-template-columns: 1fr; gap: 22px; } .dmw-gal__th { gap: 6px; } }
+  .dmw__in *, .dmw__in *::before, .dmw__in *::after { box-sizing: border-box; }
+  .dmw__img { display: block; width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 16px; background: #fff; margin: 0 0 16px; }
+  .dmw__ttl { font-family: 'Oswald', var(--font-heading-family, inherit); font-size: clamp(24px, 6vw, 32px); line-height: 1.08; font-weight: 700; text-transform: uppercase; margin: 0 0 6px; letter-spacing: .01em; color: var(--dm-ink); }
+  .dmw__rate { font-size: 13px; color: var(--dm-muted); margin: 0 0 14px; }
+  .dmw__rate b { color: #E9A23B; letter-spacing: 2px; }
+  .dmw__adm { background: #FDECEC; color: #9B1C1C; border: 1px solid #F5B5B5; border-radius: 8px; padding: 8px 10px; font-size: 12px; margin: 0 0 10px; }
+  .dmw__adm.is-ok { background: #EAF6EF; color: #1E6B43; border-color: #A9D8BD; }
+
+  .dm-tbadges { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 12px; }
+  .dm-tbadges span { display: inline-flex; align-items: center; gap: 4px; background: var(--dm-black); color: #fff; font-size: 12px; font-weight: 700; padding: 6px 11px; border-radius: 999px; line-height: 1; }
+  .dm-tbadges span:first-child { background: #FFE600; color: #2D3277; }
+
+  .dm-below { margin: 12px 0 0; display: grid; gap: 8px; }
+  .dm-below__row { display: flex; align-items: flex-start; gap: 10px; border: 1px solid var(--dm-line); border-radius: 10px; padding: 10px 12px; font-size: 13.5px; line-height: 1.4; background: #fff; }
+  .dm-below__row span:first-child { flex: 0 0 auto; font-size: 18px; line-height: 1.1; }
+  .dm-below__row b { display: block; font-size: 14px; }
+  .dm-below__row.is-ml { background: #FFFBD6; border-color: #F2E27A; }
+
+  .dmo { color: var(--dm-ink); margin: 4px 0; letter-spacing: 0; }
+  .dmo * { letter-spacing: 0; }
+  .dmo__ttl { display: flex; align-items: center; gap: 10px; font-size: 11px; font-weight: 800; letter-spacing: .14em !important; text-transform: uppercase; color: var(--dm-muted); margin: 0 0 10px; }
+  .dmo__ttl::before, .dmo__ttl::after { content: ''; flex: 1; height: 1px; background: var(--dm-line); }
+  .dmo-card { position: relative; border: 1.5px solid var(--dm-line); border-radius: 12px; background: #fff; margin-bottom: 8px; transition: border-color .15s ease, box-shadow .2s ease; }
+  .dmo-card.is-on { border-color: var(--dm-ink); background: linear-gradient(180deg, #FFFFFF 0%, #F6F7F9 100%); box-shadow: 0 8px 24px rgba(14,15,17,.10); }
+  .dmo-card.is-top { margin-top: 12px; }
+  .dmo-rib { position: absolute; top: -9px; right: 12px; background: linear-gradient(90deg, #B8924A, #E2C17C); color: #1A1407; font-size: 9.5px; font-weight: 800; letter-spacing: .1em !important; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; }
+  .dmo-head { display: grid; grid-template-columns: 18px 1fr auto; align-items: center; gap: 10px; padding: 11px 12px; cursor: pointer; margin: 0; }
+  .dmo-head input { position: absolute; opacity: 0; pointer-events: none; }
+  .dmo-dot { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid #B5BCC3; display: block; position: relative; background: #fff; }
+  .dmo-card.is-on .dmo-dot { border-color: var(--dm-ink); }
+  .dmo-card.is-on .dmo-dot::after { content: ''; position: absolute; inset: 3px; border-radius: 50%; background: var(--dm-ink); }
+  .dmo-t { min-width: 0; line-height: 1.2; }
+  .dmo-t b { display: block; font-size: 14.5px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .dmo-t small { display: block; font-size: 11.5px; color: var(--dm-muted); margin-top: 2px; }
+  .dmo-t small i { font-style: normal; color: var(--dm-ink); font-weight: 700; }
+  .dmo-p { text-align: right; line-height: 1.1; white-space: nowrap; }
+  .dmo-p b { display: block; font-size: 16px; font-weight: 800; }
+  .dmo-p s { font-size: 11px; color: #9AA1A8; }
+  .dmo-p em { display: block; font-style: normal; font-size: 10.5px; font-weight: 800; color: var(--dm-good); margin-top: 2px; }
+  .dmo-chips { display: flex; flex-wrap: wrap; gap: 4px; padding: 0 12px 10px 40px; margin-top: -4px; }
+  .dmo-chips span { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 999px; background: #EEF1F4; color: #3B434B; }
+  .dmo-chips span:last-child { background: var(--dm-ink); color: #fff; }
+  .dmo-body { display: none; padding: 0 12px 12px; }
+  .dmo-card.is-on .dmo-body { display: block; }
+  .dmo-baj { font-size: 12px; font-style: italic; color: var(--dm-muted); margin: 0 0 8px 28px; line-height: 1.4; }
+  .dmo-bump { display: flex; align-items: center; gap: 8px; border: 1px dashed #D4B574; background: #FFFBF1; border-radius: 9px; padding: 7px 9px; cursor: pointer; margin: 0 0 8px; }
+  .dmo-bump input { width: 16px; height: 16px; accent-color: var(--dm-ink); margin: 0; flex: 0 0 auto; }
+  .dmo-bump img, .dmo-bump__ph { width: 30px; height: 30px; border-radius: 6px; object-fit: cover; flex: 0 0 auto; background: #fff; border: 1px solid #EEDFBF; }
+  .dmo-bump__t { flex: 1; font-size: 12px; line-height: 1.25; min-width: 0; }
+  .dmo-bump__p { text-align: right; white-space: nowrap; line-height: 1.1; font-size: 12.5px; font-weight: 800; color: var(--dm-good); }
+  .dmo-bump__p s { display: block; font-size: 10.5px; font-weight: 400; color: #9AA1A8; }
+  .dmo-gifts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .dmo-gift { position: relative; border: 1px solid var(--dm-line); border-radius: 9px; background: #fff; padding: 7px 6px 6px; text-align: center; line-height: 1.15; min-width: 0; }
+  .dmo-gift__i { display: block; font-size: 16px; margin-bottom: 3px; }
+  .dmo-gift__img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 6px; margin: 0 0 5px; background: var(--dm-soft); }
+  .dmo-gift.is-lock .dmo-gift__img { opacity: .4; filter: grayscale(1); }
+  .dmo-gift__n { display: block; font-size: 10.5px; font-weight: 700; color: var(--dm-ink); }
+  .dmo-gift__v { display: block; font-size: 9.5px; font-weight: 800; color: var(--dm-good); margin-top: 3px; text-transform: uppercase; }
+  .dmo-gift__v s { color: #9AA1A8; font-weight: 400; margin-left: 3px; text-transform: none; }
+  .dmo-gift.is-lock { background: #F6F7F9; border-style: dashed; }
+  .dmo-gift.is-lock .dmo-gift__i, .dmo-gift.is-lock .dmo-gift__n { opacity: .45; }
+  .dmo-gift__lock { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); font-size: 18px; }
+  .dmo-gift.is-lock .dmo-gift__v { color: #8A9199; }
+  .dmo-gifts__h { display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: 800; margin: 0 0 6px; }
+  .dmo-gifts__h span { color: var(--dm-muted); font-weight: 600; }
+  .dmo-legal { font-size: 9.5px; color: #9AA1A8; margin: 6px 0 0; }
+  .dmo-legal a { color: inherit; }
+  .dmo-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; background: var(--dm-ink); color: #fff; border: 0; border-radius: 10px; padding: 16px; font-size: 15px; font-weight: 800; letter-spacing: .06em !important; text-transform: uppercase; cursor: pointer; font-family: inherit; margin-top: 6px; box-shadow: 0 6px 16px rgba(14,15,17,.18); }
+  .dmo-btn:hover { opacity: .92; }
+  .dmo-btn span { opacity: .75; font-weight: 700; }
+  .dmo-btn[disabled] { opacity: .55; cursor: default; }
+  .dmo-err { display: none; color: var(--dm-bad); font-size: 12px; margin-top: 6px; text-align: center; }
+</style>
+
+<section class="dmw" id="oferta">
+  <div class="dmw__in">
+
+    <div class="dmw-gal">
+      {%- assign gal = '' -%}
+      {%- if galeria_urls != blank -%}
+        {%- assign gal = galeria_urls -%}
+      {%- elsif prod and prod.images.size > 0 -%}
+        {%- for im in prod.images limit: 6 -%}
+          {%- assign u = im | image_url: width: 900 -%}
+          {%- assign gal = gal | append: u | append: '|' -%}
+        {%- endfor -%}
+      {%- endif -%}
+      {%- assign gl = gal | split: '|' -%}
+      <div class="dmw-gal__main">
+        {%- if gl.size > 0 -%}
+          <img id="dmwMain" src="{{ gl[0] }}" alt="Metabomen de DR.MEN" width="900" height="900" loading="lazy">
+        {%- else -%}
+          <div class="dmw__ph">FOTOS DEL PRODUCTO · se toman solas de Shopify</div>
+        {%- endif -%}
+      </div>
+      {%- if gl.size > 1 -%}
+        <div class="dmw-gal__th">
+          {%- for u in gl -%}
+            <button type="button" class="{% if forloop.first %}is-on{% endif %}" data-src="{{ u }}"><img src="{{ u }}" alt="" loading="lazy" width="120" height="120"></button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="dmw__panel">
+  {%- unless prod and prod.id -%}
+
+    {%- if request.design_mode -%}
+      <p class="dmw__adm">⚠️ Solo lo ves vos: no encontré el producto. Abrí Metabomen en Shopify, copiá el final de la URL de la tienda (/products/<b>ESTO</b>) y pegalo en producto_handle.</p>
+    {%- endif -%}
+
+  {%- else -%}
+
+    {%- if request.design_mode -%}
+      <p class="dmw__adm is-ok">✅ Solo lo ves vos: producto encontrado "{{ prod.title }}" (handle: {{ prod.handle }}).</p>
+    {%- endif -%}
+
+
+    <h2 class="dmw__ttl">{{ titulo_producto }}</h2>
+    <p class="dmw__rate"><b>★★★★★</b> {{ rating }} · {{ cant_resenas }}</p>
+
+    {%- assign v0 = prod.selected_or_first_available_variant -%}
+    {%- if bump_handle != blank -%}
+      {%- assign bp_prod = all_products[bump_handle] -%}
+      {%- if bp_prod and bp_prod.id -%}
+        {%- for bv in bp_prod.variants -%}
+          {%- assign bvt = bv.title | downcase -%}
+          {%- if bump_id_gratis == blank and bv.price == 0 -%}{%- assign bump_id_gratis = bv.id -%}
+          {%- elsif bump_id_gratis == blank and bvt contains 'gratis' -%}{%- assign bump_id_gratis = bv.id -%}
+          {%- elsif bump_id_50 == blank -%}{%- assign bump_id_50 = bv.id -%}{%- endif -%}
+        {%- endfor -%}
+        {%- if bump_img == blank and bp_prod.featured_image -%}{%- assign bump_img = bp_prod.featured_image | image_url: width: 120 -%}{%- endif -%}
+      {%- endif -%}
+    {%- endif -%}
+
+    <div class="dm-tbadges">
+      {%- if badge_1 != blank -%}<span>{{ badge_1 }}</span>{%- endif -%}
+      {%- if badge_2 != blank -%}<span>{{ badge_2 }}</span>{%- endif -%}
+      {%- if badge_3 != blank -%}<span>{{ badge_3 }}</span>{%- endif -%}
+    </div>
+
+    <div class="dmo" data-bump-handle="{{ bump_handle }}">
+      {%- if request.design_mode -%}<p class="dmw__adm" id="dmBumpAdm" style="display:none;">⚠️ Solo lo ves vos en el editor: no se encontró el upsell <b>{{ bump_handle }}</b>. Revisá que el producto esté Activo y publicado en Tienda online.</p>{%- endif -%}
+      <div class="dmo__ttl">Elegí tu protocolo</div>
+      <form id="dmBuyForm" data-checkout="{% if ir_a_checkout %}1{% else %}0{% endif %}" onsubmit="return false;">
+
+        {%- for i in (1..4) -%}
+          {%- case i -%}
+            {%- when 1 -%}{%- assign t = p1_titulo -%}{%- assign s = p1_sub -%}{%- assign q = p1_cantidad -%}{%- assign vid = p1_variante -%}{%- assign pr = p1_precio -%}{%- assign tc = p1_tachado -%}{%- assign ah = p1_ahorro -%}{%- assign pd = p1_por_dia -%}{%- assign ci = p1_cinta -%}{%- assign bd = p1_badges -%}{%- assign bj = p1_bajada -%}{%- assign bu = p1_bump -%}{%- assign bp = p1_bump_precio -%}{%- assign bt = p1_bump_tachado -%}
+            {%- when 2 -%}{%- assign t = p2_titulo -%}{%- assign s = p2_sub -%}{%- assign q = p2_cantidad -%}{%- assign vid = p2_variante -%}{%- assign pr = p2_precio -%}{%- assign tc = p2_tachado -%}{%- assign ah = p2_ahorro -%}{%- assign pd = p2_por_dia -%}{%- assign ci = p2_cinta -%}{%- assign bd = p2_badges -%}{%- assign bj = p2_bajada -%}{%- assign bu = p2_bump -%}{%- assign bp = p2_bump_precio -%}{%- assign bt = p2_bump_tachado -%}
+            {%- when 3 -%}{%- assign t = p3_titulo -%}{%- assign s = p3_sub -%}{%- assign q = p3_cantidad -%}{%- assign vid = p3_variante -%}{%- assign pr = p3_precio -%}{%- assign tc = p3_tachado -%}{%- assign ah = p3_ahorro -%}{%- assign pd = p3_por_dia -%}{%- assign ci = p3_cinta -%}{%- assign bd = p3_badges -%}{%- assign bj = p3_bajada -%}{%- assign bu = p3_bump -%}{%- assign bp = p3_bump_precio -%}{%- assign bt = p3_bump_tachado -%}
+            {%- when 4 -%}{%- assign t = p4_titulo -%}{%- assign s = p4_sub -%}{%- assign q = p4_cantidad -%}{%- assign vid = p4_variante -%}{%- assign pr = p4_precio -%}{%- assign tc = p4_tachado -%}{%- assign ah = p4_ahorro -%}{%- assign pd = p4_por_dia -%}{%- assign ci = p4_cinta -%}{%- assign bd = p4_badges -%}{%- assign bj = p4_bajada -%}{%- assign bu = p4_bump -%}{%- assign bp = p4_bump_precio -%}{%- assign bt = p4_bump_tachado -%}
+          {%- endcase -%}
+          {%- if vid == blank -%}
+            {%- for v in prod.variants -%}
+              {%- assign vt = v.title | downcase -%}
+              {%- assign sd = s | split: ' (' | first | downcase -%}
+              {%- if vt contains sd -%}{%- assign vid = v.id -%}{%- break -%}{%- endif -%}
+            {%- endfor -%}
+            {%- if vid != blank -%}{%- assign q = 1 -%}{%- endif -%}
+          {%- else -%}
+            {%- assign q = 1 -%}
+          {%- endif -%}
+          {%- if vid == blank -%}{%- assign vid = v0.id -%}{%- endif -%}
+          {%- assign frascos = s | split: ' ' | first | plus: 0 -%}
+          {%- if frascos == 0 -%}{%- assign frascos = q -%}{%- endif -%}
+
+          {%- assign bpu = bp | upcase -%}
+          {%- if bpu contains 'GRATIS' -%}{%- assign bid = bump_id_gratis -%}{%- assign btype = 'gratis' -%}{%- else -%}{%- assign bid = bump_id_50 -%}{%- assign btype = 'off' -%}{%- endif -%}
+
+          <div data-bump="{{ bid }}" data-bump-type="{{ btype }}" class="dmo-card{% if i == pack_elegido %} is-on{% endif %}{% if ci != blank %} is-top{% endif %}" data-variant="{{ vid }}" data-qty="{{ q }}" data-price="{{ pr }}" data-name="{{ t | escape }}">
+            {%- if ci != blank -%}<span class="dmo-rib">★ {{ ci }}</span>{%- endif -%}
+            <label class="dmo-head">
+              <input type="radio" name="dmPack" value="{{ i }}" {% if i == pack_elegido %}checked{% endif %}>
+              <span class="dmo-dot"></span>
+              <span class="dmo-t"><b>{{ t }}</b><small>{{ s }}{% if pd != blank %} · <i>{{ pd }}</i>{% endif %}</small></span>
+              <span class="dmo-p"><b>{{ pr }}</b>{%- if tc != blank -%}<s>{{ tc }}</s>{%- endif -%}{%- if ah != blank -%}<em>{{ ah }}</em>{%- endif -%}</span>
+            </label>
+            {%- if bd != blank -%}
+              <div class="dmo-chips">{%- assign bl = bd | split: '|' -%}{%- for b in bl -%}<span>{{ b }}</span>{%- endfor -%}</div>
+            {%- endif -%}
+
+            <div class="dmo-body">
+              {%- if bj != blank -%}<p class="dmo-baj">{{ bj }}</p>{%- endif -%}
+
+              {%- if bu != blank -%}
+              <label class="dmo-bump">
+                <input type="checkbox" class="dmo-bump__cb" {% if bid == blank %}disabled{% endif %}>
+                {%- if bump_img != blank -%}<img src="{{ bump_img }}" alt="{{ bump_nombre | escape }}" loading="lazy">{%- else -%}<span class="dmo-bump__ph"></span>{%- endif -%}
+                <span class="dmo-bump__t">{{ bu }}</span>
+                <span class="dmo-bump__p">{{ bp }}{%- if bt != blank -%}<s>{{ bt }}</s>{%- endif -%}</span>
+              </label>
+              {%- endif -%}
+
+              {%- assign abiertos = 0 -%}
+              {%- for d in regalos_desde -%}{%- assign dn = d | plus: 0 | minus: 1 -%}{%- if frascos > dn -%}{%- assign abiertos = abiertos | plus: 1 -%}{%- endif -%}{%- endfor -%}
+              {%- assign hay_sorteo = false -%}
+              <div class="dmo-gifts__h">🎁 {% if abiertos > 0 %}{{ abiertos }}/{{ regalos_corto.size }} regalos incluidos{% else %}Regalos desde {{ regalos_desde | first }} frascos{% endif %}<span>{% if abiertos < regalos_corto.size %}Desbloqueá más con 3 frascos{% endif %}</span></div>
+              <div class="dmo-gifts">
+                {%- for nombre in regalos_corto -%}
+                  {%- assign k = forloop.index0 -%}
+                  {%- assign dn = regalos_desde[k] | plus: 0 -%}
+                  {%- assign dn_menos = dn | minus: 1 -%}
+                  {%- if frascos > dn_menos -%}
+                    {%- if regalos_etiqueta[k] == 'Sorteo' -%}{%- assign hay_sorteo = true -%}{%- endif -%}
+                    <div class="dmo-gift">{%- if regalos_img[k] != '-' and regalos_img[k] != blank -%}<img class="dmo-gift__img" src="{{ regalos_img[k] }}" alt="{{ nombre | escape }}" loading="lazy" width="120" height="120">{%- else -%}<span class="dmo-gift__i">{{ regalos_icono[k] }}</span>{%- endif -%}<span class="dmo-gift__n">{{ nombre }}</span><span class="dmo-gift__v">{{ regalos_etiqueta[k] }}{%- if regalos_tachado[k] != '-' and regalos_tachado[k] != blank -%}<s>{{ regalos_tachado[k] }}</s>{%- endif -%}</span></div>
+                  {%- else -%}
+                    <div class="dmo-gift is-lock">{%- if regalos_img[k] != '-' and regalos_img[k] != blank -%}<img class="dmo-gift__img" src="{{ regalos_img[k] }}" alt="{{ nombre | escape }}" loading="lazy" width="120" height="120"><span class="dmo-gift__lock">🔒</span>{%- else -%}<span class="dmo-gift__i">{{ regalos_icono[k] }}</span>{%- endif -%}<span class="dmo-gift__n">{{ nombre }}</span><span class="dmo-gift__v">🔒 con {{ dn }} frascos</span></div>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+              {%- if hay_sorteo -%}<p class="dmo-legal">Sorteo sin obligación de compra · <a href="{{ bases_sorteo_url }}" target="_blank">Bases y condiciones</a></p>{%- endif -%}
+            </div>
+          </div>
+        {%- endfor -%}
+
+        {%- if v0.available -%}
+          <button type="submit" class="dmo-btn" id="dmOfferBtn">{{ boton_texto }} <span>·</span> <b id="dmOfferPrice"></b></button>
+        {%- else -%}
+          <button type="button" class="dmo-btn" disabled>Sin stock</button>
+        {%- endif -%}
+        <div class="dmo-err" id="dmOfferErr">No pudimos agregarlo al carrito. Probá de nuevo en unos segundos.</div>
+      </form>
+      <div class="dm-below">
+        {%- if linea_ml != blank -%}<div class="dm-below__row is-ml"><span>🏆</span><span><b>{{ linea_ml }}</b></span></div>{%- endif -%}
+        <div class="dm-below__row"><span>🛡️</span><span><b>{{ garantia_dias }} días para probarlo</b>{{ garantia_texto }}</span></div>
+        <div class="dm-below__row"><span>🚚</span><span><b>{{ envio_texto | split: ' · ' | first }}</b>{{ envio_texto | split: ' · ' | last }}</span></div>
+      </div>
+    </div>
+
+  {%- endunless -%}
+
+      <div class="dmw-rev">
+        {%- if resena_img != blank -%}<img src="{{ resena_img }}" alt="" width="40" height="40" loading="lazy">{%- else -%}<i>{{ resena_nombre | slice: 0 }}</i>{%- endif -%}
+        <div>"{{ resena_texto }}"<small><b style="color:#E9A23B">★★★★★</b> {{ resena_nombre }}</small></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  (function () {
+    var main = document.getElementById('dmwMain');
+    document.querySelectorAll('.dmw-gal__th button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        if (main) main.src = b.dataset.src;
+        document.querySelectorAll('.dmw-gal__th button').forEach(function (x) { x.classList.remove('is-on'); });
+        b.classList.add('is-on');
+      });
+    });
+  })();
+
+  (function () {
+    var form = document.getElementById('dmBuyForm');
+    if (!form) return;
+    var cards = form.querySelectorAll('.dmo-card');
+    var priceEl = document.getElementById('dmOfferPrice');
+    var btn = document.getElementById('dmOfferBtn');
+    var err = document.getElementById('dmOfferErr');
+    function current() { return form.querySelector('.dmo-card.is-on') || cards[0]; }
+    function sync() {
+      var c = current();
+      if (priceEl && c) priceEl.textContent = c.dataset.price;
+      if (c) document.dispatchEvent(new CustomEvent('dm:pack', { detail: { name: c.dataset.name, price: c.dataset.price } }));
+    }
+    cards.forEach(function (card) {
+      card.querySelector('input[type=radio]').addEventListener('change', function () {
+        cards.forEach(function (c) { c.classList.remove('is-on'); });
+        card.classList.add('is-on');
+        sync();
+      });
+    });
+    var want = new URLSearchParams(window.location.search).get('variant');
+    if (want) cards.forEach(function (c) { if (c.dataset.variant === want) { var r = c.querySelector('input[type=radio]'); if (r) { r.checked = true; r.dispatchEvent(new Event('change')); } } });
+    sync();
+
+    /* Upsell: si Liquid no lo encontró, lo busca directo en la tienda (/products/handle.js) */
+    var root = form.closest('.dmo');
+    var handle = root && root.dataset.bumpHandle;
+    var missing = Array.prototype.some.call(cards, function (c) { return !c.dataset.bump; });
+    if (handle && missing) {
+      fetch('/products/' + handle + '.js', { headers: { 'Accept': 'application/json' } })
+        .then(function (r) { if (!r.ok) throw new Error('bump'); return r.json(); })
+        .then(function (p) {
+          var gratis = null, off = null;
+          (p.variants || []).forEach(function (v) {
+            var t = (v.title || '').toLowerCase();
+            if (!gratis && (v.price === 0 || t.indexOf('gratis') > -1)) gratis = v; else if (!off) off = v;
+          });
+          var img = p.featured_image ? (p.featured_image.indexOf('//') === 0 ? 'https:' + p.featured_image : p.featured_image) : '';
+          cards.forEach(function (c) {
+            if (c.dataset.bump) return;
+            var v = c.dataset.bumpType === 'gratis' ? gratis : off;
+            if (!v) return;
+            c.dataset.bump = v.id;
+            var cb = c.querySelector('.dmo-bump__cb'); if (cb) cb.disabled = false;
+            var ph = c.querySelector('.dmo-bump__ph');
+            if (ph && img) { var im = document.createElement('img'); im.src = img; im.alt = p.title || ''; ph.replaceWith(im); }
+          });
+        })
+        .catch(function () { var a = document.getElementById('dmBumpAdm'); if (a) a.style.display = 'block'; });
+    }
+
+    form.addEventListener('submit', function () {
+      var c = current();
+      var items = [{ id: Number(c.dataset.variant), quantity: Number(c.dataset.qty), properties: { _Pack: c.dataset.name } }];
+      var bumpId = c.dataset.bump;
+      var cb = c.querySelector('.dmo-bump__cb');
+      if (bumpId && cb && cb.checked) items.push({ id: Number(bumpId), quantity: 1 });
+      if (btn) btn.disabled = true;
+      if (err) err.style.display = 'none';
+      fetch('/cart/add.js', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify({ items: items }) })
+        .then(function (r) { if (!r.ok) throw new Error('cart'); return r.json(); })
+        .then(function () { window.location.href = form.dataset.checkout === '1' ? '/checkout' : '/cart'; })
+        .catch(function () { if (btn) btn.disabled = false; if (err) err.style.display = 'block'; });
+    });
+  })();
+</script>
