@@ -1,0 +1,112 @@
+{% comment %}
+  SUAVELAND · CLOUD SOCKS · PREGUNTAS FRECUENTES
+  Para el bloque "Liquid personalizado". Hereda las fuentes del theme.
+  Lo que está entre [corchetes] completalo con tus datos reales antes de publicar.
+  Para agregar una pregunta: copiá un bloque <details>...</details> completo.
+{% endcomment %}
+
+<section class="sl-faq">
+  <div class="sl-faq__wrap">
+    <h2 class="sl-faq__title">Preguntas frecuentes</h2>
+
+    <div class="sl-faq__list">
+
+      <details class="sl-faq__item">
+        <summary class="sl-faq__q">¿Qué talle tengo que comprar?<span class="sl-faq__icon" aria-hidden="true"></span></summary>
+        <div class="sl-faq__a">
+          <p>Elegí tu talle de calzado habitual: [del 35 al 39 → talle S/M · del 40 al 44 → talle L/XL]. Si estás entre dos talles, te recomendamos el más grande para que tus dedos tengan todavía más lugar.</p>
+        </div>
+      </details>
+
+      <details class="sl-faq__item">
+        <summary class="sl-faq__q">¿Qué tiene de especial la punta ancha?<span class="sl-faq__icon" aria-hidden="true"></span></summary>
+        <div class="sl-faq__a">
+          <p>Las medias comunes terminan en punta y aprietan los dedos uno contra otro. Cloud Socks™ tiene la forma real de tu pie: más lugar adelante para que tus dedos se acomoden como cuando estás descalzo, sin presión ni roces.</p>
+        </div>
+      </details>
+
+      <details class="sl-faq__item">
+        <summary class="sl-faq__q">¿Sirven con cualquier zapatilla o zapato?<span class="sl-faq__icon" aria-hidden="true"></span></summary>
+        <div class="sl-faq__a">
+          <p>Sí. Son de caña baja y quedan bien con zapatillas, zapatos y calzado de uso diario. La punta ancha se adapta al calzado sin hacer bulto.</p>
+        </div>
+      </details>
+
+      <details class="sl-faq__item">
+        <summary class="sl-faq__q">¿De verdad ayudan con la transpiración y el olor?<span class="sl-faq__icon" aria-hidden="true"></span></summary>
+        <div class="sl-faq__a">
+          <p>Sí. Están hechas con un material que absorbe la transpiración y deja respirar el pie, así terminás el día con los pies más secos y sin ese olor incómodo al sacarte las zapatillas.</p>
+        </div>
+      </details>
+
+      <details class="sl-faq__item">
+        <summary class="sl-faq__q">¿Duran más que las medias comunes?<span class="sl-faq__icon" aria-hidden="true"></span></summary>
+        <div class="sl-faq__a">
+          <p>Están reforzadas en la punta y el talón, justo donde las medias comunes se agujerean primero. Además, la planta acolchada mantiene la comodidad lavado tras lavado.</p>
+        </div>
+      </details>
+
+      <details class="sl-faq__item">
+        <summary class="sl-faq__q">¿Cómo las lavo?<span class="sl-faq__icon" aria-hidden="true"></span></summary>
+        <div class="sl-faq__a">
+          <p>[Lavarropas con agua fría o tibia, del revés y con colores similares. No uses lavandina ni secadora para que conserven su forma y suavidad.]</p>
+        </div>
+      </details>
+
+      <details class="sl-faq__item">
+        <summary class="sl-faq__q">¿Cuánto tarda el envío?<span class="sl-faq__icon" aria-hidden="true"></span></summary>
+        <div class="sl-faq__a">
+          <p>Enviamos a todo el país. [Despachamos en 24 a 48 h hábiles y llega en 3 a 7 días hábiles según tu zona.] Cuando sale tu pedido te mandamos el número de seguimiento.</p>
+        </div>
+      </details>
+
+      <details class="sl-faq__item">
+        <summary class="sl-faq__q">¿Y si no me gustan?<span class="sl-faq__icon" aria-hidden="true"></span></summary>
+        <div class="sl-faq__a">
+          <p>Tenés 60 días de garantía sin riesgo. Si no te convencen, te las cambiamos o te devolvemos tu plata, sin vueltas. Escribinos y lo resolvemos.</p>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .sl-faq { box-sizing: border-box; width: 100%; margin: 0; padding: 0 16px; color: #111111;
+    font-family: var(--font-body-family, inherit); }
+  .sl-faq * { box-sizing: border-box; }
+  .sl-faq__wrap { max-width: 860px; margin: 0 auto; }
+
+  .sl-faq__title { margin: 0 0 20px; font-family: var(--font-heading-family, inherit); font-weight: var(--font-heading-weight, 700);
+    font-size: clamp(28px, 7vw, 42px); line-height: 1.1; letter-spacing: -.02em; color: #111111; }
+
+  .sl-faq__list { border-top: 1px solid rgba(17,17,17,.1); }
+  .sl-faq__item { border-bottom: 1px solid rgba(17,17,17,.1); }
+
+  .sl-faq__q { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding: 20px 0; font-size: 15.5px; font-weight: 500; line-height: 1.4; color: #111111; transition: opacity .2s ease; }
+  .sl-faq__q::-webkit-details-marker { display: none; }
+  .sl-faq__q::marker { content: ''; }
+  .sl-faq__q:hover { opacity: .7; }
+  .sl-faq__q:focus-visible { outline: 2px solid #111111; outline-offset: 4px; border-radius: 4px; }
+
+  /* + que gira a × */
+  .sl-faq__icon { position: relative; flex: 0 0 16px; width: 16px; height: 16px; transition: transform .3s ease; }
+  .sl-faq__icon::before, .sl-faq__icon::after { content: ''; position: absolute; left: 50%; top: 50%;
+    background: #111111; border-radius: 2px; transform: translate(-50%, -50%); }
+  .sl-faq__icon::before { width: 14px; height: 1.6px; }
+  .sl-faq__icon::after { width: 1.6px; height: 14px; }
+  .sl-faq__item[open] .sl-faq__icon { transform: rotate(45deg); }
+
+  .sl-faq__a { padding: 0 32px 22px 0; animation: slFaqIn .3s ease both; }
+  .sl-faq__a p { margin: 0; font-size: 14.5px; line-height: 1.65; color: rgba(17,17,17,.68); }
+  @keyframes slFaqIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+
+  @media screen and (min-width: 750px) {
+    .sl-faq { padding: 0 24px; }
+    .sl-faq__title { margin-bottom: 28px; }
+    .sl-faq__q { padding: 24px 0; font-size: 17px; }
+    .sl-faq__a p { font-size: 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .sl-faq__a { animation: none; } .sl-faq__icon { transition: none; } }
+</style>
