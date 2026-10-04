@@ -1,0 +1,97 @@
+{% comment %}
+  SUAVELAND · CLOUD SOCKS · RESULTADOS DE CLIENTES
+  Para el bloque "Liquid personalizado".
+  1) Completá cada porcentaje con el resultado REAL de tu encuesta (solo el número, sin %).
+  2) Si dejás uno vacío, ese dato no se muestra en la tienda.
+  3) Completá la nota de abajo con la cantidad real de clientes encuestados.
+{% endcomment %}
+
+{%- assign sl_dato_1 = '' -%}  {%- comment -%} ← % que terminó el día sin ampollas {%- endcomment -%}
+{%- assign sl_dato_2 = '' -%}  {%- comment -%} ← % sin olor al sacarse las zapatillas {%- endcomment -%}
+{%- assign sl_dato_3 = '' -%}  {%- comment -%} ← % con menos transpiración {%- endcomment -%}
+{%- assign sl_dato_4 = '' -%}  {%- comment -%} ← % que llegó a la noche sin dolor de pies {%- endcomment -%}
+{%- assign sl_nota = 'Encuesta a [X] clientes de Cloud Socks™, 2026.' -%}
+
+{%- capture sl_items -%}
+  {%- if sl_dato_1 != blank or request.design_mode -%}<li class="sl-res__item"><span class="sl-res__num" data-to="{{ sl_dato_1 }}">{% if sl_dato_1 != blank %}{{ sl_dato_1 }}{% else %}[X]{% endif %}<span class="sl-res__pct">%</span></span><span class="sl-res__label">Terminó el día sin ampollas</span></li>{%- endif -%}
+  {%- if sl_dato_2 != blank or request.design_mode -%}<li class="sl-res__item"><span class="sl-res__num" data-to="{{ sl_dato_2 }}">{% if sl_dato_2 != blank %}{{ sl_dato_2 }}{% else %}[X]{% endif %}<span class="sl-res__pct">%</span></span><span class="sl-res__label">Sin olor al sacarse las zapatillas</span></li>{%- endif -%}
+  {%- if sl_dato_3 != blank or request.design_mode -%}<li class="sl-res__item"><span class="sl-res__num" data-to="{{ sl_dato_3 }}">{% if sl_dato_3 != blank %}{{ sl_dato_3 }}{% else %}[X]{% endif %}<span class="sl-res__pct">%</span></span><span class="sl-res__label">Menos transpiración que con sus medias de siempre</span></li>{%- endif -%}
+  {%- if sl_dato_4 != blank or request.design_mode -%}<li class="sl-res__item"><span class="sl-res__num" data-to="{{ sl_dato_4 }}">{% if sl_dato_4 != blank %}{{ sl_dato_4 }}{% else %}[X]{% endif %}<span class="sl-res__pct">%</span></span><span class="sl-res__label">Llegó a la noche sin dolor de pies</span></li>{%- endif -%}
+{%- endcapture -%}
+
+{%- if sl_items != blank -%}
+<section class="sl-res">
+  <div class="sl-res__wrap">
+    <p class="sl-res__eyebrow">Resultados reales</p>
+    <h2 class="sl-res__title">Lo que sienten al final del día</h2>
+    <p class="sl-res__desc">Le preguntamos a quienes ya las usan cómo terminaron el día. Esto respondieron:</p>
+
+    <ul class="sl-res__grid" role="list">{{ sl_items }}</ul>
+
+    {%- if sl_nota != blank -%}<p class="sl-res__note">{{ sl_nota }}</p>{%- endif -%}
+  </div>
+</section>
+
+<style>
+  .sl-res { box-sizing: border-box; width: 100%; margin: 0; padding: 0 16px; color: #111111;
+    font-family: var(--font-body-family, inherit); text-align: center; }
+  .sl-res * { box-sizing: border-box; }
+  .sl-res__wrap { max-width: 1080px; margin: 0 auto; }
+
+  .sl-res__eyebrow { margin: 0 0 10px; font-size: 11px; font-weight: 500; letter-spacing: .16em;
+    text-transform: uppercase; color: rgba(17,17,17,.55); }
+  .sl-res__title { margin: 0; font-family: var(--font-heading-family, inherit); font-weight: var(--font-heading-weight, 700);
+    font-size: clamp(28px, 7vw, 46px); line-height: 1.1; letter-spacing: -.02em; color: #111111; }
+  .sl-res__desc { max-width: 520px; margin: 12px auto 0; font-size: 15px; line-height: 1.55; color: rgba(17,17,17,.62); }
+
+  .sl-res__grid { list-style: none; margin: 32px 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0;
+    border-top: 1px solid rgba(17,17,17,.08); }
+  .sl-res__item { margin: 0; padding: 24px 10px; display: flex; flex-direction: column; align-items: center; gap: 8px;
+    border-bottom: 1px solid rgba(17,17,17,.08); }
+  .sl-res__item:nth-child(odd) { border-right: 1px solid rgba(17,17,17,.08); }
+  .sl-res__item:last-child:nth-child(odd) { grid-column: 1 / -1; border-right: 0; }
+
+  .sl-res__num { display: inline-flex; align-items: flex-start; font-family: var(--font-heading-family, inherit);
+    font-weight: var(--font-heading-weight, 700); font-size: clamp(44px, 13vw, 72px); line-height: 1;
+    letter-spacing: -.04em; color: #111111; font-variant-numeric: tabular-nums; }
+  .sl-res__pct { font-size: .45em; margin: .12em 0 0 .04em; letter-spacing: 0; }
+  .sl-res__label { max-width: 190px; font-size: 13px; line-height: 1.4; color: rgba(17,17,17,.7); text-wrap: balance; }
+
+  .sl-res__note { margin: 18px 0 0; font-size: 11.5px; color: rgba(17,17,17,.45); }
+
+  @media screen and (min-width: 750px) {
+    .sl-res { padding: 0 24px; }
+    .sl-res__desc { font-size: 17px; }
+    .sl-res__grid { grid-template-columns: repeat({% if sl_dato_4 != blank or request.design_mode %}4{% else %}3{% endif %}, minmax(0, 1fr)); margin-top: 48px; }
+    .sl-res__item { padding: 36px 16px; border-right: 1px solid rgba(17,17,17,.08) !important; grid-column: auto !important; }
+    .sl-res__item:last-child { border-right: 0 !important; }
+    .sl-res__label { font-size: 14.5px; max-width: 210px; }
+    .sl-res__note { font-size: 12.5px; margin-top: 22px; }
+  }
+</style>
+
+<script>
+  (function () {
+    var nums = document.querySelectorAll('.sl-res__num[data-to]');
+    if (!nums.length || !('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        io.unobserve(e.target);
+        var el = e.target, to = parseInt(el.getAttribute('data-to'), 10);
+        if (isNaN(to)) return;
+        var pct = el.querySelector('.sl-res__pct').outerHTML, t0 = null;
+        function step(t) {
+          if (!t0) t0 = t;
+          var p = Math.min((t - t0) / 1200, 1), v = Math.round(to * (1 - Math.pow(1 - p, 3)));
+          el.innerHTML = v + pct;
+          if (p < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      });
+    }, { threshold: 0.4 });
+    nums.forEach(function (n) { io.observe(n); });
+  })();
+</script>
+{%- endif -%}
