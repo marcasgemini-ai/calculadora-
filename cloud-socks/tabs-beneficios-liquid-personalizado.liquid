@@ -1,14 +1,14 @@
 {%- comment -%}
   CLOUD SOCKS · PESTAÑAS DE BENEFICIOS · Para el bloque "Liquid personalizado".
   IMÁGENES: subilas en Contenido → Archivos, tocá "Copiar enlace" y pegá cada enlace entre las comillas de abajo.
-  Si dejás una vacía, se muestra un recuadro crema en su lugar.
+  Si dejás una vacía, se muestra un recuadro gris claro en su lugar.
 {%- endcomment -%}
 {%- assign img1 = '' -%}
 {%- assign img2 = '' -%}
 {%- assign img3 = '' -%}
 
 <style>
-  #cs-tabs { --cs-azul: #1B2A4A; --cs-crema: #F5F1E8; --cs-borde: rgba(27,42,74,.14);
+  #cs-tabs { --cs-azul: #111111; --cs-crema: #FFFFFF; --cs-gris: #F4F4F4; --cs-borde: rgba(17,17,17,.14);
     padding: 40px 16px; color: var(--cs-azul); font-family: inherit; }
   #cs-tabs .cs-tabs-wrap { max-width: 1120px; margin: 0 auto; }
 
@@ -30,7 +30,7 @@
   #cs-tabs .cs-panel.is-active { animation: csFade .45s ease both; }
   @keyframes csFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
-  #cs-tabs .cs-media { border-radius: 18px; overflow: hidden; aspect-ratio: 1 / 1; background: var(--cs-crema); }
+  #cs-tabs .cs-media { border-radius: 18px; overflow: hidden; aspect-ratio: 1 / 1; background: var(--cs-gris); }
   #cs-tabs .cs-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
   #cs-tabs .cs-kicker { font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; opacity: .6; margin: 0 0 10px; }
