@@ -1,0 +1,144 @@
+{% comment %}
+  SUAVELAND · CLOUD SOCKS · SELECTOR DE PACKS (oferta)
+  Para el bloque "Liquid personalizado" de la PÁGINA DE PRODUCTO, arriba del botón "Agregar al carrito".
+  - Calcula los precios solo, a partir del precio del producto en Shopify.
+  - Al elegir un pack, cambia la cantidad del formulario del theme (tiene que estar
+    activado el "Selector de cantidad" en el bloque de compra; si querés, lo ocultamos abajo).
+  - IMPORTANTE: el descuento real (3x2 y 6x4) lo tenés que crear en Shopify →
+    Descuentos → "Compra X y llévate Y" (automático). Este bloque solo lo muestra.
+{% endcomment %}
+
+{%- assign sl_precio = product.selected_or_first_available_variant.price -%}
+
+{%- comment -%} Packs: cantidad que se lleva · cantidad que paga {%- endcomment -%}
+{%- assign p2_lleva = 3 -%}{%- assign p2_paga = 2 -%}
+{%- assign p3_lleva = 6 -%}{%- assign p3_paga = 4 -%}
+
+{%- assign p2_total = sl_precio | times: p2_paga -%}
+{%- assign p2_antes = sl_precio | times: p2_lleva -%}
+{%- assign p3_total = sl_precio | times: p3_paga -%}
+{%- assign p3_antes = sl_precio | times: p3_lleva -%}
+{%- assign p3_ahorro = p3_lleva | minus: p3_paga | times: 100 | divided_by: p3_lleva | round -%}
+
+<div class="sl-packs" role="radiogroup" aria-label="Elegí tu pack">
+
+  <label class="sl-pack">
+    <input type="radio" name="sl-pack" value="1">
+    <span class="sl-pack__radio" aria-hidden="true"></span>
+    <span class="sl-pack__info">
+      <span class="sl-pack__name">1 par</span>
+    </span>
+    <span class="sl-pack__price">
+      <span class="sl-pack__now">{{ sl_precio | money_without_trailing_zeros }}</span>
+    </span>
+  </label>
+
+  <label class="sl-pack">
+    <span class="sl-pack__badge">Más elegido</span>
+    <input type="radio" name="sl-pack" value="{{ p2_lleva }}" checked>
+    <span class="sl-pack__radio" aria-hidden="true"></span>
+    <span class="sl-pack__info">
+      <span class="sl-pack__name">Llevá {{ p2_lleva }}, pagá {{ p2_paga }}</span>
+      <span class="sl-pack__sub">1 par de regalo</span>
+    </span>
+    <span class="sl-pack__price">
+      <span class="sl-pack__now">{{ p2_total | money_without_trailing_zeros }}</span>
+      <s class="sl-pack__was">{{ p2_antes | money_without_trailing_zeros }}</s>
+    </span>
+  </label>
+
+  <label class="sl-pack">
+    <span class="sl-pack__badge">Mejor precio</span>
+    <input type="radio" name="sl-pack" value="{{ p3_lleva }}">
+    <span class="sl-pack__radio" aria-hidden="true"></span>
+    <span class="sl-pack__info">
+      <span class="sl-pack__name">Llevá {{ p3_lleva }}, pagá {{ p3_paga }}</span>
+      <span class="sl-pack__sub">2 pares de regalo <span class="sl-pack__save">Ahorrás {{ p3_ahorro }}%</span></span>
+    </span>
+    <span class="sl-pack__price">
+      <span class="sl-pack__now">{{ p3_total | money_without_trailing_zeros }}</span>
+      <s class="sl-pack__was">{{ p3_antes | money_without_trailing_zeros }}</s>
+    </span>
+  </label>
+
+</div>
+
+<style>
+  .sl-packs { display: flex; flex-direction: column; gap: 12px; width: 100%; margin: 14px 0 10px;
+    font-family: inherit; color: #111111; }
+  .sl-packs * { box-sizing: border-box; }
+
+  .sl-pack { position: relative; display: flex; align-items: center; gap: 14px; margin: 0;
+    padding: 18px 18px; min-height: 76px; cursor: pointer; background: #FFFFFF;
+    border: 1.5px solid rgba(17,17,17,.14); border-radius: 14px;
+    transition: border-color .2s ease, box-shadow .2s ease; }
+  .sl-pack:hover { border-color: rgba(17,17,17,.4); }
+  .sl-pack input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+
+  /* círculo */
+  .sl-pack__radio { flex: 0 0 22px; width: 22px; height: 22px; border-radius: 50%;
+    border: 1.5px solid rgba(17,17,17,.3); position: relative; transition: border-color .2s ease; }
+  .sl-pack__radio::after { content: ''; position: absolute; inset: 4px; border-radius: 50%;
+    background: #111111; transform: scale(0); transition: transform .2s ease; }
+
+  /* seleccionado */
+  .sl-pack:has(input:checked) { border: 2px solid #111111; padding: 17.5px 17.5px; box-shadow: 0 8px 22px -14px rgba(0,0,0,.35); }
+  .sl-pack:has(input:checked) .sl-pack__radio { border-color: #111111; }
+  .sl-pack:has(input:checked) .sl-pack__radio::after { transform: scale(1); }
+  .sl-pack:has(input:focus-visible) { outline: 2px solid #111111; outline-offset: 3px; }
+
+  /* texto */
+  .sl-pack__info { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+  .sl-pack__name { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px;
+    font-family: var(--font-heading-family, inherit); font-weight: var(--font-heading-weight, 700);
+    font-size: 16px; line-height: 1.25; color: #111111; }
+  .sl-pack__sub { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; font-size: 13px; line-height: 1.3; color: rgba(17,17,17,.6); }
+  .sl-pack__save { display: inline-flex; align-items: center; padding: 3px 8px; border-radius: 6px; white-space: nowrap;
+    background: #F0F0F0; font-family: inherit; font-weight: 600; font-size: 12px; line-height: 1.2; color: #111111; }
+
+  /* precio */
+  .sl-pack__price { flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-end; gap: 2px; text-align: right; }
+  .sl-pack__now { font-family: var(--font-heading-family, inherit); font-weight: var(--font-heading-weight, 700);
+    font-size: 20px; line-height: 1.1; letter-spacing: -.01em; color: #111111; white-space: nowrap; }
+  .sl-pack__was { font-size: 13px; line-height: 1.2; color: rgba(17,17,17,.45); white-space: nowrap; }
+
+  /* etiqueta */
+  .sl-pack__badge { position: absolute; top: 0; right: 16px; transform: translateY(-50%);
+    padding: 5px 11px; border-radius: 999px; background: #111111; color: #FFFFFF;
+    font-family: var(--font-heading-family, inherit); font-weight: 700; font-size: 11px;
+    line-height: 1; letter-spacing: .04em; white-space: nowrap; }
+
+  @media screen and (max-width: 380px) {
+    .sl-pack { gap: 12px; padding: 16px 14px; }
+    .sl-pack:has(input:checked) { padding: 15.5px 13.5px; }
+    .sl-pack__name { font-size: 15px; }
+    .sl-pack__now { font-size: 18px; }
+  }
+</style>
+
+<script>
+  (function () {
+    var packs = document.querySelectorAll('.sl-packs input[name="sl-pack"]');
+    if (!packs.length) return;
+    function setQty(q) {
+      var form = document.querySelector('form[action*="/cart/add"]');
+      var scope = form ? (form.closest('section') || document) : document;
+      var inputs = scope.querySelectorAll('input[name="quantity"]');
+      if (!inputs.length) inputs = document.querySelectorAll('input[name="quantity"]');
+      inputs.forEach(function (i) {
+        i.value = q;
+        i.dispatchEvent(new Event('input', { bubbles: true }));
+        i.dispatchEvent(new Event('change', { bubbles: true }));
+      });
+      if (form && !form.querySelector('input[name="quantity"]')) {
+        var h = document.createElement('input');
+        h.type = 'hidden'; h.name = 'quantity'; h.value = q; form.appendChild(h);
+      }
+    }
+    packs.forEach(function (r) {
+      r.addEventListener('change', function () { if (r.checked) setQty(r.value); });
+    });
+    var checked = document.querySelector('.sl-packs input[name="sl-pack"]:checked');
+    if (checked) setQty(checked.value);
+  })();
+</script>
