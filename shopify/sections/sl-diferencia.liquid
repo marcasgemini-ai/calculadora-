@@ -95,12 +95,36 @@
   }
   .sl-dif__buttons { margin-top: 3rem; }
 
+  /* CTA tipo píldora */
+  .sl-dif__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 5.6rem;
+    padding: 1.4rem 4rem;
+    border: 0;
+    border-radius: 10rem;
+    background: var(--sl-cta-bg, #2B2B2B);
+    color: var(--sl-cta-text, #FFFFFF);
+    font-family: var(--font-body-family);
+    font-weight: var(--font-body-weight-bold, 700);
+    font-size: 1.6rem;
+    line-height: 1.2;
+    letter-spacing: 0;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: opacity .2s ease, transform .2s ease;
+  }
+  .sl-dif__cta:hover { opacity: .9; transform: translateY(-1px); }
+  .sl-dif__cta:focus-visible { outline: 0.2rem solid var(--sl-cta-bg, #2B2B2B); outline-offset: 0.3rem; }
+
   /* MOBILE: margen lateral para que nada toque el borde */
   @media screen and (max-width: 749px) {
     .sl-dif.page-width { padding-left: 2rem; padding-right: 2rem; }
     .sl-dif__item { align-items: flex-start; }
     .sl-dif__icon { margin-top: 0.2rem; }
-    .sl-dif__buttons .button { width: 100%; }
+    .sl-dif__cta { width: 100%; padding-left: 2rem; padding-right: 2rem; }
   }
 </style>
 
@@ -158,7 +182,8 @@
           <div class="sl-dif__buttons">
             <a
               href="{{ section.settings.button_link | default: '#' }}"
-              class="button{% if section.settings.button_style_secondary %} button--secondary{% else %} button--primary{% endif %}"
+              class="sl-dif__cta"
+              style="--sl-cta-bg: {{ section.settings.button_bg }}; --sl-cta-text: {{ section.settings.button_text_color }};"
             >
               {{- section.settings.button_label | escape -}}
             </a>
@@ -281,12 +306,8 @@
       "id": "button_link",
       "label": "Enlace del botón"
     },
-    {
-      "type": "checkbox",
-      "id": "button_style_secondary",
-      "label": "Usar estilo de botón con contorno",
-      "default": false
-    },
+    { "type": "color", "id": "button_bg", "label": "Color del botón", "default": "#2B2B2B" },
+    { "type": "color", "id": "button_text_color", "label": "Color del texto del botón", "default": "#FFFFFF" },
     {
       "type": "header",
       "content": "Colores"
