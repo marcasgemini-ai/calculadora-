@@ -1,0 +1,335 @@
+{%- comment -%}
+  SUAVELAND · CLOUD SOCKS · BANNER PRINCIPAL (hero)
+  Sección nativa · Imágenes desde el editor · Tipografía, colores y botón del theme
+  Computadora: imagen horizontal (ej. 1920 x 820) con espacio libre a la izquierda.
+  Celular: imagen cuadrada o vertical (ej. 1080 x 1080). Opcional.
+{%- endcomment -%}
+
+{%- style -%}
+  #sl-hero-{{ section.id }} {
+    --sl-focus: {{ section.settings.mobile_focus }}%;
+    --sl-min-h: {{ section.settings.desktop_height }}px;
+    --sl-overlay: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+  }
+{%- endstyle -%}
+
+<style>
+  .sl-hero { position: relative; width: 100%; overflow: hidden; }
+  .sl-hero * { box-sizing: border-box; }
+
+  /* ---------- CELULAR (base) ---------- */
+  .sl-hero__media {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: rgba(var(--color-foreground), 0.04);
+  }
+  .sl-hero__media picture,
+  .sl-hero__media img,
+  .sl-hero__media .placeholder-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .sl-hero__media img { object-fit: cover; object-position: var(--sl-focus, 70%) center; }
+
+  .sl-hero__seal {
+    position: absolute;
+    z-index: 2;
+    top: 1.4rem;
+    right: 1.4rem;
+    width: 8.2rem;
+    height: 8.2rem;
+    padding: 1rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: rgb(var(--color-button));
+    color: rgb(var(--color-button-text));
+    transform: rotate(-10deg);
+    box-shadow: 0 0 0 0.4rem rgba(255, 255, 255, 0.92), 0 1rem 2.4rem -1rem rgba(0, 0, 0, 0.5);
+  }
+  .sl-hero__seal::before {
+    content: '';
+    position: absolute;
+    inset: 0.5rem;
+    border-radius: 50%;
+    border: 0.1rem dashed currentColor;
+    opacity: 0.45;
+  }
+  .sl-hero__seal span {
+    position: relative;
+    font-family: var(--font-heading-family);
+    font-weight: var(--font-heading-weight);
+    font-size: 1.25rem;
+    line-height: 1.05;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .sl-hero__content { position: relative; z-index: 2; padding: 2.6rem 2rem 3.2rem; }
+  .sl-hero__col { width: 100%; max-width: 52rem; margin: 0 auto; text-align: center; }
+  .sl-hero__col > * { margin: 0; }
+  .sl-hero__col > * + * { margin-top: 1.2rem; }
+  .sl-hero__title { text-wrap: balance; overflow-wrap: break-word; }
+  .sl-hero__offer { text-wrap: balance; }
+
+  .sl-hero__reviews {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem 0.8rem;
+  }
+  .sl-hero__stars { letter-spacing: 0.2rem; color: rgb(var(--color-foreground)); }
+
+  .sl-hero__buttons { margin-top: 2rem !important; }
+  .sl-hero__buttons .button { width: 100%; gap: 1rem; }
+  .sl-hero__btn--pill {
+    border-radius: 10rem;
+    min-height: 5.6rem;
+  }
+  .sl-hero__btn--pill::before,
+  .sl-hero__btn--pill::after { border-radius: 10rem; }
+  .sl-hero__buttons svg {
+    width: 1.8rem;
+    height: 1.8rem;
+    flex: 0 0 1.8rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 0.2s ease;
+  }
+  .sl-hero__buttons .button:hover svg { transform: translateX(3px); }
+
+  .sl-hero__guarantee {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    opacity: 0.8;
+  }
+  .sl-hero__guarantee svg {
+    width: 1.8rem;
+    height: 1.8rem;
+    flex: 0 0 1.8rem;
+    fill: rgb(var(--color-foreground));
+    stroke: rgb(var(--color-background));
+    stroke-width: 1.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* ---------- TABLET (750–989): imagen ancha arriba, texto abajo ---------- */
+  @media screen and (min-width: 750px) and (max-width: 989px) {
+    .sl-hero__media { aspect-ratio: 16 / 9; }
+    .sl-hero__media img { object-position: center; }
+    .sl-hero__seal { top: 2.2rem; right: 2.2rem; width: 10.4rem; height: 10.4rem; }
+    .sl-hero__seal span { font-size: 1.5rem; }
+    .sl-hero__content { padding: 4rem 4rem 4.8rem; }
+    .sl-hero__col { max-width: 60rem; }
+    .sl-hero__buttons .button { max-width: 42rem; }
+  }
+
+  /* ---------- COMPUTADORA (990+): imagen de fondo, texto a la izquierda ---------- */
+  @media screen and (min-width: 990px) {
+    .sl-hero { min-height: var(--sl-min-h, 620px); display: flex; align-items: center; }
+    .sl-hero__media { position: absolute; inset: 0; aspect-ratio: auto; }
+    .sl-hero__media img { object-position: center; }
+    .sl-hero--overlay .sl-hero__media::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(
+        90deg,
+        rgba(var(--color-background), var(--sl-overlay, 1)) 0%,
+        rgba(var(--color-background), calc(var(--sl-overlay, 1) * 0.94)) 32%,
+        rgba(var(--color-background), 0) 60%
+      );
+    }
+    .sl-hero__seal { top: 13%; right: auto; left: 52%; width: 12rem; height: 12rem; }
+    .sl-hero__seal span { font-size: 1.7rem; }
+    .sl-hero__content { width: 100%; }
+    .sl-hero__col { width: 46%; max-width: 60rem; margin: 0; }
+    .sl-hero__col--left { text-align: left; }
+    .sl-hero__col--left .sl-hero__reviews,
+    .sl-hero__col--left .sl-hero__guarantee { justify-content: flex-start; }
+    .sl-hero__col > * + * { margin-top: 1.6rem; }
+    .sl-hero__buttons { margin-top: 2.6rem !important; }
+    .sl-hero__buttons .button { max-width: 46rem; }
+    .sl-hero__btn--pill { min-height: 6.4rem; }
+  }
+</style>
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div
+    id="sl-hero-{{ section.id }}"
+    class="sl-hero{% if section.settings.show_overlay %} sl-hero--overlay{% endif %}"
+  >
+    <div class="sl-hero__media">
+      {%- if section.settings.image != blank -%}
+        <picture>
+          {%- if section.settings.image_mobile != blank -%}
+            <source
+              media="(max-width: 749px)"
+              srcset="{{ section.settings.image_mobile | image_url: width: 750 }} 750w, {{ section.settings.image_mobile | image_url: width: 1080 }} 1080w"
+              sizes="100vw"
+            >
+          {%- endif -%}
+          {{
+            section.settings.image
+            | image_url: width: 1920
+            | image_tag:
+              loading: 'eager',
+              fetchpriority: 'high',
+              sizes: '100vw',
+              widths: '750, 1100, 1500, 1920, 2400',
+              alt: section.settings.image.alt
+          }}
+        </picture>
+      {%- else -%}
+        {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+
+      {%- if section.settings.seal != blank -%}
+        <span class="sl-hero__seal" aria-hidden="true"><span>{{ section.settings.seal | escape }}</span></span>
+      {%- endif -%}
+    </div>
+
+    <div class="sl-hero__content page-width">
+      <div class="sl-hero__col sl-hero__col--{{ section.settings.desktop_alignment }}">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="caption-with-letter-spacing">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.heading != blank -%}
+          <h1 class="sl-hero__title {{ section.settings.heading_size }}">{{ section.settings.heading }}</h1>
+        {%- endif -%}
+
+        {%- if section.settings.offer != blank -%}
+          <p class="sl-hero__offer h3">{{ section.settings.offer }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.reviews != blank -%}
+          <p class="sl-hero__reviews">
+            <span class="sl-hero__stars" aria-hidden="true">★★★★★</span>
+            <span>{{ section.settings.reviews }}</span>
+          </p>
+        {%- endif -%}
+
+        {%- if section.settings.button_label != blank -%}
+          <div class="sl-hero__buttons">
+            <a
+              href="{{ section.settings.button_link | default: '#' }}"
+              class="button button--primary{% if section.settings.button_pill %} sl-hero__btn--pill{% endif %}"
+            >
+              {{- section.settings.button_label | escape -}}
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.guarantee != blank -%}
+          <p class="sl-hero__guarantee">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.3 1.7 2.8-.2.9 2.7 2.4 1.5-.6 2.8 1.2 2.6-2 2 .1 2.8-2.7.8-1.4 2.5-2.8-.5L12 23l-2.2-1.8-2.8.5-1.4-2.5-2.7-.8.1-2.8-2-2 1.2-2.6-.6-2.8 2.4-1.5.9-2.7 2.8.2z"/><path d="M8.5 12.3l2.3 2.3 4.7-4.9"/></svg>
+            <span>{{ section.settings.guarantee }}</span>
+          </p>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Banner principal",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "header", "content": "Imágenes" },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Imagen (computadora)",
+      "info": "Horizontal, 1920 x 820 px, con espacio libre a la izquierda para el texto"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Imagen (celular, opcional)",
+      "info": "Cuadrada, 1080 x 1080 px. Si la dejás vacía se usa la de computadora"
+    },
+    {
+      "type": "range",
+      "id": "mobile_focus",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Encuadre en celular (izquierda ↔ derecha)",
+      "default": 70,
+      "info": "Se usa cuando no hay imagen de celular"
+    },
+    { "type": "range", "id": "desktop_height", "min": 400, "max": 900, "step": 20, "unit": "px", "label": "Alto en computadora", "default": 620 },
+    { "type": "checkbox", "id": "show_overlay", "label": "Degradado detrás del texto (computadora)", "default": true },
+    { "type": "range", "id": "overlay_opacity", "min": 0, "max": 100, "step": 5, "unit": "%", "label": "Intensidad del degradado", "default": 100 },
+    { "type": "text", "id": "seal", "label": "Sello redondo (opcional)", "default": "Punta ancha" },
+
+    { "type": "header", "content": "Contenido" },
+    { "type": "text", "id": "eyebrow", "label": "Subtítulo", "default": "La primera media de Argentina con punta ancha" },
+    { "type": "inline_richtext", "id": "heading", "label": "Encabezado", "default": "Chau dedos apretados" },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Tamaño del encabezado",
+      "default": "h0",
+      "options": [
+        { "value": "h2", "label": "Pequeño" },
+        { "value": "h1", "label": "Mediano" },
+        { "value": "h0", "label": "Grande" }
+      ]
+    },
+    { "type": "inline_richtext", "id": "offer", "label": "Oferta (opcional)", "info": "Ej: 3x2 en todos los packs + envío gratis" },
+    { "type": "inline_richtext", "id": "reviews", "label": "Texto junto a las estrellas (opcional)", "info": "Ej: +1.200 clientes felices. Usalo solo con datos reales" },
+    {
+      "type": "select",
+      "id": "desktop_alignment",
+      "label": "Alineación del texto en computadora",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Izquierda" },
+        { "value": "center", "label": "Centro" }
+      ]
+    },
+
+    { "type": "header", "content": "Botón" },
+    { "type": "text", "id": "button_label", "label": "Etiqueta del botón", "default": "Quiero mis Cloud Socks" },
+    { "type": "url", "id": "button_link", "label": "Enlace del botón" },
+    { "type": "checkbox", "id": "button_pill", "label": "Botón redondeado (píldora)", "default": true },
+    { "type": "text", "id": "guarantee", "label": "Texto de garantía (opcional)", "default": "60 días de garantía sin riesgo" },
+
+    { "type": "header", "content": "Colores" },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Esquema de colores",
+      "default": "background-2",
+      "options": [
+        { "value": "accent-1", "label": "Acento 1" },
+        { "value": "accent-2", "label": "Acento 2" },
+        { "value": "background-1", "label": "Fondo 1" },
+        { "value": "background-2", "label": "Fondo 2" },
+        { "value": "inverse", "label": "Inverso" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Banner principal" }
+  ]
+}
+{% endschema %}
