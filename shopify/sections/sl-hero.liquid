@@ -93,18 +93,6 @@
   }
   .sl-hero__btn--pill::before,
   .sl-hero__btn--pill::after { border-radius: 10rem; }
-  .sl-hero__buttons svg {
-    width: 1.8rem;
-    height: 1.8rem;
-    flex: 0 0 1.8rem;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    transition: transform 0.2s ease;
-  }
-  .sl-hero__buttons .button:hover svg { transform: translateX(3px); }
 
   .sl-hero__guarantee {
     display: flex;
@@ -229,7 +217,6 @@
               class="button button--primary{% if section.settings.button_pill %} sl-hero__btn--pill{% endif %}"
             >
               {{- section.settings.button_label | escape -}}
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </a>
           </div>
         {%- endif -%}
