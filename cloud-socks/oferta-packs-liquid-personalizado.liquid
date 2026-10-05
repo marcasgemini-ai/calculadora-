@@ -1,144 +1,166 @@
 {% comment %}
-  SUAVELAND · CLOUD SOCKS · SELECTOR DE PACKS (oferta)
+  SUAVELAND · CLOUD SOCKS · SELECTOR DE PACKS (oferta premium)
   Para el bloque "Liquid personalizado" de la PÁGINA DE PRODUCTO, arriba del botón "Agregar al carrito".
-  - Calcula los precios solo, a partir del precio del producto en Shopify.
-  - Al elegir un pack, cambia la cantidad del formulario del theme (tiene que estar
-    activado el "Selector de cantidad" en el bloque de compra; si querés, lo ocultamos abajo).
-  - IMPORTANTE: el descuento real (3x2 y 6x4) lo tenés que crear en Shopify →
-    Descuentos → "Compra X y llévate Y" (automático). Este bloque solo lo muestra.
+
+  CÓMO COBRAR EL PRECIO CORRECTO (elegí una):
+  A) RECOMENDADO · Variantes: en el producto creá la opción "Pack" con 4 variantes
+     (1 par / 3 pares / 6 pares / 12 pares) con estos precios. Copiá el ID de cada variante
+     (se ve en la URL al editarla: .../variants/123456789) y pegalo en pX_variante.
+     El selector elige la variante correcta y el carrito cobra el precio exacto.
+  B) Sin variantes: dejá pX_variante vacío. El selector cambia la cantidad (1/3/6/12),
+     pero el descuento lo tenés que aplicar con una app de descuentos por cantidad.
 {% endcomment %}
 
-{%- assign sl_precio = product.selected_or_first_available_variant.price -%}
+{%- comment -%} ===== PACK 1 ===== {%- endcomment -%}
+{%- assign p1_titulo = '1 par' -%}
+{%- assign p1_sub = 'Para probarlas' -%}
+{%- assign p1_cant = 1 -%}
+{%- assign p1_precio = '$33.900' -%}
+{%- assign p1_antes = '' -%}
+{%- assign p1_unidad = '' -%}
+{%- assign p1_ahorro = '' -%}
+{%- assign p1_etiqueta = '' -%}
+{%- assign p1_variante = '' -%}
 
-{%- comment -%} Packs: cantidad que se lleva · cantidad que paga {%- endcomment -%}
-{%- assign p2_lleva = 3 -%}{%- assign p2_paga = 2 -%}
-{%- assign p3_lleva = 6 -%}{%- assign p3_paga = 4 -%}
+{%- comment -%} ===== PACK 2 ===== {%- endcomment -%}
+{%- assign p2_titulo = 'Llevá 3, pagá 2' -%}
+{%- assign p2_sub = '1 par de regalo' -%}
+{%- assign p2_cant = 3 -%}
+{%- assign p2_precio = '$46.900' -%}
+{%- assign p2_antes = '$101.700' -%}
+{%- assign p2_unidad = '$15.633 c/u' -%}
+{%- assign p2_ahorro = 'Ahorrás 54%' -%}
+{%- assign p2_etiqueta = '' -%}
+{%- assign p2_variante = '' -%}
 
-{%- assign p2_total = sl_precio | times: p2_paga -%}
-{%- assign p2_antes = sl_precio | times: p2_lleva -%}
-{%- assign p3_total = sl_precio | times: p3_paga -%}
-{%- assign p3_antes = sl_precio | times: p3_lleva -%}
-{%- assign p3_ahorro = p3_lleva | minus: p3_paga | times: 100 | divided_by: p3_lleva | round -%}
+{%- comment -%} ===== PACK 3 (seleccionado por defecto) ===== {%- endcomment -%}
+{%- assign p3_titulo = 'Llevá 6, pagá 3' -%}
+{%- assign p3_sub = '3 pares de regalo' -%}
+{%- assign p3_cant = 6 -%}
+{%- assign p3_precio = '$69.900' -%}
+{%- assign p3_antes = '$203.400' -%}
+{%- assign p3_unidad = '$11.650 c/u' -%}
+{%- assign p3_ahorro = 'Ahorrás 66%' -%}
+{%- assign p3_etiqueta = 'Más elegido' -%}
+{%- assign p3_variante = '' -%}
+
+{%- comment -%} ===== PACK 4 ===== (completá el precio real del 12x6) {%- endcomment -%}
+{%- assign p4_titulo = 'Llevá 12, pagá 6' -%}
+{%- assign p4_sub = '6 pares de regalo' -%}
+{%- assign p4_cant = 12 -%}
+{%- assign p4_precio = '$139.800' -%}
+{%- assign p4_antes = '$406.800' -%}
+{%- assign p4_unidad = '$11.650 c/u' -%}
+{%- assign p4_ahorro = 'Ahorrás 66%' -%}
+{%- assign p4_etiqueta = 'Máximo ahorro' -%}
+{%- assign p4_variante = '' -%}
+
+{%- assign sl_default = 3 -%}
 
 <div class="sl-packs" role="radiogroup" aria-label="Elegí tu pack">
-
-  <label class="sl-pack">
-    <input type="radio" name="sl-pack" value="1">
-    <span class="sl-pack__radio" aria-hidden="true"></span>
-    <span class="sl-pack__info">
-      <span class="sl-pack__name">1 par</span>
-    </span>
-    <span class="sl-pack__price">
-      <span class="sl-pack__now">{{ sl_precio | money_without_trailing_zeros }}</span>
-    </span>
-  </label>
-
-  <label class="sl-pack">
-    <span class="sl-pack__badge">Más elegido</span>
-    <input type="radio" name="sl-pack" value="{{ p2_lleva }}" checked>
-    <span class="sl-pack__radio" aria-hidden="true"></span>
-    <span class="sl-pack__info">
-      <span class="sl-pack__name">Llevá {{ p2_lleva }}, pagá {{ p2_paga }}</span>
-      <span class="sl-pack__sub">1 par de regalo</span>
-    </span>
-    <span class="sl-pack__price">
-      <span class="sl-pack__now">{{ p2_total | money_without_trailing_zeros }}</span>
-      <s class="sl-pack__was">{{ p2_antes | money_without_trailing_zeros }}</s>
-    </span>
-  </label>
-
-  <label class="sl-pack">
-    <span class="sl-pack__badge">Mejor precio</span>
-    <input type="radio" name="sl-pack" value="{{ p3_lleva }}">
-    <span class="sl-pack__radio" aria-hidden="true"></span>
-    <span class="sl-pack__info">
-      <span class="sl-pack__name">Llevá {{ p3_lleva }}, pagá {{ p3_paga }}</span>
-      <span class="sl-pack__sub">2 pares de regalo <span class="sl-pack__save">Ahorrás {{ p3_ahorro }}%</span></span>
-    </span>
-    <span class="sl-pack__price">
-      <span class="sl-pack__now">{{ p3_total | money_without_trailing_zeros }}</span>
-      <s class="sl-pack__was">{{ p3_antes | money_without_trailing_zeros }}</s>
-    </span>
-  </label>
-
+  {%- for i in (1..4) -%}
+    {%- case i -%}
+      {%- when 1 -%}{%- assign t = p1_titulo -%}{%- assign s = p1_sub -%}{%- assign c = p1_cant -%}{%- assign pr = p1_precio -%}{%- assign an = p1_antes -%}{%- assign un = p1_unidad -%}{%- assign ah = p1_ahorro -%}{%- assign et = p1_etiqueta -%}{%- assign va = p1_variante -%}
+      {%- when 2 -%}{%- assign t = p2_titulo -%}{%- assign s = p2_sub -%}{%- assign c = p2_cant -%}{%- assign pr = p2_precio -%}{%- assign an = p2_antes -%}{%- assign un = p2_unidad -%}{%- assign ah = p2_ahorro -%}{%- assign et = p2_etiqueta -%}{%- assign va = p2_variante -%}
+      {%- when 3 -%}{%- assign t = p3_titulo -%}{%- assign s = p3_sub -%}{%- assign c = p3_cant -%}{%- assign pr = p3_precio -%}{%- assign an = p3_antes -%}{%- assign un = p3_unidad -%}{%- assign ah = p3_ahorro -%}{%- assign et = p3_etiqueta -%}{%- assign va = p3_variante -%}
+      {%- when 4 -%}{%- assign t = p4_titulo -%}{%- assign s = p4_sub -%}{%- assign c = p4_cant -%}{%- assign pr = p4_precio -%}{%- assign an = p4_antes -%}{%- assign un = p4_unidad -%}{%- assign ah = p4_ahorro -%}{%- assign et = p4_etiqueta -%}{%- assign va = p4_variante -%}
+    {%- endcase -%}
+    <label class="sl-pack{% if et != blank %} sl-pack--badge{% endif %}">
+      {%- if et != blank -%}<span class="sl-pack__badge">{{ et }}</span>{%- endif -%}
+      <input type="radio" name="sl-pack" value="{{ c }}" data-variant="{{ va }}"{% if i == sl_default %} checked{% endif %}>
+      <span class="sl-pack__radio" aria-hidden="true"></span>
+      <span class="sl-pack__info">
+        <span class="sl-pack__name">{{ t }}</span>
+        <span class="sl-pack__sub">
+          {%- if s != blank -%}<span>{{ s }}</span>{%- endif -%}
+          {%- if ah != blank -%}<span class="sl-pack__save">{{ ah }}</span>{%- endif -%}
+        </span>
+      </span>
+      <span class="sl-pack__price">
+        <span class="sl-pack__now">{{ pr }}</span>
+        {%- if an != blank -%}<s class="sl-pack__was">{{ an }}</s>{%- endif -%}
+        {%- if un != blank -%}<span class="sl-pack__unit">{{ un }}</span>{%- endif -%}
+      </span>
+    </label>
+  {%- endfor -%}
 </div>
 
 <style>
-  .sl-packs { display: flex; flex-direction: column; gap: 12px; width: 100%; margin: 14px 0 10px;
+  .sl-packs { display: flex; flex-direction: column; gap: 12px; width: 100%; margin: 16px 0 12px;
     font-family: inherit; color: #111111; }
   .sl-packs * { box-sizing: border-box; }
 
   .sl-pack { position: relative; display: flex; align-items: center; gap: 14px; margin: 0;
-    padding: 18px 18px; min-height: 76px; cursor: pointer; background: #FFFFFF;
-    border: 1.5px solid rgba(17,17,17,.14); border-radius: 14px;
-    transition: border-color .2s ease, box-shadow .2s ease; }
-  .sl-pack:hover { border-color: rgba(17,17,17,.4); }
+    padding: 16px 18px; min-height: 74px; cursor: pointer; background: #FFFFFF;
+    border: 1px solid rgba(17,17,17,.14); border-radius: 14px;
+    transition: border-color .2s ease, box-shadow .2s ease, background .2s ease; }
+  .sl-pack--badge { margin-top: 6px; }
+  .sl-pack:hover { border-color: rgba(17,17,17,.45); }
   .sl-pack input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
 
-  /* círculo */
-  .sl-pack__radio { flex: 0 0 22px; width: 22px; height: 22px; border-radius: 50%;
+  .sl-pack__radio { flex: 0 0 20px; width: 20px; height: 20px; border-radius: 50%;
     border: 1.5px solid rgba(17,17,17,.3); position: relative; transition: border-color .2s ease; }
-  .sl-pack__radio::after { content: ''; position: absolute; inset: 4px; border-radius: 50%;
+  .sl-pack__radio::after { content: ''; position: absolute; inset: 3.5px; border-radius: 50%;
     background: #111111; transform: scale(0); transition: transform .2s ease; }
 
-  /* seleccionado */
-  .sl-pack:has(input:checked) { border: 2px solid #111111; padding: 17.5px 17.5px; box-shadow: 0 8px 22px -14px rgba(0,0,0,.35); }
+  .sl-pack:has(input:checked) { border-color: #111111; box-shadow: inset 0 0 0 1px #111111, 0 10px 24px -16px rgba(0,0,0,.4); background: #FCFCFB; }
   .sl-pack:has(input:checked) .sl-pack__radio { border-color: #111111; }
   .sl-pack:has(input:checked) .sl-pack__radio::after { transform: scale(1); }
   .sl-pack:has(input:focus-visible) { outline: 2px solid #111111; outline-offset: 3px; }
 
-  /* texto */
-  .sl-pack__info { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
-  .sl-pack__name { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px;
-    font-family: var(--font-heading-family, inherit); font-weight: var(--font-heading-weight, 700);
-    font-size: 16px; line-height: 1.25; color: #111111; }
-  .sl-pack__sub { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; font-size: 13px; line-height: 1.3; color: rgba(17,17,17,.6); }
-  .sl-pack__save { display: inline-flex; align-items: center; padding: 3px 8px; border-radius: 6px; white-space: nowrap;
-    background: #F0F0F0; font-family: inherit; font-weight: 600; font-size: 12px; line-height: 1.2; color: #111111; }
+  .sl-pack__info { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .sl-pack__name { font-family: var(--font-heading-family, inherit); font-weight: var(--font-heading-weight, 700);
+    font-size: 16px; line-height: 1.2; letter-spacing: -.005em; color: #111111; }
+  .sl-pack__sub { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px;
+    font-size: 12.5px; line-height: 1.3; color: rgba(17,17,17,.58); }
+  .sl-pack__save { display: inline-flex; align-items: center; padding: 3px 7px; border-radius: 5px; white-space: nowrap;
+    background: #111111; color: #FFFFFF; font-weight: 600; font-size: 11px; line-height: 1.2; letter-spacing: .02em; }
 
-  /* precio */
-  .sl-pack__price { flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-end; gap: 2px; text-align: right; }
+  .sl-pack__price { flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-end; gap: 1px; text-align: right; }
   .sl-pack__now { font-family: var(--font-heading-family, inherit); font-weight: var(--font-heading-weight, 700);
-    font-size: 20px; line-height: 1.1; letter-spacing: -.01em; color: #111111; white-space: nowrap; }
-  .sl-pack__was { font-size: 13px; line-height: 1.2; color: rgba(17,17,17,.45); white-space: nowrap; }
+    font-size: 19px; line-height: 1.1; letter-spacing: -.015em; color: #111111; white-space: nowrap; }
+  .sl-pack__was { font-size: 12.5px; line-height: 1.25; color: rgba(17,17,17,.42); white-space: nowrap; }
+  .sl-pack__unit { font-size: 11.5px; line-height: 1.25; color: rgba(17,17,17,.6); white-space: nowrap; }
 
-  /* etiqueta */
   .sl-pack__badge { position: absolute; top: 0; right: 16px; transform: translateY(-50%);
-    padding: 5px 11px; border-radius: 999px; background: #111111; color: #FFFFFF;
-    font-family: var(--font-heading-family, inherit); font-weight: 700; font-size: 11px;
-    line-height: 1; letter-spacing: .04em; white-space: nowrap; }
+    padding: 5px 10px; border-radius: 999px; background: #111111; color: #FFFFFF;
+    font-family: var(--font-heading-family, inherit); font-weight: 700; font-size: 10.5px;
+    line-height: 1; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
 
   @media screen and (max-width: 380px) {
-    .sl-pack { gap: 12px; padding: 16px 14px; }
-    .sl-pack:has(input:checked) { padding: 15.5px 13.5px; }
+    .sl-pack { gap: 11px; padding: 14px 13px; }
     .sl-pack__name { font-size: 15px; }
-    .sl-pack__now { font-size: 18px; }
+    .sl-pack__now { font-size: 17px; }
+    .sl-pack__sub { font-size: 12px; }
   }
 </style>
 
 <script>
   (function () {
-    var packs = document.querySelectorAll('.sl-packs input[name="sl-pack"]');
-    if (!packs.length) return;
-    function setQty(q) {
-      var form = document.querySelector('form[action*="/cart/add"]');
-      var scope = form ? (form.closest('section') || document) : document;
-      var inputs = scope.querySelectorAll('input[name="quantity"]');
-      if (!inputs.length) inputs = document.querySelectorAll('input[name="quantity"]');
-      inputs.forEach(function (i) {
-        i.value = q;
+    var radios = document.querySelectorAll('.sl-packs input[name="sl-pack"]');
+    if (!radios.length) return;
+    var form = document.querySelector('form[action*="/cart/add"]');
+    function apply(r) {
+      var qty = r.value, variant = r.getAttribute('data-variant');
+      if (variant && form) {
+        form.querySelectorAll('input[name="id"], select[name="id"]').forEach(function (el) {
+          el.value = variant; el.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+        qty = 1;
+      }
+      var inputs = document.querySelectorAll('input[name="quantity"]');
+      if (!inputs.length && form) {
+        var h = document.createElement('input'); h.type = 'hidden'; h.name = 'quantity'; form.appendChild(h);
+        inputs = [h];
+      }
+      Array.prototype.forEach.call(inputs, function (i) {
+        i.value = qty;
         i.dispatchEvent(new Event('input', { bubbles: true }));
         i.dispatchEvent(new Event('change', { bubbles: true }));
       });
-      if (form && !form.querySelector('input[name="quantity"]')) {
-        var h = document.createElement('input');
-        h.type = 'hidden'; h.name = 'quantity'; h.value = q; form.appendChild(h);
-      }
     }
-    packs.forEach(function (r) {
-      r.addEventListener('change', function () { if (r.checked) setQty(r.value); });
-    });
-    var checked = document.querySelector('.sl-packs input[name="sl-pack"]:checked');
-    if (checked) setQty(checked.value);
+    radios.forEach(function (r) { r.addEventListener('change', function () { if (r.checked) apply(r); }); });
+    var c = document.querySelector('.sl-packs input[name="sl-pack"]:checked');
+    if (c) apply(c);
   })();
 </script>
