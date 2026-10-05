@@ -1,0 +1,234 @@
+{%- comment -%}
+  SUAVELAND · CLOUD SOCKS · "¿SON PARA VOS?"
+  Sección nativa · Tipografía y colores del theme
+{%- endcomment -%}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+  #cs-pv-{{ section.id }} {
+    --cs-card-bg: {{ section.settings.card_bg }};
+    --cs-card-text: {{ section.settings.card_text }};
+    --cs-cols-mobile: {{ section.settings.columns_mobile }};
+    --cs-cols-desktop: {{ section.settings.columns_desktop }};
+  }
+{%- endstyle -%}
+
+<style>
+  .cs-pv { text-align: center; }
+  .cs-pv__wrap { max-width: 108rem; margin: 0 auto; }
+  .cs-pv__title { margin: 0; }
+  .cs-pv__sub { margin: 0.8rem 0 0; opacity: 0.75; }
+
+  .cs-pv__grid {
+    display: grid;
+    grid-template-columns: repeat(var(--cs-cols-mobile, 3), minmax(0, 1fr));
+    gap: 0.8rem;
+    margin: 2.4rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .cs-pv__card {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    min-height: 12.8rem;
+    padding: 1.8rem 0.8rem;
+    border-radius: var(--media-radius, 1.6rem);
+    background: var(--cs-card-bg, #111111);
+    color: var(--cs-card-text, #FFFFFF);
+  }
+  .cs-pv__icon { width: 3.2rem; height: 3.2rem; flex-shrink: 0; }
+  .cs-pv__icon svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .cs-pv__icon img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  .cs-pv__text {
+    margin: 0;
+    color: inherit;
+    font-size: 1.25rem;
+    line-height: 1.35;
+    font-weight: var(--font-body-weight-bold, 600);
+    text-wrap: balance;
+    overflow-wrap: anywhere;
+  }
+
+  @media screen and (max-width: 749px) {
+    .cs-pv.page-width { padding-left: 1.6rem; padding-right: 1.6rem; }
+  }
+  @media screen and (max-width: 340px) {
+    .cs-pv__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media screen and (min-width: 750px) {
+    .cs-pv__sub { margin-top: 1rem; }
+    .cs-pv__grid {
+      grid-template-columns: repeat(var(--cs-cols-desktop, 3), minmax(0, 1fr));
+      gap: 2rem;
+      margin-top: 4rem;
+    }
+    .cs-pv__card {
+      min-height: 19rem;
+      padding: 3.2rem 2.8rem;
+      gap: 1.8rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .cs-pv__card:hover { transform: translateY(-3px); box-shadow: 0 1.4rem 3rem rgba(0, 0, 0, 0.22); }
+    .cs-pv__icon { width: 4.8rem; height: 4.8rem; }
+    .cs-pv__icon svg { stroke-width: 1.5; }
+    .cs-pv__text { font-size: 1.7rem; }
+  }
+</style>
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div id="cs-pv-{{ section.id }}" class="cs-pv page-width section-{{ section.id }}-padding">
+    <div class="cs-pv__wrap">
+      {%- if section.settings.title != blank -%}
+        <h2 class="cs-pv__title {{ section.settings.heading_size }}">{{ section.settings.title }}</h2>
+      {%- endif -%}
+      {%- if section.settings.subtitle != blank -%}
+        <p class="cs-pv__sub">{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+
+      <ul class="cs-pv__grid" role="list">
+        {%- for block in section.blocks -%}
+          <li class="cs-pv__card" {{ block.shopify_attributes }}>
+            <div class="cs-pv__icon" aria-hidden="true">
+              {%- if block.settings.custom_icon != blank -%}
+                {{ block.settings.custom_icon | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}
+              {%- else -%}
+                {%- case block.settings.icon -%}
+                  {%- when 'dedos' -%}
+                    <svg viewBox="0 0 64 64" focusable="false"><path d="M8 8h48M8 8l4-3.5M8 8l4 3.5M56 8l-4-3.5M56 8l-4 3.5"/><path d="M26 60c-6 0-8.5-7-8-14.5.4-7 2.5-10.5 2.5-15 0-3.5 2.5-5.5 6-5.5h11c4.5 0 7 2.5 7 7 0 5 2 9.5 2 16.5 0 7.5-4 11.5-10 11.5z"/><circle cx="41" cy="19" r="4.6"/><circle cx="31" cy="17.5" r="3.3"/><circle cx="23.5" cy="19.5" r="2.9"/><circle cx="17" cy="23.5" r="2.5"/><circle cx="12" cy="29" r="2.1"/></svg>
+                  {%- when 'ampollas' -%}
+                    <svg viewBox="0 0 64 64" focusable="false"><g transform="rotate(45 32 32)"><rect x="11" y="25" width="42" height="14" rx="7"/><path d="M25 25v14M39 25v14"/></g><circle cx="32" cy="32" r="27"/><path d="M13 51L51 13"/></svg>
+                  {%- when 'fresco' -%}
+                    <svg viewBox="0 0 64 64" focusable="false"><path d="M24 10s-13 16-13 26a13 13 0 0 0 26 0c0-10-13-26-13-26z"/><path d="M18 37a6 6 0 0 0 6 6"/><path d="M42 22h11a4 4 0 1 0-4-4M42 32h16M42 42h11a4 4 0 1 1-4 4"/></svg>
+                  {%- when 'olor' -%}
+                    <svg viewBox="0 0 64 64" focusable="false"><path d="M23 47c-4-4 4-8 0-12s4-8 0-12"/><path d="M32 47c-4-4 4-8 0-12s4-8 0-12"/><path d="M41 47c-4-4 4-8 0-12s4-8 0-12"/><circle cx="32" cy="32" r="27"/><path d="M13 13l38 38"/></svg>
+                  {%- when 'nube' -%}
+                    <svg viewBox="0 0 64 64" focusable="false"><path d="M19 47h27a10 10 0 0 0 1-20 14 14 0 0 0-27-3 11.5 11.5 0 0 0-1 23z"/></svg>
+                  {%- when 'escudo' -%}
+                    <svg viewBox="0 0 64 64" focusable="false"><path d="M32 7l18 7v15c0 13-8 22-18 27-10-5-18-14-18-27V14z"/><path d="M24 31l6 6 11-12"/></svg>
+                  {%- else -%}
+                    <svg viewBox="0 0 64 64" focusable="false"><circle cx="32" cy="32" r="26"/><path d="M21 33l8 8 15-17"/></svg>
+                {%- endcase -%}
+              {%- endif -%}
+            </div>
+            <p class="cs-pv__text">{{ block.settings.text }}</p>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "¿Son para vos?",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "inline_richtext", "id": "title", "label": "Encabezado", "default": "¿Son para vos?" },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Tamaño del encabezado",
+      "default": "h1",
+      "options": [
+        { "value": "h2", "label": "Pequeño" },
+        { "value": "h1", "label": "Mediano" },
+        { "value": "h0", "label": "Grande" }
+      ]
+    },
+    { "type": "inline_richtext", "id": "subtitle", "label": "Subtítulo", "default": "Cloud Socks son ideales si querés:" },
+    { "type": "header", "content": "Tarjetas" },
+    { "type": "range", "id": "columns_desktop", "min": 2, "max": 6, "step": 1, "label": "Columnas en escritorio", "default": 3 },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columnas en celular",
+      "default": "3",
+      "options": [
+        { "value": "2", "label": "2 columnas" },
+        { "value": "3", "label": "3 columnas" }
+      ]
+    },
+    { "type": "color", "id": "card_bg", "label": "Fondo de las tarjetas", "default": "#111111" },
+    { "type": "color", "id": "card_text", "label": "Texto e íconos de las tarjetas", "default": "#FFFFFF" },
+    { "type": "header", "content": "Colores" },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Esquema de colores",
+      "default": "background-1",
+      "options": [
+        { "value": "accent-1", "label": "Acento 1" },
+        { "value": "accent-2", "label": "Acento 2" },
+        { "value": "background-1", "label": "Fondo 1" },
+        { "value": "background-2", "label": "Fondo 2" },
+        { "value": "inverse", "label": "Inverso" }
+      ]
+    },
+    { "type": "header", "content": "Relleno de sección" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Relleno superior", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Relleno inferior", "default": 48 }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Tarjeta",
+      "limit": 12,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Ícono",
+          "default": "check",
+          "options": [
+            { "value": "dedos", "label": "Dedos libres" },
+            { "value": "ampollas", "label": "Sin ampollas" },
+            { "value": "fresco", "label": "Gota / frescura" },
+            { "value": "olor", "label": "Sin olor" },
+            { "value": "nube", "label": "Nube" },
+            { "value": "escudo", "label": "Escudo / resistencia" },
+            { "value": "check", "label": "Check" }
+          ]
+        },
+        { "type": "image_picker", "id": "custom_icon", "label": "Ícono propio (opcional)", "info": "Si elegís una imagen, reemplaza al ícono de arriba" },
+        { "type": "inline_richtext", "id": "text", "label": "Texto", "default": "Beneficio" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "¿Son para vos?",
+      "blocks": [
+        { "type": "card", "settings": { "icon": "dedos", "text": "Que tus dedos no se aprieten más" } },
+        { "type": "card", "settings": { "icon": "ampollas", "text": "Chau ampollas y dolor de pies" } },
+        { "type": "card", "settings": { "icon": "fresco", "text": "Pies secos y frescos todo el día" } },
+        { "type": "card", "settings": { "icon": "olor", "text": "Olvidarte del mal olor" } },
+        { "type": "card", "settings": { "icon": "nube", "text": "Sentir tus pies en una nube" } },
+        { "type": "card", "settings": { "icon": "escudo", "text": "Talón y punta reforzados, para que duren" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
