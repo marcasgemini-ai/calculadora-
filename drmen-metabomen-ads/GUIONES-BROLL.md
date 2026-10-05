@@ -1,120 +1,141 @@
-# Metabomen · Guiones B-roll (ángulo envejecimiento)
-Formato 9:16 · 35 a 50 segundos · voz en off + B-roll + texto grande en pantalla.
-Estructura de todos: **HOOK al dolor (0-3s) → CONTROVERSIA (3-10s) → EDUCACIÓN con dato real (10-25s) → HISTORIA (25-38s) → CTA suave (últimos 5-8s)**.
-El CTA no vende: invita a leer la nota (el advertorial). El que llega ahí ya viene convencido.
+# Metabomen · Guiones B-roll v2 · "Sentite más joven"
+Formato 9:16 · 45 a 60 segundos · voz en off + B-roll + texto grande en pantalla.
+Todo el discurso es **envejecimiento → sentirte y verte más joven**. Nada de "desgaste".
 
-## Reglas de producción (para todos)
-- **Voz:** hombre de 40-50, tono de charla entre amigos, argentino, sin locutor de radio. Pausas cortas, frases de 6-10 palabras.
-- **Texto en pantalla:** 3 a 6 palabras por placa, blanco con borde negro o caja negra, la palabra clave en rojo #E1261C.
-- **Ritmo:** cambio de plano cada 1,5-2 segundos. Primer plano en movimiento desde el frame 1 (nada de logo al principio).
-- **Música:** tensa y baja al principio, se abre en la historia, se calma en el CTA.
-- **Producto:** aparece recién en la historia o el CTA, nunca en el hook.
-- **Fuentes:** los datos van con la fuente chiquita abajo (aumenta credibilidad y baja rechazos).
-- **Qué NO decir:** "rejuvenece", "revierte la edad", "cura", "aumenta la testosterona", "vas a bajar X kilos". No preguntar "¿Tenés más de 40?" en el texto escrito del anuncio (Meta lo rechaza por atributos personales); en la voz se habla de "los hombres de más de 40".
-- **Historias:** si no son de un cliente real con permiso, se presentan como lo que son: "esto le pasa a muchos", "imaginate a…", o la historia del fundador con datos reales. Nunca inventar un "cliente" con nombre y resultado.
+**Estructura de los 6 guiones**
+1. **HOOK al dolor (0-3s):** el momento exacto en que se sintió viejo.
+2. **CONTROVERSIA (3-10s):** rompe una creencia ("no es la edad", "las cremas no", "tu médico te dijo que es normal").
+3. **POR QUÉ ENVEJECÉS (10-20s):** un dato real, con la fuente en pantalla.
+4. **EL RESULTADO QUE QUERÉS (20-32s):** "imaginate…": la vida sintiéndote más joven. Acá se entusiasma.
+5. **INGREDIENTES (32-45s):** qué tiene Metabomen y para qué sirve cada uno.
+6. **CTA CON OFERTA (últimos 8-12s):** pack de 90 días, pagás 2 llevás 3, envío gratis, regalos y 60 días de garantía.
+
+## Bloques fijos (son iguales en todos los guiones: grabalos una vez y reutilizalos en la edición)
+
+### Bloque INGREDIENTES (12-13s)
+| Voz en off | B-roll | Texto en pantalla |
+|---|---|---|
+| "Por eso creamos Metabomen: 14 activos en una cápsula por día." | Frasco girando sobre fondo negro, luz roja de contorno. | **14 ACTIVOS · 1 CÁPSULA** |
+| "Resveratrol y semilla de uva: los antioxidantes de la uva, de los más estudiados en longevidad." | Racimo de uvas tintas en cámara lenta, semillas cayendo. | RESVERATROL · **LONGEVIDAD** |
+| "Vitamina C: ayuda a formar colágeno y protege tus células del estrés oxidativo." | Naranja cortada al medio, gota de jugo; piel de cara en primer plano con buena luz. | VITAMINA C · **COLÁGENO*** |
+| "Zinc: cuida tu piel y tu pelo, y mantiene tu testosterona en niveles normales." | Hombre pasándose la mano por el pelo frente al espejo, sonriendo. | ZINC · **PIEL, PELO, TESTOSTERONA*** |
+| "Y magnesio, para que el cansancio no te gane el día." | Hombre subiendo una escalera de dos en dos, liviano. | MAGNESIO · **MENOS CANSANCIO*** |
+
+### Bloque CTA CON OFERTA (10-12s)
+| Voz en off | B-roll | Texto en pantalla |
+|---|---|---|
+| "Hoy lo probás con el protocolo de 90 días: pagás 2 frascos y te llevás 3." | Tres frascos que caen y se acomodan en V sobre la mesa. | **PAGÁS 2, LLEVÁS 3** |
+| "Envío gratis a todo el país y dos guías de regalo." | Caja abriéndose, frascos y guías impresas adentro. | ENVÍO GRATIS · **2 GUÍAS DE REGALO** |
+| "Y si en 60 días no te sentís mejor, te devolvemos la plata. No arriesgás nada." | Hombre sonriendo con el frasco en la mano, mirando a cámara. | **60 DÍAS DE GARANTÍA** |
+| "Tocá el botón y empezá hoy a sentirte más joven." | Mano tocando la pantalla del celular; página de Metabomen. | 👇 **EMPEZÁ HOY** |
+| — | Placa final: frasco + "METABOMEN · Sentite más joven". Abajo, en chiquito: "*Suplemento dietario. Consultá a tu médico." | |
+
+> **Precio en pantalla (opcional):** "Protocolo 90 días $101.900 · $1.132 por día". Solo si es el precio real vigente.
 
 ---
 
 ## GUION 1 · "Te mintieron con la edad"
-**Duración:** 45s · **Controversia:** envejecer no es cumplir años.
+**Duración:** ~55s
 
 | Tiempo | Voz en off | B-roll | Texto en pantalla |
 |---|---|---|---|
-| 0-3s | "Te mintieron. No estás viejo por tener 45." | Primer plano: hombre frotándose los ojos en el auto, luz de mañana, estacionado. | **TE MINTIERON** |
-| 3-7s | "Te dijeron que es la edad. Que es normal estar cansado siempre, tener panza y verte apagado." | Cortes rápidos: panza apretada contra la camisa, bostezo en reunión, escalera subida con la mano en la rodilla. | "ES LA EDAD" ~~tachado~~ |
-| 7-11s | "No es la edad. Es el desgaste. Y el desgaste se acumula de noche." | Habitación oscura, reloj marcando 3:47, hombre mirando el techo. | NO ES LA EDAD. **ES EL DESGASTE** |
-| 11-20s | "Un estudio de la Universidad de Chicago midió el sueño profundo de hombres de distintas edades. Entre los 16 y los 25 años, casi el 19% de la noche era sueño profundo. Entre los 36 y los 50… apenas el 3%." | Gráfico animado simple: barra que baja de 19% a 3%. Planos de hombre joven durmiendo / hombre +40 dando vueltas. | SUEÑO PROFUNDO: **-80%** · *Van Cauter, JAMA 2000* |
-| 20-27s | "Y el sueño profundo es cuando el cuerpo se repara. Si eso se cae, todo lo demás se cae atrás: la energía, la cara, el cuerpo." | Plano de cara en el espejo con luz fría; manos lavándose la cara; café servido. | CUANDO DORMÍS, **TE REPARÁS** |
-| 27-38s | "Eso es lo que nadie te explica. No te estás poniendo viejo de golpe: te estás desgastando más rápido de lo que te reparás. Y eso sí se puede cuidar: cómo dormís, cómo comés, cómo te movés y qué le das a tu cuerpo." | Secuencia de "cuidado": caminata a la mañana, plato de comida real, persiana que se abre, frasco Metabomen en la mesada junto al mate. | NO ES MAGIA. **ES CUIDARTE** |
-| 38-45s | "Escribimos una nota con todo lo que pasa en el cuerpo del hombre después de los 40. Leela. Te va a cambiar cómo te mirás al espejo." | Hombre de espaldas en el balcón al atardecer; frasco de cerca. | LEÉ LA NOTA COMPLETA 👇 |
+| 0-3s | "Te mintieron. No te sentís viejo por los años que tenés." | Hombre de 45 en el auto estacionado, frotándose los ojos, luz de mañana. | **TE MINTIERON** |
+| 3-8s | "Te dijeron que es normal. Que a los 45 ya está, que te toca estar cansado, con panza y con cara de 60." | Cortes rápidos: camisa que tira en la panza, bostezo en una reunión, escalera con la mano en la rodilla. | "ES LA EDAD" ~~tachado~~ |
+| 8-18s | "No es normal. La Universidad de Chicago midió el sueño profundo de los hombres: entre los 36 y los 50 años cae casi un 80%. Y el sueño profundo es cuando el cuerpo se repara. Por eso te ves y te sentís más viejo de lo que sos." | Barra animada que baja de 19% a 3%; hombre mirando el techo a las 3:47. | SUEÑO PROFUNDO **-80%** · *Van Cauter, JAMA 2000* |
+| 18-30s | "Ahora imaginate al revés. Te levantás antes que la alarma. Te mirás al espejo y te ves bien. Tus amigos te preguntan qué te hiciste. Tu mujer te mira distinto. Volvés a tener ganas." | Persiana que se abre con sol; espejo con cara descansada; asado con amigos riéndose; pareja en la cocina, abrazo por la espalda. | IMAGINATE **SENTIRTE ASÍ** |
+| 30-42s | [Bloque INGREDIENTES] | | |
+| 42-54s | [Bloque CTA CON OFERTA] | | |
 
 ---
 
-## GUION 2 · "El gimnasio no te va a salvar"
-**Duración:** 45s · **Controversia:** entrenar sin dormir es tirar el esfuerzo.
+## GUION 2 · "Hay hombres de 50 que parecen de 40"
+**Duración:** ~55s
 
 | Tiempo | Voz en off | B-roll | Texto en pantalla |
 |---|---|---|---|
-| 0-3s | "Vas al gimnasio, comés bien… y la panza no se va. Te digo por qué." | Hombre +40 en el gimnasio, se mira la panza en el espejo con fastidio. | **LA PANZA NO SE VA** |
-| 3-8s | "No es que te falte voluntad. Es que estás entrenando un cuerpo que no se recupera." | Pesas apoyadas, toalla en la cara, respiración agitada. | NO TE FALTA VOLUNTAD |
-| 8-20s | "En un estudio, pusieron a dos grupos a hacer la misma dieta. Unos durmieron 8 horas y medio, otros 5 y media. Los que durmieron poco perdieron 55% menos grasa… y 60% más músculo." | Dos platos iguales lado a lado, dos camas: una ordenada con luz cálida, otra revuelta con luz azul de celular. | MISMA DIETA · DURMIENDO POCO: **-55% GRASA PERDIDA** · *Nedeltcheva, 2010* |
-| 20-27s | "Leíste bien. Haciendo todo bien, perdés el músculo que te sostiene y te quedás con la grasa. Esa es la panza de los 40." | Plano lateral de torso con camisa ajustada; cinturón que se afloja un agujero. | TE QUEDÁS CON **LA GRASA** |
-| 27-38s | "Por eso hay tipos que se rompen el lomo y no cambian, y otros que parecen tener 10 años menos. La diferencia no está en el gimnasio. Está en cómo se reparan." | Contraste: hombre agotado en el auto a la noche / hombre caminando liviano a la mañana con el sol de frente. | LA DIFERENCIA: **CÓMO TE REPARÁS** |
-| 38-45s | "Te dejo abajo la nota con lo que de verdad pasa con el cuerpo después de los 40. Antes de comprar otra proteína, leela." | Mesada con mate y Metabomen; mano que lo agarra al pasar. | ANTES DE OTRA PROTEÍNA, **LEÉ ESTO** 👇 |
+| 0-3s | "Hay hombres de 50 que parecen de 40… y hombres de 40 que parecen de 55." | Pantalla dividida: hombre de 50 en forma corriendo / hombre de 40 agotado en el sillón. | ¿DE QUÉ LADO **ESTÁS?** |
+| 3-8s | "Y no, no es genética. Es cómo envejece tu cuerpo por dentro." | ADN animado que se desarma; corte a células. | **NO ES GENÉTICA** |
+| 8-18s | "Una semana durmiendo 5 horas y la testosterona de un hombre cae entre un 10 y un 15%. Es lo que normalmente se pierde en 10 años. Así de rápido podés envejecer." | Calendario que pasa 7 días; despertador; hombre con la cabeza baja al borde de la cama. | **10 AÑOS** EN UNA SEMANA · *Leproult & Van Cauter, JAMA 2011* |
+| 18-30s | "La buena noticia: también funciona al revés. Cuidás el sueño, comés mejor, le das a tu cuerpo lo que necesita… y empezás a sentirte como el de la izquierda. Con energía, con ganas, con la cara de alguien que la está pasando bien." | Caminata a la mañana, desayuno real, hombre jugando a la pelota con su hijo, foto familiar donde él sale bien. | **TAMBIÉN FUNCIONA AL REVÉS** |
+| 30-42s | [Bloque INGREDIENTES] | | |
+| 42-54s | [Bloque CTA CON OFERTA] | | |
 
 ---
 
-## GUION 3 · "Tu testosterona no se fue por la edad"
-**Duración:** 40s · **Controversia:** lo que baja la testosterona no son solo los años.
+## GUION 3 · "Las cremas no te van a sacar esa cara"
+**Duración:** ~55s
 
 | Tiempo | Voz en off | B-roll | Texto en pantalla |
 |---|---|---|---|
-| 0-3s | "Una semana durmiendo mal y tu testosterona queda como la de un hombre 10 años más grande." | Despertador sonando, mano que lo apaga, hombre sentado al borde de la cama con la cabeza baja. | **10 AÑOS MÁS VIEJO** EN UNA SEMANA |
-| 3-14s | "No lo digo yo. En la Universidad de Chicago hicieron dormir a hombres jóvenes solo 5 horas por noche durante una semana. Su testosterona bajó entre un 10 y un 15%. Es lo que normalmente se pierde en una década." | Laboratorio de sueño (stock), cables, cama de hospital; transición a calendario que pasa 7 días. | TESTOSTERONA **-10 A -15%** · *Leproult & Van Cauter, JAMA 2011* |
-| 14-22s | "Ahora pensá cuántas semanas así tuviste este año. Laburo, chicos, el celular hasta la una. Eso no es la edad. Es el desgaste de todos los días." | Montaje rápido: notebook a medianoche, chico llorando de noche, scroll del celular en la cama. | NO ES LA EDAD |
-| 22-32s | "La buena noticia: el desgaste se puede cuidar. Dormir mejor es lo primero. Y darle al cuerpo lo que necesita: por ejemplo, el zinc contribuye a mantener niveles normales de testosterona." | Persiana que se abre, ducha, desayuno real, cápsula en la palma de la mano, frasco. | EL ZINC CONTRIBUYE A NIVELES **NORMALES** DE TESTOSTERONA* |
-| 32-40s | "Armamos una nota con los 5 desgastes que más envejecen al hombre después de los 40. La tenés acá abajo." | Hombre en el balcón con buena luz, sonrisa leve; frasco de cerca. | LOS 5 DESGASTES 👇 · *Suplemento dietario |
+| 0-3s | "Las cremas no te van a sacar esa cara de cansado." | Pote de crema que cae en el cajón; espejo de baño con luz fría. | **LAS CREMAS NO** |
+| 3-8s | "Porque envejecés por dentro antes que por fuera." | Ojeras en primer plano; transición a ilustración de células. | ENVEJECÉS **POR DENTRO** |
+| 8-18s | "El estrés, dormir mal y el estrés oxidativo gastan tus células. Y lo primero que se nota es la cara: ojeras, piel apagada, mirada de cansado. Por eso hay tipos de 45 que parecen de 55." | Montaje: noche sin dormir → tránsito → cara gris en el espejo. | LO PRIMERO QUE SE NOTA: **LA CARA** |
+| 18-30s | "Ahora imaginate verte en una foto y gustarte. Cara descansada, mirada despierta. Que alguien te diga 'estás igual que hace 10 años' y que lo diga en serio." | Selfie en el balcón con buena luz; reunión con amigos de la secundaria, abrazo, risas. | **"ESTÁS IGUAL"** |
+| 30-42s | [Bloque INGREDIENTES] (acá hacé foco en la vitamina C y el colágeno, y en el zinc para la piel y el pelo) | | |
+| 42-54s | [Bloque CTA CON OFERTA] | | |
 
 ---
 
-## GUION 4 · "La panza de cortisol"
-**Duración:** 40s · **Controversia:** no es lo que comés, es el estrés de noche.
+## GUION 4 · "Tu médico te dijo que es normal"
+**Duración:** ~55s
 
 | Tiempo | Voz en off | B-roll | Texto en pantalla |
 |---|---|---|---|
-| 0-3s | "Esa panza dura que no baja con nada tiene nombre." | Mano tocando una panza firme por encima de la remera; plano cerrado. | ESA PANZA **TIENE NOMBRE** |
-| 3-8s | "No es la cerveza del sábado. Es el cortisol, la hormona del estrés." | Cerveza que se aparta; persona en el tránsito tocando bocina; mails sin leer. | **CORTISOL** |
-| 8-18s | "Cuando dormís poco, a la noche siguiente el cortisol queda entre un 37 y un 45% más alto. Y el cortisol alto se relaciona con la grasa que se acumula justo en la panza." | Gráfico: línea que sube; silueta con la zona abdominal en rojo. | CORTISOL **+45%** · *Leproult, Sleep 1997* |
-| 18-28s | "Por eso hay hombres flacos con panza. Por eso hacés dieta y se te va de la cara pero no de ahí. No es falta de esfuerzo: es un cuerpo que vive en alerta." | Hombre delgado con panza marcada en la playa (de espaldas, sin cara); plato de ensalada con cara de hartazgo. | UN CUERPO **EN ALERTA** |
-| 28-40s | "Bajar el desgaste empieza por la noche. Te dejo una nota que explica cómo se arma ese círculo y cómo cortarlo." | Habitación ordenada, luz cálida, celular boca abajo; mesa de luz con Metabomen. | CÓMO CORTAR EL CÍRCULO 👇 |
+| 0-3s | "Tu médico te dijo que es normal. Que es la edad." | Consultorio, papeles de análisis, puerta que se cierra. | **"ES NORMAL"** |
+| 3-8s | "Normal es que el cuerpo cambie. Sentirte de 60 a los 45, no." | Hombre sentado en la camilla, mirando el piso. | **NO ES NORMAL** |
+| 8-18s | "Cuando dormís mal, el cortisol, la hormona del estrés, sube hasta un 45% al día siguiente. Y el cortisol alto te hace acumular grasa en la panza, te apaga y te envejece." | Línea de gráfico que sube; silueta con la panza en rojo; persona en el tránsito tocando bocina. | CORTISOL **+45%** · *Leproult, Sleep 1997* |
+| 18-30s | "Imaginate volver a sentirte vos. El que tenía ganas de salir, de entrenar, de estar con tu mujer. El que se ponía cualquier remera y le quedaba bien." | Remera ajustada que le queda bien frente al espejo; salida a correr al amanecer; cena de pareja. | **VOLVÉ A SER VOS** |
+| 30-42s | [Bloque INGREDIENTES] | | |
+| 42-54s | [Bloque CTA CON OFERTA] | | |
 
 ---
 
-## GUION 5 · "La historia que nadie cuenta" (historia del fundador)
-**Duración:** 50s · **Controversia:** "me dijeron que era normal".
-**Usar solo con datos reales del fundador** (reemplazá lo que está entre corchetes; si algo no es cierto, borralo).
+## GUION 5 · "Mis amigos me preguntan qué me hice"
+**Duración:** ~50s · **Solo con un cliente real** que acepte contar su experiencia (o el fundador). Si no lo tenés, usá los guiones 1 a 4.
+
+| Tiempo | Voz en off (cliente real, a cámara o voz) | B-roll | Texto en pantalla |
+|---|---|---|---|
+| 0-3s | "Tengo [edad] y mis amigos me preguntan qué me hice." | Cliente riéndose en un asado con amigos. | **"¿QUÉ TE HICISTE?"** |
+| 3-15s | [Cómo se sentía antes, con sus palabras: cansado, cara, panza, ganas.] | Fotos reales de antes (si las tiene) o planos de la rutina pesada. | ANTES |
+| 15-28s | [Qué cambió y cómo se siente hoy, con sus palabras. Sin números inventados.] | Su día hoy: entrenando, trabajando, con la familia. | HOY |
+| 28-38s | [Bloque INGREDIENTES, versión corta: 3 ingredientes] | | |
+| 38-50s | [Bloque CTA CON OFERTA] | | |
+
+---
+
+## GUION 6 · "3 señales de que estás envejeciendo antes de tiempo"
+**Duración:** ~55s · Formato lista, ideal para retención.
 
 | Tiempo | Voz en off | B-roll | Texto en pantalla |
 |---|---|---|---|
-| 0-3s | "A los [44] un amigo me sacó una foto y no me reconocí." | Foto vieja en el celular, zoom a una cara cansada (puede ser una foto real del fundador). | **NO ME RECONOCÍ** |
-| 3-10s | "Fui al médico. Análisis bien. ¿La respuesta? 'Es la edad, es normal'." | Sala de espera, papeles de análisis, puerta de consultorio. | "ES NORMAL" |
-| 10-20s | "Pero yo no me sentía normal. Me levantaba cansado, tenía panza, me veía gris. Y empecé a investigar." | Noches con la notebook, papers impresos subrayados, café. | **ME PUSE A INVESTIGAR** |
-| 20-32s | "Ahí entendí algo: después de los 40 perdemos gran parte del sueño profundo, el cortisol se dispara y el cuerpo se repara cada vez menos. No era la edad. Era el desgaste." | Gráficos simples de cada dato; hombre en la cama mirando el techo. | NO ERA LA EDAD. **ERA EL DESGASTE** |
-| 32-42s | "Cambié cómo dormía, cómo comía, y armamos una fórmula con lo que más se estudia para el hombre de esta edad. Así nació Metabomen." | Fábrica/laboratorio habilitado (real), cápsulas, frasco terminado, etiqueta con RNPA. | ASÍ NACIÓ **METABOMEN** |
-| 42-50s | "No te voy a decir que es mágico. Te voy a decir que leas lo que aprendí. Está en la nota de abajo." | Fundador mirando a cámara, luz natural, frasco en la mano sin forzar. | LEÉ LO QUE APRENDÍ 👇 |
+| 0-3s | "3 señales de que estás envejeciendo más rápido que tu edad." | Hombre mirándose el pelo canoso en el espejo. | **3 SEÑALES** |
+| 3-8s | "Una: te levantás cansado aunque hayas dormido 8 horas." | Despertador, cara hinchada, café doble. | **1. TE LEVANTÁS CANSADO** |
+| 8-13s | "Dos: la panza no se va aunque comas bien." | Plato sano, panza que no cambia en el espejo. | **2. LA PANZA NO SE VA** |
+| 13-18s | "Tres: te ves en fotos y no te reconocés." | Foto de grupo, zoom a su cara cansada. | **3. NO TE RECONOCÉS** |
+| 18-30s | "Si tenés las tres, tu cuerpo está envejeciendo más rápido que vos. Pero se puede frenar. Imaginate en 90 días levantarte con ganas, mirarte al espejo y decir 'este soy yo'." | Transformación de ritmo: amanecer, caminata, espejo con sonrisa, foto familiar bien. | **SE PUEDE FRENAR** |
+| 30-42s | [Bloque INGREDIENTES] | | |
+| 42-54s | [Bloque CTA CON OFERTA] | | |
 
 ---
 
-## GUION 6 · "Lo que tu espejo te está diciendo"
-**Duración:** 35s · **Controversia:** las ojeras no son de la piel.
-
-| Tiempo | Voz en off | B-roll | Texto en pantalla |
-|---|---|---|---|
-| 0-3s | "Las cremas no te van a sacar esa cara de cansado." | Mano que tira un pote de crema en el cajón; espejo de baño. | **LAS CREMAS NO** |
-| 3-10s | "Porque esa cara no viene de la piel. Viene de adentro. Envejecés por dentro antes que por fuera." | Plano muy cerrado de ojos con ojeras; transición a ilustración de células. | ENVEJECÉS **POR DENTRO** |
-| 10-20s | "Dormir mal, estrés constante y estrés oxidativo: eso es lo que gasta las células. Y se nota primero en la cara: ojeras, piel apagada, mirada cansada." | Montaje: noche sin dormir → tránsito → cara gris en el espejo. | LO PRIMERO QUE SE NOTA: **LA CARA** |
-| 20-28s | "Por eso el cuidado empieza adentro. La vitamina C, por ejemplo, contribuye a proteger las células frente al estrés oxidativo." | Naranjas y uvas en la mesada, cápsula, vaso de agua, frasco Metabomen. | VITAMINA C: PROTEGE LAS CÉLULAS DEL ESTRÉS OXIDATIVO* |
-| 28-35s | "En la nota de abajo te explico qué te está envejeciendo por dentro. Son 3 minutos." | Hombre secándose la cara y mirándose tranquilo. | 3 MINUTOS 👇 |
-
----
-
-## HOOKS EXTRA (para testear sobre cualquier guion, cambiando solo los primeros 3 segundos)
-1. "Si a los 40 te levantás más cansado que cuando te acostaste, esto es para vos."
-2. "Nadie te avisa que a los 40 dejás de dormir de verdad."
-3. "Tu médico te dijo que es normal. No es normal."
-4. "Hay hombres de 50 que parecen de 40 y hombres de 40 que parecen de 55. La diferencia no es genética."
+## HOOKS EXTRA (cambiá solo los primeros 3 segundos de cualquier guion)
+1. "Si a los 45 te sentís de 60, mirá esto."
+2. "Nadie te avisa que a los 40 empezás a envejecer el doble de rápido."
+3. "Tu viejo a tu edad estaba mejor que vos. Y no es casualidad."
+4. "Esto es lo que hacen los hombres de 50 que parecen de 40."
 5. "Dejá de culpar a la edad."
-6. "El error que hacen todos los hombres después de los 40."
-7. "Esto es lo que le pasa a tu cuerpo cuando dormís 6 horas."
-8. "Tu panza no es de la cerveza."
-9. "Si tu viejo a tu edad estaba mejor que vos, no es casualidad."
-10. "Nadie habla del desgaste masculino. Y te está pasando."
+6. "Si te ves más viejo en las fotos que en el espejo, esto te interesa."
+7. "El error que te hace envejecer más rápido después de los 40."
+8. "No necesitás una crema. Necesitás esto."
+9. "¿Cuándo fue la última vez que te sentiste joven de verdad?"
+10. "En 90 días podés volver a reconocerte en el espejo."
 
-## CTA SUAVES (para cerrar cualquier guion)
-- "Te dejo la nota completa abajo. Leela antes de decidir nada."
-- "No te pido que compres nada. Te pido que leas esto."
-- "Si te sentiste identificado, la nota de abajo te explica el resto."
-- "Guardá este video y leé la nota cuando tengas 3 minutos."
-
-## Texto del anuncio para estos videos
-Usá el texto general del envejecimiento ("Envejecer es inevitable. Envejecer antes de tiempo, no…"), con el botón **Más información** apuntando al advertorial.
+## Reglas de producción
+- **Voz:** hombre de 40-50, argentino, con energía, como contándole algo a un amigo. Frases cortas.
+- **Ritmo:** cambio de plano cada 1,5-2s. El primer frame ya en movimiento, sin logo al principio.
+- **Música:** tensa en el hook, se abre con fuerza en "imaginate", sube en el CTA.
+- **Texto en pantalla:** 3 a 6 palabras por placa, la palabra clave en rojo #E1261C.
+- **Producto:** recién aparece en el bloque de ingredientes.
+- **Lo que no se dice:** "rejuvenece X años", "revierte la edad", "cura", "aumenta la testosterona", kilos o centímetros. "Sentite más joven" sí: es aspiracional, no una promesa médica.
+- **Oferta:** los precios, el "pagás 2 llevás 3", los regalos y la garantía tienen que ser exactamente los que están en la página. Nada de "últimas unidades" si no es real.
+- **Texto del anuncio:** usá el texto general del envejecimiento, con el botón **Comprar** apuntando a la oferta.
