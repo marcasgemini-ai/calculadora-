@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Títulos SEO Mercado Libre</title>
+<style>
+  :root {
+    --bg: #f6f4ef; --card: #ffffff; --ink: #19296d; --muted: #5b6275; --line: #e3ded4;
+    --ok: #1f8a4c; --warn: #b7791f; --err: #c0392b; --accent: #19296d; --accent-ink: #fff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #11152a; --card: #1a2040; --ink: #eef0fa; --muted: #a3a9c2; --line: #2c3460;
+            --ok: #4cc27f; --warn: #e3b04b; --err: #ef6f61; --accent: #e27566; --accent-ink: #11152a; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+  main { max-width: 860px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-size: 1.6rem; margin: 0 0 4px; }
+  h2 { font-size: 1.1rem; margin: 0 0 12px; }
+  p.sub { color: var(--muted); margin: 0 0 24px; }
+  section { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 18px; margin-bottom: 18px; }
+  label { display: block; font-size: .85rem; color: var(--muted); margin: 10px 0 4px; }
+  input, select { width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--ink); font: inherit; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
+  @media (max-width: 560px) { .row { grid-template-columns: 1fr; } }
+  .counter { font-variant-numeric: tabular-nums; font-size: .85rem; color: var(--muted); text-align: right; margin-top: 4px; }
+  .counter.over { color: var(--err); font-weight: 600; }
+  .score { display: flex; align-items: center; gap: 12px; margin: 14px 0 8px; }
+  .score b { font-size: 2rem; font-variant-numeric: tabular-nums; }
+  .bar { flex: 1; height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+  .bar span { display: block; height: 100%; transition: width .2s; }
+  ul.checks { list-style: none; padding: 0; margin: 0; }
+  ul.checks li { padding: 4px 0 4px 24px; position: relative; font-size: .92rem; }
+  ul.checks li::before { position: absolute; left: 0; font-weight: 700; }
+  li.ok::before { content: "✓"; color: var(--ok); }
+  li.warn::before { content: "!"; color: var(--warn); }
+  li.error::before { content: "✕"; color: var(--err); }
+  button { background: var(--accent); color: var(--accent-ink); border: 0; border-radius: 8px; padding: 10px 14px; font: inherit; font-weight: 600; cursor: pointer; }
+  button.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); padding: 6px 10px; font-weight: 500; font-size: .85rem; }
+  .gen-out { margin-top: 12px; padding: 12px; border: 1px dashed var(--line); border-radius: 8px; word-break: break-word; }
+  table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+  td { padding: 8px 6px; border-top: 1px solid var(--line); vertical-align: top; }
+  td.n { font-variant-numeric: tabular-nums; color: var(--muted); white-space: nowrap; }
+  td .tag { font-size: .75rem; color: var(--muted); display: block; }
+  .tips li { margin-bottom: 6px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Títulos SEO para Mercado Libre</h1>
+  <p class="sub">Analizá un título, generá uno nuevo o copiá los títulos optimizados del catálogo Slifit + REM.</p>
+
+  <section>
+    <h2>1. Analizar título</h2>
+    <label for="titulo">Título</label>
+    <input id="titulo" placeholder="Ej: Ashwagandha Extracto Líquido Gotas Sublingual 50ml Slifit">
+    <div class="counter" id="counter">0/60</div>
+    <div class="row">
+      <div><label for="producto">Keyword principal (debe ir primero)</label><input id="producto" placeholder="Ashwagandha"></div>
+      <div><label for="marca">Marca</label><input id="marca" placeholder="Slifit"></div>
+    </div>
+    <div class="score"><b id="score">–</b><div class="bar"><span id="barra" style="width:0"></span></div></div>
+    <ul class="checks" id="checks"></ul>
+  </section>
+
+  <section>
+    <h2>2. Generar título</h2>
+    <div class="row">
+      <div><label for="g-producto">Producto</label><input id="g-producto" placeholder="Melena De León"></div>
+      <div><label for="g-tipo">Tipo</label><input id="g-tipo" value="Extracto Hongo"></div>
+      <div><label for="g-formato">Formato</label><input id="g-formato" value="Gotas Sublingual"></div>
+      <div><label for="g-pres">Presentación</label><input id="g-pres" value="50ml"></div>
+      <div><label for="g-marca">Marca</label><input id="g-marca" value="Slifit"></div>
+      <div><label for="g-extra">Keyword extra (sinónimo / nombre en inglés)</label><input id="g-extra" placeholder="Lions Mane"></div>
+    </div>
+    <p><button id="generar">Generar</button></p>
+    <div class="gen-out" id="gen-out" hidden></div>
+  </section>
+
+  <section>
+    <h2>3. Títulos optimizados del catálogo</h2>
+    <label for="filtro">Marca</label>
+    <select id="filtro"><option value="">Todas</option><option>Slifit</option><option>Rem</option></select>
+    <table><tbody id="tabla"></tbody></table>
+  </section>
+
+  <section>
+    <h2>Reglas que aplica</h2>
+    <ul class="tips">
+      <li><b>Máximo 60 caracteres</b> y usalos casi todos: cada palabra es una keyword que puede posicionar.</li>
+      <li><b>Producto primero:</b> el comprador busca "melena de leon", no "Slifit". La marca va al final.</li>
+      <li><b>Estructura:</b> Producto + tipo (extracto/hongo) + formato (gotas/sublingual) + presentación (50ml) + marca + sinónimo.</li>
+      <li><b>Sin precio, envío, cuotas, 3x2, "oferta" ni "original":</b> ML los prohíbe en el título; van en sus campos y en promociones.</li>
+      <li><b>Sin claims de salud</b> (cura, ansiedad, insomnio, menopausia…): pueden dar de baja la publicación.</li>
+      <li><b>Sin mayúsculas sostenidas, emojis ni símbolos</b>, y sin repetir palabras.</li>
+      <li><b>Sinónimos que busca la gente:</b> Lions Mane, Ganoderma, Turkey Tail, Cordyceps Militaris, Tremella Fuciformis.</li>
+      <li><b>Packs y kits en publicaciones separadas</b> ("x3", "2x50ml") para aparecer en búsquedas de cantidad.</li>
+      <li>Completá <b>todos los atributos</b> de la ficha técnica (marca, sabor, formato, volumen): ML los usa como filtros y suben la calidad de la publicación.</li>
+    </ul>
+  </section>
+</main>
+<script src="seo.js"></script>
+<script src="catalogo.js"></script>
+<script>
+  const $ = (id) => document.getElementById(id);
+  const color = (s) => s >= 85 ? 'var(--ok)' : s >= 60 ? 'var(--warn)' : 'var(--err)';
+  const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  function render() {
+    const t = $('titulo').value;
+    $('counter').textContent = `${t.trim().length}/${SeoML.MAX_LEN}`;
+    $('counter').classList.toggle('over', t.trim().length > SeoML.MAX_LEN);
+    if (!t.trim()) { $('score').textContent = '–'; $('barra').style.width = 0; $('checks').innerHTML = ''; return; }
+    const r = SeoML.analizar(t, { producto: $('producto').value.trim(), marca: $('marca').value.trim() });
+    $('score').textContent = r.score;
+    $('barra').style.width = r.score + '%';
+    $('barra').style.background = color(r.score);
+    $('checks').innerHTML = r.checks.map((c) => `<li class="${c.tipo}">${esc(c.msg)}</li>`).join('');
+  }
+  ['titulo', 'producto', 'marca'].forEach((id) => $(id).addEventListener('input', render));
+
+  function cargar(titulo, producto, marca) {
+    $('titulo').value = titulo; $('producto').value = producto; $('marca').value = marca;
+    render(); $('titulo').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  $('generar').addEventListener('click', () => {
+    const producto = $('g-producto').value.trim();
+    const marca = $('g-marca').value.trim();
+    const titulo = SeoML.generar({
+      producto, tipo: $('g-tipo').value.trim(), formato: $('g-formato').value.trim(),
+      presentacion: $('g-pres').value.trim(), marca, extras: [$('g-extra').value.trim()],
+    });
+    const out = $('gen-out');
+    out.hidden = false;
+    out.innerHTML = `<b>${esc(titulo || '—')}</b> <span class="tag">(${titulo.length}/60)</span><br><br>`;
+    const b = document.createElement('button'); b.className = 'ghost'; b.textContent = 'Analizar este título';
+    b.onclick = () => cargar(titulo, producto, marca);
+    out.appendChild(b);
+  });
+
+  function tabla() {
+    const f = $('filtro').value;
+    const filas = [];
+    CATALOGO.filter((p) => !f || p.marca === f).forEach((p) => p.titulos.forEach((t) => {
+      const r = SeoML.analizar(t, { producto: p.producto, marca: p.marca });
+      filas.push(`<tr><td>${esc(t)}<span class="tag">${esc(p.marca)} · ${esc(p.nota || p.producto)}</span></td>
+        <td class="n">${r.largo}/60</td><td class="n" style="color:${color(r.score)}">${r.score}</td>
+        <td><button class="ghost" data-t="${esc(t)}">Copiar</button></td></tr>`);
+    }));
+    $('tabla').innerHTML = filas.join('');
+  }
+  $('filtro').addEventListener('change', tabla);
+  $('tabla').addEventListener('click', async (e) => {
+    const t = e.target.dataset && e.target.dataset.t;
+    if (!t) return;
+    try { await navigator.clipboard.writeText(t); e.target.textContent = 'Copiado'; }
+    catch { e.target.textContent = 'Error'; }
+    setTimeout(() => (e.target.textContent = 'Copiar'), 1200);
+  });
+  tabla();
+</script>
+</body>
+</html>
