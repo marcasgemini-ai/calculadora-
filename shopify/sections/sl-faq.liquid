@@ -1,0 +1,305 @@
+{%- comment -%}
+  SUAVELAND · CLOUD SOCKS · PREGUNTAS FRECUENTES
+  Sección nativa · Tipografía y colores del theme
+{%- endcomment -%}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<style>
+  .sl-faq, .sl-faq *, .sl-faq *::before, .sl-faq *::after { box-sizing: border-box; }
+
+  .sl-faq__wrap { max-width: 86rem; margin: 0 auto; }
+
+  .sl-faq__header { margin: 0 0 2.2rem; }
+  .sl-faq__header--center { text-align: center; }
+  .sl-faq__title { margin: 0; }
+  .sl-faq__sub { margin: 0.8rem 0 0; opacity: 0.75; }
+
+  .sl-faq__list { border-top: 0.1rem solid rgba(var(--color-foreground), 0.1); }
+  .sl-faq__item { border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.1); }
+
+  /* PREGUNTA */
+  .sl-faq__q {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.6rem;
+    padding: 2rem 0;
+    list-style: none;
+    cursor: pointer;
+    font-size: 1.6rem;
+    line-height: 1.4;
+    font-weight: var(--font-body-weight-bold);
+    letter-spacing: 0;
+    color: rgb(var(--color-foreground));
+    transition: opacity 0.2s ease;
+  }
+  .sl-faq__q::-webkit-details-marker { display: none; }
+  .sl-faq__q::marker { content: ''; }
+  .sl-faq__q:hover { opacity: 0.72; }
+  .sl-faq__q:focus-visible {
+    outline: 0.2rem solid rgb(var(--color-foreground));
+    outline-offset: 0.4rem;
+    border-radius: 0.4rem;
+  }
+
+  /* ÍCONO + / X */
+  .sl-faq__icon {
+    position: relative;
+    flex: 0 0 3.3rem;
+    width: 3.3rem;
+    height: 3.3rem;
+    border: 0.1rem solid rgba(var(--color-foreground), 0.14);
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+  }
+  .sl-faq__icon::before,
+  .sl-faq__icon::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    background: rgb(var(--color-foreground));
+    border-radius: 0.2rem;
+    transform: translate(-50%, -50%);
+  }
+  .sl-faq__icon::before { width: 1.3rem; height: 0.15rem; }
+  .sl-faq__icon::after { width: 0.15rem; height: 1.3rem; }
+  .sl-faq__item[open] .sl-faq__icon { transform: rotate(45deg); }
+
+  /* RESPUESTA */
+  .sl-faq__a {
+    padding: 0 4.2rem 2.2rem 0;
+    animation: slFaqIn 0.3s ease both;
+  }
+  .sl-faq__a > :first-child { margin-top: 0; }
+  .sl-faq__a > :last-child { margin-bottom: 0; }
+
+  @keyframes slFaqIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  @media screen and (max-width: 749px) {
+    .sl-faq.page-width { padding-left: 1.6rem; padding-right: 1.6rem; }
+  }
+  @media screen and (min-width: 750px) {
+    .sl-faq__header { margin-bottom: 2.8rem; }
+    .sl-faq__q { padding: 2.4rem 0; font-size: 1.8rem; }
+    .sl-faq__icon { flex-basis: 3.5rem; width: 3.5rem; height: 3.5rem; }
+    .sl-faq__a { padding: 0 5.5rem 2.5rem 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sl-faq__a { animation: none; }
+    .sl-faq__icon { transition: none; }
+  }
+</style>
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div class="sl-faq page-width section-{{ section.id }}-padding">
+    <div class="sl-faq__wrap">
+
+      {%- if section.settings.heading != blank or section.settings.subheading != blank -%}
+        <div class="sl-faq__header sl-faq__header--{{ section.settings.heading_alignment }}">
+          {%- if section.settings.heading != blank -%}
+            <h2 class="sl-faq__title {{ section.settings.heading_size }}">{{ section.settings.heading }}</h2>
+          {%- endif -%}
+          {%- if section.settings.subheading != blank -%}
+            <p class="sl-faq__sub">{{ section.settings.subheading }}</p>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      <div class="sl-faq__list">
+        {%- for block in section.blocks -%}
+          <details
+            class="sl-faq__item"
+            {{ block.shopify_attributes }}
+            {% if forloop.first and section.settings.open_first %}open{% endif %}
+          >
+            <summary class="sl-faq__q">
+              <span>{{ block.settings.question }}</span>
+              <span class="sl-faq__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="sl-faq__a rte">
+              {{ block.settings.answer }}
+            </div>
+          </details>
+        {%- endfor -%}
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{%- if section.settings.faq_schema and section.blocks.size > 0 -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {%- for block in section.blocks -%}
+          {
+            "@type": "Question",
+            "name": {{ block.settings.question | strip_html | json }},
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": {{ block.settings.answer | strip_html | json }}
+            }
+          }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+{%- endif -%}
+
+<script>
+  // En el editor: al seleccionar una pregunta, abrirla
+  document.addEventListener('shopify:block:select', function (e) {
+    var item = document.querySelector('.sl-faq__item[data-shopify-editor-block*="' + e.detail.blockId + '"]');
+    if (item) item.open = true;
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Preguntas frecuentes",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "inline_richtext", "id": "heading", "label": "Encabezado", "default": "Preguntas frecuentes" },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Tamaño del encabezado",
+      "default": "h1",
+      "options": [
+        { "value": "h2", "label": "Pequeño" },
+        { "value": "h1", "label": "Mediano" },
+        { "value": "h0", "label": "Grande" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Alineación del encabezado",
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Izquierda" },
+        { "value": "center", "label": "Centro" }
+      ]
+    },
+    { "type": "inline_richtext", "id": "subheading", "label": "Subtítulo (opcional)" },
+    { "type": "checkbox", "id": "open_first", "label": "Mostrar la primera pregunta abierta", "default": false },
+    {
+      "type": "checkbox",
+      "id": "faq_schema",
+      "label": "Datos estructurados para Google (FAQ)",
+      "default": true,
+      "info": "Ayuda a que Google entienda las preguntas. Dejalo activado en una sola sección de preguntas por página."
+    },
+    { "type": "header", "content": "Colores" },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Esquema de colores",
+      "default": "background-1",
+      "options": [
+        { "value": "accent-1", "label": "Acento 1" },
+        { "value": "accent-2", "label": "Acento 2" },
+        { "value": "background-1", "label": "Fondo 1" },
+        { "value": "background-2", "label": "Fondo 2" },
+        { "value": "inverse", "label": "Inverso" }
+      ]
+    },
+    { "type": "header", "content": "Relleno de sección" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Relleno superior", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Relleno inferior", "default": 48 }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Pregunta",
+      "limit": 20,
+      "settings": [
+        { "type": "inline_richtext", "id": "question", "label": "Pregunta", "default": "Pregunta" },
+        { "type": "richtext", "id": "answer", "label": "Respuesta", "default": "<p>Respuesta.</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Preguntas frecuentes",
+      "blocks": [
+        {
+          "type": "question",
+          "settings": {
+            "question": "¿Qué talle tengo que comprar?",
+            "answer": "<p>Tenemos un único talle que se adapta a calzados del <strong>36 al 43</strong>. Está diseñado para acompañar la forma natural del pie y darte comodidad sin apretar los dedos.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "¿Qué tiene de especial la punta ancha?",
+            "answer": "<p>Las medias comunes terminan en punta y aprietan los dedos uno contra otro. Cloud Socks™ tiene una puntera más ancha, pensada para darle a tus dedos más espacio y permitir que se acomoden de forma natural, sin presión ni roces.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "¿Sirven con cualquier zapatilla o zapato?",
+            "answer": "<p>Sí. Son de caña baja y quedan bien con zapatillas, zapatos y calzado de uso diario. La puntera ancha está diseñada para adaptarse sin generar un bulto incómodo.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "¿De verdad ayudan con la transpiración y el olor?",
+            "answer": "<p>Sí. Su tejido ayuda a absorber la humedad y mantener el pie más seco y fresco durante el día, reduciendo esa sensación incómoda de humedad y mal olor al sacarte las zapatillas.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "¿Duran más que las medias comunes?",
+            "answer": "<p>Están reforzadas en la punta y el talón, justo en las zonas donde las medias suelen desgastarse primero. La planta acolchada también ayuda a mantener la comodidad uso tras uso.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "¿Cómo las lavo?",
+            "answer": "<p>Podés lavarlas en lavarropas con agua fría o tibia. Recomendamos lavarlas del revés, con colores similares y evitar lavandina o secadora para conservar mejor su forma y suavidad.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "¿Cuánto tarda el envío?",
+            "answer": "<p>Enviamos a todo el país. Despachamos los pedidos dentro de las 24 a 48 horas hábiles y la entrega suele demorar entre 3 y 7 días hábiles según tu zona. Cuando salga tu pedido te enviamos el número de seguimiento.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "¿Y si no me gustan?",
+            "answer": "<p>Tenés 60 días de garantía sin riesgo. Si no te convencen, te las cambiamos o te devolvemos tu plata. Escribinos y lo resolvemos sin vueltas.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
