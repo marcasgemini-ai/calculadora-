@@ -1,0 +1,419 @@
+{%- comment -%}
+  SUAVELAND · CLOUD SOCKS · PESTAÑAS DE BENEFICIOS
+  Sección nativa · Imágenes desde el editor · Estilos del theme
+{%- endcomment -%}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<style>
+  /* PESTAÑAS: en mobile todas entran a lo ancho */
+  .cs-tabs .cs-tablist {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    gap: 0.6rem;
+    margin: 0 0 2.8rem;
+  }
+  .cs-tabs .cs-tab {
+    appearance: none;
+    -webkit-appearance: none;
+    min-height: 4.4rem;
+    margin: 0;
+    padding: 0.8rem 0.6rem;
+    border: 0.1rem solid rgba(var(--color-foreground), 0.15);
+    border-radius: 10rem;
+    background: transparent;
+    color: rgb(var(--color-foreground));
+    cursor: pointer;
+    font-family: var(--font-body-family);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    font-size: 1.3rem;
+    letter-spacing: 0.04rem;
+    line-height: 1.2;
+    text-align: center;
+    white-space: normal;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  }
+  .cs-tabs .cs-tab[aria-selected="true"] {
+    background: rgb(var(--color-button));
+    color: rgb(var(--color-button-text));
+    border-color: rgb(var(--color-button));
+  }
+  .cs-tabs .cs-tab:focus-visible {
+    outline: 0.2rem solid rgba(var(--color-foreground), 0.5);
+    outline-offset: 0.3rem;
+  }
+
+  /* PANEL */
+  .cs-tabs .cs-panel {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.8rem;
+    align-items: center;
+  }
+  .cs-tabs .cs-panel[hidden] { display: none; }
+
+  .cs-tabs .cs-media {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--media-radius, 0);
+    background: rgba(var(--color-foreground), 0.04);
+  }
+  .cs-tabs .cs-media--square { aspect-ratio: 1 / 1; }
+  .cs-tabs .cs-media--portrait { aspect-ratio: 4 / 5; }
+  .cs-tabs .cs-media img,
+  .cs-tabs .cs-media .placeholder-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .cs-tabs .cs-media--adapt img { height: auto; }
+
+  /* CONTENIDO: fuentes y tamaños los pone el theme */
+  .cs-tabs .cs-content > * + * { margin-top: 1.6rem; }
+  .cs-tabs .cs-content > :first-child { margin-top: 0; }
+  .cs-tabs .cs-content--center { text-align: center; }
+  .cs-tabs .cs-h { margin-bottom: 0; }
+  .cs-tabs .cs-tagline {
+    margin-top: 2rem;
+    padding-top: 1.6rem;
+    border-top: 0.1rem solid rgba(var(--color-foreground), 0.15);
+    font-weight: var(--font-body-weight-bold);
+    color: rgb(var(--color-foreground));
+  }
+
+  @media screen and (min-width: 750px) {
+    .cs-tabs .cs-tablist {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 4.8rem;
+    }
+    .cs-tabs .cs-tab {
+      flex: 0 0 auto;
+      min-height: 4.8rem;
+      padding: 1.1rem 2.4rem;
+      font-size: 1.6rem;
+      white-space: nowrap;
+    }
+    .cs-tabs .cs-panel {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 6rem;
+    }
+    .cs-tabs .cs-panel--small { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); }
+    .cs-tabs .cs-panel--large { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); }
+    .cs-tabs .cs-panel--reverse .cs-media { order: 2; }
+  }
+</style>
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div
+    class="cs-tabs page-width section-{{ section.id }}-padding"
+    id="cs-tabs-{{ section.id }}"
+  >
+    {%- if section.settings.title != blank -%}
+      <h2 class="{{ section.settings.title_size }} center" style="margin: 0 0 2.4rem;">{{ section.settings.title }}</h2>
+    {%- endif -%}
+
+    <div class="cs-tablist" role="tablist" aria-label="{{ section.settings.title | strip_html | default: 'Beneficios' | escape }}">
+      {%- for block in section.blocks -%}
+        <button
+          class="cs-tab"
+          type="button"
+          role="tab"
+          id="cs-tab-{{ block.id }}"
+          aria-controls="cs-panel-{{ block.id }}"
+          aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+          {% unless forloop.first %}tabindex="-1"{% endunless %}
+          {{ block.shopify_attributes }}
+        >
+          {{- block.settings.tab_label | escape -}}
+        </button>
+      {%- endfor -%}
+    </div>
+
+    {%- for block in section.blocks -%}
+      <div
+        class="cs-panel cs-panel--{{ section.settings.image_width }}{% if section.settings.layout == 'text_first' %} cs-panel--reverse{% endif %}"
+        role="tabpanel"
+        id="cs-panel-{{ block.id }}"
+        aria-labelledby="cs-tab-{{ block.id }}"
+        {% unless forloop.first %}hidden{% endunless %}
+      >
+        <div class="cs-media cs-media--{{ section.settings.image_ratio }}">
+          {%- if block.settings.image != blank -%}
+            {%- liquid
+              if forloop.first
+                assign img_loading = 'eager'
+              else
+                assign img_loading = 'lazy'
+              endif
+            -%}
+            {{
+              block.settings.image
+              | image_url: width: 1500
+              | image_tag:
+                loading: img_loading,
+                sizes: '(min-width: 990px) 50vw, 100vw',
+                widths: '375, 550, 750, 1000, 1250, 1500',
+                alt: block.settings.image.alt
+            }}
+          {%- else -%}
+            {{ 'detailed-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+        </div>
+
+        <div class="cs-content cs-content--{{ section.settings.content_alignment }}">
+          {%- if block.settings.kicker != blank -%}
+            <p class="caption-with-letter-spacing">{{ block.settings.kicker | escape }}</p>
+          {%- endif -%}
+
+          {%- if block.settings.heading != blank -%}
+            <h3 class="cs-h {{ section.settings.heading_size }}">{{ block.settings.heading }}</h3>
+          {%- endif -%}
+
+          {%- if block.settings.text != blank -%}
+            <div class="rte">{{ block.settings.text }}</div>
+          {%- endif -%}
+
+          {%- if block.settings.tagline != blank -%}
+            <p class="cs-tagline">{{ block.settings.tagline }}</p>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+<script>
+  (function () {
+    var root = document.getElementById('cs-tabs-{{ section.id }}');
+    if (!root) return;
+    var tabs = root.querySelectorAll('.cs-tab');
+
+    function activate(tab, focus) {
+      for (var i = 0; i < tabs.length; i++) {
+        var current = tabs[i];
+        var active = current === tab;
+        var panel = document.getElementById(current.getAttribute('aria-controls'));
+        current.setAttribute('aria-selected', active ? 'true' : 'false');
+        current.tabIndex = active ? 0 : -1;
+        if (panel) panel.hidden = !active;
+      }
+      if (focus) tab.focus();
+    }
+
+    for (var i = 0; i < tabs.length; i++) {
+      (function (index) {
+        tabs[index].addEventListener('click', function () {
+          activate(tabs[index], false);
+        });
+        tabs[index].addEventListener('keydown', function (e) {
+          if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+          e.preventDefault();
+          var dir = e.key === 'ArrowRight' ? 1 : -1;
+          activate(tabs[(index + dir + tabs.length) % tabs.length], true);
+        });
+      })(i);
+    }
+
+    // En el editor: al seleccionar un bloque, mostrar su pestaña
+    document.addEventListener('shopify:block:select', function (e) {
+      var tab = root.querySelector('#cs-tab-' + e.detail.blockId);
+      if (tab) activate(tab, false);
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Pestañas de beneficios",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "Encabezado de la sección (opcional)"
+    },
+    {
+      "type": "select",
+      "id": "title_size",
+      "label": "Tamaño del encabezado de la sección",
+      "default": "h1",
+      "options": [
+        { "value": "h2", "label": "Pequeño" },
+        { "value": "h1", "label": "Mediano" },
+        { "value": "h0", "label": "Grande" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Imagen"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Proporción de la imagen",
+      "default": "square",
+      "options": [
+        { "value": "adapt", "label": "Adaptar a la imagen" },
+        { "value": "square", "label": "Cuadrada" },
+        { "value": "portrait", "label": "Vertical" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "image_width",
+      "label": "Ancho de la imagen en escritorio",
+      "default": "medium",
+      "options": [
+        { "value": "small", "label": "Pequeño" },
+        { "value": "medium", "label": "Mediano" },
+        { "value": "large", "label": "Grande" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Ubicación de la imagen en escritorio",
+      "default": "image_first",
+      "options": [
+        { "value": "image_first", "label": "Imagen primero" },
+        { "value": "text_first", "label": "Imagen segunda" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Contenido"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Tamaño del título de cada pestaña",
+      "default": "h1",
+      "options": [
+        { "value": "h2", "label": "Pequeño" },
+        { "value": "h1", "label": "Mediano" },
+        { "value": "h0", "label": "Grande" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Alineación del contenido",
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Izquierda" },
+        { "value": "center", "label": "Centro" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Colores"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Esquema de colores",
+      "default": "background-1",
+      "options": [
+        { "value": "accent-1", "label": "Acento 1" },
+        { "value": "accent-2", "label": "Acento 2" },
+        { "value": "background-1", "label": "Fondo 1" },
+        { "value": "background-2", "label": "Fondo 2" },
+        { "value": "inverse", "label": "Inverso" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Relleno de sección"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Relleno superior",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Relleno inferior",
+      "default": 64
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Pestaña",
+      "limit": 4,
+      "settings": [
+        { "type": "text", "id": "tab_label", "label": "Texto de la pestaña", "default": "Beneficio" },
+        { "type": "image_picker", "id": "image", "label": "Imagen" },
+        { "type": "text", "id": "kicker", "label": "Subtítulo", "default": "Comodidad" },
+        { "type": "inline_richtext", "id": "heading", "label": "Título", "default": "Título del beneficio" },
+        { "type": "richtext", "id": "text", "label": "Texto", "default": "<p>Describí el beneficio acá.</p>" },
+        { "type": "inline_richtext", "id": "tagline", "label": "Frase final", "default": "Frase de cierre." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Pestañas de beneficios",
+      "blocks": [
+        {
+          "type": "tab",
+          "settings": {
+            "tab_label": "Dedos libres",
+            "kicker": "Comodidad",
+            "heading": "Chau a los dedos apretados",
+            "text": "<p>Los dedos apretados dentro de la zapatilla generan presión, incomodidad y dolor de pies, sobre todo después de caminar o pasar muchas horas parado.</p><p>Por eso creamos <strong>Cloud Socks™</strong>, con <strong>más espacio en la zona de los dedos</strong> para que se acomoden de forma natural, como cuando caminás descalzo.</p>",
+            "tagline": "Más espacio para tus dedos. Menos dolor de pies."
+          }
+        },
+        {
+          "type": "tab",
+          "settings": {
+            "tab_label": "Secos y frescos",
+            "kicker": "Frescura",
+            "heading": "Pies secos y frescos",
+            "text": "<p>Hechas con un material pensado para mantener tus pies <strong>secos y frescos todo el día</strong>. Absorben la transpiración y controlan la humedad.</p><p>Así no terminás con los pies húmedos ni con ese olor incómodo cuando te sacás las zapatillas.</p>",
+            "tagline": "Menos humedad. Menos olor. Más frescura todo el día."
+          }
+        },
+        {
+          "type": "tab",
+          "settings": {
+            "tab_label": "Más resistentes",
+            "kicker": "Calidad",
+            "heading": "Medias realmente únicas",
+            "text": "<p><strong>Acolchadas en la planta</strong> para que cada paso se sienta suave, incluso después de muchas horas de pie.</p><p><strong>Reforzadas en la punta y el talón</strong>, justo donde las medias comunes se rompen primero.</p>",
+            "tagline": "Más cómodas, más resistentes. Hechas para reemplazar a tus medias de siempre."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
