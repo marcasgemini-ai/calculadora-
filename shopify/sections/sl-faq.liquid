@@ -43,8 +43,8 @@
     padding: 2rem 0;
     list-style: none;
     cursor: pointer;
-    font-size: 1.7rem;
-    line-height: 1.4;
+    font-size: inherit;
+    line-height: calc(1 + 0.6 / var(--font-body-scale, 1));
     font-weight: var(--font-body-weight);
     letter-spacing: 0;
     color: var(--sl-q, #111111);
@@ -62,9 +62,9 @@
   /* ÍCONO + / X */
   .sl-faq__icon {
     position: relative;
-    flex: 0 0 3.3rem;
-    width: 3.3rem;
-    height: 3.3rem;
+    flex: 0 0 3rem;
+    width: 3rem;
+    height: 3rem;
     border: 0.1rem solid var(--sl-line, rgba(17, 17, 17, 0.14));
     border-radius: 50%;
     transition: transform 0.3s ease;
@@ -79,15 +79,13 @@
     border-radius: 0.2rem;
     transform: translate(-50%, -50%);
   }
-  .sl-faq__icon::before { width: 1.3rem; height: 0.15rem; }
-  .sl-faq__icon::after { width: 0.15rem; height: 1.3rem; }
+  .sl-faq__icon::before { width: 1.2rem; height: 0.15rem; }
+  .sl-faq__icon::after { width: 0.15rem; height: 1.2rem; }
   .sl-faq__item[open] .sl-faq__icon { transform: rotate(45deg); }
 
   /* RESPUESTA */
   .sl-faq__a {
-    padding: 0 4.2rem 2.2rem 0;
-    font-size: 1.5rem;
-    line-height: 1.65;
+    padding: 0 4.2rem 2rem 0;
     color: var(--sl-a, #565656);
     animation: slFaqIn 0.3s ease both;
   }
@@ -106,9 +104,9 @@
   }
   @media screen and (min-width: 750px) {
     .sl-faq__header { margin-bottom: 2.8rem; }
-    .sl-faq__q { padding: 2.4rem 0; font-size: 1.8rem; }
-    .sl-faq__icon { flex-basis: 3.5rem; width: 3.5rem; height: 3.5rem; }
-    .sl-faq__a { padding: 0 5.5rem 2.5rem 0; font-size: 1.6rem; }
+    .sl-faq__q { padding: 2.2rem 0; }
+    .sl-faq__icon { flex-basis: 3.2rem; width: 3.2rem; height: 3.2rem; }
+    .sl-faq__a { padding: 0 5.2rem 2.2rem 0; }
   }
   @media (prefers-reduced-motion: reduce) {
     .sl-faq__a { animation: none; }
@@ -193,7 +191,7 @@
       "type": "select",
       "id": "heading_size",
       "label": "Tamaño del encabezado",
-      "default": "h1",
+      "default": "h2",
       "options": [
         { "value": "h2", "label": "Pequeño" },
         { "value": "h1", "label": "Mediano" },
