@@ -95,7 +95,11 @@
   }
   .sl-dif__buttons { margin-top: 3rem; }
 
+  /* MOBILE: margen lateral para que nada toque el borde */
   @media screen and (max-width: 749px) {
+    .sl-dif.page-width { padding-left: 2rem; padding-right: 2rem; }
+    .sl-dif__item { align-items: flex-start; }
+    .sl-dif__icon { margin-top: 0.2rem; }
     .sl-dif__buttons .button { width: 100%; }
   }
 </style>
@@ -153,7 +157,7 @@
         {%- if section.settings.button_label != blank -%}
           <div class="sl-dif__buttons">
             <a
-              {% if section.settings.button_link == blank %}role="link" aria-disabled="true"{% else %}href="{{ section.settings.button_link }}"{% endif %}
+              href="{{ section.settings.button_link | default: '#' }}"
               class="button{% if section.settings.button_style_secondary %} button--secondary{% else %} button--primary{% endif %}"
             >
               {{- section.settings.button_label | escape -}}

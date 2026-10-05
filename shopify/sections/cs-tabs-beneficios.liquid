@@ -95,6 +95,11 @@
     color: rgb(var(--color-foreground));
   }
 
+  /* MOBILE: margen lateral para que nada toque el borde */
+  @media screen and (max-width: 749px) {
+    .cs-tabs.page-width { padding-left: 2rem; padding-right: 2rem; }
+  }
+
   @media screen and (min-width: 750px) {
     .cs-tabs .cs-tablist {
       display: flex;
