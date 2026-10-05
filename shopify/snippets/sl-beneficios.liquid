@@ -1,0 +1,74 @@
+{%- doc -%}
+  @param {object} block - Bloque de producto con los textos de los beneficios
+{%- enddoc -%}
+
+{%- comment -%}
+  SUAVELAND · Beneficios con check (bloque de producto)
+  Tipografía y colores heredados del theme
+{%- endcomment -%}
+
+<style>
+  #sl-b-{{ block.id }}, #sl-b-{{ block.id }} * { box-sizing: border-box; }
+  #sl-b-{{ block.id }} .sl-benefits { margin: 0; padding: 0; list-style: none; font-family: inherit; color: inherit; }
+  #sl-b-{{ block.id }} .sl-benefits__item {
+    display: flex; align-items: center; gap: 12px;
+    margin: 0; padding: 12px 0; list-style: none;
+    {%- if block.settings.show_dividers -%}border-top: 1px solid rgba(0,0,0,.08);{%- endif -%}
+  }
+  #sl-b-{{ block.id }} .sl-benefits__item:first-child { border-top: 0; padding-top: 2px; }
+  #sl-b-{{ block.id }} .sl-benefits__item:last-child { padding-bottom: 0; }
+  #sl-b-{{ block.id }} .sl-benefits__item::before,
+  #sl-b-{{ block.id }} .sl-benefits__item::marker { content: none; display: none; }
+
+  #sl-b-{{ block.id }} .sl-benefits__icon {
+    flex: 0 0 22px; width: 22px; height: 22px; border-radius: 50%;
+    border: 1.2px solid currentColor;
+    display: flex; align-items: center; justify-content: center;
+    {%- if block.settings.icon_color != blank and block.settings.icon_color != 'rgba(0,0,0,0)' -%}
+      color: {{ block.settings.icon_color }};
+    {%- else -%}
+      color: inherit;
+    {%- endif -%}
+  }
+  #sl-b-{{ block.id }} .sl-benefits__icon--filled { background: currentColor; }
+  #sl-b-{{ block.id }} .sl-benefits__icon svg {
+    display: block; width: 12px; height: 12px; fill: none;
+    stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  }
+  #sl-b-{{ block.id }} .sl-benefits__icon--filled svg { stroke: #fff; }
+
+  #sl-b-{{ block.id }} .sl-benefits__copy { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+  #sl-b-{{ block.id }} .sl-benefits__title { display: block; font-family: inherit; font-size: 1.05em; line-height: 1.35; font-weight: bold; color: inherit; }
+  #sl-b-{{ block.id }} .sl-benefits__desc { display: block; font-family: inherit; font-size: .95em; line-height: 1.5; color: inherit; opacity: .7; }
+
+  @media screen and (min-width: 750px) {
+    #sl-b-{{ block.id }} .sl-benefits__item { gap: 14px; padding: 14px 0; }
+    #sl-b-{{ block.id }} .sl-benefits__icon { flex-basis: 23px; width: 23px; height: 23px; }
+  }
+</style>
+
+<div
+  id="sl-b-{{ block.id }}"
+  {{ block.shopify_attributes }}
+  style="margin-top: {{ block.settings.margin_top }}px; margin-bottom: {{ block.settings.margin_bottom }}px;"
+>
+  <ul class="sl-benefits" role="list">
+    {%- for i in (1..5) -%}
+      {%- capture t_key -%}title_{{ i }}{%- endcapture -%}
+      {%- capture d_key -%}desc_{{ i }}{%- endcapture -%}
+      {%- assign t = block.settings[t_key] -%}
+      {%- assign d = block.settings[d_key] -%}
+      {%- if t != blank or d != blank -%}
+        <li class="sl-benefits__item">
+          <span class="sl-benefits__icon{% if block.settings.icon_style == 'filled' %} sl-benefits__icon--filled{% endif %}" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+          </span>
+          <div class="sl-benefits__copy">
+            {%- if t != blank -%}<span class="sl-benefits__title">{{ t }}</span>{%- endif -%}
+            {%- if d != blank -%}<span class="sl-benefits__desc">{{ d }}</span>{%- endif -%}
+          </div>
+        </li>
+      {%- endif -%}
+    {%- endfor -%}
+  </ul>
+</div>
