@@ -14,6 +14,11 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+  #sl-faq-{{ section.id }} {
+    --sl-q: {{ section.settings.question_color }};
+    --sl-a: {{ section.settings.answer_color }};
+    --sl-line: {{ section.settings.line_color }};
+  }
 {%- endstyle -%}
 
 <style>
@@ -23,11 +28,11 @@
 
   .sl-faq__header { margin: 0 0 2.2rem; }
   .sl-faq__header--center { text-align: center; }
-  .sl-faq__title { margin: 0; }
-  .sl-faq__sub { margin: 0.8rem 0 0; opacity: 0.75; }
+  .sl-faq__title { margin: 0; color: var(--sl-q, #111111); }
+  .sl-faq__sub { margin: 0.8rem 0 0; color: var(--sl-a, #565656); }
 
-  .sl-faq__list { border-top: 0.1rem solid rgba(var(--color-foreground), 0.1); }
-  .sl-faq__item { border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.1); }
+  .sl-faq__list { border-top: 0.1rem solid var(--sl-line, rgba(17, 17, 17, 0.1)); }
+  .sl-faq__item { border-bottom: 0.1rem solid var(--sl-line, rgba(17, 17, 17, 0.1)); }
 
   /* PREGUNTA */
   .sl-faq__q {
@@ -38,18 +43,18 @@
     padding: 2rem 0;
     list-style: none;
     cursor: pointer;
-    font-size: 1.6rem;
+    font-size: 1.7rem;
     line-height: 1.4;
-    font-weight: var(--font-body-weight-bold);
+    font-weight: var(--font-body-weight);
     letter-spacing: 0;
-    color: rgb(var(--color-foreground));
+    color: var(--sl-q, #111111);
     transition: opacity 0.2s ease;
   }
   .sl-faq__q::-webkit-details-marker { display: none; }
   .sl-faq__q::marker { content: ''; }
   .sl-faq__q:hover { opacity: 0.72; }
   .sl-faq__q:focus-visible {
-    outline: 0.2rem solid rgb(var(--color-foreground));
+    outline: 0.2rem solid var(--sl-q, #111111);
     outline-offset: 0.4rem;
     border-radius: 0.4rem;
   }
@@ -60,7 +65,7 @@
     flex: 0 0 3.3rem;
     width: 3.3rem;
     height: 3.3rem;
-    border: 0.1rem solid rgba(var(--color-foreground), 0.14);
+    border: 0.1rem solid var(--sl-line, rgba(17, 17, 17, 0.14));
     border-radius: 50%;
     transition: transform 0.3s ease;
   }
@@ -70,7 +75,7 @@
     position: absolute;
     left: 50%;
     top: 50%;
-    background: rgb(var(--color-foreground));
+    background: var(--sl-q, #111111);
     border-radius: 0.2rem;
     transform: translate(-50%, -50%);
   }
@@ -81,8 +86,13 @@
   /* RESPUESTA */
   .sl-faq__a {
     padding: 0 4.2rem 2.2rem 0;
+    font-size: 1.5rem;
+    line-height: 1.65;
+    color: var(--sl-a, #565656);
     animation: slFaqIn 0.3s ease both;
   }
+  .sl-faq__a p { color: inherit; }
+  .sl-faq__a strong { color: var(--sl-q, #111111); font-weight: var(--font-body-weight-bold); }
   .sl-faq__a > :first-child { margin-top: 0; }
   .sl-faq__a > :last-child { margin-bottom: 0; }
 
@@ -98,7 +108,7 @@
     .sl-faq__header { margin-bottom: 2.8rem; }
     .sl-faq__q { padding: 2.4rem 0; font-size: 1.8rem; }
     .sl-faq__icon { flex-basis: 3.5rem; width: 3.5rem; height: 3.5rem; }
-    .sl-faq__a { padding: 0 5.5rem 2.5rem 0; }
+    .sl-faq__a { padding: 0 5.5rem 2.5rem 0; font-size: 1.6rem; }
   }
   @media (prefers-reduced-motion: reduce) {
     .sl-faq__a { animation: none; }
@@ -107,7 +117,7 @@
 </style>
 
 <div class="color-{{ section.settings.color_scheme }} gradient">
-  <div class="sl-faq page-width section-{{ section.id }}-padding">
+  <div id="sl-faq-{{ section.id }}" class="sl-faq page-width section-{{ section.id }}-padding">
     <div class="sl-faq__wrap">
 
       {%- if section.settings.heading != blank or section.settings.subheading != blank -%}
@@ -210,6 +220,9 @@
       "info": "Ayuda a que Google entienda las preguntas. Dejalo activado en una sola sección de preguntas por página."
     },
     { "type": "header", "content": "Colores" },
+    { "type": "color", "id": "question_color", "label": "Color de las preguntas y el título", "default": "#111111" },
+    { "type": "color", "id": "answer_color", "label": "Color de las respuestas", "default": "#565656" },
+    { "type": "color", "id": "line_color", "label": "Color de las líneas", "default": "#E7E7E7" },
     {
       "type": "select",
       "id": "color_scheme",
