@@ -1,0 +1,346 @@
+{%- comment -%}
+  SUAVELAND · CLOUD SOCKS · TABLA COMPARATIVA
+  Sección nativa · Tipografía y colores del theme
+{%- endcomment -%}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+  #sl-cmp-{{ section.id }} {
+    --sl-hl-bg: {{ section.settings.highlight_bg }};
+    --sl-hl-text: {{ section.settings.highlight_text }};
+    --sl-no: {{ section.settings.no_color }};
+    --sl-card-bg: {{ section.settings.card_bg }};
+  }
+{%- endstyle -%}
+
+<style>
+  .sl-cmp, .sl-cmp *, .sl-cmp *::before, .sl-cmp *::after { box-sizing: border-box; }
+
+  .sl-cmp__wrap { max-width: 98rem; margin: 0 auto; }
+
+  .sl-cmp__header { text-align: center; margin-bottom: 2.4rem; }
+  .sl-cmp__header > * { margin: 0; }
+  .sl-cmp__header > * + * { margin-top: 0.8rem; }
+  .sl-cmp__header-sub { opacity: 0.75; }
+
+  /* TARJETA */
+  .sl-cmp__card {
+    width: 100%;
+    padding: 0.8rem;
+    overflow: hidden;
+    background: var(--sl-card-bg, #FFFFFF);
+    border: 0.1rem solid rgba(var(--color-foreground), 0.09);
+    border-radius: 2.4rem;
+    box-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.04), 0 1.8rem 4rem -2.4rem rgba(0, 0, 0, 0.18);
+  }
+
+  /* TABLA */
+  .sl-cmp__table {
+    width: 100%;
+    margin: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+    box-shadow: none;
+  }
+  .sl-cmp__table col.c1 { width: 58%; }
+  .sl-cmp__table col.c2,
+  .sl-cmp__table col.c3 { width: 21%; }
+  .sl-cmp__table th,
+  .sl-cmp__table td {
+    padding: 0;
+    border: 0;
+    vertical-align: middle;
+    background: transparent;
+  }
+
+  /* ENCABEZADOS */
+  .sl-cmp .sl-cmp__th-label { padding: 2rem 1.2rem 1.6rem 1.4rem; text-align: left; }
+  .sl-cmp__eyebrow { display: block; margin: 0; opacity: 0.65; }
+
+  .sl-cmp .sl-cmp__th-hl {
+    padding: 2rem 0.4rem 1.6rem;
+    text-align: center;
+    background: var(--sl-hl-bg, #111111);
+    color: var(--sl-hl-text, #FFFFFF);
+    border-radius: 1.6rem 1.6rem 0 0;
+  }
+  .sl-cmp__brand {
+    display: block;
+    font-family: var(--font-heading-family);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    font-size: 1.6rem;
+    line-height: 1.15;
+    letter-spacing: 0;
+    color: inherit;
+  }
+  .sl-cmp__sub {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    line-height: 1.3;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.62;
+  }
+
+  .sl-cmp .sl-cmp__th-other { padding: 2rem 0.4rem 1.6rem; text-align: center; }
+  .sl-cmp__other {
+    display: block;
+    font-size: 1.3rem;
+    line-height: 1.25;
+    opacity: 0.7;
+  }
+
+  /* FILAS */
+  .sl-cmp .sl-cmp__feature {
+    padding: 1.7rem 1rem 1.7rem 1.4rem;
+    text-align: left;
+    border-top: 0.1rem solid rgba(var(--color-foreground), 0.09);
+  }
+  .sl-cmp__title {
+    display: block;
+    font-size: 1.5rem;
+    line-height: 1.4;
+    font-weight: var(--font-body-weight-bold);
+    letter-spacing: 0;
+    color: rgb(var(--color-foreground));
+  }
+  .sl-cmp__desc {
+    display: none;
+    margin-top: 0.4rem;
+    font-size: 1.4rem;
+    line-height: 1.45;
+    opacity: 0.7;
+  }
+
+  .sl-cmp .sl-cmp__cell-hl {
+    padding: 1.5rem 0.2rem;
+    text-align: center;
+    background: var(--sl-hl-bg, #111111);
+    color: var(--sl-hl-text, #FFFFFF);
+    border-top: 0.1rem solid rgba(255, 255, 255, 0.1);
+  }
+  .sl-cmp .sl-cmp__cell-other {
+    padding: 1.5rem 0.2rem;
+    text-align: center;
+    border-top: 0.1rem solid rgba(var(--color-foreground), 0.09);
+  }
+  .sl-cmp__row:last-child .sl-cmp__cell-hl { border-radius: 0 0 1.6rem 1.6rem; }
+
+  /* ÍCONOS */
+  .sl-cmp__icon {
+    display: inline-block;
+    width: 2.5rem;
+    height: 2.5rem;
+    vertical-align: middle;
+  }
+  .sl-cmp__icon svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .sl-cmp__icon--no { color: var(--sl-no, #B5483A); opacity: 0.85; }
+  .sl-cmp__cell-hl .sl-cmp__icon--no { color: inherit; opacity: 0.6; }
+  .sl-cmp__cell-other .sl-cmp__icon--yes { color: rgb(var(--color-foreground)); }
+
+  /* MOBILE */
+  @media screen and (max-width: 749px) {
+    .sl-cmp.page-width { padding-left: 1.6rem; padding-right: 1.6rem; }
+  }
+  @media screen and (max-width: 360px) {
+    .sl-cmp.page-width { padding-left: 1rem; padding-right: 1rem; }
+    .sl-cmp__title { font-size: 1.4rem; }
+    .sl-cmp__brand { font-size: 1.4rem; }
+    .sl-cmp__other { font-size: 1.2rem; }
+    .sl-cmp .sl-cmp__feature { padding-left: 1.2rem; padding-right: 0.8rem; }
+  }
+
+  /* ESCRITORIO */
+  @media screen and (min-width: 750px) {
+    .sl-cmp__header { margin-bottom: 4rem; }
+    .sl-cmp__card { padding: 1.2rem; border-radius: 2.8rem; }
+    .sl-cmp__table col.c1 { width: 56%; }
+    .sl-cmp__table col.c2,
+    .sl-cmp__table col.c3 { width: 22%; }
+
+    .sl-cmp .sl-cmp__th-label { padding: 2.8rem 2rem 2.2rem 2.8rem; }
+    .sl-cmp .sl-cmp__th-hl { padding: 2.8rem 0.8rem 2.2rem; border-radius: 2rem 2rem 0 0; }
+    .sl-cmp .sl-cmp__th-other { padding: 2.8rem 0.8rem 2.2rem; }
+    .sl-cmp__brand { font-size: 2rem; }
+    .sl-cmp__sub { margin-top: 0.6rem; }
+    .sl-cmp__other { font-size: 1.5rem; }
+
+    .sl-cmp .sl-cmp__feature { padding: 2.2rem 2rem 2.2rem 2.8rem; }
+    .sl-cmp__title { font-size: 1.7rem; }
+    .sl-cmp__desc { display: block; font-size: 1.5rem; }
+
+    .sl-cmp .sl-cmp__cell-hl,
+    .sl-cmp .sl-cmp__cell-other { padding: 2.2rem 0.8rem; }
+    .sl-cmp__row:last-child .sl-cmp__cell-hl { border-radius: 0 0 2rem 2rem; }
+    .sl-cmp__icon { width: 2.9rem; height: 2.9rem; }
+  }
+</style>
+
+{%- capture icon_yes -%}
+  <span class="sl-cmp__icon sl-cmp__icon--yes" role="img" aria-label="Sí"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10.5"/><path d="M7.5 12.5l3 3 6-6.5"/></svg></span>
+{%- endcapture -%}
+{%- capture icon_no -%}
+  <span class="sl-cmp__icon sl-cmp__icon--no" role="img" aria-label="No"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10.5"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7"/></svg></span>
+{%- endcapture -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div id="sl-cmp-{{ section.id }}" class="sl-cmp page-width section-{{ section.id }}-padding">
+    <div class="sl-cmp__wrap">
+
+      {%- if section.settings.heading != blank or section.settings.subheading != blank -%}
+        <div class="sl-cmp__header">
+          {%- if section.settings.heading != blank -%}
+            <h2 class="{{ section.settings.heading_size }}">{{ section.settings.heading }}</h2>
+          {%- endif -%}
+          {%- if section.settings.subheading != blank -%}
+            <p class="sl-cmp__header-sub">{{ section.settings.subheading }}</p>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      <div class="sl-cmp__card">
+        <table class="sl-cmp__table">
+          <colgroup>
+            <col class="c1">
+            <col class="c2">
+            <col class="c3">
+          </colgroup>
+
+          <thead>
+            <tr>
+              <th class="sl-cmp__th-label" scope="col">
+                <span class="sl-cmp__eyebrow caption-with-letter-spacing">{{ section.settings.eyebrow | escape }}</span>
+              </th>
+              <th class="sl-cmp__th-hl" scope="col">
+                <span class="sl-cmp__brand">{{ section.settings.brand }}</span>
+                {%- if section.settings.brand_sub != blank -%}
+                  <span class="sl-cmp__sub">{{ section.settings.brand_sub | escape }}</span>
+                {%- endif -%}
+              </th>
+              <th class="sl-cmp__th-other" scope="col">
+                <span class="sl-cmp__other">{{ section.settings.other_label | escape }}</span>
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {%- for block in section.blocks -%}
+              <tr class="sl-cmp__row" {{ block.shopify_attributes }}>
+                <td class="sl-cmp__feature">
+                  <span class="sl-cmp__title">{{ block.settings.title }}</span>
+                  {%- if block.settings.desc != blank -%}
+                    <span class="sl-cmp__desc">{{ block.settings.desc }}</span>
+                  {%- endif -%}
+                </td>
+                <td class="sl-cmp__cell-hl">
+                  {%- if block.settings.ours -%}{{ icon_yes }}{%- else -%}{{ icon_no }}{%- endif -%}
+                </td>
+                <td class="sl-cmp__cell-other">
+                  {%- if block.settings.others -%}{{ icon_yes }}{%- else -%}{{ icon_no }}{%- endif -%}
+                </td>
+              </tr>
+            {%- endfor -%}
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Tabla comparativa",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "inline_richtext", "id": "heading", "label": "Encabezado (opcional)" },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Tamaño del encabezado",
+      "default": "h1",
+      "options": [
+        { "value": "h2", "label": "Pequeño" },
+        { "value": "h1", "label": "Mediano" },
+        { "value": "h0", "label": "Grande" }
+      ]
+    },
+    { "type": "inline_richtext", "id": "subheading", "label": "Subtítulo (opcional)" },
+    { "type": "header", "content": "Columnas" },
+    { "type": "text", "id": "eyebrow", "label": "Texto de la primera columna", "default": "Comparativa" },
+    { "type": "inline_richtext", "id": "brand", "label": "Columna destacada", "default": "Cloud Socks™" },
+    { "type": "text", "id": "brand_sub", "label": "Texto chico debajo", "default": "Suaveland" },
+    { "type": "text", "id": "other_label", "label": "Columna de comparación", "default": "Medias comunes" },
+    { "type": "header", "content": "Colores de la tabla" },
+    { "type": "color", "id": "highlight_bg", "label": "Fondo de la columna destacada", "default": "#111111" },
+    { "type": "color", "id": "highlight_text", "label": "Texto e íconos de la columna destacada", "default": "#FFFFFF" },
+    { "type": "color", "id": "no_color", "label": "Color de la cruz (no)", "default": "#B5483A" },
+    { "type": "color", "id": "card_bg", "label": "Fondo de la tarjeta", "default": "#FFFFFF" },
+    { "type": "header", "content": "Colores" },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Esquema de colores",
+      "default": "background-1",
+      "options": [
+        { "value": "accent-1", "label": "Acento 1" },
+        { "value": "accent-2", "label": "Acento 2" },
+        { "value": "background-1", "label": "Fondo 1" },
+        { "value": "background-2", "label": "Fondo 2" },
+        { "value": "inverse", "label": "Inverso" }
+      ]
+    },
+    { "type": "header", "content": "Relleno de sección" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Relleno superior", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Relleno inferior", "default": 48 }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Fila",
+      "limit": 12,
+      "settings": [
+        { "type": "inline_richtext", "id": "title", "label": "Característica", "default": "Característica" },
+        { "type": "inline_richtext", "id": "desc", "label": "Descripción", "info": "Se muestra solo en escritorio" },
+        { "type": "checkbox", "id": "ours", "label": "Columna destacada: tiene esta característica", "default": true },
+        { "type": "checkbox", "id": "others", "label": "Columna de comparación: tiene esta característica", "default": false }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tabla comparativa",
+      "blocks": [
+        { "type": "row", "settings": { "title": "Más espacio para tus dedos", "desc": "Se acomodan con libertad, sin presión." } },
+        { "type": "row", "settings": { "title": "Pies secos y frescos", "desc": "Absorben la humedad durante el día." } },
+        { "type": "row", "settings": { "title": "Planta acolchada", "desc": "Una sensación más suave en cada paso." } },
+        { "type": "row", "settings": { "title": "Punta y talón reforzados", "desc": "Justo donde las medias comunes se rompen." } },
+        { "type": "row", "settings": { "title": "Sin mal olor al final del día", "desc": "Frescura desde la mañana hasta la noche." } },
+        { "type": "row", "settings": { "title": "Cómodas todo el día", "desc": "Trabajo, caminatas, entrenamiento o descanso." } }
+      ]
+    }
+  ]
+}
+{% endschema %}
