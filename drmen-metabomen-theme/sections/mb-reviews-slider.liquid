@@ -1,0 +1,142 @@
+{{ 'mb-metabomen.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign tag_keys = 'sueno,panza,energia,ganas,juventud' | split: ','
+  assign tag_names = section.settings.tab_names | split: ','
+-%}
+
+<style>
+  #mb-{{ section.id }} { --mb-pt: {{ section.settings.pt }}px; --mb-pb: {{ section.settings.pb }}px; }
+  #mb-{{ section.id }} .mb-rs__tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 0 0 22px; }
+  #mb-{{ section.id }} .mb-rs__tabs button { border: 1.5px solid var(--mb-card-line); background: var(--mb-card); color: var(--mb-fg); border-radius: 999px; padding: 9px 16px; font-family: var(--mb-body); font-weight: 700; font-size: 13.5px; cursor: pointer; }
+  #mb-{{ section.id }} .mb-rs__tabs button.is-on { background: var(--mb-red); border-color: var(--mb-red); color: #fff; }
+  #mb-{{ section.id }} .mb-rv { display: flex; flex-direction: column; overflow: hidden; height: 100%; }
+  #mb-{{ section.id }} .mb-rv[hidden] { display: none; }
+  #mb-{{ section.id }} .mb-rv__img img, #mb-{{ section.id }} .mb-rv__img .mb-ph { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 0; border-width: 0 0 2px; }
+  #mb-{{ section.id }} .mb-rv__b { padding: 18px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  #mb-{{ section.id }} .mb-rv__tag { align-self: flex-start; font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--mb-red); background: #FCE9E7; padding: 4px 10px; border-radius: 999px; }
+  #mb-{{ section.id }} .mb-rv__b h3 { font-family: var(--mb-body); text-transform: none; font-size: 17px; font-weight: 800; letter-spacing: 0; }
+  #mb-{{ section.id }} .mb-rv__b p { font-size: 14.5px; color: var(--mb-sub); margin: 0; flex: 1; }
+  #mb-{{ section.id }} .mb-rv__who { font-size: 13px; font-weight: 700; display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+  #mb-{{ section.id }} .mb-rv__ok { color: var(--mb-good); font-weight: 800; font-size: 12px; }
+  #mb-{{ section.id }} .mb-rs__app { margin-top: 24px; }
+</style>
+
+<section id="mb-{{ section.id }}" class="mb mb--{{ section.settings.scheme }}" data-mb-reviews>
+  <div class="mb-wrap mb-pad">
+    <div class="mb-head">
+      {%- if section.settings.rating_text != blank -%}<div class="mb-rating"><span class="mb-stars">★★★★★</span> {{ section.settings.rating_text }}</div>{%- endif -%}
+      <h2 class="mb-h2" style="margin-top:10px">{{ section.settings.heading }}</h2>
+      {%- if section.settings.text != blank -%}<div class="mb-lead">{{ section.settings.text }}</div>{%- endif -%}
+    </div>
+
+    {%- if section.settings.show_tabs -%}
+      <div class="mb-rs__tabs" role="tablist">
+        <button type="button" class="is-on" data-tab="all">{{ section.settings.tab_all }}</button>
+        {%- for k in tag_keys -%}
+          {%- assign has = false -%}
+          {%- for block in section.blocks -%}{%- if block.type == 'review' and block.settings.tag == k -%}{%- assign has = true -%}{%- endif -%}{%- endfor -%}
+          {%- if has -%}<button type="button" data-tab="{{ k }}">{{ tag_names[forloop.index0] | strip }}</button>{%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    <div class="mb-scroller" data-scroller>
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'review' -%}
+          {%- assign ti = 0 -%}{%- for k in tag_keys -%}{%- if k == block.settings.tag -%}{%- assign ti = forloop.index0 -%}{%- endif -%}{%- endfor -%}
+          <article class="mb-rv mb-card" data-tag="{{ block.settings.tag }}" {{ block.shopify_attributes }}>
+            {%- if block.settings.image != blank -%}
+              <div class="mb-rv__img">{{ block.settings.image | image_url: width: 700 | image_tag: loading: 'lazy', alt: block.settings.name }}</div>
+            {%- elsif section.settings.show_image_ph -%}
+              <div class="mb-rv__img"><div class="mb-ph">FOTO REAL DEL CLIENTE (con permiso)</div></div>
+            {%- endif -%}
+            <div class="mb-rv__b">
+              <span class="mb-rv__tag">{{ tag_names[ti] | strip }}</span>
+              <span class="mb-stars">{% for i in (1..block.settings.stars) %}★{% endfor %}</span>
+              {%- if block.settings.title != blank -%}<h3>{{ block.settings.title }}</h3>{%- endif -%}
+              <p>{{ block.settings.text }}</p>
+              <div class="mb-rv__who"><span>{{ block.settings.name }}</span>{%- if block.settings.verified -%}<span class="mb-rv__ok">✓ Compra verificada</span>{%- endif -%}</div>
+            </div>
+          </article>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    <div class="mb-arrows"><button type="button" data-prev aria-label="Anterior">←</button><button type="button" data-next aria-label="Siguiente">→</button></div>
+
+    {%- for block in section.blocks -%}
+      {%- if block.type == '@app' -%}<div class="mb-rs__app">{% render block %}</div>{%- endif -%}
+    {%- endfor -%}
+  </div>
+</section>
+
+<script>
+  (function () {
+    var root = document.getElementById('mb-{{ section.id }}');
+    if (!root) return;
+    var sc = root.querySelector('[data-scroller]');
+    var cards = root.querySelectorAll('.mb-rv');
+    root.querySelectorAll('[data-tab]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        root.querySelectorAll('[data-tab]').forEach(function (x) { x.classList.remove('is-on'); });
+        b.classList.add('is-on');
+        var t = b.getAttribute('data-tab');
+        cards.forEach(function (c) { c.hidden = !(t === 'all' || c.getAttribute('data-tag') === t); });
+        sc.scrollTo({ left: 0 });
+      });
+    });
+    function step(d) { var c = sc.querySelector('.mb-rv:not([hidden])'); sc.scrollBy({ left: d * ((c ? c.offsetWidth : 300) + 16), behavior: 'smooth' }); }
+    var p = root.querySelector('[data-prev]'), n = root.querySelector('[data-next]');
+    if (p) p.addEventListener('click', function () { step(-1); });
+    if (n) n.addEventListener('click', function () { step(1); });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "MB · Reseñas (carrusel)",
+  "tag": "div",
+  "class": "mb-section",
+  "settings": [
+    { "type": "text", "id": "rating_text", "label": "Calificación", "default": "4,8 de promedio" },
+    { "type": "inline_richtext", "id": "heading", "label": "Título", "default": "Lo que cuentan los hombres <em>que ya empezaron</em>" },
+    { "type": "richtext", "id": "text", "label": "Bajada" },
+    { "type": "checkbox", "id": "show_tabs", "label": "Mostrar filtros por beneficio", "default": true },
+    { "type": "text", "id": "tab_all", "label": "Nombre del filtro 'todos'", "default": "Todas" },
+    { "type": "text", "id": "tab_names", "label": "Nombres de los beneficios (en este orden, separados por coma)", "default": "Sueño,Panza,Energía,Ganas,Verse más joven", "info": "Orden fijo: sueño, panza, energía, ganas, juventud" },
+    { "type": "checkbox", "id": "show_image_ph", "label": "Mostrar recuadro de foto cuando la reseña no tiene foto", "default": false },
+    { "type": "select", "id": "scheme", "label": "Fondo", "default": "light", "options": [ { "value": "light", "label": "Blanco" }, { "value": "cream", "label": "Crema" }, { "value": "sand", "label": "Arena" }, { "value": "dark", "label": "Negro" }, { "value": "red", "label": "Rojo" } ] },
+    { "type": "range", "id": "pt", "label": "Espacio arriba", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 64 },
+    { "type": "range", "id": "pb", "label": "Espacio abajo", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 64 }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Reseña",
+      "settings": [
+        { "type": "paragraph", "content": "Solo reseñas reales de clientes, con su permiso." },
+        { "type": "select", "id": "tag", "label": "Beneficio", "default": "sueno", "options": [ { "value": "sueno", "label": "Sueño" }, { "value": "panza", "label": "Panza" }, { "value": "energia", "label": "Energía" }, { "value": "ganas", "label": "Ganas" }, { "value": "juventud", "label": "Verse más joven" } ] },
+        { "type": "range", "id": "stars", "label": "Estrellas", "min": 1, "max": 5, "step": 1, "default": 5 },
+        { "type": "text", "id": "title", "label": "Título" },
+        { "type": "textarea", "id": "text", "label": "Reseña" },
+        { "type": "text", "id": "name", "label": "Nombre, edad y ciudad", "default": "[Nombre], [edad] · [Ciudad]" },
+        { "type": "image_picker", "id": "image", "label": "Foto (opcional)" },
+        { "type": "checkbox", "id": "verified", "label": "Compra verificada", "default": true }
+      ]
+    },
+    { "type": "@app" }
+  ],
+  "presets": [
+    {
+      "name": "MB · Reseñas (carrusel)",
+      "blocks": [
+        { "type": "review", "settings": { "tag": "sueno", "title": "[Título de la reseña]", "text": "[Reseña real: cómo dormía antes y cómo duerme ahora]" } },
+        { "type": "review", "settings": { "tag": "panza", "title": "[Título de la reseña]", "text": "[Reseña real: qué cambió con la panza siguiendo el plan]" } },
+        { "type": "review", "settings": { "tag": "energia", "title": "[Título de la reseña]", "text": "[Reseña real: cómo llega al final del día]" } },
+        { "type": "review", "settings": { "tag": "ganas", "title": "[Título de la reseña]", "text": "[Reseña real: cómo se siente con las ganas y el ánimo]" } },
+        { "type": "review", "settings": { "tag": "juventud", "title": "[Título de la reseña]", "text": "[Reseña real: qué le dicen y cómo se ve en el espejo]" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

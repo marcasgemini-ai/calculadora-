@@ -1,0 +1,96 @@
+{{ 'mb-metabomen.css' | asset_url | stylesheet_tag }}
+
+<style>
+  #mb-{{ section.id }} { --mb-pt: {{ section.settings.pt }}px; --mb-pb: {{ section.settings.pb }}px; }
+  #mb-{{ section.id }} .mb-cmp { max-width: 860px; margin: 0 auto; border-collapse: separate; border-spacing: 0; width: 100%; }
+  #mb-{{ section.id }} .mb-cmp th, #mb-{{ section.id }} .mb-cmp td { padding: 14px 12px; text-align: center; border-bottom: 1px solid var(--mb-card-line); font-size: 15px; }
+  #mb-{{ section.id }} .mb-cmp th { font-family: var(--mb-head); text-transform: uppercase; font-size: 16px; font-weight: 700; vertical-align: bottom; }
+  #mb-{{ section.id }} .mb-cmp td:first-child, #mb-{{ section.id }} .mb-cmp th:first-child { text-align: left; font-weight: 700; }
+  #mb-{{ section.id }} .mb-cmp .is-us { background: var(--mb-red); color: #fff; }
+  #mb-{{ section.id }} .mb-cmp thead .is-us { border-radius: 16px 16px 0 0; }
+  #mb-{{ section.id }} .mb-cmp tbody tr:last-child .is-us { border-radius: 0 0 16px 16px; }
+  #mb-{{ section.id }} .mb-cmp th.is-us img { max-height: 46px; width: auto; margin: 0 auto 6px; }
+  #mb-{{ section.id }} .mb-yes, #mb-{{ section.id }} .mb-no { display: inline-flex; width: 26px; height: 26px; border-radius: 50%; align-items: center; justify-content: center; }
+  #mb-{{ section.id }} .mb-yes { background: #fff; color: var(--mb-red); }
+  #mb-{{ section.id }} td:not(.is-us) .mb-yes { background: var(--mb-ink); color: #fff; }
+  #mb-{{ section.id }} .mb-no { background: transparent; color: #B5B0A8; border: 1.5px solid #D5D0C8; }
+  #mb-{{ section.id }} .mb-yes .mb-ic, #mb-{{ section.id }} .mb-no .mb-ic { width: 14px; height: 14px; stroke-width: 3; }
+  #mb-{{ section.id }} .mb-cmp__wrap { overflow-x: auto; }
+  @media (max-width: 599px) { #mb-{{ section.id }} .mb-cmp th, #mb-{{ section.id }} .mb-cmp td { padding: 11px 6px; font-size: 13px; } #mb-{{ section.id }} .mb-cmp th { font-size: 13px; } }
+</style>
+
+{%- capture yes -%}<span class="mb-yes"><svg class="mb-ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>{%- endcapture -%}
+{%- capture no -%}<span class="mb-no"><svg class="mb-ic" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></span>{%- endcapture -%}
+
+<section id="mb-{{ section.id }}" class="mb mb--{{ section.settings.scheme }}">
+  <div class="mb-wrap mb-pad">
+    <div class="mb-head">
+      {%- if section.settings.eyebrow != blank -%}<span class="mb-eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+      <h2 class="mb-h2">{{ section.settings.heading }}</h2>
+    </div>
+    <div class="mb-cmp__wrap">
+      <table class="mb-cmp">
+        <thead><tr>
+          <th></th>
+          <th class="is-us">{%- if section.settings.logo != blank -%}{{ section.settings.logo | image_url: width: 240 | image_tag: loading: 'lazy', alt: section.settings.col_1 }}{%- endif -%}{{ section.settings.col_1 }}</th>
+          <th>{{ section.settings.col_2 }}</th>
+          <th>{{ section.settings.col_3 }}</th>
+        </tr></thead>
+        <tbody>
+          {%- for block in section.blocks -%}
+            <tr {{ block.shopify_attributes }}>
+              <td>{{ block.settings.label }}</td>
+              <td class="is-us">{% if block.settings.c1 %}{{ yes }}{% else %}{{ no }}{% endif %}</td>
+              <td>{% if block.settings.c2 %}{{ yes }}{% else %}{{ no }}{% endif %}</td>
+              <td>{% if block.settings.c3 %}{{ yes }}{% else %}{{ no }}{% endif %}</td>
+            </tr>
+          {%- endfor -%}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "MB · Comparativa",
+  "tag": "div",
+  "class": "mb-section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Texto chico", "default": "Por qué integral" },
+    { "type": "inline_richtext", "id": "heading", "label": "Título", "default": "Cómo nos <em>comparamos</em>" },
+    { "type": "image_picker", "id": "logo", "label": "Logo o frasco en la columna Metabomen (opcional)" },
+    { "type": "text", "id": "col_1", "label": "Columna 1 (nosotros)", "default": "Metabomen" },
+    { "type": "text", "id": "col_2", "label": "Columna 2", "default": "Suplementos comunes" },
+    { "type": "text", "id": "col_3", "label": "Columna 3", "default": "Soluciones sueltas" },
+    { "type": "select", "id": "scheme", "label": "Fondo", "default": "light", "options": [ { "value": "light", "label": "Blanco" }, { "value": "cream", "label": "Crema" }, { "value": "sand", "label": "Arena" } ] },
+    { "type": "range", "id": "pt", "label": "Espacio arriba", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 64 },
+    { "type": "range", "id": "pb", "label": "Espacio abajo", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 64 }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Fila",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Característica", "default": "Característica" },
+        { "type": "checkbox", "id": "c1", "label": "Columna 1 tiene", "default": true },
+        { "type": "checkbox", "id": "c2", "label": "Columna 2 tiene", "default": false },
+        { "type": "checkbox", "id": "c3", "label": "Columna 3 tiene", "default": false }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MB · Comparativa",
+      "blocks": [
+        { "type": "row", "settings": { "label": "Pensado para el hombre de +40", "c1": true, "c2": false, "c3": false } },
+        { "type": "row", "settings": { "label": "Sueño, panza, energía y ganas juntos", "c1": true, "c2": false, "c3": false } },
+        { "type": "row", "settings": { "label": "14 activos en 1 cápsula", "c1": true, "c2": false, "c3": false } },
+        { "type": "row", "settings": { "label": "Protocolo de sueño y alimentación", "c1": true, "c2": false, "c3": false } },
+        { "type": "row", "settings": { "label": "1 sola toma por día", "c1": true, "c2": true, "c3": false } },
+        { "type": "row", "settings": { "label": "60 días de garantía", "c1": true, "c2": false, "c3": false } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,97 @@
+{{ 'mb-metabomen.css' | asset_url | stylesheet_tag }}
+
+<style>
+  #mb-{{ section.id }} { --mb-pt: {{ section.settings.pt }}px; --mb-pb: {{ section.settings.pb }}px; }
+  #mb-{{ section.id }} .mb-hero { display: grid; grid-template-columns: 1.05fr 1fr; gap: 48px; align-items: center; }
+  #mb-{{ section.id }} .mb-hero__pill { display: inline-flex; align-items: center; gap: 8px; background: var(--mb-card); border: 1px solid var(--mb-card-line); border-radius: 999px; padding: 7px 14px; font-size: 13px; font-weight: 700; margin-bottom: 18px; }
+  #mb-{{ section.id }} .mb-hero h1 { font-size: clamp(40px, 6vw, 72px); margin-bottom: 16px; }
+  #mb-{{ section.id }} .mb-hero__sub { font-size: 18px; color: var(--mb-sub); margin-bottom: 20px; }
+  #mb-{{ section.id }} .mb-hero__sub p { margin: 0; }
+  #mb-{{ section.id }} .mb-check { margin-bottom: 26px; }
+  #mb-{{ section.id }} .mb-hero__media img, #mb-{{ section.id }} .mb-hero__media .mb-ph { width: 100%; aspect-ratio: {{ section.settings.ratio }}; object-fit: cover; border-radius: 24px; }
+  #mb-{{ section.id }} .mb-hero__badge { display: inline-block; background: var(--mb-red); color: #fff; font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; padding: 6px 12px; border-radius: 6px; margin-bottom: 14px; }
+  @media (max-width: 899px) {
+    #mb-{{ section.id }} .mb-hero { grid-template-columns: 1fr; gap: 24px; }
+    #mb-{{ section.id }} .mb-hero__media { order: {% if section.settings.image_first_mobile %}-1{% else %}1{% endif %}; }
+    #mb-{{ section.id }} .mb-hero__sub { font-size: 16.5px; }
+  }
+</style>
+
+<section id="mb-{{ section.id }}" class="mb mb--{{ section.settings.scheme }}">
+  <div class="mb-wrap mb-pad">
+    <div class="mb-hero">
+      <div class="mb-hero__text">
+        {%- if section.settings.badge != blank -%}<span class="mb-hero__badge">{{ section.settings.badge }}</span><br>{%- endif -%}
+        {%- if section.settings.rating_text != blank -%}
+          <span class="mb-hero__pill"><span class="mb-stars">★★★★★</span> {{ section.settings.rating_text }}</span>
+        {%- endif -%}
+        <h1>{{ section.settings.heading }}</h1>
+        {%- if section.settings.subheading != blank -%}<div class="mb-hero__sub">{{ section.settings.subheading }}</div>{%- endif -%}
+        {%- if section.blocks.size > 0 -%}
+          <ul class="mb-check">
+            {%- for block in section.blocks -%}
+              <li {{ block.shopify_attributes }}><span>{{ block.settings.text }}</span></li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+        {%- if section.settings.button_label != blank -%}
+          <a class="mb-btn" href="{{ section.settings.button_link | default: '#mb-comprar' }}">{{ section.settings.button_label }}</a>
+        {%- endif -%}
+        {%- if section.settings.under != blank -%}<div class="mb-under">{{ section.settings.under }}</div>{%- endif -%}
+      </div>
+      <div class="mb-hero__media">
+        {%- if section.settings.image != blank -%}
+          {{ section.settings.image | image_url: width: 1400 | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '(min-width: 900px) 50vw, 100vw', widths: '600, 900, 1200, 1400', alt: section.settings.image.alt | default: 'Metabomen' }}
+        {%- else -%}
+          <div class="mb-ph">IMAGEN HERO · hombre +40 con el frasco Metabomen</div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "MB · Hero",
+  "tag": "div",
+  "class": "mb-section",
+  "settings": [
+    { "type": "header", "content": "Texto" },
+    { "type": "text", "id": "badge", "label": "Etiqueta superior (opcional)", "default": "Tratamiento integral +40" },
+    { "type": "text", "id": "rating_text", "label": "Texto de la calificación", "default": "4,8 · Hombres argentinos de +40" },
+    { "type": "inline_richtext", "id": "heading", "label": "Título (lo que pongas en itálica sale en rojo)", "default": "Dormí mejor, bajá la panza y <em>sentite más joven</em>" },
+    { "type": "richtext", "id": "subheading", "label": "Bajada", "default": "<p>Después de los 40, el sueño, la panza, la energía y las ganas vienen juntos porque tienen la misma raíz. Metabomen es un tratamiento integral de 90 días: una fórmula de 14 activos + un protocolo de sueño y alimentación.</p>" },
+    { "type": "text", "id": "button_label", "label": "Botón", "default": "Empezar mi tratamiento" },
+    { "type": "text", "id": "button_link", "label": "Link del botón", "default": "#mb-comprar", "info": "#mb-comprar baja a la sección MB · Compra" },
+    { "type": "text", "id": "under", "label": "Texto bajo el botón", "default": "Envío gratis · 60 días de garantía · 3 cuotas sin interés" },
+    { "type": "header", "content": "Imagen" },
+    { "type": "image_picker", "id": "image", "label": "Imagen" },
+    { "type": "select", "id": "ratio", "label": "Proporción", "default": "4 / 5", "options": [ { "value": "1 / 1", "label": "Cuadrada" }, { "value": "4 / 5", "label": "Vertical" }, { "value": "4 / 3", "label": "Horizontal" } ] },
+    { "type": "checkbox", "id": "image_first_mobile", "label": "En celular, imagen arriba", "default": true },
+    { "type": "header", "content": "Diseño" },
+    { "type": "select", "id": "scheme", "label": "Fondo", "default": "cream", "options": [ { "value": "light", "label": "Blanco" }, { "value": "cream", "label": "Crema" }, { "value": "sand", "label": "Arena" }, { "value": "dark", "label": "Negro" }, { "value": "red", "label": "Rojo" } ] },
+    { "type": "range", "id": "pt", "label": "Espacio arriba", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 },
+    { "type": "range", "id": "pb", "label": "Espacio abajo", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 }
+  ],
+  "blocks": [
+    {
+      "type": "bullet",
+      "name": "Beneficio con tilde",
+      "limit": 6,
+      "settings": [ { "type": "inline_richtext", "id": "text", "label": "Texto", "default": "Beneficio" } ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MB · Hero",
+      "blocks": [
+        { "type": "bullet", "settings": { "text": "Volvé a <b>descansar de verdad</b>" } },
+        { "type": "bullet", "settings": { "text": "Un plan para <b>la panza de los 40</b>" } },
+        { "type": "bullet", "settings": { "text": "<b>Energía</b> para llegar entero a la noche" } },
+        { "type": "bullet", "settings": { "text": "Zinc para una <b>testosterona en niveles normales</b>*" } },
+        { "type": "bullet", "settings": { "text": "Vitamina C para <b>el colágeno de tu piel</b>*" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

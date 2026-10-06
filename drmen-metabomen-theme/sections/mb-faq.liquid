@@ -1,0 +1,93 @@
+{{ 'mb-metabomen.css' | asset_url | stylesheet_tag }}
+
+<style>
+  #mb-{{ section.id }} { --mb-pt: {{ section.settings.pt }}px; --mb-pb: {{ section.settings.pb }}px; }
+  #mb-{{ section.id }} .mb-faq { display: grid; grid-template-columns: 1fr 1.6fr; gap: 48px; align-items: start; }
+  #mb-{{ section.id }} .mb-faq__h h2 { font-size: clamp(30px, 4.4vw, 48px); }
+  #mb-{{ section.id }} .mb-faq__h .mb-lead { margin-bottom: 18px !important; }
+  #mb-{{ section.id }} details { border-bottom: 1px solid var(--mb-card-line); }
+  #mb-{{ section.id }} summary { list-style: none; cursor: pointer; padding: 18px 40px 18px 0; position: relative; font-weight: 800; font-size: 16.5px; }
+  #mb-{{ section.id }} summary::-webkit-details-marker { display: none; }
+  #mb-{{ section.id }} summary::after { content: '+'; position: absolute; right: 6px; top: 13px; font-size: 26px; font-weight: 400; color: var(--mb-red); }
+  #mb-{{ section.id }} details[open] summary::after { content: '−'; }
+  #mb-{{ section.id }} .mb-faq__a { padding: 0 0 18px; color: var(--mb-sub); font-size: 15.5px; }
+  #mb-{{ section.id }} .mb-faq__a p:last-child { margin-bottom: 0; }
+  @media (max-width: 899px) { #mb-{{ section.id }} .mb-faq { grid-template-columns: 1fr; gap: 16px; } }
+</style>
+
+<section id="mb-{{ section.id }}" class="mb mb--{{ section.settings.scheme }}">
+  <div class="mb-wrap mb-pad">
+    <div class="mb-faq">
+      <div class="mb-faq__h">
+        <h2>{{ section.settings.heading }}</h2>
+        {%- if section.settings.text != blank -%}<div class="mb-lead">{{ section.settings.text }}</div>{%- endif -%}
+        {%- if section.settings.button_label != blank -%}<a class="mb-btn" href="{{ section.settings.button_link | default: '#mb-comprar' }}">{{ section.settings.button_label }}</a>{%- endif -%}
+      </div>
+      <div>
+        {%- for block in section.blocks -%}
+          <details {{ block.shopify_attributes }}{% if forloop.first and section.settings.open_first %} open{% endif %}>
+            <summary>{{ block.settings.question }}</summary>
+            <div class="mb-faq__a">{{ block.settings.answer }}</div>
+          </details>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{%- if section.settings.schema_markup and section.blocks.size > 0 -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {%- for block in section.blocks -%}
+    { "@type": "Question", "name": {{ block.settings.question | json }}, "acceptedAnswer": { "@type": "Answer", "text": {{ block.settings.answer | strip_html | json }} } }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ]
+}
+</script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "MB · Preguntas frecuentes",
+  "tag": "div",
+  "class": "mb-section",
+  "settings": [
+    { "type": "inline_richtext", "id": "heading", "label": "Título", "default": "Preguntas <em>frecuentes</em>" },
+    { "type": "richtext", "id": "text", "label": "Texto", "default": "<p>¿Te queda alguna duda? Escribinos y te respondemos.</p>" },
+    { "type": "text", "id": "button_label", "label": "Botón (opcional)" },
+    { "type": "text", "id": "button_link", "label": "Link del botón", "default": "#mb-comprar" },
+    { "type": "checkbox", "id": "open_first", "label": "Primera pregunta abierta", "default": true },
+    { "type": "checkbox", "id": "schema_markup", "label": "Datos estructurados para Google", "default": true },
+    { "type": "select", "id": "scheme", "label": "Fondo", "default": "light", "options": [ { "value": "light", "label": "Blanco" }, { "value": "cream", "label": "Crema" }, { "value": "sand", "label": "Arena" }, { "value": "dark", "label": "Negro" } ] },
+    { "type": "range", "id": "pt", "label": "Espacio arriba", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 64 },
+    { "type": "range", "id": "pb", "label": "Espacio abajo", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 64 }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Pregunta",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Pregunta", "default": "Pregunta" },
+        { "type": "richtext", "id": "answer", "label": "Respuesta", "default": "<p>Respuesta</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MB · Preguntas frecuentes",
+      "blocks": [
+        { "type": "question", "settings": { "question": "¿Por qué un tratamiento integral y no un producto para cada cosa?", "answer": "<p>Porque después de los 40 el sueño, la panza, la energía y las ganas están conectados: uno alimenta al otro. Si atacás uno solo, el resto lo vuelve a traer. El tratamiento ataca varios puntos a la vez: fórmula, sueño y alimentación.</p>" } },
+        { "type": "question", "settings": { "question": "¿Me va a ayudar con la erección?", "answer": "<p>Metabomen no es un medicamento para la disfunción eréctil. Si tenés problemas de erección, consultá a un médico: a veces es la primera señal de algo cardiovascular. Lo que sí sabemos: dormir bien, bajar la panza y mantener la testosterona en niveles normales (el zinc contribuye a eso) influyen en las ganas.</p>" } },
+        { "type": "question", "settings": { "question": "¿Me va a hacer bajar de peso?", "answer": "<p>Solo con una cápsula, no. Por eso el tratamiento incluye el plan de alimentación metabólica y movimiento. La fórmula acompaña; los hábitos hacen el trabajo grande.</p>" } },
+        { "type": "question", "settings": { "question": "¿Cuándo voy a notar algo?", "answer": "<p>Cada persona es distinta. Muchos empiezan a notar cambios en cómo descansan y en su energía en las primeras semanas si siguen el protocolo. Por eso recomendamos los 90 días completos.</p>" } },
+        { "type": "question", "settings": { "question": "¿Cómo se toma?", "answer": "<p>1 cápsula por día con el desayuno. No la tomes de noche: tiene té verde.</p>" } },
+        { "type": "question", "settings": { "question": "¿Tiene contraindicaciones?", "answer": "<p>Si tomás medicación, tenés presión alta, problemas cardíacos o sos sensible a la cafeína, consultá a tu médico antes. No superes la dosis indicada en la etiqueta.</p>" } },
+        { "type": "question", "settings": { "question": "¿Y si no me sirve?", "answer": "<p>Tenés 60 días de garantía. Si no quedás conforme, nos escribís y te devolvemos el dinero.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

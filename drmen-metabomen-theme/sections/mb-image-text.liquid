@@ -1,0 +1,75 @@
+{{ 'mb-metabomen.css' | asset_url | stylesheet_tag }}
+
+<style>
+  #mb-{{ section.id }} { --mb-pt: {{ section.settings.pt }}px; --mb-pb: {{ section.settings.pb }}px; }
+  #mb-{{ section.id }} .mb-it { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+  #mb-{{ section.id }} .mb-it.is-boxed { background: var(--mb-card); border: 1px solid var(--mb-card-line); border-radius: 28px; padding: 36px; }
+  #mb-{{ section.id }} .mb-it__media { order: {% if section.settings.image_right %}2{% else %}0{% endif %}; }
+  #mb-{{ section.id }} .mb-it__media img, #mb-{{ section.id }} .mb-it__media .mb-ph { width: 100%; aspect-ratio: {{ section.settings.ratio }}; object-fit: cover; border-radius: 22px; }
+  #mb-{{ section.id }} .mb-it h2 { margin-bottom: 14px; }
+  #mb-{{ section.id }} .mb-it__txt { font-size: 16.5px; color: var(--mb-sub); }
+  #mb-{{ section.id }} .mb-it__txt p:last-child { margin-bottom: 0; }
+  #mb-{{ section.id }} .mb-it .mb-btn { margin-top: 22px; }
+  #mb-{{ section.id }} .mb-it__sign { margin-top: 18px; font-weight: 800; }
+  #mb-{{ section.id }} .mb-it__sign small { display: block; font-weight: 500; color: var(--mb-sub); }
+  @media (max-width: 899px) {
+    #mb-{{ section.id }} .mb-it { grid-template-columns: 1fr; gap: 22px; }
+    #mb-{{ section.id }} .mb-it.is-boxed { padding: 20px; }
+    #mb-{{ section.id }} .mb-it__media { order: 0; }
+  }
+</style>
+
+<section id="mb-{{ section.id }}" class="mb mb--{{ section.settings.scheme }}">
+  <div class="mb-wrap mb-pad">
+    <div class="mb-it{% if section.settings.boxed %} is-boxed{% endif %}">
+      <div class="mb-it__media">
+        {%- if section.settings.image != blank -%}
+          {{ section.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', sizes: '(min-width: 900px) 50vw, 100vw', widths: '600, 900, 1200', alt: section.settings.image.alt }}
+        {%- else -%}
+          <div class="mb-ph">IMAGEN</div>
+        {%- endif -%}
+      </div>
+      <div>
+        {%- if section.settings.eyebrow != blank -%}<span class="mb-eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+        <h2 class="mb-h2">{{ section.settings.heading }}</h2>
+        {%- if section.settings.text != blank -%}<div class="mb-it__txt">{{ section.settings.text }}</div>{%- endif -%}
+        {%- if section.settings.signature != blank -%}<div class="mb-it__sign">{{ section.settings.signature }}<small>{{ section.settings.signature_role }}</small></div>{%- endif -%}
+        {%- if section.settings.button_label != blank -%}<a class="mb-btn{% if section.settings.scheme == 'red' %} mb-btn--light{% endif %}" href="{{ section.settings.button_link | default: '#mb-comprar' }}">{{ section.settings.button_label }}</a>{%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "MB · Imagen con texto",
+  "tag": "div",
+  "class": "mb-section",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Imagen" },
+    { "type": "checkbox", "id": "image_right", "label": "Imagen a la derecha", "default": false },
+    { "type": "select", "id": "ratio", "label": "Proporción", "default": "4 / 3", "options": [ { "value": "1 / 1", "label": "Cuadrada" }, { "value": "4 / 5", "label": "Vertical" }, { "value": "4 / 3", "label": "Horizontal" } ] },
+    { "type": "checkbox", "id": "boxed", "label": "En recuadro", "default": false },
+    { "type": "text", "id": "eyebrow", "label": "Texto chico" },
+    { "type": "inline_richtext", "id": "heading", "label": "Título", "default": "Título" },
+    { "type": "richtext", "id": "text", "label": "Texto" },
+    { "type": "text", "id": "signature", "label": "Firma (opcional)" },
+    { "type": "text", "id": "signature_role", "label": "Cargo de la firma" },
+    { "type": "text", "id": "button_label", "label": "Botón" },
+    { "type": "text", "id": "button_link", "label": "Link del botón", "default": "#mb-comprar" },
+    { "type": "select", "id": "scheme", "label": "Fondo", "default": "light", "options": [ { "value": "light", "label": "Blanco" }, { "value": "cream", "label": "Crema" }, { "value": "sand", "label": "Arena" }, { "value": "dark", "label": "Negro" }, { "value": "red", "label": "Rojo" } ] },
+    { "type": "range", "id": "pt", "label": "Espacio arriba", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 64 },
+    { "type": "range", "id": "pb", "label": "Espacio abajo", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 64 }
+  ],
+  "presets": [
+    {
+      "name": "MB · Oferta destacada",
+      "settings": { "scheme": "red", "boxed": true, "image_right": true, "eyebrow": "Tratamiento completo", "heading": "Pagás 2 frascos y <em>te llevás 3</em>", "text": "<p>El tratamiento integral de 90 días con envío gratis, el protocolo de sueño y el plan de alimentación de regalo.</p>", "button_label": "Quiero mi tratamiento" }
+    },
+    {
+      "name": "MB · Nuestra historia",
+      "settings": { "scheme": "light", "eyebrow": "Quiénes somos", "heading": "Nos obsesiona que el hombre de 40 <em>no se sienta de 60</em>", "text": "<p>[Contá la historia real de DR.MEN: por qué nació Metabomen, quién está detrás y qué los movió a hacerlo.]</p>", "signature": "[Nombre del fundador]", "signature_role": "Fundador de DR.MEN" }
+    }
+  ]
+}
+{% endschema %}

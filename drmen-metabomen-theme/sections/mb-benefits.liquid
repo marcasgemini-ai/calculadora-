@@ -1,0 +1,99 @@
+{{ 'mb-metabomen.css' | asset_url | stylesheet_tag }}
+
+<style>
+  #mb-{{ section.id }} { --mb-pt: {{ section.settings.pt }}px; --mb-pb: {{ section.settings.pb }}px; }
+  #mb-{{ section.id }} .mb-bn { display: grid; grid-template-columns: 1fr 1.1fr 1fr; gap: 28px; align-items: center; }
+  #mb-{{ section.id }} .mb-bn__col { display: grid; gap: 30px; }
+  #mb-{{ section.id }} .mb-bn__col.is-left { text-align: right; }
+  #mb-{{ section.id }} .mb-bn__i { display: inline-flex; width: 54px; height: 54px; border-radius: 50%; background: var(--mb-red); color: #fff; align-items: center; justify-content: center; margin-bottom: 10px; }
+  #mb-{{ section.id }} .mb-bn__i .mb-ic { width: 26px; height: 26px; }
+  #mb-{{ section.id }} .mb-bn h3 { font-size: 19px; margin-bottom: 6px; }
+  #mb-{{ section.id }} .mb-bn p { font-size: 14.5px; color: var(--mb-sub); margin: 0; }
+  #mb-{{ section.id }} .mb-bn__media img, #mb-{{ section.id }} .mb-bn__media .mb-ph { width: 100%; aspect-ratio: 1 / 1; object-fit: contain; border-radius: 50%; background: var(--mb-card); }
+  #mb-{{ section.id }} .mb-bn__note { font-size: 12px; color: var(--mb-sub); text-align: center; margin: 26px 0 0; }
+  @media (max-width: 899px) {
+    #mb-{{ section.id }} .mb-bn { grid-template-columns: 1fr 1fr; }
+    #mb-{{ section.id }} .mb-bn__media { grid-column: 1 / -1; order: -1; max-width: 340px; margin: 0 auto; width: 100%; }
+    #mb-{{ section.id }} .mb-bn__col, #mb-{{ section.id }} .mb-bn__col.is-left { text-align: left; gap: 22px; }
+  }
+  @media (max-width: 499px) { #mb-{{ section.id }} .mb-bn { grid-template-columns: 1fr; } }
+</style>
+
+<section id="mb-{{ section.id }}" class="mb mb--{{ section.settings.scheme }}">
+  <div class="mb-wrap mb-pad">
+    <div class="mb-head">
+      {%- if section.settings.eyebrow != blank -%}<span class="mb-eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+      <h2 class="mb-h2">{{ section.settings.heading }}</h2>
+      {%- if section.settings.text != blank -%}<div class="mb-lead">{{ section.settings.text }}</div>{%- endif -%}
+    </div>
+    {%- assign half = section.blocks.size | plus: 1 | divided_by: 2 -%}
+    <div class="mb-bn">
+      {%- for pass in (1..2) -%}
+        {%- if pass == 2 -%}
+          <div class="mb-bn__media">
+            {%- if section.settings.image != blank -%}
+              {{ section.settings.image | image_url: width: 900 | image_tag: loading: 'lazy', alt: section.settings.image.alt }}
+            {%- else -%}
+              <div class="mb-ph">PACKSHOT · frasco Metabomen con fondo transparente</div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+        <div class="mb-bn__col{% if pass == 1 %} is-left{% endif %}">
+          {%- for block in section.blocks -%}
+            {%- if pass == 1 and forloop.index > half -%}{%- continue -%}{%- endif -%}
+            {%- if pass == 2 and forloop.index <= half -%}{%- continue -%}{%- endif -%}
+            <div {{ block.shopify_attributes }}>
+              <span class="mb-bn__i"><svg class="mb-ic" viewBox="0 0 24 24" aria-hidden="true">{%- case block.settings.icon -%}{%- when 'moon' -%}<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>{%- when 'belly' -%}<path d="M8 3v4c0 1-2 2-2 6 0 5 3 8 6 8s6-3 6-8c0-4-2-5-2-6V3"/><circle cx="12" cy="14" r="1"/>{%- when 'bolt' -%}<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>{%- when 'heart' -%}<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>{%- when 'hourglass' -%}<path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.17a2 2 0 0 0-.59-1.42L12 12l-4.41 4.41A2 2 0 0 0 7 17.83V22"/><path d="M7 2v4.17a2 2 0 0 0 .59 1.42L12 12l4.41-4.41A2 2 0 0 0 17 6.17V2"/>{%- when 'brain' -%}<path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/>{%- else -%}<path d="M20 6 9 17l-5-5"/>{%- endcase -%}</svg></span>
+              <h3>{{ block.settings.title }}</h3>
+              <p>{{ block.settings.text }}</p>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endfor -%}
+    </div>
+    {%- if section.settings.note != blank -%}<p class="mb-bn__note">{{ section.settings.note }}</p>{%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "MB · Beneficios",
+  "tag": "div",
+  "class": "mb-section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Texto chico", "default": "Tratamiento integral" },
+    { "type": "inline_richtext", "id": "heading", "label": "Título", "default": "Todo lo que te pasa a los 40, <em>en un solo tratamiento</em>" },
+    { "type": "richtext", "id": "text", "label": "Bajada" },
+    { "type": "image_picker", "id": "image", "label": "Imagen del producto (centro)" },
+    { "type": "text", "id": "note", "label": "Nota al pie", "default": "*Declaraciones autorizadas por nutriente. Suplemento dietario: no es un medicamento." },
+    { "type": "select", "id": "scheme", "label": "Fondo", "default": "cream", "options": [ { "value": "light", "label": "Blanco" }, { "value": "cream", "label": "Crema" }, { "value": "sand", "label": "Arena" }, { "value": "dark", "label": "Negro" }, { "value": "red", "label": "Rojo" } ] },
+    { "type": "range", "id": "pt", "label": "Espacio arriba", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 64 },
+    { "type": "range", "id": "pb", "label": "Espacio abajo", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 64 }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Beneficio",
+      "limit": 6,
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Ícono", "default": "check", "options": [ { "value": "moon", "label": "Luna (sueño)" }, { "value": "belly", "label": "Panza" }, { "value": "bolt", "label": "Rayo (energía)" }, { "value": "heart", "label": "Corazón (ganas)" }, { "value": "hourglass", "label": "Reloj de arena (edad)" }, { "value": "brain", "label": "Cerebro (cabeza)" }, { "value": "check", "label": "Tilde" } ] },
+        { "type": "text", "id": "title", "label": "Título", "default": "Beneficio" },
+        { "type": "textarea", "id": "text", "label": "Texto" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MB · Beneficios",
+      "blocks": [
+        { "type": "benefit", "settings": { "icon": "moon", "title": "Sueño", "text": "Protocolo para volver a descansar. El magnesio contribuye al funcionamiento normal del sistema nervioso*." } },
+        { "type": "benefit", "settings": { "icon": "belly", "title": "Panza", "text": "Plan de alimentación metabólica + té verde y naranja amarga." } },
+        { "type": "benefit", "settings": { "icon": "bolt", "title": "Energía", "text": "Magnesio y vitamina C contribuyen a disminuir el cansancio y la fatiga*." } },
+        { "type": "benefit", "settings": { "icon": "heart", "title": "Ganas", "text": "El zinc contribuye a mantener niveles normales de testosterona*." } },
+        { "type": "benefit", "settings": { "icon": "hourglass", "title": "Verte más joven", "text": "Vitamina C para el colágeno* y resveratrol, el antioxidante de la uva." } },
+        { "type": "benefit", "settings": { "icon": "brain", "title": "Cabeza", "text": "El magnesio contribuye a la función psicológica normal*." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

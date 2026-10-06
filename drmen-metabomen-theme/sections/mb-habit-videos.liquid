@@ -1,0 +1,111 @@
+{{ 'mb-metabomen.css' | asset_url | stylesheet_tag }}
+
+<style>
+  #mb-{{ section.id }} { --mb-pt: {{ section.settings.pt }}px; --mb-pb: {{ section.settings.pb }}px; }
+  #mb-{{ section.id }} .mb-hv { display: grid; grid-template-columns: 1fr 1fr; gap: 44px; align-items: center; margin-bottom: 40px; }
+  #mb-{{ section.id }} .mb-hv h2 { margin-bottom: 14px; }
+  #mb-{{ section.id }} .mb-hv__stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 22px; }
+  #mb-{{ section.id }} .mb-hv__stat b { display: block; font-family: var(--mb-head); font-size: clamp(36px, 5vw, 54px); line-height: 1; color: var(--mb-red); }
+  #mb-{{ section.id }} .mb-hv__stat span { display: block; font-size: 13.5px; color: var(--mb-sub); margin-top: 6px; }
+  #mb-{{ section.id }} .mb-hv__media img, #mb-{{ section.id }} .mb-hv__media .mb-ph { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 24px; }
+  #mb-{{ section.id }} .mb-vid { position: relative; overflow: hidden; border-radius: 18px; background: #000; aspect-ratio: 9 / 16; }
+  #mb-{{ section.id }} .mb-vid video, #mb-{{ section.id }} .mb-vid img, #mb-{{ section.id }} .mb-vid .mb-ph { width: 100%; height: 100%; object-fit: cover; border-radius: 0; aspect-ratio: auto; border: 0; }
+  #mb-{{ section.id }} .mb-vid__cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 40px 14px 14px; background: linear-gradient(180deg, transparent, rgba(0,0,0,.8)); color: #fff; font-size: 13.5px; }
+  #mb-{{ section.id }} .mb-vid__cap b { display: block; font-size: 12px; opacity: .8; margin-top: 4px; }
+  @media (max-width: 899px) { #mb-{{ section.id }} .mb-hv { grid-template-columns: 1fr; gap: 22px; } }
+</style>
+
+<section id="mb-{{ section.id }}" class="mb mb--{{ section.settings.scheme }}">
+  <div class="mb-wrap mb-pad">
+    <div class="mb-hv">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}<span class="mb-eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+        <h2 class="mb-h2">{{ section.settings.heading }}</h2>
+        {%- if section.settings.text != blank -%}<div class="mb-lead">{{ section.settings.text }}</div>{%- endif -%}
+        <div class="mb-hv__stats">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'stat' -%}<div class="mb-hv__stat" {{ block.shopify_attributes }}><b>{{ block.settings.number }}</b><span>{{ block.settings.label }}</span></div>{%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+      <div class="mb-hv__media">
+        {%- if section.settings.image != blank -%}
+          {{ section.settings.image | image_url: width: 1000 | image_tag: loading: 'lazy', alt: section.settings.image.alt }}
+        {%- else -%}
+          <div class="mb-ph">FOTO · mano sacando una cápsula del frasco, con el desayuno</div>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- assign vids = section.blocks | where: 'type', 'video' -%}
+    {%- if vids.size > 0 -%}
+      <div class="mb-scroller">
+        {%- for block in vids -%}
+          <div class="mb-vid" {{ block.shopify_attributes }}>
+            {%- if block.settings.video != blank -%}
+              {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: false, preload: 'none', image_size: '600x' }}
+            {%- elsif block.settings.poster != blank -%}
+              {{ block.settings.poster | image_url: width: 600 | image_tag: loading: 'lazy' }}
+            {%- else -%}
+              <div class="mb-ph">VIDEO REAL DE CLIENTE (9:16)</div>
+            {%- endif -%}
+            {%- if block.settings.caption != blank or block.settings.name != blank -%}
+              <div class="mb-vid__cap">{{ block.settings.caption }}<b>{{ block.settings.name }}</b></div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "MB · Hábito + videos",
+  "tag": "div",
+  "class": "mb-section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Texto chico", "default": "La clave" },
+    { "type": "inline_richtext", "id": "heading", "label": "Título", "default": "Funciona si lo hacés <em>todos los días</em>" },
+    { "type": "richtext", "id": "text", "label": "Texto", "default": "<p>Una cápsula con el desayuno y el protocolo de sueño y alimentación. Sin pastillas raras, sin dietas imposibles: un hábito que se sostiene.</p>" },
+    { "type": "image_picker", "id": "image", "label": "Imagen" },
+    { "type": "select", "id": "scheme", "label": "Fondo", "default": "light", "options": [ { "value": "light", "label": "Blanco" }, { "value": "cream", "label": "Crema" }, { "value": "sand", "label": "Arena" }, { "value": "dark", "label": "Negro" }, { "value": "red", "label": "Rojo" } ] },
+    { "type": "range", "id": "pt", "label": "Espacio arriba", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 64 },
+    { "type": "range", "id": "pb", "label": "Espacio abajo", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 64 }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Dato",
+      "limit": 3,
+      "settings": [
+        { "type": "text", "id": "number", "label": "Número", "default": "14" },
+        { "type": "text", "id": "label", "label": "Texto", "default": "activos en una cápsula" }
+      ]
+    },
+    {
+      "type": "video",
+      "name": "Video de cliente",
+      "settings": [
+        { "type": "video", "id": "video", "label": "Video (subido a Shopify)" },
+        { "type": "image_picker", "id": "poster", "label": "Imagen si no hay video" },
+        { "type": "text", "id": "caption", "label": "Frase" },
+        { "type": "text", "id": "name", "label": "Nombre" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MB · Hábito + videos",
+      "blocks": [
+        { "type": "stat", "settings": { "number": "14", "label": "activos en una cápsula" } },
+        { "type": "stat", "settings": { "number": "1", "label": "cápsula por día, con el desayuno" } },
+        { "type": "stat", "settings": { "number": "90", "label": "días de tratamiento integral" } },
+        { "type": "video" },
+        { "type": "video" },
+        { "type": "video" }
+      ]
+    }
+  ]
+}
+{% endschema %}

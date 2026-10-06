@@ -1,0 +1,69 @@
+{{ 'mb-metabomen.css' | asset_url | stylesheet_tag }}
+
+<style>
+  #mb-{{ section.id }} { --mb-pt: {{ section.settings.pt }}px; --mb-pb: {{ section.settings.pb }}px; --mb-pt-m: {{ section.settings.pt }}px; --mb-pb-m: {{ section.settings.pb }}px; }
+  #mb-{{ section.id }} .mb-tb__t { text-align: center; font-size: 12px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: var(--mb-sub); margin-bottom: 16px; }
+  #mb-{{ section.id }} .mb-tb { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 18px 44px; }
+  #mb-{{ section.id }} .mb-tb__i { display: flex; align-items: center; gap: 10px; font-family: var(--mb-head); font-size: 20px; text-transform: uppercase; letter-spacing: .04em; opacity: .85; }
+  #mb-{{ section.id }} .mb-tb__i img { height: {{ section.settings.logo_h }}px; width: auto; filter: {% if section.settings.grayscale %}grayscale(1){% else %}none{% endif %}; }
+  #mb-{{ section.id }} .mb-tb__i .mb-ic { width: 26px; height: 26px; color: var(--mb-red); }
+  @media (max-width: 749px) { #mb-{{ section.id }} .mb-tb { gap: 14px 24px; } #mb-{{ section.id }} .mb-tb__i { font-size: 15px; } }
+</style>
+
+<section id="mb-{{ section.id }}" class="mb mb--{{ section.settings.scheme }}">
+  <div class="mb-wrap mb-pad">
+    {%- if section.settings.title != blank -%}<div class="mb-tb__t">{{ section.settings.title }}</div>{%- endif -%}
+    <div class="mb-tb">
+      {%- for block in section.blocks -%}
+        <div class="mb-tb__i" {{ block.shopify_attributes }}>
+          {%- if block.settings.logo != blank -%}
+            {{ block.settings.logo | image_url: width: 300 | image_tag: loading: 'lazy', alt: block.settings.text }}
+          {%- else -%}
+            <svg class="mb-ic" viewBox="0 0 24 24" aria-hidden="true">{%- case block.settings.icon -%}{%- when 'truck' -%}<path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62L18.3 9.38a1 1 0 0 0-.78-.38H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/>{%- when 'shield' -%}<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>{%- when 'trophy' -%}<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>{%- when 'flag' -%}<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="M4 22v-7"/>{%- else -%}<path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/>{%- endcase -%}</svg>
+            <span>{{ block.settings.text }}</span>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "MB · Barra de confianza",
+  "tag": "div",
+  "class": "mb-section",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Título chico", "default": "Elegido por hombres de todo el país" },
+    { "type": "range", "id": "logo_h", "label": "Alto de los logos", "min": 16, "max": 60, "step": 2, "unit": "px", "default": 28 },
+    { "type": "checkbox", "id": "grayscale", "label": "Logos en gris", "default": true },
+    { "type": "select", "id": "scheme", "label": "Fondo", "default": "light", "options": [ { "value": "light", "label": "Blanco" }, { "value": "cream", "label": "Crema" }, { "value": "sand", "label": "Arena" }, { "value": "dark", "label": "Negro" }, { "value": "red", "label": "Rojo" } ] },
+    { "type": "range", "id": "pt", "label": "Espacio arriba", "min": 0, "max": 80, "step": 4, "unit": "px", "default": 28 },
+    { "type": "range", "id": "pb", "label": "Espacio abajo", "min": 0, "max": 80, "step": 4, "unit": "px", "default": 28 }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Logo o sello",
+      "limit": 8,
+      "settings": [
+        { "type": "image_picker", "id": "logo", "label": "Logo (opcional)", "info": "Solo logos de medios o plataformas donde estés de verdad." },
+        { "type": "text", "id": "text", "label": "Texto (si no hay logo)", "default": "Sello" },
+        { "type": "select", "id": "icon", "label": "Ícono (si no hay logo)", "default": "badge", "options": [ { "value": "badge", "label": "Sello" }, { "value": "truck", "label": "Envío" }, { "value": "shield", "label": "Garantía" }, { "value": "trophy", "label": "Trofeo" }, { "value": "flag", "label": "Bandera" } ] }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MB · Barra de confianza",
+      "blocks": [
+        { "type": "item", "settings": { "text": "Top en Mercado Libre", "icon": "trophy" } },
+        { "type": "item", "settings": { "text": "Fórmula argentina", "icon": "flag" } },
+        { "type": "item", "settings": { "text": "Producto registrado RNPA", "icon": "badge" } },
+        { "type": "item", "settings": { "text": "Envío gratis", "icon": "truck" } },
+        { "type": "item", "settings": { "text": "60 días de garantía", "icon": "shield" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
