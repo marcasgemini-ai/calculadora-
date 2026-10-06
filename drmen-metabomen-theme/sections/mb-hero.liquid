@@ -2,48 +2,111 @@
 
 <style>
   #mb-{{ section.id }} { --mb-pt: {{ section.settings.pt }}px; --mb-pb: {{ section.settings.pb }}px; }
-  #mb-{{ section.id }} .mb-hero { display: grid; grid-template-columns: 1.05fr 1fr; gap: 48px; align-items: center; }
-  #mb-{{ section.id }} .mb-hero__pill { display: inline-flex; align-items: center; gap: 8px; background: var(--mb-card); border: 1px solid var(--mb-card-line); border-radius: 999px; padding: 7px 14px; font-size: 13px; font-weight: 700; margin-bottom: 18px; }
-  #mb-{{ section.id }} .mb-hero h1 { font-size: clamp(40px, 6vw, 72px); margin-bottom: 16px; }
-  #mb-{{ section.id }} .mb-hero__sub { font-size: 18px; color: var(--mb-sub); margin-bottom: 20px; }
-  #mb-{{ section.id }} .mb-hero__sub p { margin: 0; }
-  #mb-{{ section.id }} .mb-check { margin-bottom: 26px; }
-  #mb-{{ section.id }} .mb-hero__media img, #mb-{{ section.id }} .mb-hero__media .mb-ph { width: 100%; aspect-ratio: {{ section.settings.ratio }}; object-fit: cover; border-radius: 24px; }
-  #mb-{{ section.id }} .mb-hero__badge { display: inline-block; background: var(--mb-red); color: #fff; font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; padding: 6px 12px; border-radius: 6px; margin-bottom: 14px; }
-  @media (max-width: 899px) {
-    #mb-{{ section.id }} .mb-hero { grid-template-columns: 1fr; gap: 24px; }
-    #mb-{{ section.id }} .mb-hero__media { order: {% if section.settings.image_first_mobile %}-1{% else %}1{% endif %}; }
-    #mb-{{ section.id }} .mb-hero__sub { font-size: 16.5px; }
+  #mb-{{ section.id }} .mb-h { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+  #mb-{{ section.id }} .mb-h__badge { display: inline-flex; align-items: center; gap: 8px; background: var(--mb-red); color: #fff; font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; padding: 8px 14px; border-radius: 999px; margin-bottom: 18px; }
+  #mb-{{ section.id }} .mb-h__badge::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 3px rgba(255,255,255,.35); }
+  #mb-{{ section.id }} .mb-h__rate { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; font-size: 14.5px; font-weight: 600; }
+  #mb-{{ section.id }} .mb-h__av { display: flex; }
+  #mb-{{ section.id }} .mb-h__av img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 2px solid var(--mb-bg); margin-left: -10px; }
+  #mb-{{ section.id }} .mb-h__av img:first-child { margin-left: 0; }
+  #mb-{{ section.id }} .mb-h__rate .mb-stars { color: var(--mb-red); font-size: 17px; letter-spacing: 2px; }
+  #mb-{{ section.id }} .mb-h h1 { font-size: clamp(42px, 5.4vw, 70px); line-height: 1; margin-bottom: 18px; {% unless section.settings.heading_upper %}text-transform: none; letter-spacing: -.02em;{% endunless %} }
+  #mb-{{ section.id }} .mb-h__sub { font-size: 18.5px; line-height: 1.55; color: var(--mb-sub); margin-bottom: 22px; max-width: 560px; }
+  #mb-{{ section.id }} .mb-h__sub p { margin: 0; }
+  #mb-{{ section.id }} .mb-h__sub strong, #mb-{{ section.id }} .mb-h__sub b { color: var(--mb-fg); }
+  #mb-{{ section.id }} .mb-h .mb-check { margin-bottom: 28px; gap: 12px; }
+  #mb-{{ section.id }} .mb-h .mb-check li { font-size: 17px; }
+  #mb-{{ section.id }} .mb-h__cta { display: flex; width: 100%; max-width: 480px; padding: 20px 28px; font-size: 16.5px; }
+  #mb-{{ section.id }} .mb-h__trust { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 16px; max-width: 480px; font-size: 13.5px; font-weight: 600; color: var(--mb-sub); }
+  #mb-{{ section.id }} .mb-h__trust span { display: inline-flex; align-items: center; gap: 6px; }
+  #mb-{{ section.id }} .mb-h__trust .mb-ic { width: 18px; height: 18px; color: var(--mb-red); }
+  #mb-{{ section.id }} .mb-h__media { position: relative; }
+  #mb-{{ section.id }} .mb-h__media img, #mb-{{ section.id }} .mb-h__media .mb-ph { width: 100%; aspect-ratio: {{ section.settings.ratio }}; object-fit: cover; border-radius: 32px; box-shadow: 0 30px 60px rgba(0,0,0,.12); }
+  #mb-{{ section.id }} .mb-h__img-m { display: none; }
+  #mb-{{ section.id }} .mb-h__stk { position: absolute; top: -18px; right: -18px; width: 136px; height: 136px; border-radius: 50%; background: var(--mb-red); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; transform: rotate(10deg); box-shadow: 0 12px 28px rgba(0,0,0,.18); line-height: 1; padding: 16px; }
+  #mb-{{ section.id }} .mb-h__stk b { font-family: var(--mb-head); font-size: 34px; text-transform: uppercase; }
+  #mb-{{ section.id }} .mb-h__stk small { max-width: 92px; font-size: 10px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; margin-top: 5px; }
+  #mb-{{ section.id }} .mb-h__float { position: absolute; left: -26px; bottom: 32px; max-width: 290px; background: #fff; color: var(--mb-ink); border-radius: 18px; padding: 14px 16px; box-shadow: 0 16px 40px rgba(0,0,0,.16); }
+  #mb-{{ section.id }} .mb-h__float .mb-stars { color: var(--mb-red); font-size: 14px; letter-spacing: 2px; }
+  #mb-{{ section.id }} .mb-h__float p { margin: 6px 0 6px; font-size: 14.5px; line-height: 1.4; font-weight: 600; }
+  #mb-{{ section.id }} .mb-h__float small { display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--mb-muted); }
+  #mb-{{ section.id }} .mb-h__float small svg { width: 16px; height: 16px; color: var(--mb-ink); }
+  @media (max-width: 989px) {
+    #mb-{{ section.id }} .mb-h { grid-template-columns: 1fr; gap: 30px; }
+    #mb-{{ section.id }} .mb-h__media { order: {% if section.settings.image_first_mobile %}-1{% else %}2{% endif %}; max-width: 560px; width: 100%; margin: 0 auto; }
+    #mb-{{ section.id }} .mb-h__stk { right: 8px; top: -14px; width: 108px; height: 108px; }
+    #mb-{{ section.id }} .mb-h__stk small { font-size: 8.5px; max-width: 74px; }
+    #mb-{{ section.id }} .mb-h__stk b { font-size: 26px; }
+    #mb-{{ section.id }} .mb-h__float { left: 12px; bottom: 14px; max-width: 250px; }
+  }
+  @media (max-width: 749px) {
+    #mb-{{ section.id }} .mb-h h1 { font-size: clamp(36px, 10.5vw, 46px); }
+    #mb-{{ section.id }} .mb-h__sub { font-size: 16.5px; }
+    #mb-{{ section.id }} .mb-h .mb-check li { font-size: 16px; }
+    #mb-{{ section.id }} .mb-h__cta { max-width: none; }
+    #mb-{{ section.id }} .mb-h__trust { justify-content: center; max-width: none; }
+    {%- if section.settings.image_mobile != blank -%}
+    #mb-{{ section.id }} .mb-h__img-d { display: none; }
+    #mb-{{ section.id }} .mb-h__img-m { display: block; }
+    {%- endif -%}
   }
 </style>
 
 <section id="mb-{{ section.id }}" class="mb mb--{{ section.settings.scheme }}" style="--mb-red: {{ section.settings.accent }}; --mb-red-dark: {{ section.settings.accent | color_darken: 15 }};{% if section.settings.custom_font %} --mb-head: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }};{% endif %}">
   <div class="mb-wrap mb-pad">
-    <div class="mb-hero">
-      <div class="mb-hero__text">
-        {%- if section.settings.badge != blank -%}<span class="mb-hero__badge">{{ section.settings.badge }}</span><br>{%- endif -%}
+    <div class="mb-h">
+      <div class="mb-h__text">
+        {%- if section.settings.badge != blank -%}<span class="mb-h__badge">{{ section.settings.badge }}</span>{%- endif -%}
         {%- if section.settings.rating_text != blank -%}
-          <span class="mb-hero__pill"><span class="mb-stars">★★★★★</span> {{ section.settings.rating_text }}</span>
+          <div class="mb-h__rate">
+            {%- if section.settings.avatar_1 != blank or section.settings.avatar_2 != blank or section.settings.avatar_3 != blank -%}
+              <span class="mb-h__av">
+                {%- if section.settings.avatar_1 != blank -%}{{ section.settings.avatar_1 | image_url: width: 80 | image_tag: loading: 'eager', alt: '' }}{%- endif -%}
+                {%- if section.settings.avatar_2 != blank -%}{{ section.settings.avatar_2 | image_url: width: 80 | image_tag: loading: 'eager', alt: '' }}{%- endif -%}
+                {%- if section.settings.avatar_3 != blank -%}{{ section.settings.avatar_3 | image_url: width: 80 | image_tag: loading: 'eager', alt: '' }}{%- endif -%}
+              </span>
+            {%- endif -%}
+            <span class="mb-stars">★★★★★</span>
+            <span>{{ section.settings.rating_text }}</span>
+          </div>
         {%- endif -%}
         <h1>{{ section.settings.heading }}</h1>
-        {%- if section.settings.subheading != blank -%}<div class="mb-hero__sub">{{ section.settings.subheading }}</div>{%- endif -%}
+        {%- if section.settings.subheading != blank -%}<div class="mb-h__sub">{{ section.settings.subheading }}</div>{%- endif -%}
         {%- if section.blocks.size > 0 -%}
           <ul class="mb-check">
-            {%- for block in section.blocks -%}
-              <li {{ block.shopify_attributes }}><span>{{ block.settings.text }}</span></li>
-            {%- endfor -%}
+            {%- for block in section.blocks -%}<li {{ block.shopify_attributes }}><span>{{ block.settings.text }}</span></li>{%- endfor -%}
           </ul>
         {%- endif -%}
         {%- if section.settings.button_label != blank -%}
-          <a class="mb-btn" href="{{ section.settings.button_link | default: '#mb-comprar' }}">{{ section.settings.button_label }}</a>
+          <a class="mb-btn mb-h__cta" href="{{ section.settings.button_link | default: '#mb-comprar' }}">{{ section.settings.button_label }} <span aria-hidden="true">→</span></a>
         {%- endif -%}
-        {%- if section.settings.under != blank -%}<div class="mb-under">{{ section.settings.under }}</div>{%- endif -%}
+        {%- if section.settings.trust_1 != blank or section.settings.trust_2 != blank or section.settings.trust_3 != blank -%}
+          <div class="mb-h__trust">
+            {%- if section.settings.trust_1 != blank -%}<span><svg class="mb-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62L18.3 9.38a1 1 0 0 0-.78-.38H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>{{ section.settings.trust_1 }}</span>{%- endif -%}
+            {%- if section.settings.trust_2 != blank -%}<span><svg class="mb-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>{{ section.settings.trust_2 }}</span>{%- endif -%}
+            {%- if section.settings.trust_3 != blank -%}<span><svg class="mb-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M6 15h4"/></svg>{{ section.settings.trust_3 }}</span>{%- endif -%}
+          </div>
+        {%- endif -%}
       </div>
-      <div class="mb-hero__media">
+
+      <div class="mb-h__media">
         {%- if section.settings.image != blank -%}
-          {{ section.settings.image | image_url: width: 1400 | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '(min-width: 900px) 50vw, 100vw', widths: '600, 900, 1200, 1400', alt: section.settings.image.alt | default: 'Metabomen' }}
+          <div class="mb-h__img-d">{{ section.settings.image | image_url: width: 1500 | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '(min-width: 990px) 50vw, 100vw', widths: '600, 900, 1200, 1500', alt: section.settings.image.alt }}</div>
         {%- else -%}
-          <div class="mb-ph">IMAGEN HERO · hombre +40 con el frasco Metabomen</div>
+          <div class="mb-h__img-d"><div class="mb-ph">IMAGEN HERO · hombre de +40 con el frasco</div></div>
+        {%- endif -%}
+        {%- if section.settings.image_mobile != blank -%}
+          <div class="mb-h__img-m">{{ section.settings.image_mobile | image_url: width: 900 | image_tag: loading: 'eager', sizes: '100vw', widths: '450, 700, 900', alt: section.settings.image_mobile.alt }}</div>
+        {%- endif -%}
+        {%- if section.settings.sticker != blank -%}
+          <div class="mb-h__stk"><b>{{ section.settings.sticker }}</b>{%- if section.settings.sticker_sub != blank -%}<small>{{ section.settings.sticker_sub }}</small>{%- endif -%}</div>
+        {%- endif -%}
+        {%- if section.settings.show_float and section.settings.float_text != blank -%}
+          <div class="mb-h__float">
+            <span class="mb-stars">★★★★★</span>
+            <p>“{{ section.settings.float_text }}”</p>
+            <small><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 1.5l2.1 2.2 3-.6.9 2.9 2.9.9-.6 3 2.2 2.1-2.2 2.1.6 3-2.9.9-.9 2.9-3-.6L12 22.5l-2.1-2.2-3 .6-.9-2.9-2.9-.9.6-3L1.5 12l2.2-2.1-.6-3 2.9-.9.9-2.9 3 .6z"/><path d="M8 12.3l2.6 2.6L16.2 9.3" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>{{ section.settings.float_name }}</small>
+          </div>
         {%- endif -%}
       </div>
     </div>
@@ -143,36 +206,66 @@
   "settings": [
     {
       "type": "header",
-      "content": "Texto"
+      "content": "Arriba del título"
     },
     {
       "type": "text",
       "id": "badge",
-      "label": "Etiqueta superior (opcional)",
+      "label": "Etiqueta",
       "default": "Tratamiento integral +40"
     },
     {
       "type": "text",
       "id": "rating_text",
-      "label": "Texto de la calificación",
-      "default": "4,8 · Hombres argentinos de +40"
+      "label": "Calificación",
+      "default": "4,8 · Hombres de todo el país",
+      "info": "Usá tu promedio real."
+    },
+    {
+      "type": "image_picker",
+      "id": "avatar_1",
+      "label": "Foto de cliente 1 (opcional)"
+    },
+    {
+      "type": "image_picker",
+      "id": "avatar_2",
+      "label": "Foto de cliente 2 (opcional)"
+    },
+    {
+      "type": "image_picker",
+      "id": "avatar_3",
+      "label": "Foto de cliente 3 (opcional)"
+    },
+    {
+      "type": "header",
+      "content": "Texto"
     },
     {
       "type": "inline_richtext",
       "id": "heading",
-      "label": "Título (lo que pongas en itálica sale en rojo)",
+      "label": "Título (la itálica sale en color de acento)",
       "default": "Dormí mejor, bajá la panza y <em>sentite más joven</em>"
+    },
+    {
+      "type": "checkbox",
+      "id": "heading_upper",
+      "label": "Título en mayúsculas",
+      "default": true
     },
     {
       "type": "richtext",
       "id": "subheading",
       "label": "Bajada",
-      "default": "<p>Después de los 40, el sueño, la panza, la energía y las ganas vienen juntos porque tienen la misma raíz. Metabomen es un tratamiento integral de 90 días: una fórmula de 14 activos + un protocolo de sueño y alimentación.</p>"
+      "default": "<p>Después de los 40, el sueño, la panza, la energía y las ganas tienen la misma raíz. <strong>Metabomen</strong> es un tratamiento integral de 90 días: fórmula de 14 activos + protocolo de sueño y alimentación.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Botón"
     },
     {
       "type": "text",
       "id": "button_label",
-      "label": "Botón",
+      "label": "Texto del botón",
       "default": "Empezar mi tratamiento"
     },
     {
@@ -180,13 +273,25 @@
       "id": "button_link",
       "label": "Link del botón",
       "default": "#mb-comprar",
-      "info": "#mb-comprar baja a la sección MB · Compra"
+      "info": "#mb-comprar baja a MB · Compra (packs)"
     },
     {
       "type": "text",
-      "id": "under",
-      "label": "Texto bajo el botón",
-      "default": "Envío gratis · 60 días de garantía · 3 cuotas sin interés"
+      "id": "trust_1",
+      "label": "Sello 1 (camión)",
+      "default": "Envío gratis"
+    },
+    {
+      "type": "text",
+      "id": "trust_2",
+      "label": "Sello 2 (escudo)",
+      "default": "60 días de garantía"
+    },
+    {
+      "type": "text",
+      "id": "trust_3",
+      "label": "Sello 3 (tarjeta)",
+      "default": "3 cuotas sin interés"
     },
     {
       "type": "header",
@@ -196,6 +301,11 @@
       "type": "image_picker",
       "id": "image",
       "label": "Imagen"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Imagen para celular (opcional)"
     },
     {
       "type": "select",
@@ -220,8 +330,43 @@
     {
       "type": "checkbox",
       "id": "image_first_mobile",
-      "label": "En celular, imagen arriba",
+      "label": "En celular, imagen arriba del título",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "sticker",
+      "label": "Sticker redondo (vacío = no se muestra)",
+      "default": "90 días",
+      "info": "Arriba a la derecha de la imagen."
+    },
+    {
+      "type": "text",
+      "id": "sticker_sub",
+      "label": "Texto chico del sticker",
+      "default": "de tratamiento"
+    },
+    {
+      "type": "header",
+      "content": "Reseña flotante sobre la imagen"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_float",
+      "label": "Mostrar reseña flotante",
       "default": true
+    },
+    {
+      "type": "text",
+      "id": "float_text",
+      "label": "Frase (de una reseña real)",
+      "default": "[Frase corta de una reseña real]"
+    },
+    {
+      "type": "text",
+      "id": "float_name",
+      "label": "Nombre",
+      "default": "[Nombre], [edad]"
     },
     {
       "type": "header",
@@ -248,10 +393,6 @@
         {
           "value": "dark",
           "label": "Negro"
-        },
-        {
-          "value": "red",
-          "label": "Rojo"
         }
       ]
     },
@@ -263,7 +404,7 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "default": 56
+      "default": 48
     },
     {
       "type": "range",
@@ -327,7 +468,7 @@
         {
           "type": "bullet",
           "settings": {
-            "text": "Un plan para <b>la panza de los 40</b>"
+            "text": "Un plan real para <b>la panza de los 40</b>"
           }
         },
         {
