@@ -15,8 +15,8 @@
     }
   }
   #sl-qe-{{ section.id }} {
-    --sl-accent: {{ section.settings.accent_color }};
-    --sl-accent-text: {{ section.settings.accent_text_color }};
+    --sl-accent: {{ section.settings.accent_color | default: 'rgb(var(--color-button))' }};
+    --sl-accent-text: {{ section.settings.accent_text_color | default: 'rgb(var(--color-button-text))' }};
   }
 {%- endstyle -%}
 
@@ -49,7 +49,7 @@
     margin: 0;
     padding: 1rem;
     border: 0;
-    border-radius: var(--buttons-radius, 0.6rem);
+    border-radius: 0.4rem;
     background: rgba(var(--color-foreground), 0.08);
     color: rgb(var(--color-foreground));
     font-family: var(--font-body-family);
@@ -137,9 +137,9 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    background: rgb(var(--color-background));
-    border: 0.2rem dashed var(--sl-accent);
-    box-shadow: 0 1rem 2.4rem -1.2rem rgba(0, 0, 0, 0.35);
+    background: rgb(var(--color-foreground));
+    color: rgb(var(--color-background));
+    box-shadow: 0 1rem 2.4rem -1.2rem rgba(0, 0, 0, 0.45);
     transform: translate(-50%, -112%);
     transition: left 0.45s cubic-bezier(.2,.8,.2,1), top 0.45s cubic-bezier(.2,.8,.2,1), transform 0.45s cubic-bezier(.2,.8,.2,1);
   }
@@ -149,14 +149,23 @@
     font-weight: var(--font-heading-weight);
     font-size: 1.7rem;
     line-height: 1.1;
-    color: var(--sl-accent);
+    color: inherit;
+  }
+  .sl-qe__bubble::before {
+    content: '';
+    position: absolute;
+    inset: 0.4rem;
+    border-radius: 50%;
+    border: 0.15rem dashed currentColor;
+    opacity: 0.35;
+    pointer-events: none;
   }
   .sl-qe__bubble-text {
     display: block;
     margin-top: 0.4rem;
     font-size: 1.1rem;
     line-height: 1.25;
-    color: rgb(var(--color-foreground));
+    color: inherit;
     opacity: 0.75;
   }
 
@@ -270,7 +279,7 @@
               <line class="sl-qe__gridline" x1="{{ plot_left | minus: 20 }}" y1="170" x2="490" y2="170"/>
               <path class="sl-qe__axis" d="M{{ plot_left | minus: 20 }} 5 V{{ plot_bottom | plus: 15 }} H490"/>
               {%- if section.settings.y_label != blank -%}
-                <text class="sl-qe__ylabel" transform="translate(28 {{ plot_bottom | plus: 10 }}) rotate(-90)">{{ section.settings.y_label | escape }}</text>
+                <text class="sl-qe__ylabel" text-anchor="end" transform="translate(28 8) rotate(-90)">{{ section.settings.y_label | escape }}</text>
               {%- endif -%}
               {%- assign pts = points | strip | split: ';' -%}
               {%- assign pts_line = pts | join: ' ' -%}
@@ -407,14 +416,14 @@
     },
     { "type": "header", "content": "Gráfico" },
     { "type": "text", "id": "y_label", "label": "Texto del eje vertical", "default": "Comodidad" },
-    { "type": "color", "id": "accent_color", "label": "Color de acento (línea, burbuja y botón activo)", "default": "#111111" },
-    { "type": "color", "id": "accent_text_color", "label": "Texto del botón activo", "default": "#FFFFFF" },
+    { "type": "color", "id": "accent_color", "label": "Color de acento (línea y botón activo)", "info": "Vacío = color de botón del theme" },
+    { "type": "color", "id": "accent_text_color", "label": "Texto del botón activo", "info": "Vacío = color de texto de botón del theme" },
     { "type": "header", "content": "Colores" },
     {
       "type": "select",
       "id": "color_scheme",
       "label": "Esquema de colores",
-      "default": "background-2",
+      "default": "inverse",
       "options": [
         { "value": "accent-1", "label": "Acento 1" },
         { "value": "accent-2", "label": "Acento 2" },
@@ -473,7 +482,7 @@
           "type": "stage",
           "settings": {
             "tab_label": "Semana 4",
-            "value": 72,
+            "value": 70,
             "bubble_title": "Cómodos",
             "bubble_text": "Menos roces",
             "heading": "Te olvidás de que las tenés puestas.",
