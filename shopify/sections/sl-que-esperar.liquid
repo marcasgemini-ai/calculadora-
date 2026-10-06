@@ -1,0 +1,497 @@
+{%- comment -%}
+  SUAVELAND · CLOUD SOCKS · "QUÉ ESPERAR" (cronología con gráfico)
+  Sección nativa · Tipografía y colores del theme
+{%- endcomment -%}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+  #sl-qe-{{ section.id }} {
+    --sl-accent: {{ section.settings.accent_color }};
+    --sl-accent-text: {{ section.settings.accent_text_color }};
+  }
+{%- endstyle -%}
+
+<style>
+  .sl-qe, .sl-qe * { box-sizing: border-box; }
+
+  .sl-qe__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3.2rem;
+    align-items: center;
+  }
+
+  /* TEXTO */
+  .sl-qe__intro > * { margin: 0; }
+  .sl-qe__intro > * + * { margin-top: 1.2rem; }
+  .sl-qe__intro .rte { opacity: 0.8; }
+
+  /* BOTONES */
+  .sl-qe__tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin: 2.8rem 0 0;
+  }
+  .sl-qe__tab {
+    appearance: none;
+    -webkit-appearance: none;
+    min-height: 4.6rem;
+    margin: 0;
+    padding: 1rem;
+    border: 0;
+    border-radius: var(--buttons-radius, 0.6rem);
+    background: rgba(var(--color-foreground), 0.08);
+    color: rgb(var(--color-foreground));
+    font-family: var(--font-body-family);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    font-size: 1.5rem;
+    line-height: 1.2;
+    letter-spacing: 0.04rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  .sl-qe__tab:hover { background: rgba(var(--color-foreground), 0.14); }
+  .sl-qe__tab[aria-selected="true"] {
+    background: var(--sl-accent);
+    color: var(--sl-accent-text);
+  }
+  .sl-qe__tab:focus-visible { outline: 0.2rem solid rgb(var(--color-foreground)); outline-offset: 0.3rem; }
+
+  .sl-qe__panel { margin-top: 2.8rem; }
+  .sl-qe__panel[hidden] { display: none; }
+  .sl-qe__panel > * { margin: 0; }
+  .sl-qe__panel > * + * { margin-top: 1rem; }
+  .sl-qe__panel .rte { opacity: 0.8; }
+  .sl-qe__panel-title { animation: slQeIn 0.35s ease both; }
+  .sl-qe__panel .rte { animation: slQeIn 0.35s 0.05s ease both; }
+
+  /* GRÁFICO */
+  .sl-qe__chart {
+    position: relative;
+    padding: 2rem 1.6rem 1.2rem;
+    border-radius: var(--media-radius, 1.2rem);
+    background: rgba(var(--color-foreground), 0.06);
+  }
+  .sl-qe__plot { position: relative; width: 100%; aspect-ratio: 500 / 260; }
+  .sl-qe__plot svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+
+  .sl-qe__gridline { stroke: rgba(var(--color-foreground), 0.12); stroke-width: 1; }
+  .sl-qe__axis { stroke: rgba(var(--color-foreground), 0.35); stroke-width: 1.2; fill: none; }
+  .sl-qe__line {
+    fill: none;
+    stroke: var(--sl-accent);
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .sl-qe__area { fill: var(--sl-accent); opacity: 0.08; }
+  .sl-qe__dot {
+    fill: var(--sl-accent);
+    stroke: rgb(var(--color-background));
+    stroke-width: 3;
+    transition: r 0.25s ease;
+  }
+  .sl-qe__dot.is-active { r: 9; }
+  .sl-qe__ylabel {
+    fill: rgb(var(--color-foreground));
+    opacity: 0.7;
+    font-family: var(--font-body-family);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+
+  .sl-qe__xlabels { position: relative; height: 3.2rem; margin-top: 0.4rem; }
+  .sl-qe__xlabel {
+    position: absolute;
+    top: 0.6rem;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    font-size: 1.2rem;
+    line-height: 1.2;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+  }
+  .sl-qe__xlabel.is-active { opacity: 1; font-weight: var(--font-body-weight-bold); }
+
+  /* BURBUJA */
+  .sl-qe__bubble {
+    position: absolute;
+    z-index: 2;
+    width: 10.4rem;
+    height: 10.4rem;
+    padding: 1rem;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: rgb(var(--color-background));
+    border: 0.2rem dashed var(--sl-accent);
+    box-shadow: 0 1rem 2.4rem -1.2rem rgba(0, 0, 0, 0.35);
+    transform: translate(-50%, -112%);
+    transition: left 0.45s cubic-bezier(.2,.8,.2,1), top 0.45s cubic-bezier(.2,.8,.2,1), transform 0.45s cubic-bezier(.2,.8,.2,1);
+  }
+  .sl-qe__bubble-title {
+    display: block;
+    font-family: var(--font-heading-family);
+    font-weight: var(--font-heading-weight);
+    font-size: 1.7rem;
+    line-height: 1.1;
+    color: var(--sl-accent);
+  }
+  .sl-qe__bubble-text {
+    display: block;
+    margin-top: 0.4rem;
+    font-size: 1.1rem;
+    line-height: 1.25;
+    color: rgb(var(--color-foreground));
+    opacity: 0.75;
+  }
+
+  @keyframes slQeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  @media screen and (max-width: 749px) {
+    .sl-qe.page-width { padding-left: 1.6rem; padding-right: 1.6rem; }
+    .sl-qe__bubble { width: 8.8rem; height: 8.8rem; }
+    .sl-qe__bubble-title { font-size: 1.5rem; }
+    .sl-qe__bubble-text { font-size: 1rem; }
+  }
+  @media screen and (min-width: 990px) {
+    .sl-qe__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8rem; }
+    .sl-qe__chart { padding: 3rem 2.8rem 1.6rem; }
+    .sl-qe__tab { min-height: 5rem; font-size: 1.6rem; }
+    .sl-qe__xlabel { font-size: 1.3rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sl-qe__bubble, .sl-qe__dot { transition: none; }
+    .sl-qe__panel-title, .sl-qe__panel .rte { animation: none; }
+  }
+</style>
+
+{%- liquid
+  assign n = section.blocks.size
+  assign plot_left = 70.0
+  assign plot_right = 470.0
+  assign plot_top = 20.0
+  assign plot_bottom = 225.0
+  assign plot_h = plot_bottom | minus: plot_top
+  if n > 1
+    assign n_minus = n | minus: 1
+    assign step = plot_right | minus: plot_left | divided_by: n_minus
+  else
+    assign step = 0
+  endif
+-%}
+
+{%- capture points -%}
+  {%- for block in section.blocks -%}
+    {%- assign i = forloop.index0 -%}
+    {%- if n > 1 -%}{%- assign x = step | times: i | plus: plot_left -%}{%- else -%}{%- assign x = 270 -%}{%- endif -%}
+    {%- assign y = block.settings.value | times: plot_h | divided_by: 100.0 -%}
+    {%- assign y = plot_bottom | minus: y -%}
+    {{ x | round: 1 }},{{ y | round: 1 }}{% unless forloop.last %} {% endunless %}
+  {%- endfor -%}
+{%- endcapture -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div id="sl-qe-{{ section.id }}" class="sl-qe page-width section-{{ section.id }}-padding">
+    <div class="sl-qe__grid">
+
+      <div class="sl-qe__left">
+        <div class="sl-qe__intro">
+          {%- if section.settings.eyebrow != blank -%}
+            <p class="caption-with-letter-spacing">{{ section.settings.eyebrow | escape }}</p>
+          {%- endif -%}
+          {%- if section.settings.heading != blank -%}
+            <h2 class="{{ section.settings.heading_size }}">{{ section.settings.heading }}</h2>
+          {%- endif -%}
+          {%- if section.settings.text != blank -%}
+            <div class="rte">{{ section.settings.text }}</div>
+          {%- endif -%}
+        </div>
+
+        <div class="sl-qe__tabs" role="tablist" aria-label="{{ section.settings.heading | strip_html | default: 'Qué esperar' | escape }}">
+          {%- for block in section.blocks -%}
+            <button
+              type="button"
+              class="sl-qe__tab"
+              role="tab"
+              id="sl-qe-tab-{{ block.id }}"
+              aria-controls="sl-qe-panel-{{ block.id }}"
+              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+              {% unless forloop.first %}tabindex="-1"{% endunless %}
+              data-index="{{ forloop.index0 }}"
+              {{ block.shopify_attributes }}
+            >
+              {{- block.settings.tab_label | escape -}}
+            </button>
+          {%- endfor -%}
+        </div>
+
+        {%- for block in section.blocks -%}
+          <div
+            class="sl-qe__panel"
+            role="tabpanel"
+            id="sl-qe-panel-{{ block.id }}"
+            aria-labelledby="sl-qe-tab-{{ block.id }}"
+            {% unless forloop.first %}hidden{% endunless %}
+          >
+            {%- if block.settings.heading != blank -%}
+              <h3 class="sl-qe__panel-title h3">{{ block.settings.heading }}</h3>
+            {%- endif -%}
+            {%- if block.settings.text != blank -%}
+              <div class="rte">{{ block.settings.text }}</div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+
+      {%- if n > 0 -%}
+        <div class="sl-qe__chart" aria-hidden="true">
+          <div class="sl-qe__plot">
+            <svg viewBox="0 0 500 260" preserveAspectRatio="none" focusable="false">
+              <line class="sl-qe__gridline" x1="{{ plot_left | minus: 20 }}" y1="60" x2="490" y2="60"/>
+              <line class="sl-qe__gridline" x1="{{ plot_left | minus: 20 }}" y1="115" x2="490" y2="115"/>
+              <line class="sl-qe__gridline" x1="{{ plot_left | minus: 20 }}" y1="170" x2="490" y2="170"/>
+              <path class="sl-qe__axis" d="M{{ plot_left | minus: 20 }} 5 V{{ plot_bottom | plus: 15 }} H490"/>
+              {%- if section.settings.y_label != blank -%}
+                <text class="sl-qe__ylabel" transform="translate(28 {{ plot_bottom | plus: 10 }}) rotate(-90)">{{ section.settings.y_label | escape }}</text>
+              {%- endif -%}
+              {%- assign first_point = points | strip | split: ' ' | first -%}
+              {%- assign last_point = points | strip | split: ' ' | last -%}
+              {%- assign first_x = first_point | split: ',' | first -%}
+              {%- assign last_x = last_point | split: ',' | first -%}
+              <polygon class="sl-qe__area" points="{{ first_x }},{{ plot_bottom | plus: 15 }} {{ points | strip }} {{ last_x }},{{ plot_bottom | plus: 15 }}"/>
+              <polyline class="sl-qe__line" points="{{ points | strip }}"/>
+              {%- assign pts = points | strip | split: ' ' -%}
+              {%- for p in pts -%}
+                {%- assign xy = p | split: ',' -%}
+                <circle class="sl-qe__dot{% if forloop.first %} is-active{% endif %}" cx="{{ xy[0] }}" cy="{{ xy[1] }}" r="6" data-index="{{ forloop.index0 }}"/>
+              {%- endfor -%}
+            </svg>
+
+            {%- assign fb = section.blocks.first -%}
+            {%- assign p0 = pts | first | split: ',' -%}
+            <div
+              class="sl-qe__bubble"
+              style="left: {{ p0[0] | times: 100.0 | divided_by: 500 }}%; top: {{ p0[1] | times: 100.0 | divided_by: 260 }}%;"
+            >
+              <span class="sl-qe__bubble-title">{{ fb.settings.bubble_title | escape }}</span>
+              <span class="sl-qe__bubble-text">{{ fb.settings.bubble_text | escape }}</span>
+            </div>
+
+            {%- for block in section.blocks -%}
+              {%- assign xy = pts[forloop.index0] | split: ',' -%}
+              <template
+                class="sl-qe__data"
+                data-left="{{ xy[0] | times: 100.0 | divided_by: 500 }}"
+                data-top="{{ xy[1] | times: 100.0 | divided_by: 260 }}"
+                data-title="{{ block.settings.bubble_title | escape }}"
+                data-text="{{ block.settings.bubble_text | escape }}"
+              ></template>
+            {%- endfor -%}
+          </div>
+
+          <div class="sl-qe__xlabels">
+            {%- for block in section.blocks -%}
+              {%- assign xy = pts[forloop.index0] | split: ',' -%}
+              <span
+                class="sl-qe__xlabel{% if forloop.first %} is-active{% endif %}"
+                style="left: {{ xy[0] | times: 100.0 | divided_by: 500 }}%;"
+              >{{ block.settings.chart_label | default: block.settings.tab_label | escape }}</span>
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var root = document.getElementById('sl-qe-{{ section.id }}');
+    if (!root) return;
+    var tabs = root.querySelectorAll('.sl-qe__tab');
+    var panels = root.querySelectorAll('.sl-qe__panel');
+    var dots = root.querySelectorAll('.sl-qe__dot');
+    var labels = root.querySelectorAll('.sl-qe__xlabel');
+    var data = root.querySelectorAll('.sl-qe__data');
+    var bubble = root.querySelector('.sl-qe__bubble');
+
+    function activate(index, focus) {
+      for (var i = 0; i < tabs.length; i++) {
+        var on = i === index;
+        tabs[i].setAttribute('aria-selected', on ? 'true' : 'false');
+        tabs[i].tabIndex = on ? 0 : -1;
+        if (panels[i]) panels[i].hidden = !on;
+        if (dots[i]) dots[i].classList.toggle('is-active', on);
+        if (labels[i]) labels[i].classList.toggle('is-active', on);
+      }
+      var d = data[index];
+      if (bubble && d) {
+        var left = parseFloat(d.dataset.left);
+        var top = parseFloat(d.dataset.top);
+        var tx = left < 22 ? '-25%' : (left > 78 ? '-75%' : '-50%');
+        var ty = top < 45 ? '18%' : '-112%';
+        bubble.style.left = left + '%';
+        bubble.style.top = top + '%';
+        bubble.style.transform = 'translate(' + tx + ', ' + ty + ')';
+        bubble.querySelector('.sl-qe__bubble-title').textContent = d.dataset.title;
+        bubble.querySelector('.sl-qe__bubble-text').textContent = d.dataset.text;
+      }
+      if (focus) tabs[index].focus();
+    }
+
+    for (var i = 0; i < tabs.length; i++) {
+      (function (n) {
+        tabs[n].addEventListener('click', function () { activate(n, false); });
+        tabs[n].addEventListener('keydown', function (e) {
+          if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+          e.preventDefault();
+          var dir = e.key === 'ArrowRight' ? 1 : -1;
+          activate((n + dir + tabs.length) % tabs.length, true);
+        });
+      })(i);
+    }
+
+    document.addEventListener('shopify:block:select', function (e) {
+      var tab = root.querySelector('#sl-qe-tab-' + e.detail.blockId);
+      if (tab) activate(parseInt(tab.dataset.index, 10), false);
+    });
+
+    if (tabs.length) activate(0, false);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Qué esperar",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Subtítulo", "default": "Cronología" },
+    { "type": "inline_richtext", "id": "heading", "label": "Encabezado", "default": "Qué esperar" },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Tamaño del encabezado",
+      "default": "h1",
+      "options": [
+        { "value": "h2", "label": "Pequeño" },
+        { "value": "h1", "label": "Mediano" },
+        { "value": "h0", "label": "Grande" }
+      ]
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Texto",
+      "default": "<p>Cloud Socks™ se nota desde el primer día y se disfruta todavía más con el uso diario. Así lo vas a sentir:</p>"
+    },
+    { "type": "header", "content": "Gráfico" },
+    { "type": "text", "id": "y_label", "label": "Texto del eje vertical", "default": "Comodidad" },
+    { "type": "color", "id": "accent_color", "label": "Color de acento (línea, burbuja y botón activo)", "default": "#111111" },
+    { "type": "color", "id": "accent_text_color", "label": "Texto del botón activo", "default": "#FFFFFF" },
+    { "type": "header", "content": "Colores" },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Esquema de colores",
+      "default": "background-2",
+      "options": [
+        { "value": "accent-1", "label": "Acento 1" },
+        { "value": "accent-2", "label": "Acento 2" },
+        { "value": "background-1", "label": "Fondo 1" },
+        { "value": "background-2", "label": "Fondo 2" },
+        { "value": "inverse", "label": "Inverso" }
+      ]
+    },
+    { "type": "header", "content": "Relleno de sección" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Relleno superior", "default": 64 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Relleno inferior", "default": 64 }
+  ],
+  "blocks": [
+    {
+      "type": "stage",
+      "name": "Etapa",
+      "limit": 6,
+      "settings": [
+        { "type": "text", "id": "tab_label", "label": "Texto del botón", "default": "Semana 1" },
+        { "type": "text", "id": "chart_label", "label": "Texto en el gráfico (opcional)", "info": "Vacío = usa el texto del botón" },
+        { "type": "range", "id": "value", "min": 0, "max": 100, "step": 5, "unit": "%", "label": "Altura del punto en el gráfico", "default": 50 },
+        { "type": "text", "id": "bubble_title", "label": "Burbuja: palabra grande", "default": "Cómodos" },
+        { "type": "text", "id": "bubble_text", "label": "Burbuja: texto chico", "default": "Texto corto" },
+        { "type": "inline_richtext", "id": "heading", "label": "Título", "default": "Título de la etapa" },
+        { "type": "richtext", "id": "text", "label": "Texto", "default": "<p>Describí qué se siente en esta etapa.</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Qué esperar",
+      "blocks": [
+        {
+          "type": "stage",
+          "settings": {
+            "tab_label": "Día 1",
+            "value": 25,
+            "bubble_title": "Libres",
+            "bubble_text": "Dedos sin presión",
+            "heading": "Desde el primer paso.",
+            "text": "<p>Apenas te las ponés notás la diferencia: la punta ancha deja que tus dedos se acomoden de forma natural, sin apretarse uno contra otro.</p>"
+          }
+        },
+        {
+          "type": "stage",
+          "settings": {
+            "tab_label": "Semana 1",
+            "value": 50,
+            "bubble_title": "Frescos",
+            "bubble_text": "Pies más secos",
+            "heading": "Tu nueva media de todos los días.",
+            "text": "<p>Usándolas a diario notás los pies más secos y frescos al final del día, sin esa humedad incómoda al sacarte las zapatillas.</p>"
+          }
+        },
+        {
+          "type": "stage",
+          "settings": {
+            "tab_label": "Semana 4",
+            "value": 72,
+            "bubble_title": "Cómodos",
+            "bubble_text": "Menos roces",
+            "heading": "Te olvidás de que las tenés puestas.",
+            "text": "<p>La planta acolchada y la punta ancha hacen que caminar o pasar muchas horas de pie se sienta más liviano.</p>"
+          }
+        },
+        {
+          "type": "stage",
+          "settings": {
+            "tab_label": "Mes 3+",
+            "value": 90,
+            "bubble_title": "Duraderas",
+            "bubble_text": "Como el primer día",
+            "heading": "Siguen firmes, lavado tras lavado.",
+            "text": "<p>El talón y la punta reforzados aguantan justo donde las medias comunes se rompen primero.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
