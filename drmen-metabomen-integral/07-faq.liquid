@@ -1,0 +1,34 @@
+{%- comment -%}
+  PÁGINA INTEGRAL METABOMEN · LIQUID 07 · PREGUNTAS FRECUENTES
+  Necesita el 01 arriba. Separá con | (mismo orden). Respuestas honestas: bajan devoluciones y quejas.
+{%- endcomment -%}
+
+{%- assign eyebrow = 'Dudas' -%}
+{%- assign titulo = 'Preguntas <em>frecuentes</em>' -%}
+
+{%- assign q_preg = '¿Por qué un tratamiento integral y no un producto para cada cosa?|¿Me va a ayudar con la erección?|¿Me va a hacer bajar de peso?|¿Me va a hacer dormir?|¿Cuándo voy a notar algo?|¿Cómo se toma?|¿Tiene contraindicaciones?|¿Y si no me sirve?' | split: '|' -%}
+{%- assign q_resp = 'Porque después de los 40 el sueño, la panza, la energía y las ganas están conectados: uno alimenta al otro. Si atacás uno solo, el resto lo vuelve a traer. El tratamiento ataca varios puntos a la vez: fórmula, sueño y alimentación.|Metabomen no es un medicamento para la disfunción eréctil y no te lo vamos a vender así. Si tenés problemas de erección, consultá a un médico: a veces es la primera señal de algo cardiovascular. Lo que sí sabemos: dormir bien, bajar la panza y mantener la testosterona en niveles normales (el zinc contribuye a eso) influyen en las ganas.|Solo con una cápsula, no. Por eso el tratamiento incluye el plan de alimentación metabólica y movimiento. La fórmula acompaña; los hábitos hacen el trabajo grande.|No es un somnífero. El protocolo de sueño es el que ordena tus noches, y el magnesio contribuye al funcionamiento normal del sistema nervioso.|Cada persona es distinta. Muchos empiezan a notar cambios en cómo descansan y en su energía en las primeras semanas, si siguen el protocolo. Por eso recomendamos los 90 días completos.|1 cápsula por día con el desayuno, con un vaso de agua. No la tomes de noche: tiene té verde.|Si tomás medicación, tenés presión alta, problemas cardíacos o sos sensible a la cafeína, consultá a tu médico antes. Tiene té verde y naranja amarga. No supera la dosis diaria recomendada en la etiqueta.|Tenés 60 días de garantía. Si no quedás conforme, nos escribís y te devolvemos el dinero.' | split: '|' -%}
+
+<style>
+  .dt-faq { max-width: 780px; margin: 0 auto; }
+  .dt-faq details { border-bottom: 1px solid var(--dt-line); }
+  .dt-faq summary { cursor: pointer; list-style: none; padding: 16px 34px 16px 0; font-weight: 800; font-size: 16px; position: relative; }
+  .dt-faq summary::-webkit-details-marker { display: none; }
+  .dt-faq summary::after { content: '+'; position: absolute; right: 4px; top: 12px; font-size: 24px; color: var(--dt-red); font-weight: 400; }
+  .dt-faq details[open] summary::after { content: '−'; }
+  .dt-faq details p { font-size: 15px; color: var(--dt-muted); padding: 0 0 16px; margin: 0 !important; }
+</style>
+
+<div class="dt-band">
+  <div class="dt dt-sec">
+    <div class="dt-head">
+      <span class="dt-eyebrow">{{ eyebrow }}</span>
+      <h2 class="dt-h2">{{ titulo }}</h2>
+    </div>
+    <div class="dt-faq">
+      {%- for q in q_preg -%}
+        <details><summary>{{ q }}</summary><p>{{ q_resp[forloop.index0] }}</p></details>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>

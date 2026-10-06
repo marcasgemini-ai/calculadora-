@@ -1,0 +1,90 @@
+{%- comment -%}
+  PÁGINA INTEGRAL METABOMEN · LIQUID 08 · GARANTÍA 60 DÍAS + SELLOS + BARRA FIJA EN CELULAR
+  Necesita el 01 arriba. Va ÚLTIMO.
+  La barra fija aparece en celular después del hero y se esconde cuando se ve la oferta (#oferta).
+  Escribí las condiciones de la garantía como realmente funcionan.
+{%- endcomment -%}
+
+{%- assign cta_url = '#oferta' -%}
+{%- assign dias = '60' -%}
+{%- assign titulo = '<em>60 días</em> para decidir' -%}
+{%- assign bajada = 'Si en 60 días no quedás conforme, te devolvemos el 100% del dinero. Sin vueltas.' -%}
+{%- assign pasos_t = 'Cómo funciona la garantía' -%}
+{%- assign pasos = 'Probá Metabomen todos los días, a la mañana, durante el tiempo que quieras dentro de los 60 días.|Si no quedás conforme, escribinos a [email de contacto] con tu número de pedido.|Te devolvemos el dinero en [X] días hábiles. [Completar: si hay que devolver el frasco o no.]' | split: '|' -%}
+{%- assign sellos_i = 'pin|badge|truck|card|shield|lock' | split: '|' -%}
+{%- assign sellos = 'Fórmula premium argentina|RNPA [número]|Envío gratis|3 cuotas sin interés|60 días de garantía|Pago 100% seguro' | split: '|' -%}
+{%- assign sticky_t = 'Tratamiento integral 90 días' -%}
+{%- assign sticky_p = '$101.900 · Envío gratis' -%}
+{%- assign legal = 'Suplemento dietario. No es un medicamento. Consulte a su médico. Mantener fuera del alcance de los niños. RNPA [número]. Los resultados pueden variar de persona a persona.' -%}
+
+<style>
+  .dt-gar { text-align: center; max-width: 760px; margin: 0 auto; }
+  .dt-gar__i { width: 74px; height: 74px; margin: 0 auto 14px; border-radius: 50%; border: 2px solid rgba(255,255,255,.25); display: flex; align-items: center; justify-content: center; font-size: 34px; }
+  .dt-gar h2 { font-size: clamp(32px, 5vw, 50px); margin: 6px 0 10px; }
+  .dt-gar__box { text-align: left; background: #17191C; border: 1px solid #2A2E33; border-radius: 16px; padding: 18px; margin: 24px 0; }
+  .dt-gar__box p { font-size: 11.5px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: #A9AEB4; margin-bottom: 12px !important; }
+  .dt-gar__box ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; counter-reset: g; }
+  .dt-gar__box li { counter-increment: g; display: flex; gap: 12px; font-size: 15px; margin: 0; color: #E4E6E8; }
+  .dt-gar__box li::before { content: counter(g); flex: 0 0 26px; height: 26px; border-radius: 50%; background: var(--dt-red); color: #fff; font-weight: 800; font-size: 13px; display: flex; align-items: center; justify-content: center; }
+  .dt-sellos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px 16px; text-align: left; margin-bottom: 24px; }
+  .dt-sellos div { display: flex; gap: 8px; align-items: center; font-size: 13.5px; color: #D5D8DC; }
+  .dt-legal { font-size: 11px; color: #7E848B; margin-top: 18px !important; }
+  @media (max-width: 749px) { .dt-sellos { grid-template-columns: 1fr 1fr; } }
+</style>
+
+<div class="dt-band is-dark">
+  <div class="dt dt-sec" style="padding-bottom:110px">
+    <div class="dt-gar">
+      <div class="dt-gar__i"><svg class="dt-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:34px;height:34px;stroke-width:1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></div>
+      <span class="dt-eyebrow">Garantía DR.MEN</span>
+      <h2>{{ titulo }}</h2>
+      <p class="dt-lead">{{ bajada }}</p>
+      <div class="dt-gar__box">
+        <p>{{ pasos_t }}</p>
+        <ol>{%- for p in pasos -%}<li>{{ p }}</li>{%- endfor -%}</ol>
+      </div>
+      <div class="dt-sellos">
+        {%- for s in sellos -%}<div><svg class="dt-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:20px;height:20px;color:var(--dt-red)">{%- case sellos_i[forloop.index0] -%}{%- when 'bolt' -%}<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>{%- when 'leaf' -%}<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>{%- when 'grape' -%}<circle cx="9" cy="9.5" r="2.5"/><circle cx="15" cy="9.5" r="2.5"/><circle cx="12" cy="14" r="2.5"/><circle cx="9" cy="18.5" r="2.5"/><circle cx="15" cy="18.5" r="2.5"/><path d="M12 7V3.5l3-1.5"/>{%- when 'pulse' -%}<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>{%- when 'pin' -%}<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>{%- when 'shield' -%}<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>{%- when 'trophy' -%}<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>{%- when 'camera' -%}<rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/>{%- when 'flame' -%}<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>{%- when 'book' -%}<path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>{%- when 'utensils' -%}<path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/>{%- when 'plane' -%}<path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>{%- when 'gift' -%}<rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5C10 3 12 8 12 8s2-5 4.5-5a2.5 2.5 0 0 1 0 5"/>{%- when 'lock' -%}<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>{%- when 'truck' -%}<path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62L18.3 9.38a1 1 0 0 0-.78-.38H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/>{%- when 'card' -%}<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M6 15h4"/>{%- when 'chat' -%}<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>{%- when 'badge' -%}<path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/>{%- when 'clock' -%}<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>{%- when 'hourglass' -%}<path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.17a2 2 0 0 0-.59-1.42L12 12l-4.41 4.41A2 2 0 0 0 7 17.83V22"/><path d="M7 2v4.17a2 2 0 0 0 .59 1.42L12 12l4.41-4.41A2 2 0 0 0 17 6.17V2"/>{%- when 'flask' -%}<path d="M9 3h6"/><path d="M10 3v6L4.5 18.5A2 2 0 0 0 6.2 21.5h11.6a2 2 0 0 0 1.7-3L14 9V3"/><path d="M7 15h10"/>{%- when 'sun' -%}<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>{%- when 'heart' -%}<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>{%- when 'calendar' -%}<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>{%- when 'bulb' -%}<path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/>{%- when 'dumbbell' -%}<path d="m6.5 6.5 11 11"/><path d="m21 21-1-1"/><path d="m3 3 1 1"/><path d="m18 22 4-4"/><path d="m2 6 4-4"/><path d="m3 10 7-7"/><path d="m14 21 7-7"/>{%- when 'citrus' -%}<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5.5"/><path d="M12 6.5v11M6.5 12h11M8.1 8.1l7.8 7.8M15.9 8.1l-7.8 7.8"/>{%- when 'hex' -%}<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M9 9.5h6l-6 5h6"/>{%- when 'drop' -%}<path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/>{%- when 'berry' -%}<circle cx="12" cy="14" r="7"/><path d="M12 7V3M9 4.5 12 7l3-2.5"/><path d="M9.5 12h.01M14.5 12h.01M12 15h.01M9.5 17h.01M14.5 17h.01"/>{%- when 'arrowdown' -%}<path d="M12 5v14M19 12l-7 7-7-7"/>{%- when 'check' -%}<path d="M20 6 9 17l-5-5"/>{%- when 'user' -%}<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>{%- endcase -%}</svg>{{ s }}</div>{%- endfor -%}
+      </div>
+      <a class="dt-btn is-light is-full" href="{{ cta_url }}">Empezar ahora</a>
+      <p class="dt-legal">{{ legal }}</p>
+    </div>
+  </div>
+</div>
+
+<div class="dt-band dt-sticky is-hidden" id="dtSticky">
+  <span><b id="dtStickyName">{{ sticky_t }}</b><span id="dtStickyPrice" style="display:block;color:#A9AEB4">{{ sticky_p }}</span></span>
+  <a class="dt-btn" href="{{ cta_url }}">Comprar</a>
+</div>
+
+<script>
+  (function () {
+    var bar = document.getElementById('dtSticky');
+    if (!bar) return;
+    var offer = document.getElementById('oferta');
+    var hero = document.querySelector('.dt-hero');
+    var offerVis = false, heroVis = !!hero;
+    function upd() { bar.classList.toggle('is-hidden', offerVis || heroVis); }
+    if ('IntersectionObserver' in window) {
+      if (offer) new IntersectionObserver(function (e) { offerVis = e[0].isIntersecting; upd(); }, { threshold: 0.05 }).observe(offer);
+      if (hero) new IntersectionObserver(function (e) { heroVis = e[0].isIntersecting; upd(); }, { threshold: 0.1 }).observe(hero);
+    } else { heroVis = false; }
+    upd();
+
+    function setPack(n, p) {
+      if (n) document.getElementById('dtStickyName').textContent = n;
+      if (p) document.getElementById('dtStickyPrice').textContent = p + ' · Envío gratis';
+    }
+    var on = document.querySelector('#dmBuyForm .dmo-card.is-on');
+    if (on) setPack(on.dataset.name, on.dataset.price);
+    document.addEventListener('dm:pack', function (e) { setPack(e.detail.name, e.detail.price); });
+
+    document.querySelectorAll('a[href="#oferta"]').forEach(function (a) {
+      a.addEventListener('click', function (ev) {
+        if (!offer) return;
+        ev.preventDefault();
+        offer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  })();
+</script>

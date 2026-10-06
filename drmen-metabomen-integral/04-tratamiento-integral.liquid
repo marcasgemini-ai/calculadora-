@@ -1,0 +1,77 @@
+{%- comment -%}
+  PÁGINA INTEGRAL METABOMEN · LIQUID 04 · EL TRATAMIENTO INTEGRAL (3 pilares + qué hace por cada dolor)
+  Necesita el 01 arriba. Separá con | (mismo orden).
+  Lo que dice cada dolor está escrito para no prometer de más: la fórmula ACOMPAÑA, el protocolo de hábitos hace el resto.
+{%- endcomment -%}
+
+{%- assign eyebrow = 'El tratamiento' -%}
+{%- assign titulo = 'Un tratamiento integral de <em>90 días</em>' -%}
+{%- assign bajada = 'Cortamos el círculo en 3 frentes al mismo tiempo.' -%}
+
+{%- assign p_num = '1|2|3' | split: '|' -%}
+{%- assign p_titulo = 'La fórmula: 1 cápsula por día|Protocolo de sueño y vitalidad +40|Plan de alimentación metabólica' | split: '|' -%}
+{%- assign p_texto = '14 activos pensados para el hombre de +40: resveratrol y semilla de uva, vitamina C, zinc, magnesio, té verde, naranja amarga, ginkgo y L-arginina.|Una guía paso a paso para volver a dormir de verdad: horarios, luz, pantallas, café y un plan de movimiento de 20 minutos.|Qué comer y qué dejar para bajar la panza sin dietas imposibles. Recetas simples, para la vida real.' | split: '|' -%}
+{%- assign p_tag = 'Incluida en todos los packs|De regalo desde 2 frascos|De regalo desde 3 frascos' | split: '|' -%}
+{%- assign img_pilar = '||' | split: '|' -%}
+
+{%- assign m_titulo = 'Qué hace el tratamiento por cada dolor' -%}
+{%- assign m_dolor = 'Dormís mal|La panza no se va|Sin energía|Menos ganas en la intimidad|Te ves más viejo|La cabeza no da más' | split: '|' -%}
+{%- assign m_como = 'El protocolo de sueño te ordena las noches. El magnesio contribuye al funcionamiento normal del sistema nervioso*.|El plan de alimentación metabólica + té verde y naranja amarga, extractos clásicos de las fórmulas de control de peso.|El magnesio y la vitamina C contribuyen a disminuir el cansancio y la fatiga*. Dormir mejor hace el resto.|El zinc contribuye a mantener niveles normales de testosterona*. Dormir y bajar la panza también la cuidan.|La vitamina C contribuye a la formación normal de colágeno* y el zinc al mantenimiento normal de la piel y el pelo*. Resveratrol, el antioxidante de la uva.|El magnesio contribuye a la función psicológica normal*. Menos cortisol de noche, más paciencia de día.' | split: '|' -%}
+
+{%- assign cta_url = '#oferta' -%}
+{%- assign cta_texto = 'Empezar el tratamiento' -%}
+{%- assign nota = '*Declaraciones autorizadas por nutriente. Metabomen es un suplemento dietario: no es un medicamento ni reemplaza una alimentación variada y equilibrada.' -%}
+
+<style>
+  .dt-pil { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 40px; }
+  .dt-pil__c { background: #fff; border: 1px solid var(--dt-line); border-radius: 18px; overflow: hidden; display: flex; flex-direction: column; }
+  .dt-pil__c img, .dt-pil__c .dt-ph { aspect-ratio: 4 / 3; object-fit: cover; border-radius: 0; border-width: 0 0 2px; }
+  .dt-pil__b { padding: 18px; flex: 1; display: flex; flex-direction: column; }
+  .dt-pil__n { width: 34px; height: 34px; border-radius: 50%; background: var(--dt-ink); color: #fff; font-family: var(--dt-head); font-size: 17px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
+  .dt-pil__b h3 { font-size: 20px; margin-bottom: 6px; }
+  .dt-pil__b p { font-size: 14.5px; color: var(--dt-muted); margin: 0 0 12px !important; flex: 1; }
+  .dt-pil__tag { align-self: flex-start; font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--dt-good); background: #E7F4EC; padding: 4px 10px; border-radius: 999px; }
+  .dt-map { max-width: 860px; margin: 0 auto; }
+  .dt-map h3 { text-align: center; font-size: clamp(20px, 3vw, 26px); margin-bottom: 14px; }
+  .dt-map__r { display: grid; grid-template-columns: 220px 1fr; gap: 16px; align-items: start; padding: 14px 0; border-top: 1px solid var(--dt-line); }
+  .dt-map__r:last-child { border-bottom: 1px solid var(--dt-line); }
+  .dt-map__d { font-weight: 800; font-size: 15px; display: flex; gap: 8px; align-items: center; }
+  .dt-map__d::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--dt-red); flex: 0 0 auto; }
+  .dt-map__c { font-size: 14.5px; color: var(--dt-muted); line-height: 1.5; }
+  .dt-map__nota { font-size: 12px; color: var(--dt-muted); text-align: center; margin: 14px 0 22px !important; }
+  @media (max-width: 899px) { .dt-pil { grid-template-columns: 1fr; } .dt-map__r { grid-template-columns: 1fr; gap: 4px; } }
+</style>
+
+<div class="dt-band" id="tratamiento">
+  <div class="dt dt-sec">
+    <div class="dt-head">
+      <span class="dt-eyebrow">{{ eyebrow }}</span>
+      <h2 class="dt-h2">{{ titulo }}</h2>
+      <p class="dt-lead">{{ bajada }}</p>
+    </div>
+
+    <div class="dt-pil">
+      {%- for t in p_titulo -%}
+        {%- assign k = forloop.index0 -%}
+        <div class="dt-pil__c">
+          {%- if img_pilar[k] != blank -%}<img src="{{ img_pilar[k] }}" alt="{{ t | escape }}" loading="lazy" width="800" height="600">{%- else -%}<div class="dt-ph">{% case k %}{% when 0 %}FOTO · frasco Metabomen con cápsulas{% when 1 %}FOTO · guía de sueño y vitalidad impresa{% else %}FOTO · guía de alimentación con un plato real{% endcase %}</div>{%- endif -%}
+          <div class="dt-pil__b">
+            <span class="dt-pil__n">{{ p_num[k] }}</span>
+            <h3>{{ t }}</h3>
+            <p>{{ p_texto[k] }}</p>
+            <span class="dt-pil__tag">{{ p_tag[k] }}</span>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <div class="dt-map">
+      <h3>{{ m_titulo }}</h3>
+      {%- for d in m_dolor -%}
+        <div class="dt-map__r"><div class="dt-map__d">{{ d }}</div><div class="dt-map__c">{{ m_como[forloop.index0] }}</div></div>
+      {%- endfor -%}
+      <p class="dt-map__nota">{{ nota }}</p>
+      <div class="dt-center"><a class="dt-btn" href="{{ cta_url }}">{{ cta_texto }}</a></div>
+    </div>
+  </div>
+</div>

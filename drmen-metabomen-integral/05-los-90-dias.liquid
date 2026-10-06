@@ -1,0 +1,42 @@
+{%- comment -%}
+  PÁGINA INTEGRAL METABOMEN · LIQUID 05 · LOS 90 DÍAS (qué hacés cada mes)
+  Necesita el 01 arriba. Separá con | (mismo orden).
+  Habla de lo que HACÉS en cada etapa, no de resultados garantizados: cada persona es distinta.
+{%- endcomment -%}
+
+{%- assign eyebrow = 'Paso a paso' -%}
+{%- assign titulo = 'Tus <em>90 días</em>' -%}
+{%- assign bajada = 'No es magia de un día. Es un tratamiento: cada mes suma sobre el anterior.' -%}
+
+{%- assign e_cuando = 'Días 1 a 30|Días 31 a 60|Días 61 a 90' | split: '|' -%}
+{%- assign e_titulo = 'Ordenar las noches|Cuidar la panza|Que quede instalado' | split: '|' -%}
+{%- assign e_texto = '1 cápsula con el desayuno y el protocolo de sueño: horarios fijos, menos pantalla de noche, café solo hasta el mediodía. El objetivo es volver a descansar.|Sumás el plan de alimentación metabólica y 20 minutos de movimiento por día. Con mejores noches, cuesta menos sostenerlo.|El hábito ya es tuyo. Es el momento de mirarte al espejo y comparar con la foto del día 1.' | split: '|' -%}
+
+{%- assign consejo = 'Sacate una foto el día 1, con la misma luz y la misma remera. En el día 90 vas a querer compararla.' -%}
+
+<style>
+  .dt-90 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; position: relative; }
+  .dt-90__c { background: #fff; border: 1px solid var(--dt-line); border-radius: 18px; padding: 22px; position: relative; }
+  .dt-90__c small { display: inline-block; font-size: 11.5px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #fff; background: var(--dt-red); padding: 4px 10px; border-radius: 999px; margin-bottom: 12px; }
+  .dt-90__c h3 { font-size: 21px; margin-bottom: 8px; }
+  .dt-90__c p { font-size: 14.5px; color: var(--dt-muted); margin: 0 !important; }
+  .dt-90__tip { max-width: 680px; margin: 22px auto 0 !important; text-align: center; font-size: 14.5px; background: var(--dt-sand); border-radius: 12px; padding: 12px 16px; }
+  @media (max-width: 899px) { .dt-90 { grid-template-columns: 1fr; } }
+</style>
+
+<div class="dt-band is-cream">
+  <div class="dt dt-sec">
+    <div class="dt-head">
+      <span class="dt-eyebrow">{{ eyebrow }}</span>
+      <h2 class="dt-h2">{{ titulo }}</h2>
+      <p class="dt-lead">{{ bajada }}</p>
+    </div>
+    <div class="dt-90">
+      {%- for t in e_titulo -%}
+        {%- assign k = forloop.index0 -%}
+        <div class="dt-90__c"><small>{{ e_cuando[k] }}</small><h3>{{ t }}</h3><p>{{ e_texto[k] }}</p></div>
+      {%- endfor -%}
+    </div>
+    <p class="dt-90__tip">{{ consejo }}</p>
+  </div>
+</div>

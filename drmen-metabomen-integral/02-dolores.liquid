@@ -1,0 +1,45 @@
+{%- comment -%}
+  PÁGINA INTEGRAL METABOMEN · LIQUID 02 · "¿TE PASA ESTO?" (todos los dolores)
+  Necesita el 01 arriba. Separá con | (mismo orden). Íconos: moon|belly|bolt|heart|hourglass|cloud
+{%- endcomment -%}
+
+{%- assign eyebrow = '¿Te pasa esto?' -%}
+{%- assign titulo = 'Los 6 síntomas del hombre de <em>+40</em>' -%}
+{%- assign bajada = 'Si te identificás con 2 o más, no es casualidad. Seguí leyendo.' -%}
+
+{%- assign d_icono = 'moon|belly|bolt|heart|hourglass|cloud' | split: '|' -%}
+{%- assign d_titulo = 'Dormís mal|La panza no se va|Sin energía|Menos ganas en la intimidad|Te ves más viejo|La cabeza no da más' | split: '|' -%}
+{%- assign d_texto = 'Te despertás a las 3 de la mañana, o dormís 7 horas y te levantás como si no hubieras dormido.|Comés parecido a siempre, pero la panza crece y se pone dura. Los pantalones ya no cierran.|A las 4 de la tarde estás liquidado. Llegás a tu casa sin resto para nada.|Las ganas no son las de antes. Y eso pega en la pareja y en cómo te sentís como hombre.|Ojeras, cara apagada, canas. Te ves en una foto y no te reconocés.|Irritable, sin paciencia, olvidadizo. El estrés te pasa por encima.' | split: '|' -%}
+
+<style>
+  .dt-pains { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .dt-pain { background: #fff; border: 1px solid var(--dt-line); border-radius: 16px; padding: 18px; display: flex; gap: 14px; align-items: flex-start; }
+  .dt-pain__i { width: 46px; height: 46px; border-radius: 12px; background: #FCE9E7; color: var(--dt-red); display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+  .dt-pain__i .dt-ic { width: 24px; height: 24px; }
+  .dt-pain h3 { font-size: 18px; margin-bottom: 4px; }
+  .dt-pain p { font-size: 14px; color: var(--dt-muted); margin: 0 !important; line-height: 1.45; }
+  .dt-pains__end { text-align: center; font-family: var(--dt-head); font-size: clamp(20px, 3vw, 26px); text-transform: uppercase; margin: 26px 0 0 !important; }
+  .dt-pains__end em { font-style: normal; color: var(--dt-red); }
+  @media (max-width: 899px) { .dt-pains { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 599px) { .dt-pains { grid-template-columns: 1fr; gap: 10px; } .dt-pain { padding: 14px; } }
+</style>
+
+<div class="dt-band is-cream">
+  <div class="dt dt-sec">
+    <div class="dt-head">
+      <span class="dt-eyebrow">{{ eyebrow }}</span>
+      <h2 class="dt-h2">{{ titulo }}</h2>
+      <p class="dt-lead">{{ bajada }}</p>
+    </div>
+    <div class="dt-pains">
+      {%- for t in d_titulo -%}
+        {%- assign k = forloop.index0 -%}
+        <div class="dt-pain">
+          <span class="dt-pain__i"><svg class="dt-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{%- case d_icono[k] -%}{%- when 'moon' -%}<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>{%- when 'belly' -%}<path d="M8 3v4c0 1-2 2-2 6 0 5 3 8 6 8s6-3 6-8c0-4-2-5-2-6V3"/><circle cx="12" cy="14" r="1"/>{%- when 'bolt' -%}<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>{%- when 'heart' -%}<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>{%- when 'hourglass' -%}<path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.17a2 2 0 0 0-.59-1.42L12 12l-4.41 4.41A2 2 0 0 0 7 17.83V22"/><path d="M7 2v4.17a2 2 0 0 0 .59 1.42L12 12l4.41-4.41A2 2 0 0 0 17 6.17V2"/>{%- when 'cloud' -%}<path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>{%- endcase -%}</svg></span>
+          <div><h3>{{ t }}</h3><p>{{ d_texto[k] }}</p></div>
+        </div>
+      {%- endfor -%}
+    </div>
+    <p class="dt-pains__end">Parecen 6 problemas distintos. <em>Tienen la misma raíz.</em></p>
+  </div>
+</div>

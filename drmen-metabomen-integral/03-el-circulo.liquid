@@ -1,0 +1,58 @@
+{%- comment -%}
+  PÁGINA INTEGRAL METABOMEN · LIQUID 03 · "EL CÍRCULO QUE TE ENVEJECE" (la raíz común de todos los dolores)
+  Necesita el 01 arriba. Separá con | (mismo orden). Los datos tienen su fuente: no los cambies sin fuente.
+{%- endcomment -%}
+
+{%- assign eyebrow = 'La raíz' -%}
+{%- assign titulo = 'El círculo que te <em>envejece</em>' -%}
+{%- assign bajada = 'Después de los 40, un problema alimenta al otro. Y todo empieza de noche.' -%}
+
+{%- assign c_titulo = 'Dormís mal|Se dispara el cortisol|Crece la panza|Baja la testosterona|Menos energía y menos ganas|Te ves y te sentís más viejo' | split: '|' -%}
+{%- assign c_dato = 'Entre los 36 y los 50 años, el sueño profundo cae casi un 80%.|Después de una mala noche, el cortisol, la hormona del estrés, queda hasta un 45% más alto.|El cortisol alto se asocia a la grasa que se acumula en el abdomen.|Una semana durmiendo 5 horas bajó la testosterona entre un 10 y un 15%.|Con menos testosterona y sin descanso, el cuerpo no tiene resto: ni para el día ni para la intimidad.|Y con estrés y cansancio, dormís todavía peor. El círculo vuelve a empezar.' | split: '|' -%}
+{%- assign c_fuente = 'Van Cauter, JAMA 2000|Leproult, Sleep 1997|Epel, Yale 2000|Leproult & Van Cauter, JAMA 2011|-|-' | split: '|' -%}
+
+{%- assign cierre_titulo = 'Por eso las soluciones sueltas no funcionan' -%}
+{%- assign cierre_texto = 'Una pastilla para dormir, una dieta, un energizante, un gel para la intimidad: cada uno ataca un síntoma y el círculo sigue girando. Para salir hay que cortarlo en varios puntos a la vez. Eso es un tratamiento integral.' -%}
+{%- assign cta_url = '#oferta' -%}
+{%- assign cta_texto = 'Quiero cortar el círculo' -%}
+
+<style>
+  .dt-loop { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; counter-reset: loop; }
+  .dt-loop__s { position: relative; background: #17191C; border: 1px solid #2A2E33; border-radius: 16px; padding: 18px 18px 16px 60px; }
+  .dt-loop__s::before { counter-increment: loop; content: counter(loop); position: absolute; left: 16px; top: 16px; width: 32px; height: 32px; border-radius: 50%; background: var(--dt-red); color: #fff; font-family: var(--dt-head); font-size: 17px; display: flex; align-items: center; justify-content: center; }
+  .dt-loop__s h3 { font-size: 18px; margin-bottom: 6px; color: #fff; }
+  .dt-loop__s p { font-size: 14px; color: #C3C8CE; margin: 0 !important; line-height: 1.45; }
+  .dt-loop__s small { display: block; font-size: 11px; color: #7E868E; margin-top: 8px; }
+  .dt-loop__back { text-align: center; color: var(--dt-red); font-family: var(--dt-head); font-size: 15px; letter-spacing: .1em; text-transform: uppercase; margin: 16px 0 0 !important; }
+  .dt-loop__end { max-width: 760px; margin: 30px auto 0; background: #fff; color: var(--dt-ink); border-radius: 18px; padding: 24px; text-align: center; }
+  .dt-loop__end h3 { font-size: clamp(20px, 3vw, 26px); margin-bottom: 8px; color: var(--dt-ink); }
+  .dt-loop__end p { color: var(--dt-muted); font-size: 15.5px; margin-bottom: 18px !important; }
+  @media (max-width: 899px) { .dt-loop { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 599px) { .dt-loop { grid-template-columns: 1fr; gap: 10px; } }
+</style>
+
+<div class="dt-band is-dark">
+  <div class="dt dt-sec">
+    <div class="dt-head">
+      <span class="dt-eyebrow">{{ eyebrow }}</span>
+      <h2 class="dt-h2">{{ titulo }}</h2>
+      <p class="dt-lead">{{ bajada }}</p>
+    </div>
+    <div class="dt-loop">
+      {%- for t in c_titulo -%}
+        {%- assign k = forloop.index0 -%}
+        <div class="dt-loop__s">
+          <h3>{{ t }}</h3>
+          <p>{{ c_dato[k] }}</p>
+          {%- if c_fuente[k] != '-' and c_fuente[k] != blank -%}<small>Fuente: {{ c_fuente[k] }}</small>{%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+    <p class="dt-loop__back">↻ Y vuelve a empezar</p>
+    <div class="dt-loop__end">
+      <h3>{{ cierre_titulo }}</h3>
+      <p>{{ cierre_texto }}</p>
+      <a class="dt-btn" href="{{ cta_url }}">{{ cta_texto }}</a>
+    </div>
+  </div>
+</div>
