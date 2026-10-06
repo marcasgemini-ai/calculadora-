@@ -14,7 +14,7 @@ Adentro de cada sección: **Agregar bloque** › los bloques de la última colum
 | # | Archivo | En el editor (Agregar sección) | Bloques adentro |
 |---|---|---|---|
 | 1 | `mb-hero` | MB · Hero | Beneficio con tilde |
-| 2 | `mb-trust-bar` | MB · Barra de confianza | Logo o sello |
+| 2 | `mb-trust-bar` | MB · Barra de confianza | Logo |
 | 3 | `mb-reviews-slider` | MB · Reseñas (carrusel) | Reseña |
 | 4 | `mb-habit-videos` | MB · Hábito + videos | Dato, Video de cliente |
 | 5 | `mb-benefits` | MB · Beneficios | Beneficio |

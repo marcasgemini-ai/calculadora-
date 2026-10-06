@@ -2,28 +2,47 @@
 
 <style>
   #mb-{{ section.id }} { --mb-pt: {{ section.settings.pt }}px; --mb-pb: {{ section.settings.pb }}px; --mb-pt-m: {{ section.settings.pt }}px; --mb-pb-m: {{ section.settings.pb }}px; }
-  #mb-{{ section.id }} .mb-tb__t { text-align: center; font-size: 12px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: var(--mb-sub); margin-bottom: 16px; }
-  #mb-{{ section.id }} .mb-tb { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 18px 44px; }
-  #mb-{{ section.id }} .mb-tb__i { display: flex; align-items: center; gap: 10px; font-family: var(--mb-head); font-size: 20px; text-transform: uppercase; letter-spacing: .04em; opacity: .85; }
-  #mb-{{ section.id }} .mb-tb__i img { height: {{ section.settings.logo_h }}px; width: auto; filter: {% if section.settings.grayscale %}grayscale(1){% else %}none{% endif %}; }
-  #mb-{{ section.id }} .mb-tb__i .mb-ic { width: 26px; height: 26px; color: var(--mb-red); }
-  @media (max-width: 749px) { #mb-{{ section.id }} .mb-tb { gap: 14px 24px; } #mb-{{ section.id }} .mb-tb__i { font-size: 15px; } }
+  #mb-{{ section.id }} .mb-tb__box { padding: 46px 32px 50px; text-align: center; }
+  #mb-{{ section.id }} .mb-tb__box.is-card { background: #fff; border-radius: {{ section.settings.radius }}px; box-shadow: 0 10px 40px rgba(0,0,0,.07), 0 1px 3px rgba(0,0,0,.04); }
+  #mb-{{ section.id }} .mb-tb__t { font-family: var(--mb-body); font-size: 15px; font-weight: 800; letter-spacing: .02em; text-transform: uppercase; color: var(--mb-red); margin: 0 0 30px; }
+  #mb-{{ section.id }} .mb-tb { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 26px {{ section.settings.gap }}px; }
+  #mb-{{ section.id }} .mb-tb__i { display: flex; align-items: center; justify-content: center; height: {{ section.settings.logo_h }}px; color: var(--mb-red); }
+  #mb-{{ section.id }} .mb-tb__i img { height: 100%; width: auto; max-width: 220px; object-fit: contain; }
+  #mb-{{ section.id }} .mb-tb__mask { display: block; height: 100%; background: var(--mb-red); -webkit-mask: var(--logo) center / contain no-repeat; mask: var(--logo) center / contain no-repeat; }
+  #mb-{{ section.id }} .mb-tb__w { font-size: {{ section.settings.logo_h | times: 0.8 | round }}px; line-height: 1; white-space: nowrap; }
+  #mb-{{ section.id }} .mb-tb__w.is-serif { font-family: Didot, 'Bodoni 72', 'Playfair Display', Georgia, serif; font-weight: 400; letter-spacing: .02em; }
+  #mb-{{ section.id }} .mb-tb__w.is-bold { font-family: Georgia, 'Times New Roman', serif; font-weight: 700; letter-spacing: -.02em; }
+  #mb-{{ section.id }} .mb-tb__w.is-condensed { font-family: var(--mb-head); font-weight: 700; text-transform: uppercase; letter-spacing: .12em; }
+  #mb-{{ section.id }} .mb-tb__w.is-italic { font-family: var(--mb-body); font-weight: 900; font-style: italic; letter-spacing: -.03em; }
+  @media (max-width: 749px) {
+    #mb-{{ section.id }} .mb-tb__box { padding: 30px 16px 34px; }
+    #mb-{{ section.id }} .mb-tb__t { font-size: 13px; margin-bottom: 22px; }
+    #mb-{{ section.id }} .mb-tb { gap: 20px 30px; }
+    #mb-{{ section.id }} .mb-tb__i { height: {{ section.settings.logo_h | times: 0.65 | round }}px; }
+    #mb-{{ section.id }} .mb-tb__w { font-size: {{ section.settings.logo_h | times: 0.55 | round }}px; }
+  }
 </style>
 
 <section id="mb-{{ section.id }}" class="mb mb--{{ section.settings.scheme }}" style="--mb-red: {{ section.settings.accent }}; --mb-red-dark: {{ section.settings.accent | color_darken: 15 }};{% if section.settings.custom_font %} --mb-head: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }};{% endif %}">
   <div class="mb-wrap mb-pad">
-    {%- if section.settings.title != blank -%}<div class="mb-tb__t">{{ section.settings.title }}</div>{%- endif -%}
-    <div class="mb-tb">
-      {%- for block in section.blocks -%}
-        <div class="mb-tb__i" {{ block.shopify_attributes }}>
-          {%- if block.settings.logo != blank -%}
-            {{ block.settings.logo | image_url: width: 300 | image_tag: loading: 'lazy', alt: block.settings.text }}
-          {%- else -%}
-            <svg class="mb-ic" viewBox="0 0 24 24" aria-hidden="true">{%- case block.settings.icon -%}{%- when 'truck' -%}<path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62L18.3 9.38a1 1 0 0 0-.78-.38H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/>{%- when 'shield' -%}<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>{%- when 'trophy' -%}<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>{%- when 'flag' -%}<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="M4 22v-7"/>{%- else -%}<path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/>{%- endcase -%}</svg>
-            <span>{{ block.settings.text }}</span>
-          {%- endif -%}
-        </div>
-      {%- endfor -%}
+    <div class="mb-tb__box{% if section.settings.card %} is-card{% endif %}">
+      {%- if section.settings.title != blank -%}<p class="mb-tb__t">{{ section.settings.title }}</p>{%- endif -%}
+      <div class="mb-tb">
+        {%- for block in section.blocks -%}
+          <div class="mb-tb__i" {{ block.shopify_attributes }}>
+            {%- if block.settings.logo != blank -%}
+              {%- if section.settings.tint -%}
+                {%- assign ratio = block.settings.logo.aspect_ratio | default: 3 -%}
+                <span class="mb-tb__mask" role="img" aria-label="{{ block.settings.text | escape }}" style="--logo: url('{{ block.settings.logo | image_url: width: 500 }}'); aspect-ratio: {{ ratio }};"></span>
+              {%- else -%}
+                {{ block.settings.logo | image_url: width: 500 | image_tag: loading: 'lazy', alt: block.settings.text }}
+              {%- endif -%}
+            {%- else -%}
+              <span class="mb-tb__w is-{{ block.settings.style }}">{{ block.settings.text }}</span>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
     </div>
   </div>
 </section>
@@ -122,29 +141,64 @@
     {
       "type": "text",
       "id": "title",
-      "label": "Título chico",
+      "label": "Título",
       "default": "Elegido por hombres de todo el país"
     },
     {
       "type": "range",
       "id": "logo_h",
       "label": "Alto de los logos",
+      "min": 20,
+      "max": 70,
+      "step": 2,
+      "unit": "px",
+      "default": 44
+    },
+    {
+      "type": "checkbox",
+      "id": "tint",
+      "label": "Pintar los logos con el color de acento",
+      "default": true,
+      "info": "Funciona con logos PNG o SVG con fondo transparente."
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Espacio entre logos",
       "min": 16,
-      "max": 60,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "header",
+      "content": "Tarjeta"
+    },
+    {
+      "type": "checkbox",
+      "id": "card",
+      "label": "Mostrar en tarjeta blanca con sombra",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "radius",
+      "label": "Bordes redondeados",
+      "min": 0,
+      "max": 40,
       "step": 2,
       "unit": "px",
       "default": 28
     },
     {
-      "type": "checkbox",
-      "id": "grayscale",
-      "label": "Logos en gris",
-      "default": true
+      "type": "header",
+      "content": "Diseño"
     },
     {
       "type": "select",
       "id": "scheme",
-      "label": "Fondo",
+      "label": "Fondo de la sección",
       "default": "light",
       "options": [
         {
@@ -174,20 +228,20 @@
       "id": "pt",
       "label": "Espacio arriba",
       "min": 0,
-      "max": 80,
+      "max": 120,
       "step": 4,
       "unit": "px",
-      "default": 28
+      "default": 24
     },
     {
       "type": "range",
       "id": "pb",
       "label": "Espacio abajo",
       "min": 0,
-      "max": 80,
+      "max": 120,
       "step": 4,
       "unit": "px",
-      "default": 28
+      "default": 24
     },
     {
       "type": "header",
@@ -216,46 +270,45 @@
   "blocks": [
     {
       "type": "item",
-      "name": "Logo o sello",
-      "limit": 8,
+      "name": "Logo",
+      "limit": 10,
       "settings": [
+        {
+          "type": "paragraph",
+          "content": "Usá solo logos de medios o plataformas donde la marca aparece de verdad."
+        },
         {
           "type": "image_picker",
           "id": "logo",
-          "label": "Logo (opcional)",
-          "info": "Solo logos de medios o plataformas donde estés de verdad."
+          "label": "Logo (PNG o SVG con fondo transparente)"
         },
         {
           "type": "text",
           "id": "text",
-          "label": "Texto (si no hay logo)",
-          "default": "Sello"
+          "label": "Texto si no hay logo",
+          "default": "Marca"
         },
         {
           "type": "select",
-          "id": "icon",
-          "label": "Ícono (si no hay logo)",
-          "default": "badge",
+          "id": "style",
+          "label": "Estilo del texto (si no hay logo)",
+          "default": "serif",
           "options": [
             {
-              "value": "badge",
-              "label": "Sello"
+              "value": "serif",
+              "label": "Clásico"
             },
             {
-              "value": "truck",
-              "label": "Envío"
+              "value": "bold",
+              "label": "Grueso"
             },
             {
-              "value": "shield",
-              "label": "Garantía"
+              "value": "condensed",
+              "label": "Condensado"
             },
             {
-              "value": "trophy",
-              "label": "Trofeo"
-            },
-            {
-              "value": "flag",
-              "label": "Bandera"
+              "value": "italic",
+              "label": "Itálica"
             }
           ]
         }
@@ -269,36 +322,36 @@
         {
           "type": "item",
           "settings": {
-            "text": "Top en Mercado Libre",
-            "icon": "trophy"
+            "text": "Mercado Libre",
+            "style": "bold"
           }
         },
         {
           "type": "item",
           "settings": {
-            "text": "Fórmula argentina",
-            "icon": "flag"
+            "text": "Instagram",
+            "style": "italic"
           }
         },
         {
           "type": "item",
           "settings": {
-            "text": "Producto registrado RNPA",
-            "icon": "badge"
+            "text": "TikTok",
+            "style": "bold"
           }
         },
         {
           "type": "item",
           "settings": {
-            "text": "Envío gratis",
-            "icon": "truck"
+            "text": "Fórmula Argentina",
+            "style": "condensed"
           }
         },
         {
           "type": "item",
           "settings": {
-            "text": "60 días de garantía",
-            "icon": "shield"
+            "text": "RNPA",
+            "style": "serif"
           }
         }
       ]
