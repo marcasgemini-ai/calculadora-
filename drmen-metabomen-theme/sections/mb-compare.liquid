@@ -1,4 +1,4 @@
-{{ 'mb-metabomen.css' | asset_url | stylesheet_tag }}
+{%- if section.settings.font == 'oswald' -%}<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&display=swap">{%- endif -%}
 
 <style>
   #mb-{{ section.id }} { --mb-pt: {{ section.settings.pt }}px; --mb-pb: {{ section.settings.pb }}px; }
@@ -22,7 +22,7 @@
 {%- capture yes -%}<span class="mb-yes"><svg class="mb-ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>{%- endcapture -%}
 {%- capture no -%}<span class="mb-no"><svg class="mb-ic" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></span>{%- endcapture -%}
 
-<section id="mb-{{ section.id }}" class="mb mb--{{ section.settings.scheme }}">
+<section id="mb-{{ section.id }}" class="mb mb--{{ section.settings.scheme }}" style="--mb-red: {{ section.settings.accent }}; --mb-red-dark: {{ section.settings.accent | color_darken: 15 }};{% if section.settings.font == 'oswald' %} --mb-head: 'Oswald', var(--font-heading-family, sans-serif);{% endif %}">
   <div class="mb-wrap mb-pad">
     <div class="mb-head">
       {%- if section.settings.eyebrow != blank -%}<span class="mb-eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
@@ -51,31 +51,228 @@
   </div>
 </section>
 
+{% stylesheet %}
+/* Estilos base de las secciones mb-* (iguales en todas: cada sección funciona sola) */
+
+.mb {
+  --mb-red: #E1261C;
+  --mb-red-dark: #A9170F;
+  --mb-ink: #141517;
+  --mb-black: #0E0F11;
+  --mb-cream: #F4F1EC;
+  --mb-sand: #EAE4DA;
+  --mb-line: #E2DDD4;
+  --mb-muted: #6E6A64;
+  --mb-good: #2F8A5B;
+  --mb-gold: #E9A23B;
+  --mb-head: var(--font-heading-family, sans-serif);
+  --mb-body: var(--font-body-family, sans-serif);
+  --mb-bg: #FFFFFF;
+  --mb-fg: var(--mb-ink);
+  --mb-sub: var(--mb-muted);
+  --mb-card: #FFFFFF;
+  --mb-card-line: var(--mb-line);
+  background: var(--mb-bg);
+  color: var(--mb-fg);
+  font-family: var(--mb-body);
+  font-size: 16px;
+  line-height: 1.55;
+  letter-spacing: 0;
+  -webkit-text-size-adjust: 100%;
+}
+.mb.mb--cream { --mb-bg: var(--mb-cream); }
+.mb.mb--sand { --mb-bg: var(--mb-sand); }
+.mb.mb--red { --mb-bg: var(--mb-red); --mb-fg: #fff; --mb-sub: #FFE3E0; --mb-card: rgba(255,255,255,.1); --mb-card-line: rgba(255,255,255,.25); }
+.mb.mb--dark { --mb-bg: var(--mb-black); --mb-fg: #fff; --mb-sub: #A9AEB4; --mb-card: #17191C; --mb-card-line: #2A2E33; }
+
+.mb *, .mb *::before, .mb *::after { box-sizing: border-box; }
+.mb :where(p, li, span, b, strong, small, a, div, td, th, summary, em, label) { letter-spacing: 0; }
+.mb :where(p, li, td, th, summary) { font-size: inherit; line-height: inherit; }
+.mb p { margin: 0 0 14px; }
+.mb img, .mb video { display: block; max-width: 100%; height: auto; }
+.mb :where(h1, h2, h3, h4) { font-family: var(--mb-head); font-weight: 700; text-transform: uppercase; letter-spacing: .01em; line-height: 1.05; margin: 0; color: inherit; }
+.mb :where(h1, h2, h3) em, .mb .mb-accent { font-style: normal; color: var(--mb-red); }
+.mb.mb--red :where(h1, h2, h3) em, .mb.mb--red .mb-accent { color: var(--mb-black); }
+
+.mb-wrap { max-width: 1180px; margin: 0 auto; padding: 0 16px; }
+.mb-pad { padding-top: var(--mb-pt, 64px); padding-bottom: var(--mb-pb, 64px); }
+.mb-head { text-align: center; max-width: 780px; margin: 0 auto 30px; }
+.mb-eyebrow { display: inline-block; font-size: 12px; font-weight: 800; letter-spacing: .16em !important; text-transform: uppercase; color: var(--mb-red); margin-bottom: 10px; }
+.mb--red .mb-eyebrow { color: #fff; }
+.mb-h2 { font-size: clamp(30px, 4.6vw, 50px); }
+.mb-lead { font-size: 17px; color: var(--mb-sub); margin: 12px 0 0 !important; }
+.mb-lead p:last-child { margin-bottom: 0; }
+.mb-center { text-align: center; }
+
+.mb-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: var(--mb-red); color: #fff !important; text-decoration: none !important; border: 0; border-radius: 999px; padding: 17px 34px; font-family: var(--mb-body); font-weight: 800; font-size: 15px; letter-spacing: .06em !important; text-transform: uppercase; cursor: pointer; box-shadow: 0 5px 0 var(--mb-red-dark); transition: transform .12s ease, background .15s ease; }
+.mb-btn:hover { background: var(--mb-red-dark); transform: translateY(2px); }
+.mb-btn--dark { background: var(--mb-ink); box-shadow: 0 5px 0 #000; }
+.mb-btn--light { background: #fff; color: var(--mb-ink) !important; box-shadow: 0 5px 0 rgba(0,0,0,.18); }
+.mb-btn[disabled] { opacity: .55; cursor: default; transform: none; }
+.mb-under { font-size: 13px; color: var(--mb-sub); margin-top: 12px; }
+.mb-stars { color: var(--mb-gold); letter-spacing: 2px; white-space: nowrap; }
+.mb-rating { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; }
+
+.mb-ph { width: 100%; aspect-ratio: 1 / 1; border: 2px dashed #C8C1B5; border-radius: 18px; background: var(--mb-sand); color: #5B554D; display: flex; align-items: center; justify-content: center; text-align: center; padding: 16px; font-size: 13px; font-weight: 600; }
+.mb--dark .mb-ph, .mb--red .mb-ph { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.3); color: rgba(255,255,255,.75); }
+.mb-ph svg { width: 70%; height: auto; opacity: .35; }
+
+.mb-card { background: var(--mb-card); border: 1px solid var(--mb-card-line); border-radius: 18px; }
+.mb-ic { width: 1em; height: 1em; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.mb-check { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.mb-check li { display: flex; gap: 10px; align-items: flex-start; margin: 0; font-size: 16px; }
+.mb-check li::before { content: ''; flex: 0 0 20px; height: 20px; margin-top: 2px; border-radius: 50%; background: var(--mb-red) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / 12px no-repeat; }
+
+.mb-scroller { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(280px, calc((100% - 32px) / 3)); gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 4px 2px 14px; scrollbar-width: thin; }
+.mb-scroller > * { scroll-snap-align: start; min-width: 0; }
+.mb-arrows { display: flex; justify-content: center; gap: 10px; margin-top: 10px; }
+.mb-arrows button { width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--mb-card-line); background: var(--mb-card); color: var(--mb-fg); font-size: 18px; cursor: pointer; }
+
+@media (max-width: 749px) {
+  .mb-pad { padding-top: var(--mb-pt-m, 44px); padding-bottom: var(--mb-pb-m, 44px); }
+  .mb-btn { display: flex; width: 100%; }
+  .mb-scroller { grid-auto-columns: 84%; }
+  .mb-lead { font-size: 16px; }
+}
+{% endstylesheet %}
+
 {% schema %}
 {
   "name": "MB · Comparativa",
   "tag": "div",
   "class": "mb-section",
   "settings": [
-    { "type": "text", "id": "eyebrow", "label": "Texto chico", "default": "Por qué integral" },
-    { "type": "inline_richtext", "id": "heading", "label": "Título", "default": "Cómo nos <em>comparamos</em>" },
-    { "type": "image_picker", "id": "logo", "label": "Logo o frasco en la columna Metabomen (opcional)" },
-    { "type": "text", "id": "col_1", "label": "Columna 1 (nosotros)", "default": "Metabomen" },
-    { "type": "text", "id": "col_2", "label": "Columna 2", "default": "Suplementos comunes" },
-    { "type": "text", "id": "col_3", "label": "Columna 3", "default": "Soluciones sueltas" },
-    { "type": "select", "id": "scheme", "label": "Fondo", "default": "light", "options": [ { "value": "light", "label": "Blanco" }, { "value": "cream", "label": "Crema" }, { "value": "sand", "label": "Arena" } ] },
-    { "type": "range", "id": "pt", "label": "Espacio arriba", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 64 },
-    { "type": "range", "id": "pb", "label": "Espacio abajo", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 64 }
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Texto chico",
+      "default": "Por qué integral"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Título",
+      "default": "Cómo nos <em>comparamos</em>"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo o frasco en la columna Metabomen (opcional)"
+    },
+    {
+      "type": "text",
+      "id": "col_1",
+      "label": "Columna 1 (nosotros)",
+      "default": "Metabomen"
+    },
+    {
+      "type": "text",
+      "id": "col_2",
+      "label": "Columna 2",
+      "default": "Suplementos comunes"
+    },
+    {
+      "type": "text",
+      "id": "col_3",
+      "label": "Columna 3",
+      "default": "Soluciones sueltas"
+    },
+    {
+      "type": "select",
+      "id": "scheme",
+      "label": "Fondo",
+      "default": "light",
+      "options": [
+        {
+          "value": "light",
+          "label": "Blanco"
+        },
+        {
+          "value": "cream",
+          "label": "Crema"
+        },
+        {
+          "value": "sand",
+          "label": "Arena"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Espacio arriba",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Espacio abajo",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "header",
+      "content": "Estilo de marca"
+    },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Color de acento",
+      "default": "#E1261C"
+    },
+    {
+      "type": "select",
+      "id": "font",
+      "label": "Tipografía de títulos",
+      "default": "oswald",
+      "options": [
+        {
+          "value": "theme",
+          "label": "La del theme"
+        },
+        {
+          "value": "oswald",
+          "label": "Condensada (Oswald)"
+        }
+      ]
+    }
   ],
   "blocks": [
     {
       "type": "row",
       "name": "Fila",
       "settings": [
-        { "type": "text", "id": "label", "label": "Característica", "default": "Característica" },
-        { "type": "checkbox", "id": "c1", "label": "Columna 1 tiene", "default": true },
-        { "type": "checkbox", "id": "c2", "label": "Columna 2 tiene", "default": false },
-        { "type": "checkbox", "id": "c3", "label": "Columna 3 tiene", "default": false }
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Característica",
+          "default": "Característica"
+        },
+        {
+          "type": "checkbox",
+          "id": "c1",
+          "label": "Columna 1 tiene",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "c2",
+          "label": "Columna 2 tiene",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "c3",
+          "label": "Columna 3 tiene",
+          "default": false
+        }
       ]
     }
   ],
@@ -83,12 +280,60 @@
     {
       "name": "MB · Comparativa",
       "blocks": [
-        { "type": "row", "settings": { "label": "Pensado para el hombre de +40", "c1": true, "c2": false, "c3": false } },
-        { "type": "row", "settings": { "label": "Sueño, panza, energía y ganas juntos", "c1": true, "c2": false, "c3": false } },
-        { "type": "row", "settings": { "label": "14 activos en 1 cápsula", "c1": true, "c2": false, "c3": false } },
-        { "type": "row", "settings": { "label": "Protocolo de sueño y alimentación", "c1": true, "c2": false, "c3": false } },
-        { "type": "row", "settings": { "label": "1 sola toma por día", "c1": true, "c2": true, "c3": false } },
-        { "type": "row", "settings": { "label": "60 días de garantía", "c1": true, "c2": false, "c3": false } }
+        {
+          "type": "row",
+          "settings": {
+            "label": "Pensado para el hombre de +40",
+            "c1": true,
+            "c2": false,
+            "c3": false
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "label": "Sueño, panza, energía y ganas juntos",
+            "c1": true,
+            "c2": false,
+            "c3": false
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "label": "14 activos en 1 cápsula",
+            "c1": true,
+            "c2": false,
+            "c3": false
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "label": "Protocolo de sueño y alimentación",
+            "c1": true,
+            "c2": false,
+            "c3": false
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "label": "1 sola toma por día",
+            "c1": true,
+            "c2": true,
+            "c3": false
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "label": "60 días de garantía",
+            "c1": true,
+            "c2": false,
+            "c3": false
+          }
+        }
       ]
     }
   ]
