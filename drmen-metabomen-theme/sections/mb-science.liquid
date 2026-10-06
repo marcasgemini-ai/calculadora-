@@ -1,36 +1,90 @@
 {%- if section.settings.custom_font -%}<style>{{ section.settings.heading_font | font_face: font_display: 'swap' }}</style>{%- endif -%}
 
+{%- liquid
+  assign quotes = section.blocks | where: 'type', 'quote'
+  assign stats = section.blocks | where: 'type', 'stat'
+-%}
+
 <style>
   #mb-{{ section.id }} { --mb-pt: {{ section.settings.pt }}px; --mb-pb: {{ section.settings.pb }}px; }
-  #mb-{{ section.id }} .mb-sc { display: grid; grid-template-columns: repeat({{ section.blocks.size | at_most: 4 | at_least: 1 }}, 1fr); gap: 16px; }
-  #mb-{{ section.id }} .mb-sc__c { padding: 26px 22px; text-align: center; }
-  #mb-{{ section.id }} .mb-sc__c b { display: block; font-family: var(--mb-head); font-size: clamp(46px, 6vw, 68px); line-height: 1; color: var(--mb-red); }
-  #mb-{{ section.id }} .mb-sc__c h3 { font-size: 18px; margin: 10px 0 6px; }
-  #mb-{{ section.id }} .mb-sc__c p { font-size: 14.5px; color: var(--mb-sub); margin: 0; }
-  #mb-{{ section.id }} .mb-sc__c small { display: block; font-size: 11.5px; color: var(--mb-sub); opacity: .8; margin-top: 10px; }
-  #mb-{{ section.id }} .mb-sc__end { text-align: center; margin-top: 28px; }
-  @media (max-width: 899px) { #mb-{{ section.id }} .mb-sc { grid-template-columns: 1fr; } }
+  #mb-{{ section.id }} .mb-head h2 { text-transform: none; letter-spacing: -.02em; }
+  #mb-{{ section.id }} .mb-sq { display: grid; grid-template-columns: repeat({{ quotes.size | at_least: 1 }}, 1fr); gap: 28px; margin-bottom: 40px; }
+  #mb-{{ section.id }} .mb-sq__c { background: var(--mb-card); border-radius: 24px; padding: 34px 32px 30px; display: flex; flex-direction: column; justify-content: space-between; gap: 26px; box-shadow: 0 2px 10px rgba(0,0,0,.03); }
+  #mb-{{ section.id }} .mb-sq__c blockquote { margin: 0; font-size: clamp(19px, 1.9vw, 25px); line-height: 1.4; letter-spacing: -.01em; color: var(--mb-fg); }
+  #mb-{{ section.id }} .mb-sq__p { display: flex; align-items: center; gap: 14px; }
+  #mb-{{ section.id }} .mb-sq__p img, #mb-{{ section.id }} .mb-sq__av { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; flex: 0 0 auto; background: var(--mb-sand); }
+  #mb-{{ section.id }} .mb-sq__p b { display: block; font-size: 17px; }
+  #mb-{{ section.id }} .mb-sq__p small { display: block; font-size: 16px; color: var(--mb-sub); }
+  #mb-{{ section.id }} .mb-ss { display: grid; grid-template-columns: repeat({{ stats.size | at_least: 1 }}, 1fr); gap: 20px; }
+  #mb-{{ section.id }} .mb-ss__c { background: var(--mb-card); border-radius: 24px; padding: 32px 26px 34px; box-shadow: 0 2px 10px rgba(0,0,0,.03); }
+  #mb-{{ section.id }} .mb-ss__c b { display: block; font-family: var(--mb-body); font-size: clamp(48px, 6vw, 78px); font-weight: 900; line-height: 1; letter-spacing: -.03em; color: var(--mb-red); }
+  #mb-{{ section.id }} .mb-ss__c h3 { font-size: clamp(24px, 2.6vw, 34px); line-height: 1.15; text-transform: none; letter-spacing: -.01em; font-weight: 600; color: var(--mb-red); margin: 14px 0 0; }
+  #mb-{{ section.id }} .mb-ss__c small { display: block; font-size: 16px; color: var(--mb-sub); margin-top: 22px; line-height: 1.5; }
+  #mb-{{ section.id }} .mb-sc__end { text-align: center; margin-top: 40px; }
+  #mb-{{ section.id }} .mb-sc__btn { position: relative; display: inline-block; }
+  #mb-{{ section.id }} .mb-sc__btn .mb-btn { border-radius: 6px; min-width: 380px; padding: 20px 34px; font-size: 17px; }
+  #mb-{{ section.id }} .mb-sc__badge { position: absolute; left: 50%; top: 0; transform: translate(-50%, -55%); z-index: 1; white-space: nowrap; background: color-mix(in srgb, var(--mb-red) 22%, #fff); color: var(--mb-red); font-size: 12.5px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; padding: 5px 14px; border-radius: 999px; }
+  #mb-{{ section.id }} .mb-sc__under { display: inline-flex; align-items: center; gap: 8px; margin-top: 16px; font-size: 15.5px; color: var(--mb-sub); }
+  #mb-{{ section.id }} .mb-sc__under svg { width: 22px; height: 22px; color: var(--mb-fg); }
+  @media (max-width: 989px) {
+    #mb-{{ section.id }} .mb-sq { grid-template-columns: 1fr; gap: 14px; margin-bottom: 18px; }
+    #mb-{{ section.id }} .mb-ss { grid-template-columns: 1fr; gap: 14px; }
+  }
+  @media (max-width: 749px) {
+    #mb-{{ section.id }} .mb-sq__c, #mb-{{ section.id }} .mb-ss__c { padding: 24px 22px; border-radius: 20px; }
+    #mb-{{ section.id }} .mb-ss__c small { margin-top: 14px; font-size: 14.5px; }
+    #mb-{{ section.id }} .mb-sc__btn { display: block; }
+    #mb-{{ section.id }} .mb-sc__btn .mb-btn { min-width: 0; width: 100%; font-size: 15px; }
+    #mb-{{ section.id }} .mb-sc__end { margin-top: 34px; }
+  }
 </style>
 
 <section id="mb-{{ section.id }}" class="mb mb--{{ section.settings.scheme }}" style="--mb-red: {{ section.settings.accent }}; --mb-red-dark: {{ section.settings.accent | color_darken: 15 }};{% if section.settings.custom_font %} --mb-head: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }};{% endif %}">
   <div class="mb-wrap mb-pad">
-    <div class="mb-head">
-      {%- if section.settings.eyebrow != blank -%}<span class="mb-eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
-      <h2 class="mb-h2">{{ section.settings.heading }}</h2>
-      {%- if section.settings.text != blank -%}<div class="mb-lead">{{ section.settings.text }}</div>{%- endif -%}
-    </div>
-    <div class="mb-sc">
-      {%- for block in section.blocks -%}
-        <div class="mb-sc__c mb-card" {{ block.shopify_attributes }}>
-          <b>{{ block.settings.number }}</b>
-          <h3>{{ block.settings.title }}</h3>
-          <p>{{ block.settings.text }}</p>
-          {%- if block.settings.source != blank -%}<small>Fuente: {{ block.settings.source }}</small>{%- endif -%}
-        </div>
-      {%- endfor -%}
-    </div>
+    {%- if section.settings.heading != blank or section.settings.eyebrow != blank -%}
+      <div class="mb-head">
+        {%- if section.settings.eyebrow != blank -%}<span class="mb-eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+        {%- if section.settings.heading != blank -%}<h2 class="mb-h2">{{ section.settings.heading }}</h2>{%- endif -%}
+        {%- if section.settings.text != blank -%}<div class="mb-lead">{{ section.settings.text }}</div>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if quotes.size > 0 -%}
+      <div class="mb-sq">
+        {%- for block in quotes -%}
+          <figure class="mb-sq__c" {{ block.shopify_attributes }} style="margin:0">
+            <blockquote>“{{ block.settings.text }}”</blockquote>
+            <figcaption class="mb-sq__p">
+              {%- if block.settings.photo != blank -%}{{ block.settings.photo | image_url: width: 120 | image_tag: loading: 'lazy', alt: block.settings.name }}{%- else -%}<span class="mb-sq__av"></span>{%- endif -%}
+              <span><b>{{ block.settings.name }}</b><small>{{ block.settings.role }}</small></span>
+            </figcaption>
+          </figure>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if stats.size > 0 -%}
+      <div class="mb-ss">
+        {%- for block in stats -%}
+          <div class="mb-ss__c" {{ block.shopify_attributes }}>
+            <b>{{ block.settings.number }}</b>
+            <h3>{{ block.settings.title }}</h3>
+            {%- if block.settings.source != blank -%}<small>{{ block.settings.source }}</small>{%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
     {%- if section.settings.button_label != blank -%}
-      <div class="mb-sc__end"><a class="mb-btn" href="{{ section.settings.button_link | default: '#mb-comprar' }}">{{ section.settings.button_label }}</a></div>
+      <div class="mb-sc__end">
+        <div class="mb-sc__btn">
+          {%- if section.settings.button_badge != blank -%}<span class="mb-sc__badge">{{ section.settings.button_badge }}</span>{%- endif -%}
+          <a class="mb-btn" href="{{ section.settings.button_link | default: '#mb-comprar' }}">{{ section.settings.button_label }}</a>
+        </div>
+        {%- if section.settings.button_under != blank -%}
+          <div><span class="mb-sc__under"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 1.5l2.1 2.2 3-.6.9 2.9 2.9.9-.6 3 2.2 2.1-2.2 2.1.6 3-2.9.9-.9 2.9-3-.6L12 22.5l-2.1-2.2-3 .6-.9-2.9-2.9-.9.6-3L1.5 12l2.2-2.1-.6-3 2.9-.9.9-2.9 3 .6z"/><path d="M8 12.3l2.6 2.6L16.2 9.3" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>{{ section.settings.button_under }}</span></div>
+        {%- endif -%}
+      </div>
     {%- endif -%}
   </div>
 </section>
@@ -127,28 +181,33 @@
   "class": "mb-section",
   "settings": [
     {
+      "type": "header",
+      "content": "Título (opcional)"
+    },
+    {
       "type": "text",
       "id": "eyebrow",
-      "label": "Texto chico",
-      "default": "Lo que dice la ciencia"
+      "label": "Texto chico"
     },
     {
       "type": "inline_richtext",
       "id": "heading",
-      "label": "Título",
-      "default": "Por qué a los 40 <em>todo viene junto</em>"
+      "label": "Título (vacío = sin título, como Create)"
     },
     {
       "type": "richtext",
       "id": "text",
-      "label": "Bajada",
-      "default": "<p>Dormís mal, sube el cortisol, crece la panza y baja la testosterona. Un problema alimenta al otro.</p>"
+      "label": "Bajada"
+    },
+    {
+      "type": "header",
+      "content": "Botón"
     },
     {
       "type": "text",
       "id": "button_label",
-      "label": "Botón",
-      "default": "Cortar el círculo"
+      "label": "Texto del botón",
+      "default": "Hasta 40% OFF + envío gratis"
     },
     {
       "type": "text",
@@ -157,10 +216,27 @@
       "default": "#mb-comprar"
     },
     {
+      "type": "text",
+      "id": "button_badge",
+      "label": "Etiqueta sobre el botón (vacío = no se muestra)",
+      "default": "Tratamiento integral +40",
+      "info": "Ej: una cifra real de ventas."
+    },
+    {
+      "type": "text",
+      "id": "button_under",
+      "label": "Texto bajo el botón",
+      "default": "Probalo 60 días sin riesgo"
+    },
+    {
+      "type": "header",
+      "content": "Diseño"
+    },
+    {
       "type": "select",
       "id": "scheme",
       "label": "Fondo",
-      "default": "dark",
+      "default": "cream",
       "options": [
         {
           "value": "light",
@@ -177,10 +253,6 @@
         {
           "value": "dark",
           "label": "Negro"
-        },
-        {
-          "value": "red",
-          "label": "Rojo"
         }
       ]
     },
@@ -192,7 +264,7 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "default": 64
+      "default": 40
     },
     {
       "type": "range",
@@ -202,7 +274,7 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "default": 64
+      "default": 48
     },
     {
       "type": "header",
@@ -230,9 +302,42 @@
   ],
   "blocks": [
     {
+      "type": "quote",
+      "name": "Cita de profesional",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Solo citas reales, con permiso de la persona. No inventes profesionales ni frases."
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Cita"
+        },
+        {
+          "type": "image_picker",
+          "id": "photo",
+          "label": "Foto"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Nombre",
+          "default": "[Nombre del profesional]"
+        },
+        {
+          "type": "text",
+          "id": "role",
+          "label": "Profesión o institución",
+          "default": "[Profesión · Matrícula]"
+        }
+      ]
+    },
+    {
       "type": "stat",
       "name": "Dato",
-      "limit": 4,
+      "limit": 3,
       "settings": [
         {
           "type": "text",
@@ -247,14 +352,9 @@
           "default": "Sueño profundo"
         },
         {
-          "type": "textarea",
-          "id": "text",
-          "label": "Texto"
-        },
-        {
           "type": "text",
           "id": "source",
-          "label": "Fuente",
+          "label": "Fuente o aclaración",
           "info": "Solo datos con fuente real."
         }
       ]
@@ -265,11 +365,22 @@
       "name": "MB · Datos con fuente",
       "blocks": [
         {
+          "type": "quote",
+          "settings": {
+            "text": "[Cita real de un médico o nutricionista sobre el sueño, el estrés o la salud del hombre de +40]"
+          }
+        },
+        {
+          "type": "quote",
+          "settings": {
+            "text": "[Segunda cita real de un profesional]"
+          }
+        },
+        {
           "type": "stat",
           "settings": {
             "number": "-80%",
-            "title": "Sueño profundo",
-            "text": "Entre los 36 y los 50 años, el sueño profundo cae casi un 80%. Es cuando el cuerpo se repara.",
+            "title": "De sueño profundo entre los 36 y los 50 años",
             "source": "Van Cauter, JAMA 2000"
           }
         },
@@ -277,8 +388,7 @@
           "type": "stat",
           "settings": {
             "number": "+45%",
-            "title": "Cortisol",
-            "text": "Después de una mala noche, la hormona del estrés queda hasta un 45% más alta. Y se asocia a la grasa abdominal.",
+            "title": "De cortisol después de una mala noche",
             "source": "Leproult, Sleep 1997"
           }
         },
@@ -286,8 +396,7 @@
           "type": "stat",
           "settings": {
             "number": "-15%",
-            "title": "Testosterona",
-            "text": "Una semana durmiendo 5 horas la bajó entre un 10 y un 15%: lo que se pierde en una década.",
+            "title": "De testosterona en una semana durmiendo 5 horas",
             "source": "Leproult & Van Cauter, JAMA 2011"
           }
         }
