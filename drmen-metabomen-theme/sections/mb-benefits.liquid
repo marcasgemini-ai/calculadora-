@@ -37,6 +37,30 @@
     #mb-{{ section.id }} .mb-bn__it p { font-size: 13.5px; }
   }
   @media (max-width: 339px) { #mb-{{ section.id }} .mb-bn { grid-template-columns: 1fr; } }
+  #mb-{{ section.id }} .mb-head h2 { {% unless section.settings.heading_upper %}text-transform: none; letter-spacing: -.02em;{% endunless %} }
+  #mb-{{ section.id }} .mb-bn__i.is-plain { width: auto; height: auto; flex: 0 0 auto; color: var(--mb-red); }
+  #mb-{{ section.id }} .mb-bn__i.is-plain .mb-ic { width: 54px; height: 54px; stroke-width: 2; }
+  #mb-{{ section.id }} .mb-bn__i.is-plain img, #mb-{{ section.id }} .mb-bn__i.is-plain .mb-bn__mask { width: 64px; height: 64px; }
+  /* diseño grilla */
+  #mb-{{ section.id }} .mb-sp { display: grid; grid-template-columns: 1fr 1.15fr; gap: 56px; align-items: center; margin-top: 40px; }
+  #mb-{{ section.id }} .mb-sp__media { position: relative; display: flex; align-items: center; justify-content: center; }
+  #mb-{{ section.id }} .mb-sp__media.has-circle::before { content: ''; position: absolute; width: 86%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 50% 40%, color-mix(in srgb, var(--mb-red) 18%, #fff) 0%, color-mix(in srgb, var(--mb-red) 6%, transparent) 70%); }
+  #mb-{{ section.id }} .mb-sp__media img, #mb-{{ section.id }} .mb-sp__media .mb-ph { position: relative; z-index: 1; width: 100%; max-width: 520px; aspect-ratio: 1; object-fit: contain; filter: drop-shadow(0 26px 24px rgba(0,0,0,.16)); }
+  #mb-{{ section.id }} .mb-sp__media .mb-ph { filter: none; }
+  #mb-{{ section.id }} .mb-sp__grid { display: grid; grid-template-columns: repeat({{ section.settings.columns }}, 1fr); gap: 48px 40px; }
+  #mb-{{ section.id }} .mb-sp__it { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; }
+  #mb-{{ section.id }} .mb-sp__it .mb-bn__i { margin-bottom: 4px; }
+  #mb-{{ section.id }} .mb-sp__it h3 { font-family: var(--mb-body); font-size: 17px; font-weight: 800; letter-spacing: .02em; line-height: 1.3; max-width: 240px; }
+  #mb-{{ section.id }} .mb-sp__it p { font-size: 16px; line-height: 1.55; color: var(--mb-fg); opacity: .85; margin: 0; max-width: 270px; }
+  @media (max-width: 989px) {
+    #mb-{{ section.id }} .mb-sp { grid-template-columns: 1fr; gap: 28px; margin-top: 26px; }
+    #mb-{{ section.id }} .mb-sp__media img, #mb-{{ section.id }} .mb-sp__media .mb-ph { max-width: 320px; }
+    #mb-{{ section.id }} .mb-sp__grid { grid-template-columns: 1fr 1fr; gap: 30px 18px; }
+    #mb-{{ section.id }} .mb-sp__it h3 { font-size: 15px; }
+    #mb-{{ section.id }} .mb-sp__it p { font-size: 14.5px; }
+    #mb-{{ section.id }} .mb-bn__i.is-plain .mb-ic { width: 44px; height: 44px; }
+    #mb-{{ section.id }} .mb-bn__i.is-plain img, #mb-{{ section.id }} .mb-bn__i.is-plain .mb-bn__mask { width: 52px; height: 52px; }
+  }
 </style>
 
 <section id="mb-{{ section.id }}" class="mb mb--{{ section.settings.scheme }}" style="--mb-red: {{ section.settings.accent }}; --mb-red-dark: {{ section.settings.accent | color_darken: 15 }};{% if section.settings.custom_font %} --mb-head: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }};{% endif %}">
@@ -47,6 +71,37 @@
       {%- if section.settings.text != blank -%}<div class="mb-lead">{{ section.settings.text }}</div>{%- endif -%}
     </div>
 
+    {%- if section.settings.layout == 'split' -%}
+      <div class="mb-sp">
+        <div class="mb-sp__media{% if section.settings.circle %} has-circle{% endif %}">
+          {%- if section.settings.image != blank -%}
+            {{ section.settings.image | image_url: width: 1100 | image_tag: loading: 'lazy', sizes: '(min-width: 990px) 45vw, 90vw', widths: '400, 700, 1100', alt: section.settings.image.alt }}
+          {%- else -%}
+            <div class="mb-ph">FOTO DEL PRODUCTO · frasco o cápsula con fondo transparente</div>
+          {%- endif -%}
+        </div>
+        <div class="mb-sp__grid">
+          {%- for block in section.blocks -%}
+            {%- capture ic_html -%}<span class="mb-bn__i is-{{ section.settings.icon_style }}">
+                {%- if block.settings.icon_image != blank -%}
+                  {%- if section.settings.tint_icons -%}
+                    <span class="mb-bn__mask" style="--ic: url('{{ block.settings.icon_image | image_url: width: 128 }}');" role="img" aria-label="{{ block.settings.title | escape }}"></span>
+                  {%- else -%}
+                    {{ block.settings.icon_image | image_url: width: 128 | image_tag: loading: 'lazy', alt: '' }}
+                  {%- endif -%}
+                {%- else -%}
+                  <svg class="mb-ic" viewBox="0 0 24 24" aria-hidden="true">{%- case block.settings.icon -%}{%- when 'moon' -%}<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>{%- when 'belly' -%}<path d="M8 3v4c0 1-2 2-2 6 0 5 3 8 6 8s6-3 6-8c0-4-2-5-2-6V3"/><circle cx="12" cy="14" r="1"/>{%- when 'bolt' -%}<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>{%- when 'heart' -%}<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>{%- when 'hourglass' -%}<path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.17a2 2 0 0 0-.59-1.42L12 12l-4.41 4.41A2 2 0 0 0 7 17.83V22"/><path d="M7 2v4.17a2 2 0 0 0 .59 1.42L12 12l4.41-4.41A2 2 0 0 0 17 6.17V2"/>{%- when 'brain' -%}<path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/>{%- when 'shield' -%}<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>{%- when 'leaf' -%}<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>{%- when 'flame' -%}<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>{%- when 'dumbbell' -%}<path d="m6.5 6.5 11 11"/><path d="m21 21-1-1"/><path d="m3 3 1 1"/><path d="m18 22 4-4"/><path d="m2 6 4-4"/><path d="m3 10 7-7"/><path d="m14 21 7-7"/>{%- when 'drop' -%}<path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/>{%- when 'sun' -%}<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>{%- else -%}<path d="M20 6 9 17l-5-5"/>{%- endcase -%}</svg>
+                {%- endif -%}
+              </span>{%- endcapture -%}
+            <div class="mb-sp__it" {{ block.shopify_attributes }}>
+              {{ ic_html }}
+              <h3>{{ block.settings.title }}</h3>
+              {%- if block.settings.text != blank -%}<p>{{ block.settings.text }}</p>{%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- else -%}
     {%- assign half = section.blocks.size | plus: 1 | divided_by: 2 -%}
     <div class="mb-bn">
       {%- for pass in (1..2) -%}
@@ -61,10 +116,7 @@
         {%- endif -%}
         <div class="mb-bn__col{% if pass == 1 %} is-left{% endif %}">
           {%- for block in section.blocks -%}
-            {%- if pass == 1 and forloop.index > half -%}{%- continue -%}{%- endif -%}
-            {%- if pass == 2 and forloop.index <= half -%}{%- continue -%}{%- endif -%}
-            <div class="mb-bn__it" {{ block.shopify_attributes }}>
-              <span class="mb-bn__i is-{{ section.settings.icon_style }}">
+            {%- capture ic_html -%}<span class="mb-bn__i is-{{ section.settings.icon_style }}">
                 {%- if block.settings.icon_image != blank -%}
                   {%- if section.settings.tint_icons -%}
                     <span class="mb-bn__mask" style="--ic: url('{{ block.settings.icon_image | image_url: width: 128 }}');" role="img" aria-label="{{ block.settings.title | escape }}"></span>
@@ -74,7 +126,11 @@
                 {%- else -%}
                   <svg class="mb-ic" viewBox="0 0 24 24" aria-hidden="true">{%- case block.settings.icon -%}{%- when 'moon' -%}<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>{%- when 'belly' -%}<path d="M8 3v4c0 1-2 2-2 6 0 5 3 8 6 8s6-3 6-8c0-4-2-5-2-6V3"/><circle cx="12" cy="14" r="1"/>{%- when 'bolt' -%}<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>{%- when 'heart' -%}<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>{%- when 'hourglass' -%}<path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.17a2 2 0 0 0-.59-1.42L12 12l-4.41 4.41A2 2 0 0 0 7 17.83V22"/><path d="M7 2v4.17a2 2 0 0 0 .59 1.42L12 12l4.41-4.41A2 2 0 0 0 17 6.17V2"/>{%- when 'brain' -%}<path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/>{%- when 'shield' -%}<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>{%- when 'leaf' -%}<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>{%- when 'flame' -%}<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>{%- when 'dumbbell' -%}<path d="m6.5 6.5 11 11"/><path d="m21 21-1-1"/><path d="m3 3 1 1"/><path d="m18 22 4-4"/><path d="m2 6 4-4"/><path d="m3 10 7-7"/><path d="m14 21 7-7"/>{%- when 'drop' -%}<path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/>{%- when 'sun' -%}<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>{%- else -%}<path d="M20 6 9 17l-5-5"/>{%- endcase -%}</svg>
                 {%- endif -%}
-              </span>
+              </span>{%- endcapture -%}
+            {%- if pass == 1 and forloop.index > half -%}{%- continue -%}{%- endif -%}
+            {%- if pass == 2 and forloop.index <= half -%}{%- continue -%}{%- endif -%}
+            <div class="mb-bn__it" {{ block.shopify_attributes }}>
+              {{ ic_html }}
               <div>
                 <h3>{{ block.settings.title }}</h3>
                 {%- if block.settings.text != blank -%}<p>{{ block.settings.text }}</p>{%- endif -%}
@@ -84,6 +140,8 @@
         </div>
       {%- endfor -%}
     </div>
+
+    {%- endif -%}
 
     {%- if section.settings.button_label != blank -%}
       <div class="mb-bn__end"><a class="mb-btn" href="{{ section.settings.button_link | default: '#mb-comprar' }}">{{ section.settings.button_label }}</a></div>
@@ -202,6 +260,44 @@
       "default": "<p>Una fórmula de 14 activos más un protocolo de sueño y alimentación, pensados para el hombre de +40.</p>"
     },
     {
+      "type": "select",
+      "id": "layout",
+      "label": "Diseño",
+      "default": "split",
+      "options": [
+        {
+          "value": "split",
+          "label": "Producto a la izquierda + grilla de beneficios"
+        },
+        {
+          "value": "orbit",
+          "label": "Producto al centro + beneficios a los costados"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "columns",
+      "label": "Columnas de beneficios (diseño grilla)",
+      "default": "2",
+      "options": [
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "heading_upper",
+      "label": "Título en mayúsculas",
+      "default": false
+    },
+    {
       "type": "image_picker",
       "id": "image",
       "label": "Imagen del producto (centro)",
@@ -211,7 +307,7 @@
       "type": "checkbox",
       "id": "circle",
       "label": "Círculo de color detrás del producto",
-      "default": true
+      "default": false
     },
     {
       "type": "header",
@@ -221,8 +317,12 @@
       "type": "select",
       "id": "icon_style",
       "label": "Estilo de los íconos",
-      "default": "filled",
+      "default": "plain",
       "options": [
+        {
+          "value": "plain",
+          "label": "Solo ícono grande"
+        },
         {
           "value": "filled",
           "label": "Círculo lleno"
@@ -274,7 +374,7 @@
       "type": "select",
       "id": "scheme",
       "label": "Fondo",
-      "default": "cream",
+      "default": "light",
       "options": [
         {
           "value": "light",
