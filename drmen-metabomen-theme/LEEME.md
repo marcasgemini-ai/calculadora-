@@ -19,7 +19,7 @@ Adentro de cada sección: **Agregar bloque** › los bloques de la última colum
 | 4 | `mb-habit-videos` | MB · Hábito + videos | Dato, Video de cliente |
 | 5 | `mb-benefits` | MB · Beneficios | Beneficio |
 | 6 | `mb-science` | MB · Datos con fuente | Dato |
-| 7 | `mb-buy-box` | MB · Compra (packs) | Pack, Regalo |
+| 7 | `mb-buy-box` | MB · Compra (packs) | Pack, Regalo, Característica, Recuadro informativo, Desplegable |
 | 8 | `mb-compare` | MB · Comparativa | Fila |
 | 9 | `mb-image-text` | MB · Oferta destacada **o** MB · Nuestra historia | — |
 | 10 | `mb-cta-band` | MB · Banda con botón | — |

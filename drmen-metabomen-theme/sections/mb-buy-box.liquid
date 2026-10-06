@@ -22,6 +22,9 @@
   endif
   assign packs = section.blocks | where: 'type', 'pack'
   assign gifts = section.blocks | where: 'type', 'gift'
+  assign features = section.blocks | where: 'type', 'feature'
+  assign infos = section.blocks | where: 'type', 'info'
+  assign accs = section.blocks | where: 'type', 'accordion'
   assign default_i = 0
   for b in packs
     if b.settings.default
@@ -30,73 +33,141 @@
   endfor
 -%}
 
+{%- capture ic_check -%}<svg class="mb-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor" stroke="none"/><path d="m7.5 12.3 3 3 6-6.3" stroke="#fff" stroke-width="2.4"/></svg>{%- endcapture -%}
+
 <style>
   #mb-{{ section.id }} { --mb-pt: {{ section.settings.pt }}px; --mb-pb: {{ section.settings.pb }}px; scroll-margin-top: 20px; }
-  #mb-{{ section.id }} .mb-bb__kicker { text-align: center; margin-bottom: 26px; }
-  #mb-{{ section.id }} .mb-bb__kicker h2 { font-size: clamp(28px, 4.4vw, 46px); }
-  #mb-{{ section.id }} .mb-bb { display: grid; grid-template-columns: 1fr 480px; gap: 44px; align-items: start; }
-  #mb-{{ section.id }} .mb-bb__main img, #mb-{{ section.id }} .mb-bb__main .mb-ph { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 20px; background: #fff; }
-  #mb-{{ section.id }} .mb-bb__th { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-top: 10px; }
-  #mb-{{ section.id }} .mb-bb__th button { padding: 0; border: 2px solid transparent; border-radius: 10px; overflow: hidden; background: #fff; cursor: pointer; aspect-ratio: 1 / 1; }
-  #mb-{{ section.id }} .mb-bb__th button.is-on { border-color: var(--mb-red); }
-  #mb-{{ section.id }} .mb-bb__th img { width: 100%; height: 100%; object-fit: cover; }
-  #mb-{{ section.id }} .mb-bb__title { font-size: clamp(26px, 3.4vw, 36px); margin: 6px 0 8px; }
-  #mb-{{ section.id }} .mb-bb__bul { margin: 14px 0 18px; font-size: 15px; }
-  #mb-{{ section.id }} .mb-bb__bul ul { margin: 0; padding-left: 18px; }
-  #mb-{{ section.id }} .mb-pk { position: relative; border: 2px solid var(--mb-line); border-radius: 14px; background: #fff; color: var(--mb-ink); margin-bottom: 10px; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
-  #mb-{{ section.id }} .mb-pk.is-on { border-color: var(--mb-red); box-shadow: 0 8px 24px rgba(225,38,28,.14); }
-  #mb-{{ section.id }} .mb-pk.has-rib { margin-top: 16px; }
-  #mb-{{ section.id }} .mb-pk__rib { position: absolute; top: -11px; left: 14px; background: var(--mb-red); color: #fff; font-size: 10.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; }
-  #mb-{{ section.id }} .mb-pk__h { display: grid; grid-template-columns: 20px 1fr auto; gap: 12px; align-items: center; padding: 14px; }
-  #mb-{{ section.id }} .mb-pk__dot { width: 20px; height: 20px; border-radius: 50%; border: 2px solid #B5BCC3; position: relative; }
-  #mb-{{ section.id }} .mb-pk.is-on .mb-pk__dot { border-color: var(--mb-red); }
-  #mb-{{ section.id }} .mb-pk.is-on .mb-pk__dot::after { content: ''; position: absolute; inset: 3px; border-radius: 50%; background: var(--mb-red); }
-  #mb-{{ section.id }} .mb-pk__t b { display: block; font-size: 15.5px; font-weight: 800; }
-  #mb-{{ section.id }} .mb-pk__t small { display: block; font-size: 12.5px; color: var(--mb-muted); }
-  #mb-{{ section.id }} .mb-pk__p { text-align: right; line-height: 1.15; }
-  #mb-{{ section.id }} .mb-pk__p b { display: block; font-size: 18px; font-weight: 800; }
-  #mb-{{ section.id }} .mb-pk__p s { font-size: 12px; color: #9AA1A8; }
-  #mb-{{ section.id }} .mb-pk__p em { display: block; font-style: normal; font-size: 11.5px; font-weight: 800; color: var(--mb-good); }
-  #mb-{{ section.id }} .mb-pk__chips { display: flex; flex-wrap: wrap; gap: 5px; padding: 0 14px 12px 46px; margin-top: -4px; }
-  #mb-{{ section.id }} .mb-pk__chips span { font-size: 11px; font-weight: 700; background: #F1EEE8; padding: 3px 8px; border-radius: 999px; }
-  #mb-{{ section.id }} .mb-pk__body { display: none; padding: 0 14px 14px; }
-  #mb-{{ section.id }} .mb-pk.is-on .mb-pk__body { display: block; }
-  #mb-{{ section.id }} .mb-pk__baj { font-size: 13px; color: var(--mb-muted); font-style: italic; margin: 0 0 10px 32px; }
-  #mb-{{ section.id }} .mb-bump { display: flex; align-items: center; gap: 10px; border: 1.5px dashed var(--mb-red); background: #FFF6F5; border-radius: 10px; padding: 9px 10px; margin-bottom: 10px; cursor: pointer; }
-  #mb-{{ section.id }} .mb-bump input { width: 18px; height: 18px; accent-color: var(--mb-red); margin: 0; }
-  #mb-{{ section.id }} .mb-bump img, #mb-{{ section.id }} .mb-bump__ph { width: 36px; height: 36px; border-radius: 8px; object-fit: cover; background: #fff; flex: 0 0 auto; }
-  #mb-{{ section.id }} .mb-bump__t { flex: 1; font-size: 13px; line-height: 1.3; }
-  #mb-{{ section.id }} .mb-bump__p { font-size: 13px; font-weight: 800; color: var(--mb-good); text-align: right; }
-  #mb-{{ section.id }} .mb-bump__p s { display: block; font-weight: 400; color: #9AA1A8; font-size: 11px; }
-  #mb-{{ section.id }} .mb-gifts__h { font-size: 12.5px; font-weight: 800; margin: 4px 0 8px; }
-  #mb-{{ section.id }} .mb-gifts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-  #mb-{{ section.id }} .mb-gift { position: relative; border: 1px solid var(--mb-line); border-radius: 10px; padding: 8px; text-align: center; background: #fff; }
-  #mb-{{ section.id }} .mb-gift img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 6px; margin-bottom: 6px; }
-  #mb-{{ section.id }} .mb-gift__e { font-size: 22px; display: block; margin-bottom: 4px; }
-  #mb-{{ section.id }} .mb-gift b { display: block; font-size: 11.5px; line-height: 1.2; }
-  #mb-{{ section.id }} .mb-gift span { display: block; font-size: 10.5px; font-weight: 800; color: var(--mb-good); text-transform: uppercase; margin-top: 3px; }
-  #mb-{{ section.id }} .mb-gift span s { color: #9AA1A8; font-weight: 400; text-transform: none; margin-left: 3px; }
-  #mb-{{ section.id }} .mb-gift.is-lock { background: #F6F4F0; border-style: dashed; }
-  #mb-{{ section.id }} .mb-gift.is-lock > * { opacity: .45; }
-  #mb-{{ section.id }} .mb-gift.is-lock span { opacity: 1; color: #8A9199; }
-  #mb-{{ section.id }} .mb-bb__btn { flex-wrap: wrap; gap: 0 8px; width: 100%; margin-top: 8px; padding: 19px; font-size: 16px; }
-  #mb-{{ section.id }} .mb-bb__err { display: none; color: #C23B3B; font-size: 13px; text-align: center; margin-top: 8px; }
-  #mb-{{ section.id }} .mb-bb__err small { display: block; color: var(--mb-muted); }
-  #mb-{{ section.id }} .mb-bb__trust { display: grid; gap: 8px; margin-top: 14px; }
-  #mb-{{ section.id }} .mb-bb__trust div { display: flex; gap: 10px; align-items: flex-start; font-size: 13.5px; background: #fff; color: var(--mb-ink); border: 1px solid var(--mb-line); border-radius: 10px; padding: 10px 12px; }
-  #mb-{{ section.id }} .mb-bb__trust .mb-ic { width: 20px; height: 20px; color: var(--mb-red); margin-top: 1px; }
-  #mb-{{ section.id }} .mb-bb__trust b { display: block; }
-  #mb-{{ section.id }} .mb-bb__trust p { margin: 0; }
-  @media (max-width: 989px) { #mb-{{ section.id }} .mb-bb { grid-template-columns: 1fr; gap: 22px; } }
+  #mb-{{ section.id }} .bb-top { text-align: center; max-width: 820px; margin: 0 auto 34px; }
+  #mb-{{ section.id }} .bb-top__k { font-size: clamp(20px, 2.2vw, 28px); font-weight: 500; margin-bottom: 4px; }
+  #mb-{{ section.id }} .bb-top h2 { font-size: clamp(30px, 4.6vw, 54px); color: var(--mb-red); {% unless section.settings.heading_upper %}text-transform: none; letter-spacing: -.01em;{% endunless %} }
+  #mb-{{ section.id }} .bb-top p { margin: 12px auto 0; font-size: 16.5px; color: var(--mb-fg); opacity: .85; max-width: 640px; }
+  #mb-{{ section.id }} .bb-top__r { display: inline-flex; align-items: center; gap: 12px; margin-top: 14px; font-size: 14px; font-weight: 600; }
+  #mb-{{ section.id }} .bb-top__r .mb-stars { color: var(--mb-red); font-size: 18px; }
+  #mb-{{ section.id }} .bb-top__r i { width: 1px; height: 18px; background: var(--mb-line); }
+
+  #mb-{{ section.id }} .bb { display: grid; grid-template-columns: 1.05fr 1fr; gap: 36px; align-items: start; }
+  #mb-{{ section.id }} .bb > * { min-width: 0; }
+  #mb-{{ section.id }} .bb-timer { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: color-mix(in srgb, var(--mb-red) 10%, #fff); border-radius: 14px; padding: 14px 18px; margin-bottom: 16px; }
+  #mb-{{ section.id }} .bb-timer b { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; }
+  #mb-{{ section.id }} .bb-timer__r { display: flex; align-items: center; gap: 10px; font-size: 13px; white-space: nowrap; }
+  #mb-{{ section.id }} .bb-timer__r em { font-style: normal; font-weight: 800; color: var(--mb-red); }
+  #mb-{{ section.id }} .bb-timer__n { display: flex; gap: 4px; align-items: center; font-weight: 800; }
+  #mb-{{ section.id }} .bb-timer__n span { min-width: 30px; text-align: center; border: 1.5px solid var(--mb-ink); border-radius: 6px; padding: 3px 4px; background: #fff; font-variant-numeric: tabular-nums; }
+  #mb-{{ section.id }} .bb-gal { position: relative; border: 1.5px solid var(--mb-line); border-radius: 22px; overflow: hidden; background: #fff; }
+  #mb-{{ section.id }} .bb-gal__band { background: var(--mb-red); color: #fff; text-align: center; font-weight: 900; font-style: italic; font-size: clamp(14px, 1.6vw, 19px); text-transform: uppercase; padding: 12px 14px; }
+  #mb-{{ section.id }} .bb-gal__main { position: relative; }
+  #mb-{{ section.id }} .bb-gal__main img, #mb-{{ section.id }} .bb-gal__main .mb-ph { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 0; border: 0; }
+  #mb-{{ section.id }} .bb-gal__arr { position: absolute; top: 50%; transform: translateY(-50%); width: 38px; height: 38px; border-radius: 50%; border: 0; background: rgba(0,0,0,.75); color: #fff; font-size: 20px; cursor: pointer; z-index: 2; display: flex; align-items: center; justify-content: center; }
+  #mb-{{ section.id }} .bb-gal__arr.is-prev { left: 12px; background: rgba(255,255,255,.85); color: var(--mb-ink); }
+  #mb-{{ section.id }} .bb-gal__arr.is-next { right: 12px; }
+  #mb-{{ section.id }} .bb-gal__side { position: absolute; right: 60px; top: 50%; transform: translateY(-50%); z-index: 1; background: rgba(255,255,255,.95); border: 1.5px solid var(--mb-ink); border-radius: 16px; padding: 14px 12px; display: grid; gap: 14px; width: 132px; text-align: center; }
+  #mb-{{ section.id }} .bb-gal__side div { font-size: 11.5px; font-weight: 700; line-height: 1.25; color: var(--mb-ink); }
+  #mb-{{ section.id }} .bb-gal__side .mb-ic { width: 22px; height: 22px; color: var(--mb-red); display: block; margin: 0 auto 4px; }
+  #mb-{{ section.id }} .bb-th { display: flex; gap: 8px; margin-top: 10px; overflow-x: auto; scrollbar-width: none; }
+  #mb-{{ section.id }} .bb-th button { flex: 0 0 74px; height: 74px; padding: 0; border: 2px solid transparent; border-radius: 10px; overflow: hidden; background: #fff; cursor: pointer; }
+  #mb-{{ section.id }} .bb-th button.is-on { border-color: var(--mb-red); }
+  #mb-{{ section.id }} .bb-th img { width: 100%; height: 100%; object-fit: cover; }
+  #mb-{{ section.id }} .bb-tiles { display: grid; grid-template-columns: repeat({{ features.size | at_least: 1 | at_most: 4 }}, 1fr); gap: 10px; margin-top: 16px; }
+  #mb-{{ section.id }} .bb-tiles div { background: #fff; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,.05); padding: 16px 8px; text-align: center; font-size: 11.5px; font-weight: 800; text-transform: uppercase; color: var(--mb-red); line-height: 1.25; }
+  #mb-{{ section.id }} .bb-tiles .mb-ic { width: 26px; height: 26px; display: block; margin: 0 auto 8px; }
+  #mb-{{ section.id }} .bb-tiles img { width: 28px; height: 28px; object-fit: contain; margin: 0 auto 8px; }
+
+  #mb-{{ section.id }} .bb-p__head { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 14px; }
+  #mb-{{ section.id }} .bb-p__head .mb-stars { color: var(--mb-red); font-size: 17px; margin-right: 6px; }
+  #mb-{{ section.id }} .bb-pill { display: inline-flex; align-items: center; gap: 6px; background: var(--mb-ink); color: #fff; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; padding: 6px 11px; border-radius: 999px; }
+  #mb-{{ section.id }} .bb-p h1, #mb-{{ section.id }} .bb-p .bb-title { font-size: clamp(28px, 3vw, 38px); margin: 10px 0 6px; {% unless section.settings.heading_upper %}text-transform: none; letter-spacing: -.01em;{% endunless %} }
+  #mb-{{ section.id }} .bb-sub { display: flex; align-items: center; gap: 8px; font-size: 14.5px; margin-bottom: 16px; }
+  #mb-{{ section.id }} .bb-sub::before { content: ''; width: 9px; height: 9px; border-radius: 50%; background: var(--mb-red); box-shadow: 0 0 0 4px color-mix(in srgb, var(--mb-red) 22%, transparent); }
+  #mb-{{ section.id }} .bb-box { background: #fff; border: 1px solid var(--mb-line); border-radius: 18px; padding: 16px; box-shadow: 0 6px 24px rgba(0,0,0,.05); }
+  #mb-{{ section.id }} .bb-box__t { font-size: 14px; font-weight: 800; margin: 0 0 10px; }
+  #mb-{{ section.id }} .bb-pk { position: relative; border: 1.5px solid var(--mb-line); border-radius: 12px; background: #fff; color: var(--mb-ink); margin-bottom: 10px; cursor: pointer; transition: border-color .15s, background .15s; }
+  #mb-{{ section.id }} .bb-pk.is-on { border-color: var(--mb-red); background: color-mix(in srgb, var(--mb-red) 6%, #fff); }
+  #mb-{{ section.id }} .bb-pk__h { display: grid; grid-template-columns: 20px 1fr auto; gap: 12px; align-items: center; padding: 14px; }
+  #mb-{{ section.id }} .bb-pk__dot { width: 20px; height: 20px; border-radius: 50%; border: 2px solid #B5BCC3; position: relative; background: #fff; }
+  #mb-{{ section.id }} .bb-pk.is-on .bb-pk__dot { border-color: var(--mb-red); }
+  #mb-{{ section.id }} .bb-pk.is-on .bb-pk__dot::after { content: ''; position: absolute; inset: 3px; border-radius: 50%; background: var(--mb-red); }
+  #mb-{{ section.id }} .bb-pk__t { min-width: 0; }
+  #mb-{{ section.id }} .bb-pk__t b { display: block; font-size: 15.5px; font-weight: 800; }
+  #mb-{{ section.id }} .bb-pk__t small { display: block; font-size: 12px; color: var(--mb-muted); margin-top: 2px; }
+  #mb-{{ section.id }} .bb-pk__rib { position: absolute; top: -10px; left: 14px; background: var(--mb-red); color: #fff; font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; }
+  #mb-{{ section.id }} .bb-pk__p { text-align: right; line-height: 1.2; }
+  #mb-{{ section.id }} .bb-pk__p div { display: flex; align-items: center; justify-content: flex-end; gap: 6px; white-space: nowrap; }
+  #mb-{{ section.id }} .bb-pk__p s { font-size: 13px; color: #9AA1A8; }
+  #mb-{{ section.id }} .bb-pk__p b { font-size: 19px; font-weight: 800; }
+  #mb-{{ section.id }} .bb-pk__p em { font-style: normal; background: var(--mb-ink); color: #fff; font-size: 11px; font-weight: 800; padding: 3px 7px; border-radius: 6px; }
+  #mb-{{ section.id }} .bb-pk__p small { display: block; font-size: 11.5px; color: var(--mb-red); margin-top: 3px; }
+  #mb-{{ section.id }} .bb-pk__body { display: none; padding: 0 14px 14px; }
+  #mb-{{ section.id }} .bb-pk.is-on .bb-pk__body { display: block; }
+  #mb-{{ section.id }} .bb-pk__note { font-size: 13px; color: var(--mb-muted); margin: 0 0 10px 32px; }
+  #mb-{{ section.id }} .bb-bump { display: flex; align-items: center; gap: 10px; border: 1.5px dashed var(--mb-red); background: #fff; border-radius: 10px; padding: 9px 10px; margin-bottom: 10px; cursor: pointer; }
+  #mb-{{ section.id }} .bb-bump input { width: 18px; height: 18px; accent-color: var(--mb-red); margin: 0; flex: 0 0 auto; }
+  #mb-{{ section.id }} .bb-bump img { width: 36px; height: 36px; border-radius: 8px; object-fit: cover; flex: 0 0 auto; }
+  #mb-{{ section.id }} .bb-bump__t { flex: 1; font-size: 13px; line-height: 1.3; }
+  #mb-{{ section.id }} .bb-bump__p { font-size: 13px; font-weight: 800; color: var(--mb-good); text-align: right; white-space: nowrap; }
+  #mb-{{ section.id }} .bb-bump__p s { display: block; font-weight: 400; color: #9AA1A8; font-size: 11px; }
+  #mb-{{ section.id }} .bb-gifts__h { font-size: 12.5px; font-weight: 800; margin: 2px 0 8px; }
+  #mb-{{ section.id }} .bb-gifts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  #mb-{{ section.id }} .bb-gift { border: 1px solid var(--mb-line); border-radius: 10px; padding: 8px; text-align: center; background: #fff; }
+  #mb-{{ section.id }} .bb-gift img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 6px; margin-bottom: 6px; }
+  #mb-{{ section.id }} .bb-gift__e { display: block; font-size: 22px; margin-bottom: 4px; }
+  #mb-{{ section.id }} .bb-gift b { display: block; font-size: 11.5px; line-height: 1.2; }
+  #mb-{{ section.id }} .bb-gift span { display: block; font-size: 10.5px; font-weight: 800; color: var(--mb-good); text-transform: uppercase; margin-top: 3px; }
+  #mb-{{ section.id }} .bb-gift span s { color: #9AA1A8; font-weight: 400; text-transform: none; margin-left: 3px; }
+  #mb-{{ section.id }} .bb-gift.is-lock { background: #F6F4F0; border-style: dashed; }
+  #mb-{{ section.id }} .bb-gift.is-lock > * { opacity: .45; }
+  #mb-{{ section.id }} .bb-gift.is-lock span { opacity: 1; color: #8A9199; }
+  #mb-{{ section.id }} .bb-btn { width: 100%; border-radius: 8px; padding: 18px; font-size: 17px; margin-top: 4px; flex-wrap: wrap; gap: 0 8px; }
+  #mb-{{ section.id }} .bb-checks { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; margin: 16px 2px 4px; }
+  #mb-{{ section.id }} .bb-checks div { display: flex; align-items: center; gap: 8px; font-size: 13.5px; }
+  #mb-{{ section.id }} .bb-checks .mb-ic { width: 20px; height: 20px; color: var(--mb-ink); }
+  #mb-{{ section.id }} .bb-auto { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 14px; border: 1.5px dashed var(--mb-red); border-radius: 10px; padding: 10px; background: color-mix(in srgb, var(--mb-red) 5%, #fff); font-size: 13px; font-weight: 700; color: var(--mb-red); }
+  #mb-{{ section.id }} .bb-auto span { background: var(--mb-red); color: #fff; padding: 3px 9px; border-radius: 6px; font-size: 11.5px; font-weight: 800; }
+  #mb-{{ section.id }} .bb-err { display: none; color: #C23B3B; font-size: 13px; text-align: center; margin-top: 8px; }
+  #mb-{{ section.id }} .bb-err small { display: block; color: var(--mb-muted); }
+  #mb-{{ section.id }} .bb-trust { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 22px 0 18px; text-align: center; }
+  #mb-{{ section.id }} .bb-trust .mb-ic { width: 32px; height: 32px; color: var(--mb-ink); margin: 0 auto 8px; display: block; }
+  #mb-{{ section.id }} .bb-trust b { display: block; font-size: 13.5px; line-height: 1.3; }
+  #mb-{{ section.id }} .bb-info { display: flex; align-items: center; gap: 14px; background: #fff; border: 1px solid var(--mb-line); border-radius: 14px; padding: 14px 16px; margin-top: 10px; font-size: 13.5px; }
+  #mb-{{ section.id }} .bb-info img { width: 40px; height: 40px; object-fit: contain; flex: 0 0 auto; }
+  #mb-{{ section.id }} .bb-info p { margin: 0; }
+  #mb-{{ section.id }} .bb-acc { margin-top: 18px; border-top: 1px solid var(--mb-ink); }
+  #mb-{{ section.id }} .bb-acc details { border-bottom: 1px solid var(--mb-ink); }
+  #mb-{{ section.id }} .bb-acc summary { list-style: none; cursor: pointer; padding: 16px 30px 16px 0; position: relative; font-weight: 800; font-size: 15.5px; }
+  #mb-{{ section.id }} .bb-acc summary::-webkit-details-marker { display: none; }
+  #mb-{{ section.id }} .bb-acc summary::after { content: '+'; position: absolute; right: 2px; top: 11px; font-size: 24px; font-weight: 400; }
+  #mb-{{ section.id }} .bb-acc details[open] summary::after { content: '−'; }
+  #mb-{{ section.id }} .bb-acc__a { padding: 0 0 16px; font-size: 14.5px; color: var(--mb-sub); }
+  #mb-{{ section.id }} .bb-acc__a p:last-child { margin-bottom: 0; }
+  @media (max-width: 989px) {
+    #mb-{{ section.id }} .bb { grid-template-columns: 1fr; gap: 24px; }
+  }
+  @media (max-width: 749px) {
+    #mb-{{ section.id }} .bb-top { margin-bottom: 22px; }
+    #mb-{{ section.id }} .bb-gal__side { display: none; }
+    #mb-{{ section.id }} .bb-tiles { grid-template-columns: repeat(2, 1fr); }
+    #mb-{{ section.id }} .bb-th button { flex-basis: 62px; height: 62px; }
+    #mb-{{ section.id }} .bb-timer { flex-direction: column; align-items: flex-start; }
+    #mb-{{ section.id }} .bb-pk__h { gap: 10px; padding: 12px; }
+    #mb-{{ section.id }} .bb-pk__p b { font-size: 17px; }
+    #mb-{{ section.id }} .bb-pk__p div { flex-direction: column; align-items: flex-end; gap: 3px; }
+    #mb-{{ section.id }} .bb-pk__p em { font-size: 10px; padding: 2px 6px; }
+    #mb-{{ section.id }} .bb-pk__t b { font-size: 14.5px; }
+    #mb-{{ section.id }} .bb-checks { grid-template-columns: 1fr; }
+  }
 </style>
 
 <section id="mb-comprar" class="mb mb--{{ section.settings.scheme }}" style="--mb-red: {{ section.settings.accent }}; --mb-red-dark: {{ section.settings.accent | color_darken: 15 }};{% if section.settings.custom_font %} --mb-head: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }};{% endif %}">
 <div id="mb-{{ section.id }}">
   <div class="mb-wrap mb-pad">
+
     {%- if section.settings.kicker != blank or section.settings.heading != blank -%}
-      <div class="mb-bb__kicker">
-        {%- if section.settings.kicker != blank -%}<span class="mb-eyebrow">{{ section.settings.kicker }}</span>{%- endif -%}
+      <div class="bb-top">
+        {%- if section.settings.kicker != blank -%}<div class="bb-top__k">{{ section.settings.kicker }}</div>{%- endif -%}
         {%- if section.settings.heading != blank -%}<h2>{{ section.settings.heading }}</h2>{%- endif -%}
+        {%- if section.settings.top_text != blank -%}<p>{{ section.settings.top_text }}</p>{%- endif -%}
+        {%- if section.settings.rating_text != blank -%}
+          <div class="bb-top__r"><span class="mb-stars">★★★★★</span><span>{{ section.settings.rating_text }}</span>{%- if section.settings.reviews_count != blank -%}<i></i><span>{{ section.settings.reviews_count }}</span>{%- endif -%}</div>
+        {%- endif -%}
       </div>
     {%- endif -%}
 
@@ -104,110 +175,170 @@
       {%- if request.design_mode -%}<p class="mb-ph" style="aspect-ratio:auto">Elegí el producto en los ajustes de esta sección (o usala en la plantilla de producto).</p>{%- endif -%}
     {%- else -%}
     {%- assign v0 = prod.selected_or_first_available_variant -%}
-    <div class="mb-bb">
-      <div class="mb-bb__gal">
-        <div class="mb-bb__main">
-          {%- if prod.featured_media -%}
-            <img data-main src="{{ prod.featured_media | image_url: width: 1100 }}" alt="{{ prod.title | escape }}" width="1100" height="1100" loading="lazy">
-          {%- else -%}<div class="mb-ph">FOTOS DEL PRODUCTO</div>{%- endif -%}
+    <div class="bb">
+
+      <div class="bb-left">
+        {%- if section.settings.timer_end != blank -%}
+          <div class="bb-timer" data-timer="{{ section.settings.timer_end | escape }}" hidden>
+            <b>{{ section.settings.timer_label }}</b>
+            <div class="bb-timer__r"><em>{{ section.settings.timer_hurry }}</em><span>{{ section.settings.timer_ends }}</span>
+              <div class="bb-timer__n"><span data-d>00</span>:<span data-h>00</span>:<span data-m>00</span>:<span data-s>00</span></div>
+            </div>
+          </div>
+        {%- endif -%}
+
+        <div class="bb-gal">
+          {%- if section.settings.band != blank -%}<div class="bb-gal__band">{{ section.settings.band }}</div>{%- endif -%}
+          <div class="bb-gal__main">
+            {%- assign imgs = prod.media | where: 'media_type', 'image' -%}
+            {%- if imgs.size > 0 -%}
+              <img data-main src="{{ imgs[0] | image_url: width: 1100 }}" alt="{{ prod.title | escape }}" width="1100" height="1100" loading="lazy">
+            {%- else -%}<div class="mb-ph">FOTOS DEL PRODUCTO · se toman de Shopify</div>{%- endif -%}
+            {%- if imgs.size > 1 -%}
+              <button type="button" class="bb-gal__arr is-prev" data-gprev aria-label="Anterior">&#8249;</button>
+              <button type="button" class="bb-gal__arr is-next" data-gnext aria-label="Siguiente">&#8250;</button>
+            {%- endif -%}
+            {%- if section.settings.side_list and features.size > 0 -%}
+              <div class="bb-gal__side">
+                {%- for f in features -%}<div>{%- if f.settings.icon_image != blank -%}{{ f.settings.icon_image | image_url: width: 80 | image_tag: loading: 'lazy', alt: '' }}{%- else -%}<svg class="mb-ic" viewBox="0 0 24 24" aria-hidden="true">{%- case f.settings.icon -%}{%- when 'bolt' -%}<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>{%- when 'moon' -%}<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>{%- when 'belly' -%}<path d="M8 3v4c0 1-2 2-2 6 0 5 3 8 6 8s6-3 6-8c0-4-2-5-2-6V3"/><circle cx="12" cy="14" r="1"/>{%- when 'heart' -%}<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>{%- when 'hourglass' -%}<path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.17a2 2 0 0 0-.59-1.42L12 12l-4.41 4.41A2 2 0 0 0 7 17.83V22"/><path d="M7 2v4.17a2 2 0 0 0 .59 1.42L12 12l4.41-4.41A2 2 0 0 0 17 6.17V2"/>{%- when 'brain' -%}<path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/>{%- when 'shield' -%}<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>{%- when 'leaf' -%}<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>{%- when 'dumbbell' -%}<path d="m6.5 6.5 11 11"/><path d="m21 21-1-1"/><path d="m3 3 1 1"/><path d="m18 22 4-4"/><path d="m2 6 4-4"/><path d="m3 10 7-7"/><path d="m14 21 7-7"/>{%- when 'capsule' -%}<path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/>{%- else -%}<path d="M20 6 9 17l-5-5"/>{%- endcase -%}</svg>{%- endif -%}{{ f.settings.text }}</div>{%- endfor -%}
+              </div>
+            {%- endif -%}
+          </div>
         </div>
-        {%- if prod.media.size > 1 -%}
-          <div class="mb-bb__th">
-            {%- for m in prod.media limit: 6 -%}
-              {%- if m.media_type == 'image' -%}
-                <button type="button" class="{% if forloop.first %}is-on{% endif %}" data-src="{{ m | image_url: width: 1100 }}"><img src="{{ m | image_url: width: 160 }}" alt="" loading="lazy" width="160" height="160"></button>
-              {%- endif -%}
+        {%- if imgs.size > 1 -%}
+          <div class="bb-th">
+            {%- for m in imgs limit: 10 -%}
+              <button type="button" class="{% if forloop.first %}is-on{% endif %}" data-src="{{ m | image_url: width: 1100 }}"><img src="{{ m | image_url: width: 160 }}" alt="" loading="lazy" width="160" height="160"></button>
             {%- endfor -%}
+          </div>
+        {%- endif -%}
+        {%- if section.settings.tiles and features.size > 0 -%}
+          <div class="bb-tiles">
+            {%- for f in features limit: 4 -%}<div {{ f.shopify_attributes }}>{%- if f.settings.icon_image != blank -%}{{ f.settings.icon_image | image_url: width: 80 | image_tag: loading: 'lazy', alt: '' }}{%- else -%}<svg class="mb-ic" viewBox="0 0 24 24" aria-hidden="true">{%- case f.settings.icon -%}{%- when 'bolt' -%}<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>{%- when 'moon' -%}<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>{%- when 'belly' -%}<path d="M8 3v4c0 1-2 2-2 6 0 5 3 8 6 8s6-3 6-8c0-4-2-5-2-6V3"/><circle cx="12" cy="14" r="1"/>{%- when 'heart' -%}<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>{%- when 'hourglass' -%}<path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.17a2 2 0 0 0-.59-1.42L12 12l-4.41 4.41A2 2 0 0 0 7 17.83V22"/><path d="M7 2v4.17a2 2 0 0 0 .59 1.42L12 12l4.41-4.41A2 2 0 0 0 17 6.17V2"/>{%- when 'brain' -%}<path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/>{%- when 'shield' -%}<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>{%- when 'leaf' -%}<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>{%- when 'dumbbell' -%}<path d="m6.5 6.5 11 11"/><path d="m21 21-1-1"/><path d="m3 3 1 1"/><path d="m18 22 4-4"/><path d="m2 6 4-4"/><path d="m3 10 7-7"/><path d="m14 21 7-7"/>{%- when 'capsule' -%}<path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/>{%- else -%}<path d="M20 6 9 17l-5-5"/>{%- endcase -%}</svg>{%- endif -%}{{ f.settings.text }}</div>{%- endfor -%}
           </div>
         {%- endif -%}
       </div>
 
-      <div class="mb-bb__panel">
-        {%- if section.settings.rating_text != blank -%}<div class="mb-rating"><span class="mb-stars">★★★★★</span> {{ section.settings.rating_text }}</div>{%- endif -%}
-        <h3 class="mb-bb__title">{{ section.settings.title | default: prod.title }}</h3>
-        {%- if section.settings.bullets != blank -%}<div class="mb-bb__bul">{{ section.settings.bullets }}</div>{%- endif -%}
+      <div class="bb-p">
+        <div class="bb-p__head">
+          <span>{%- if section.settings.panel_rating != blank -%}<span class="mb-stars">★★★★★</span>{{ section.settings.panel_rating }}{%- endif -%}</span>
+          {%- if section.settings.pill != blank -%}<span class="bb-pill">{{ section.settings.pill }}</span>{%- endif -%}
+        </div>
+        <h3 class="bb-title">{{ section.settings.title | default: prod.title }}</h3>
+        {%- if section.settings.subtitle != blank -%}<div class="bb-sub">{{ section.settings.subtitle }}</div>{%- endif -%}
 
         <form data-form onsubmit="return false;">
-          {%- for b in packs -%}
-            {%- liquid
-              assign vid = ''
-              assign q = b.settings.quantity
-              if b.settings.variant_match != blank
-                assign want = b.settings.variant_match | downcase
-                for v in prod.variants
-                  assign vt = v.title | downcase
-                  if vt contains want
-                    assign vid = v.id
-                    assign q = 1
-                    break
-                  endif
-                endfor
-              endif
-              if vid == blank
-                assign vid = v0.id
-              endif
-              case b.settings.bump
-                when 'free'
-                  assign bid = up_free
-                when 'off'
-                  assign bid = up_off
-                else
-                  assign bid = ''
-              endcase
-            -%}
-            <div class="mb-pk{% if forloop.index0 == default_i %} is-on{% endif %}{% if b.settings.ribbon != blank %} has-rib{% endif %}" data-pack data-variant="{{ vid }}" data-qty="{{ q }}" data-units="{{ b.settings.quantity }}" data-code="{{ b.settings.discount_code | escape }}" data-price="{{ b.settings.price | escape }}" data-name="{{ b.settings.title | escape }}" data-bump="{{ bid }}" {{ b.shopify_attributes }}>
-              {%- if b.settings.ribbon != blank -%}<span class="mb-pk__rib">{{ b.settings.ribbon }}</span>{%- endif -%}
-              <div class="mb-pk__h">
-                <span class="mb-pk__dot"></span>
-                <span class="mb-pk__t"><b>{{ b.settings.title }}</b><small>{{ b.settings.subtitle }}{% if b.settings.per_day != blank %} · {{ b.settings.per_day }}{% endif %}</small></span>
-                <span class="mb-pk__p"><b>{{ b.settings.price }}</b>{%- if b.settings.compare != blank -%}<s>{{ b.settings.compare }}</s>{%- endif -%}{%- if b.settings.savings != blank -%}<em>{{ b.settings.savings }}</em>{%- endif -%}</span>
+          <div class="bb-box">
+            {%- if section.settings.box_title != blank -%}<p class="bb-box__t">{{ section.settings.box_title }}</p>{%- endif -%}
+            {%- for b in packs -%}
+              {%- liquid
+                assign vid = ''
+                assign q = b.settings.quantity
+                if b.settings.variant_match != blank
+                  assign want = b.settings.variant_match | downcase
+                  for v in prod.variants
+                    assign vt = v.title | downcase
+                    if vt contains want
+                      assign vid = v.id
+                      assign q = 1
+                      break
+                    endif
+                  endfor
+                endif
+                if vid == blank
+                  assign vid = v0.id
+                endif
+                case b.settings.bump
+                  when 'free'
+                    assign bid = up_free
+                  when 'off'
+                    assign bid = up_off
+                  else
+                    assign bid = ''
+                endcase
+              -%}
+              <div class="bb-pk{% if forloop.index0 == default_i %} is-on{% endif %}" data-pack data-variant="{{ vid }}" data-qty="{{ q }}" data-code="{{ b.settings.discount_code | escape }}" data-price="{{ b.settings.price | escape }}" data-name="{{ b.settings.title | escape }}" data-bump="{{ bid }}" {{ b.shopify_attributes }}>
+                {%- if b.settings.ribbon != blank -%}<span class="bb-pk__rib">{{ b.settings.ribbon }}</span>{%- endif -%}
+                <div class="bb-pk__h">
+                  <span class="bb-pk__dot"></span>
+                  <span class="bb-pk__t"><b>{{ b.settings.title }}</b><small>{{ b.settings.subtitle }}{% if b.settings.per_day != blank %} · {{ b.settings.per_day }}{% endif %}</small></span>
+                  <span class="bb-pk__p">
+                    <div>{%- if b.settings.compare != blank -%}<s>{{ b.settings.compare }}</s>{%- endif -%}<b>{{ b.settings.price }}</b>{%- if b.settings.off_badge != blank -%}<em>{{ b.settings.off_badge }}</em>{%- endif -%}</div>
+                    {%- if b.settings.savings != blank -%}<small>{{ b.settings.savings }}</small>{%- endif -%}
+                  </span>
+                </div>
+                <div class="bb-pk__body">
+                  {%- if b.settings.note != blank -%}<p class="bb-pk__note">{{ b.settings.note }}</p>{%- endif -%}
+                  {%- if b.settings.bump != 'none' and up != blank -%}
+                    <label class="bb-bump">
+                      <input type="checkbox" data-bump-cb {% if bid == blank %}disabled{% endif %}>
+                      {%- if up.featured_image -%}<img src="{{ up.featured_image | image_url: width: 100 }}" alt="" width="36" height="36" loading="lazy">{%- endif -%}
+                      <span class="bb-bump__t">{{ b.settings.bump_text }}</span>
+                      <span class="bb-bump__p">{{ b.settings.bump_price }}{%- if b.settings.bump_compare != blank -%}<s>{{ b.settings.bump_compare }}</s>{%- endif -%}</span>
+                    </label>
+                  {%- endif -%}
+                  {%- if gifts.size > 0 -%}
+                    {%- assign open = 0 -%}{%- for g in gifts -%}{%- if b.settings.quantity >= g.settings.min_qty -%}{%- assign open = open | plus: 1 -%}{%- endif -%}{%- endfor -%}
+                    <div class="bb-gifts__h">🎁 {{ open }}/{{ gifts.size }} {{ section.settings.gifts_label }}</div>
+                    <div class="bb-gifts">
+                      {%- for g in gifts -%}
+                        <div class="bb-gift{% if b.settings.quantity < g.settings.min_qty %} is-lock{% endif %}" {{ g.shopify_attributes }}>
+                          {%- if g.settings.image != blank -%}{{ g.settings.image | image_url: width: 240 | image_tag: loading: 'lazy', alt: g.settings.title }}{%- else -%}<span class="bb-gift__e">{{ g.settings.emoji }}</span>{%- endif -%}
+                          <b>{{ g.settings.title }}</b>
+                          {%- if b.settings.quantity >= g.settings.min_qty -%}
+                            <span>{{ g.settings.label }}{%- if g.settings.compare != blank -%}<s>{{ g.settings.compare }}</s>{%- endif -%}</span>
+                          {%- else -%}
+                            <span>🔒 desde {{ g.settings.min_qty }}</span>
+                          {%- endif -%}
+                        </div>
+                      {%- endfor -%}
+                    </div>
+                  {%- endif -%}
+                </div>
               </div>
-              {%- if b.settings.chips != blank -%}
-                <div class="mb-pk__chips">{%- assign cl = b.settings.chips | split: ',' -%}{%- for c in cl -%}<span>{{ c | strip }}</span>{%- endfor -%}</div>
-              {%- endif -%}
-              <div class="mb-pk__body">
-                {%- if b.settings.note != blank -%}<p class="mb-pk__baj">{{ b.settings.note }}</p>{%- endif -%}
-                {%- if b.settings.bump != 'none' and up != blank -%}
-                  <label class="mb-bump">
-                    <input type="checkbox" data-bump-cb {% if bid == blank %}disabled{% endif %}>
-                    {%- if up.featured_image -%}<img src="{{ up.featured_image | image_url: width: 100 }}" alt="" width="36" height="36" loading="lazy">{%- else -%}<span class="mb-bump__ph"></span>{%- endif -%}
-                    <span class="mb-bump__t">{{ b.settings.bump_text }}</span>
-                    <span class="mb-bump__p">{{ b.settings.bump_price }}{%- if b.settings.bump_compare != blank -%}<s>{{ b.settings.bump_compare }}</s>{%- endif -%}</span>
-                  </label>
-                {%- endif -%}
-                {%- if gifts.size > 0 -%}
-                  {%- assign open = 0 -%}{%- for g in gifts -%}{%- if b.settings.quantity >= g.settings.min_qty -%}{%- assign open = open | plus: 1 -%}{%- endif -%}{%- endfor -%}
-                  <div class="mb-gifts__h">🎁 {{ open }}/{{ gifts.size }} {{ section.settings.gifts_label }}</div>
-                  <div class="mb-gifts">
-                    {%- for g in gifts -%}
-                      <div class="mb-gift{% if b.settings.quantity < g.settings.min_qty %} is-lock{% endif %}" {{ g.shopify_attributes }}>
-                        {%- if g.settings.image != blank -%}{{ g.settings.image | image_url: width: 240 | image_tag: loading: 'lazy', alt: g.settings.title }}{%- else -%}<span class="mb-gift__e">{{ g.settings.emoji }}</span>{%- endif -%}
-                        <b>{{ g.settings.title }}</b>
-                        {%- if b.settings.quantity >= g.settings.min_qty -%}
-                          <span>{{ g.settings.label }}{%- if g.settings.compare != blank -%}<s>{{ g.settings.compare }}</s>{%- endif -%}</span>
-                        {%- else -%}
-                          <span>🔒 desde {{ g.settings.min_qty }} frascos</span>
-                        {%- endif -%}
-                      </div>
-                    {%- endfor -%}
-                  </div>
-                {%- endif -%}
-              </div>
-            </div>
-          {%- endfor -%}
+            {%- endfor -%}
 
-          {%- if v0.available -%}
-            <button type="submit" class="mb-btn mb-bb__btn" data-btn><span>{{ section.settings.button_label }}</span> <span data-btn-price></span></button>
-          {%- else -%}
-            <button type="button" class="mb-btn mb-bb__btn" disabled>Sin stock</button>
-          {%- endif -%}
-          <div class="mb-bb__err" data-err>{{ section.settings.error_text }}<small data-err-msg></small></div>
+            {%- if v0.available -%}
+              <button type="submit" class="mb-btn bb-btn" data-btn><span>{{ section.settings.button_label }}</span> <span data-btn-price></span></button>
+            {%- else -%}
+              <button type="button" class="mb-btn bb-btn" disabled>Sin stock</button>
+            {%- endif -%}
+            <div class="bb-err" data-err>{{ section.settings.error_text }}<small data-err-msg></small></div>
+
+            {%- assign checks = section.settings.checks | newline_to_br | split: '<br />' -%}
+            {%- if section.settings.checks != blank -%}
+              <div class="bb-checks">
+                {%- for c in checks -%}{%- assign ct = c | strip -%}{%- if ct != blank -%}<div>{{ ic_check }}<span>{{ ct }}</span></div>{%- endif -%}{%- endfor -%}
+              </div>
+            {%- endif -%}
+            {%- if section.settings.auto_text != blank -%}
+              <div class="bb-auto">{%- if section.settings.auto_tag != blank -%}<span>{{ section.settings.auto_tag }}</span>{%- endif -%}{{ section.settings.auto_text }}</div>
+            {%- endif -%}
+          </div>
         </form>
 
-        <div class="mb-bb__trust">
-          {%- if section.settings.trust_1 != blank -%}<div><svg class="mb-ic" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg><span>{{ section.settings.trust_1 }}</span></div>{%- endif -%}
-          {%- if section.settings.trust_2 != blank -%}<div><svg class="mb-ic" viewBox="0 0 24 24"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62L18.3 9.38a1 1 0 0 0-.78-.38H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg><span>{{ section.settings.trust_2 }}</span></div>{%- endif -%}
-        </div>
+        {%- if section.settings.trust_1 != blank or section.settings.trust_2 != blank or section.settings.trust_3 != blank -%}
+          <div class="bb-trust">
+            {%- if section.settings.trust_1 != blank -%}<div><svg class="mb-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg><b>{{ section.settings.trust_1 }}</b></div>{%- endif -%}
+            {%- if section.settings.trust_2 != blank -%}<div><svg class="mb-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62L18.3 9.38a1 1 0 0 0-.78-.38H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg><b>{{ section.settings.trust_2 }}</b></div>{%- endif -%}
+            {%- if section.settings.trust_3 != blank -%}<div><svg class="mb-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><b>{{ section.settings.trust_3 }}</b></div>{%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- for inf in infos -%}
+          <div class="bb-info" {{ inf.shopify_attributes }}>
+            {%- if inf.settings.image != blank -%}{{ inf.settings.image | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}{%- endif -%}
+            <div>{{ inf.settings.text }}</div>
+          </div>
+        {%- endfor -%}
+
+        {%- if accs.size > 0 -%}
+          <div class="bb-acc">
+            {%- for a in accs -%}
+              <details {{ a.shopify_attributes }}><summary>{{ a.settings.title }}</summary><div class="bb-acc__a">{{ a.settings.content }}</div></details>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
       </div>
     </div>
     {%- endif -%}
@@ -219,14 +350,38 @@
   (function () {
     var root = document.getElementById('mb-{{ section.id }}');
     if (!root) return;
+
     var main = root.querySelector('[data-main]');
-    root.querySelectorAll('.mb-bb__th button').forEach(function (b) {
-      b.addEventListener('click', function () {
-        if (main) main.src = b.getAttribute('data-src');
-        root.querySelectorAll('.mb-bb__th button').forEach(function (x) { x.classList.remove('is-on'); });
-        b.classList.add('is-on');
-      });
-    });
+    var thumbs = Array.prototype.slice.call(root.querySelectorAll('.bb-th button'));
+    var gi = 0;
+    function show(i) {
+      if (!thumbs.length || !main) return;
+      gi = (i + thumbs.length) % thumbs.length;
+      main.src = thumbs[gi].getAttribute('data-src');
+      thumbs.forEach(function (t, k) { t.classList.toggle('is-on', k === gi); });
+    }
+    thumbs.forEach(function (t, k) { t.addEventListener('click', function () { show(k); }); });
+    var gp = root.querySelector('[data-gprev]'), gn = root.querySelector('[data-gnext]');
+    if (gp) gp.addEventListener('click', function () { show(gi - 1); });
+    if (gn) gn.addEventListener('click', function () { show(gi + 1); });
+
+    var timer = root.querySelector('[data-timer]');
+    if (timer) {
+      var end = new Date(timer.getAttribute('data-timer').replace(' ', 'T')).getTime();
+      var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+      var tick = function () {
+        var d = end - Date.now();
+        if (!(d > 0)) { timer.hidden = true; return false; }
+        timer.hidden = false;
+        timer.querySelector('[data-d]').textContent = pad(Math.floor(d / 864e5));
+        timer.querySelector('[data-h]').textContent = pad(Math.floor(d / 36e5) % 24);
+        timer.querySelector('[data-m]').textContent = pad(Math.floor(d / 6e4) % 60);
+        timer.querySelector('[data-s]').textContent = pad(Math.floor(d / 1e3) % 60);
+        return true;
+      };
+      if (tick()) setInterval(tick, 1000);
+    }
+
     var form = root.querySelector('[data-form]');
     if (!form) return;
     var packs = form.querySelectorAll('[data-pack]');
@@ -242,7 +397,7 @@
     }
     packs.forEach(function (p) {
       p.addEventListener('click', function (e) {
-        if (e.target.closest('.mb-bump')) return;
+        if (e.target.closest('.bb-bump')) return;
         packs.forEach(function (x) { x.classList.remove('is-on'); });
         p.classList.add('is-on'); sync();
       });
@@ -367,16 +522,111 @@
       "info": "En la plantilla de producto se usa solo. Elegilo si ponés esta sección en otra página."
     },
     {
+      "type": "header",
+      "content": "Encabezado de la oferta"
+    },
+    {
       "type": "text",
       "id": "kicker",
       "label": "Texto chico",
-      "default": "Oferta por tiempo limitado"
+      "default": "¡Oferta por tiempo limitado!"
     },
     {
       "type": "inline_richtext",
       "id": "heading",
       "label": "Título",
-      "default": "Ahorrá hasta <em>40%</em> en tu tratamiento"
+      "default": "Ahorrá hasta 65% en tu tratamiento"
+    },
+    {
+      "type": "checkbox",
+      "id": "heading_upper",
+      "label": "Títulos en mayúsculas",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "top_text",
+      "label": "Bajada",
+      "default": "Fórmula de 14 activos + protocolo de sueño y alimentación. Con 60 días de garantía."
+    },
+    {
+      "type": "text",
+      "id": "rating_text",
+      "label": "Calificación",
+      "default": "4,8/5 estrellas",
+      "info": "Usá tu promedio real."
+    },
+    {
+      "type": "text",
+      "id": "reviews_count",
+      "label": "Cantidad de reseñas",
+      "default": "[X] reseñas"
+    },
+    {
+      "type": "header",
+      "content": "Cuenta regresiva"
+    },
+    {
+      "type": "text",
+      "id": "timer_end",
+      "label": "Termina el (AAAA-MM-DD HH:MM)",
+      "info": "Fecha real de fin de la promo. Vacío = no se muestra. Cuando llega a cero se oculta sola."
+    },
+    {
+      "type": "text",
+      "id": "timer_label",
+      "label": "Texto",
+      "default": "Oferta por tiempo limitado"
+    },
+    {
+      "type": "text",
+      "id": "timer_hurry",
+      "label": "Palabra destacada",
+      "default": "¡Apurate!"
+    },
+    {
+      "type": "text",
+      "id": "timer_ends",
+      "label": "Texto antes del reloj",
+      "default": "Termina en"
+    },
+    {
+      "type": "header",
+      "content": "Galería"
+    },
+    {
+      "type": "text",
+      "id": "band",
+      "label": "Banda sobre la foto",
+      "default": "Oferta: hasta 65% OFF + envío gratis"
+    },
+    {
+      "type": "checkbox",
+      "id": "side_list",
+      "label": "Lista de características sobre la foto",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "tiles",
+      "label": "Tarjetas de características debajo de las fotos",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Panel de compra"
+    },
+    {
+      "type": "text",
+      "id": "panel_rating",
+      "label": "Calificación arriba del nombre",
+      "default": "[X] reseñas"
+    },
+    {
+      "type": "text",
+      "id": "pill",
+      "label": "Etiqueta negra (vacío = no)",
+      "default": "Más vendido"
     },
     {
       "type": "text",
@@ -386,29 +636,39 @@
     },
     {
       "type": "text",
-      "id": "rating_text",
-      "label": "Calificación",
-      "default": "4,8 · Hombres de +40"
+      "id": "subtitle",
+      "label": "Frase bajo el nombre",
+      "default": "Pedí hoy con hasta 65% off"
     },
     {
-      "type": "richtext",
-      "id": "bullets",
-      "label": "Puntos debajo del nombre",
-      "default": "<ul><li>Fórmula de 14 activos, 1 cápsula por día</li><li>Protocolo de sueño y plan de alimentación de regalo</li><li>60 días de garantía</li></ul>"
+      "type": "text",
+      "id": "box_title",
+      "label": "Título de la caja de packs",
+      "default": "Elegí tu tratamiento:"
     },
     {
-      "type": "header",
-      "content": "Upsell"
+      "type": "text",
+      "id": "button_label",
+      "label": "Botón",
+      "default": "Empezar ahora"
     },
     {
-      "type": "product",
-      "id": "upsell_product",
-      "label": "Producto upsell",
-      "info": "Variante con precio $0 o con 'Gratis' en el nombre = gratis. La otra = con descuento."
+      "type": "textarea",
+      "id": "checks",
+      "label": "Tildes debajo del botón (una por línea)",
+      "default": "Envío gratis a todo el país\nProbalo 60 días sin riesgo\nRegalos desde 2 frascos\n3 cuotas sin interés"
     },
     {
-      "type": "header",
-      "content": "Regalos"
+      "type": "text",
+      "id": "auto_tag",
+      "label": "Etiqueta del descuento",
+      "default": "PACK"
+    },
+    {
+      "type": "text",
+      "id": "auto_text",
+      "label": "Texto de descuento aplicado (vacío = no)",
+      "default": "Descuento aplicado automáticamente"
     },
     {
       "type": "text",
@@ -418,13 +678,39 @@
     },
     {
       "type": "header",
-      "content": "Botón y carrito"
+      "content": "Upsell"
+    },
+    {
+      "type": "product",
+      "id": "upsell_product",
+      "label": "Producto upsell",
+      "info": "Variante a $0 o con 'Gratis' en el nombre = gratis. La otra = con descuento."
+    },
+    {
+      "type": "header",
+      "content": "Sellos de abajo"
     },
     {
       "type": "text",
-      "id": "button_label",
-      "label": "Botón",
-      "default": "Empezar mi tratamiento"
+      "id": "trust_1",
+      "label": "Sello 1 (escudo)",
+      "default": "60 días de garantía"
+    },
+    {
+      "type": "text",
+      "id": "trust_2",
+      "label": "Sello 2 (camión)",
+      "default": "Envío gratis con seguimiento"
+    },
+    {
+      "type": "text",
+      "id": "trust_3",
+      "label": "Sello 3 (personas)",
+      "default": "Hombres de todo el país"
+    },
+    {
+      "type": "header",
+      "content": "Carrito"
     },
     {
       "type": "checkbox",
@@ -445,18 +731,6 @@
       "default": "No pudimos agregarlo al carrito. Probá de nuevo en unos segundos."
     },
     {
-      "type": "richtext",
-      "id": "trust_1",
-      "label": "Garantía",
-      "default": "<p><b>60 días para probarlo.</b> Si no quedás conforme, te devolvemos el dinero.</p>"
-    },
-    {
-      "type": "richtext",
-      "id": "trust_2",
-      "label": "Envío",
-      "default": "<p><b>Envío gratis</b> con seguimiento a todo el país.</p>"
-    },
-    {
       "type": "header",
       "content": "Diseño"
     },
@@ -464,7 +738,7 @@
       "type": "select",
       "id": "scheme",
       "label": "Fondo",
-      "default": "cream",
+      "default": "light",
       "options": [
         {
           "value": "light",
@@ -477,10 +751,6 @@
         {
           "value": "sand",
           "label": "Arena"
-        },
-        {
-          "value": "dark",
-          "label": "Negro"
         }
       ]
     },
@@ -492,7 +762,7 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "default": 56
+      "default": 40
     },
     {
       "type": "range",
@@ -582,6 +852,11 @@
           "type": "text",
           "id": "savings",
           "label": "Ahorro"
+        },
+        {
+          "type": "text",
+          "id": "off_badge",
+          "label": "Etiqueta de descuento (ej: 43% OFF)"
         },
         {
           "type": "text",
@@ -691,6 +966,113 @@
           "default": 2
         }
       ]
+    },
+    {
+      "type": "feature",
+      "name": "Característica",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Ícono",
+          "default": "check",
+          "options": [
+            {
+              "value": "bolt",
+              "label": "Rayo"
+            },
+            {
+              "value": "moon",
+              "label": "Luna"
+            },
+            {
+              "value": "belly",
+              "label": "Panza"
+            },
+            {
+              "value": "heart",
+              "label": "Corazón"
+            },
+            {
+              "value": "hourglass",
+              "label": "Reloj de arena"
+            },
+            {
+              "value": "brain",
+              "label": "Cerebro"
+            },
+            {
+              "value": "shield",
+              "label": "Escudo"
+            },
+            {
+              "value": "leaf",
+              "label": "Hoja"
+            },
+            {
+              "value": "dumbbell",
+              "label": "Pesa"
+            },
+            {
+              "value": "capsule",
+              "label": "Cápsula"
+            },
+            {
+              "value": "check",
+              "label": "Tilde"
+            }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Ícono propio (opcional)"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texto",
+          "default": "Característica"
+        }
+      ]
+    },
+    {
+      "type": "info",
+      "name": "Recuadro informativo",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Imagen o logo"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Texto",
+          "default": "<p>Texto</p>"
+        }
+      ]
+    },
+    {
+      "type": "accordion",
+      "name": "Desplegable",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Título",
+          "default": "Pregunta"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Contenido",
+          "default": "<p>Respuesta</p>"
+        }
+      ]
     }
   ],
   "presets": [
@@ -713,7 +1095,8 @@
             "bump": "free",
             "bump_text": "TESTO BOOST de regalo",
             "bump_price": "GRATIS",
-            "bump_compare": "$47.600"
+            "bump_compare": "$47.600",
+            "off_badge": "65% OFF"
           }
         },
         {
@@ -730,7 +1113,9 @@
             "chips": "Envío gratis, Pagás 2 llevás 3",
             "note": "El tratamiento completo: fórmula + protocolo de sueño + plan de alimentación.",
             "default": true,
-            "bump": "off"
+            "bump": "off",
+            "off_badge": "42% OFF",
+            "bump_compare": "$47.600"
           }
         },
         {
@@ -744,7 +1129,9 @@
             "savings": "Ahorrás $35.380",
             "per_day": "$1.377/día",
             "chips": "Envío gratis, 3 cuotas sin interés",
-            "bump": "off"
+            "bump": "off",
+            "off_badge": "30% OFF",
+            "bump_compare": "$47.600"
           }
         },
         {
@@ -756,7 +1143,8 @@
             "price": "$58.990",
             "per_day": "$1.966/día",
             "chips": "Envío gratis",
-            "bump": "off"
+            "bump": "off",
+            "bump_compare": "$47.600"
           }
         },
         {
@@ -777,6 +1165,61 @@
             "label": "Gratis",
             "compare": "$20.000",
             "min_qty": 3
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "capsule",
+            "text": "1 cápsula por día"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "moon",
+            "text": "Mejor descanso"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "bolt",
+            "text": "Más energía"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "hourglass",
+            "text": "Sentite más joven"
+          }
+        },
+        {
+          "type": "info",
+          "settings": {
+            "text": "<p><strong>Producto registrado.</strong> RNPA [número] · Elaborado en laboratorio habilitado.</p>"
+          }
+        },
+        {
+          "type": "accordion",
+          "settings": {
+            "title": "Cómo se toma",
+            "content": "<p>1 cápsula por día con el desayuno, con un vaso de agua. No la tomes de noche: tiene té verde.</p>"
+          }
+        },
+        {
+          "type": "accordion",
+          "settings": {
+            "title": "¿Es para mí?",
+            "content": "<p>Para hombres de +40 que duermen mal, tienen panza, poca energía o se sienten más viejos de lo que son. Si tomás medicación o tenés presión alta, consultá a tu médico.</p>"
+          }
+        },
+        {
+          "type": "accordion",
+          "settings": {
+            "title": "Ingredientes",
+            "content": "<p>Resveratrol y semilla de uva, vitamina C, zinc, magnesio, té verde, naranja amarga, ginkgo biloba y L-arginina, entre otros. Ver dosis en la etiqueta.</p>"
           }
         }
       ]
