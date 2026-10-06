@@ -1,0 +1,392 @@
+{%- if section.settings.custom_font -%}<style>{{ section.settings.heading_font | font_face: font_display: 'swap' }}</style>{%- endif -%}
+
+<style>
+  #mb-{{ section.id }} { --mb-pt: {{ section.settings.pt }}px; --mb-pb: {{ section.settings.pb }}px; --ing-cols: {{ section.settings.columns }}; --ing-gap: 22px; }
+  #mb-{{ section.id }} .mb-ing__h { text-align: center; max-width: 760px; margin: 0 auto 38px; }
+  #mb-{{ section.id }} .mb-ing__h h2 { font-size: clamp(32px, 4.4vw, 52px); line-height: 1.08; {% unless section.settings.heading_upper %}text-transform: none; letter-spacing: -.01em;{% endunless %} }
+  #mb-{{ section.id }} .mb-ing__h .mb-lead { max-width: 640px; margin: 14px auto 0 !important; font-size: 16px; }
+  #mb-{{ section.id }} .mb-ing__grid { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--ing-gap); }
+  #mb-{{ section.id }} .mb-ing__card { flex: 0 0 calc((100% - (var(--ing-cols) - 1) * var(--ing-gap)) / var(--ing-cols)); min-width: 0; display: flex; align-items: center; gap: 10px; min-height: 150px; padding: 22px 0 22px 20px; border-radius: 14px; background: color-mix(in srgb, var(--mb-red) 5%, #fff); border: 1.5px solid color-mix(in srgb, var(--mb-red) 55%, transparent); color: var(--mb-ink); overflow: hidden; }
+  #mb-{{ section.id }} .mb-ing__txt { flex: 1 1 auto; min-width: 0; padding-right: 4px; }
+  #mb-{{ section.id }} .mb-ing__tag { display: block; color: var(--mb-red); font-family: var(--mb-body); font-weight: 700; font-size: 14px; letter-spacing: .02em !important; text-transform: uppercase; margin-bottom: 4px; }
+  #mb-{{ section.id }} .mb-ing__name { display: block; font-family: var(--mb-body); font-weight: 700; font-size: 16px; margin-bottom: 10px; }
+  #mb-{{ section.id }} .mb-ing__text { font-size: 13.5px; line-height: 1.5; color: #4a4d52; }
+  #mb-{{ section.id }} .mb-ing__text p { margin: 0; }
+  #mb-{{ section.id }} .mb-ing__img { flex: 0 0 38%; align-self: stretch; display: flex; align-items: center; justify-content: flex-end; }
+  #mb-{{ section.id }} .mb-ing__img img, #mb-{{ section.id }} .mb-ing__img .mb-ph { width: 100%; max-height: 130px; object-fit: contain; object-position: right center; }
+  #mb-{{ section.id }} .mb-ing__img .mb-ph { height: 110px; border-radius: 12px 0 0 12px; }
+  #mb-{{ section.id }} .mb-ing__cta { display: flex; flex-direction: column; align-items: center; gap: 14px; margin-top: 40px; }
+  #mb-{{ section.id }} .mb-ing__cta .mb-btn { min-width: min(100%, 300px); border-radius: 10px; }
+  #mb-{{ section.id }} .mb-ing__note { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; }
+  #mb-{{ section.id }} .mb-ing__note svg { width: 18px; height: 18px; flex: 0 0 18px; }
+  @media (max-width: 989px) { #mb-{{ section.id }} { --ing-cols: {{ section.settings.columns | plus: 0 | at_most: 2 }}; --ing-gap: 16px; } }
+  @media (max-width: 749px) {
+    #mb-{{ section.id }} { --ing-cols: 1; --ing-gap: 12px; }
+    #mb-{{ section.id }} .mb-ing__h { margin-bottom: 26px; }
+    #mb-{{ section.id }} .mb-ing__card { min-height: 128px; padding: 18px 0 18px 16px; }
+    #mb-{{ section.id }} .mb-ing__img { flex-basis: 34%; }
+    #mb-{{ section.id }} .mb-ing__img img { max-height: 110px; }
+    #mb-{{ section.id }} .mb-ing__cta { margin-top: 28px; }
+  }
+</style>
+
+<section id="mb-{{ section.id }}" class="mb mb--{{ section.settings.scheme }}" style="--mb-red: {{ section.settings.accent }}; --mb-red-dark: {{ section.settings.accent | color_darken: 15 }};{% if section.settings.custom_font %} --mb-head: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }};{% endif %}">
+  <div class="mb-wrap mb-pad">
+    <div class="mb-ing__h">
+      {%- if section.settings.eyebrow != blank -%}<span class="mb-eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+      <h2>{{ section.settings.heading }}</h2>
+      {%- if section.settings.text != blank -%}<div class="mb-lead">{{ section.settings.text }}</div>{%- endif -%}
+    </div>
+
+    <div class="mb-ing__grid">
+      {%- for block in section.blocks -%}
+        <div class="mb-ing__card" {{ block.shopify_attributes }}>
+          <div class="mb-ing__txt">
+            {%- if block.settings.tag != blank -%}<span class="mb-ing__tag">{{ block.settings.tag }}</span>{%- endif -%}
+            {%- if block.settings.name != blank -%}<span class="mb-ing__name">{{ block.settings.name }}</span>{%- endif -%}
+            {%- if block.settings.text != blank -%}<div class="mb-ing__text">{{ block.settings.text }}</div>{%- endif -%}
+          </div>
+          <div class="mb-ing__img">
+            {%- if block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 400 | image_tag: loading: 'lazy', widths: '200, 300, 400', sizes: '160px', alt: block.settings.name }}
+            {%- else -%}
+              {{ 'image' | placeholder_svg_tag: 'mb-ph' }}
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.button_label != blank or section.settings.note != blank -%}
+      <div class="mb-ing__cta">
+        {%- if section.settings.button_label != blank -%}
+          <a class="mb-btn" href="{{ section.settings.button_link | default: '#mb-comprar' }}">{{ section.settings.button_label }} <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        {%- endif -%}
+        {%- if section.settings.note != blank -%}
+          <span class="mb-ing__note"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="var(--mb-red)" d="M12 1.5l2.1 2.2 3-.6.9 2.9 2.9.9-.6 3 2.2 2.1-2.2 2.1.6 3-2.9.9-.9 2.9-3-.6L12 22.5l-2.1-2.2-3 .6-.9-2.9-2.9-.9.6-3L1.5 12l2.2-2.1-.6-3 2.9-.9.9-2.9 3 .6z"/><path d="M8 12.3l2.6 2.6L16.2 9.3" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>{{ section.settings.note }}</span>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+/* Estilos base de las secciones mb-* (iguales en todas: cada sección funciona sola) */
+
+.mb {
+  --mb-red: #E1261C;
+  --mb-red-dark: #A9170F;
+  --mb-ink: #141517;
+  --mb-black: #0E0F11;
+  --mb-cream: #F4F1EC;
+  --mb-sand: #EAE4DA;
+  --mb-line: #E2DDD4;
+  --mb-muted: #6E6A64;
+  --mb-good: #2F8A5B;
+  --mb-gold: #E9A23B;
+  --mb-head: var(--font-heading-family, sans-serif);
+  --mb-body: var(--font-body-family, sans-serif);
+  --mb-bg: #FFFFFF;
+  --mb-fg: var(--mb-ink);
+  --mb-sub: var(--mb-muted);
+  --mb-card: #FFFFFF;
+  --mb-card-line: var(--mb-line);
+  background: var(--mb-bg);
+  color: var(--mb-fg);
+  font-family: var(--mb-body);
+  font-size: 16px;
+  line-height: 1.55;
+  letter-spacing: 0;
+  -webkit-text-size-adjust: 100%;
+}
+.mb.mb--cream { --mb-bg: var(--mb-cream); }
+.mb.mb--sand { --mb-bg: var(--mb-sand); }
+.mb.mb--red { --mb-bg: var(--mb-red); --mb-fg: #fff; --mb-sub: #FFE3E0; --mb-card: rgba(255,255,255,.1); --mb-card-line: rgba(255,255,255,.25); }
+.mb.mb--dark { --mb-bg: var(--mb-black); --mb-fg: #fff; --mb-sub: #A9AEB4; --mb-card: #17191C; --mb-card-line: #2A2E33; }
+
+.mb *, .mb *::before, .mb *::after { box-sizing: border-box; }
+.mb :where(p, li, span, b, strong, small, a, div, td, th, summary, em, label) { letter-spacing: 0; }
+.mb :where(p, li, td, th, summary) { font-size: inherit; line-height: inherit; }
+.mb p { margin: 0 0 14px; }
+.mb img, .mb video { display: block; max-width: 100%; height: auto; }
+.mb :where(h1, h2, h3, h4) { font-family: var(--mb-head); font-weight: 700; text-transform: uppercase; letter-spacing: .01em; line-height: 1.05; margin: 0; color: inherit; }
+.mb :where(h1, h2, h3) em, .mb .mb-accent { font-style: normal; color: var(--mb-red); }
+.mb.mb--red :where(h1, h2, h3) em, .mb.mb--red .mb-accent { color: var(--mb-black); }
+
+.mb-wrap { max-width: 1180px; margin: 0 auto; padding: 0 16px; }
+.mb-pad { padding-top: var(--mb-pt, 64px); padding-bottom: var(--mb-pb, 64px); }
+.mb-head { text-align: center; max-width: 780px; margin: 0 auto 30px; }
+.mb-eyebrow { display: inline-block; font-size: 12px; font-weight: 800; letter-spacing: .16em !important; text-transform: uppercase; color: var(--mb-red); margin-bottom: 10px; }
+.mb--red .mb-eyebrow { color: #fff; }
+.mb-h2 { font-size: clamp(30px, 4.6vw, 50px); }
+.mb-lead { font-size: 17px; color: var(--mb-sub); margin: 12px 0 0 !important; }
+.mb-lead p:last-child { margin-bottom: 0; }
+.mb-center { text-align: center; }
+
+.mb-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: var(--mb-red); color: #fff !important; text-decoration: none !important; border: 0; border-radius: 999px; padding: 17px 34px; font-family: var(--mb-body); font-weight: 800; font-size: 15px; letter-spacing: .06em !important; text-transform: uppercase; cursor: pointer; box-shadow: 0 5px 0 var(--mb-red-dark); transition: transform .12s ease, background .15s ease; }
+.mb-btn:hover { background: var(--mb-red-dark); transform: translateY(2px); }
+.mb-btn--dark { background: var(--mb-ink); box-shadow: 0 5px 0 #000; }
+.mb-btn--light { background: #fff; color: var(--mb-ink) !important; box-shadow: 0 5px 0 rgba(0,0,0,.18); }
+.mb-btn[disabled] { opacity: .55; cursor: default; transform: none; }
+.mb-under { font-size: 13px; color: var(--mb-sub); margin-top: 12px; }
+.mb-stars { color: var(--mb-gold); letter-spacing: 2px; white-space: nowrap; }
+.mb-rating { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; }
+
+.mb-ph { width: 100%; aspect-ratio: 1 / 1; border: 2px dashed #C8C1B5; border-radius: 18px; background: var(--mb-sand); color: #5B554D; display: flex; align-items: center; justify-content: center; text-align: center; padding: 16px; font-size: 13px; font-weight: 600; }
+.mb--dark .mb-ph, .mb--red .mb-ph { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.3); color: rgba(255,255,255,.75); }
+.mb-ph svg { width: 70%; height: auto; opacity: .35; }
+
+.mb-card { background: var(--mb-card); border: 1px solid var(--mb-card-line); border-radius: 18px; }
+.mb-ic { width: 1em; height: 1em; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.mb-check { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.mb-check li { display: flex; gap: 10px; align-items: flex-start; margin: 0; font-size: 16px; }
+.mb-check li::before { content: ''; flex: 0 0 20px; height: 20px; margin-top: 2px; border-radius: 50%; background: var(--mb-red) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / 12px no-repeat; }
+
+.mb-scroller { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(280px, calc((100% - 32px) / 3)); gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 4px 2px 14px; scrollbar-width: thin; }
+.mb-scroller > * { scroll-snap-align: start; min-width: 0; }
+.mb-arrows { display: flex; justify-content: center; gap: 10px; margin-top: 10px; }
+.mb-arrows button { width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--mb-card-line); background: var(--mb-card); color: var(--mb-fg); font-size: 18px; cursor: pointer; }
+
+@media (max-width: 749px) {
+  .mb-pad { padding-top: var(--mb-pt-m, 44px); padding-bottom: var(--mb-pb-m, 44px); }
+  .mb-btn { display: flex; width: 100%; }
+  .mb-scroller { grid-auto-columns: 84%; }
+  .mb-lead { font-size: 16px; }
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "MB · Ingredientes",
+  "tag": "div",
+  "class": "mb-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Texto chico arriba",
+      "default": "Ingredientes"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Título",
+      "default": "14 activos, <em>1 sola cápsula</em>",
+      "info": "Lo que pongas en itálica sale en el color de acento."
+    },
+    {
+      "type": "checkbox",
+      "id": "heading_upper",
+      "label": "Título en mayúsculas",
+      "default": false
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Texto",
+      "default": "<p>Cada activo de la fórmula fue elegido por lo que aporta. Estos son algunos de los principales y para qué sirven.</p>"
+    },
+    {
+      "type": "select",
+      "id": "columns",
+      "label": "Tarjetas por fila (compu)",
+      "default": "3",
+      "options": [
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        }
+      ],
+      "info": "Si la última fila queda incompleta, se centra sola."
+    },
+    {
+      "type": "header",
+      "content": "Botón"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Texto del botón",
+      "default": "Empezar mi tratamiento"
+    },
+    {
+      "type": "text",
+      "id": "button_link",
+      "label": "Link del botón",
+      "default": "#mb-comprar"
+    },
+    {
+      "type": "text",
+      "id": "note",
+      "label": "Texto debajo del botón",
+      "default": "60 días de garantía"
+    },
+    {
+      "type": "select",
+      "id": "scheme",
+      "label": "Fondo",
+      "default": "cream",
+      "options": [
+        {
+          "value": "light",
+          "label": "Blanco"
+        },
+        {
+          "value": "cream",
+          "label": "Crema"
+        },
+        {
+          "value": "sand",
+          "label": "Arena"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Espacio arriba",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Espacio abajo",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "header",
+      "content": "Estilo de marca"
+    },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Color de acento",
+      "default": "#E1261C"
+    },
+    {
+      "type": "checkbox",
+      "id": "custom_font",
+      "label": "Usar otra tipografía en los títulos",
+      "default": false,
+      "info": "Si no, usa la del theme. Para el estilo Metabomen elegí Oswald."
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_font",
+      "label": "Tipografía de títulos",
+      "default": "assistant_n4"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "ingredient",
+      "name": "Ingrediente",
+      "settings": [
+        {
+          "type": "text",
+          "id": "tag",
+          "label": "Para qué sirve (arriba, en color)",
+          "default": "Para la energía"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Nombre del ingrediente",
+          "default": "Ingrediente"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Descripción",
+          "default": "<p>Contá en una o dos líneas qué aporta.</p>"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Imagen (PNG sin fondo)",
+          "info": "Ideal cuadrada, 400 px, sin fondo: se apoya sobre el borde derecho."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MB · Ingredientes",
+      "blocks": [
+        {
+          "type": "ingredient",
+          "settings": {
+            "tag": "Para la testosterona",
+            "name": "Zinc",
+            "text": "<p>Contribuye a mantener niveles normales de testosterona y al cuidado de piel y pelo.</p>"
+          }
+        },
+        {
+          "type": "ingredient",
+          "settings": {
+            "tag": "Para el cansancio",
+            "name": "Magnesio",
+            "text": "<p>Contribuye a disminuir el cansancio y la fatiga, y al funcionamiento normal de los músculos.</p>"
+          }
+        },
+        {
+          "type": "ingredient",
+          "settings": {
+            "tag": "Para el colágeno",
+            "name": "Vitamina C",
+            "text": "<p>Contribuye a la formación normal de colágeno y a proteger las células del estrés oxidativo.</p>"
+          }
+        },
+        {
+          "type": "ingredient",
+          "settings": {
+            "tag": "Para la longevidad",
+            "name": "Resveratrol",
+            "text": "<p>El antioxidante de la uva tinta, uno de los más estudiados en envejecimiento.</p>"
+          }
+        },
+        {
+          "type": "ingredient",
+          "settings": {
+            "tag": "Para la panza",
+            "name": "Té verde",
+            "text": "<p>De los extractos más usados en fórmulas para el control de peso. Aporta cafeína natural.</p>"
+          }
+        },
+        {
+          "type": "ingredient",
+          "settings": {
+            "tag": "Para la circulación",
+            "name": "L-arginina",
+            "text": "<p>Aminoácido precursor del óxido nítrico, que participa en el flujo sanguíneo.</p>"
+          }
+        },
+        {
+          "type": "ingredient",
+          "settings": {
+            "tag": "Para el metabolismo",
+            "name": "Naranja amarga",
+            "text": "<p>Extracto cítrico muy usado en fórmulas para el control de peso.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
