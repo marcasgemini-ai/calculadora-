@@ -2,35 +2,71 @@
 
 <style>
   #mb-{{ section.id }} { --mb-pt: {{ section.settings.pt }}px; --mb-pb: {{ section.settings.pb }}px; }
-  #mb-{{ section.id }} .mb-faq { display: grid; grid-template-columns: 1fr 1.6fr; gap: 48px; align-items: start; }
-  #mb-{{ section.id }} .mb-faq__h h2 { font-size: clamp(30px, 4.4vw, 48px); }
-  #mb-{{ section.id }} .mb-faq__h .mb-lead { margin-bottom: 18px !important; }
-  #mb-{{ section.id }} details { border-bottom: 1px solid var(--mb-card-line); }
-  #mb-{{ section.id }} summary { list-style: none; cursor: pointer; padding: 18px 40px 18px 0; position: relative; font-weight: 800; font-size: 16.5px; }
+  #mb-{{ section.id }} .mb-faq { display: grid; grid-template-columns: 1fr; gap: 40px; align-items: stretch; }
+  #mb-{{ section.id }} .mb-faq.has-img { grid-template-columns: 1fr 1.05fr; gap: clamp(32px, 7vw, 100px); }
+  #mb-{{ section.id }} .mb-faq.is-left .mb-faq__media { order: -1; }
+  #mb-{{ section.id }} .mb-faq__h { margin-bottom: 28px; }
+  #mb-{{ section.id }} .mb-faq__h h2 { font-size: clamp(34px, 4.6vw, 60px); line-height: 1.05; margin: 0; {% unless section.settings.heading_upper %}text-transform: none; letter-spacing: -.02em;{% endunless %} }
+  #mb-{{ section.id }} .mb-faq__h .mb-lead { margin: 14px 0 0 !important; }
+  #mb-{{ section.id }} .mb-faq__list { display: grid; gap: 18px; }
+  #mb-{{ section.id }} details { background: #fff; color: var(--mb-ink); border-radius: 10px; box-shadow: 0 6px 22px rgba(20,21,23,.09); }
+  #mb-{{ section.id }} summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 20px; font-family: var(--mb-body); font-weight: 700; font-size: 17px; line-height: 1.35; }
   #mb-{{ section.id }} summary::-webkit-details-marker { display: none; }
-  #mb-{{ section.id }} summary::after { content: '+'; position: absolute; right: 6px; top: 13px; font-size: 26px; font-weight: 400; color: var(--mb-red); }
-  #mb-{{ section.id }} details[open] summary::after { content: '−'; }
-  #mb-{{ section.id }} .mb-faq__a { padding: 0 0 18px; color: var(--mb-sub); font-size: 15.5px; }
+  #mb-{{ section.id }} summary:focus-visible { outline: 2px solid var(--mb-red); outline-offset: 2px; border-radius: 10px; }
+  #mb-{{ section.id }} .mb-faq__pm { position: relative; flex: 0 0 16px; width: 16px; height: 16px; }
+  #mb-{{ section.id }} .mb-faq__pm::before, #mb-{{ section.id }} .mb-faq__pm::after { content: ''; position: absolute; left: 0; top: 7px; width: 16px; height: 2px; background: currentColor; border-radius: 2px; transition: transform .25s ease; }
+  #mb-{{ section.id }} .mb-faq__pm::after { transform: rotate(90deg); }
+  #mb-{{ section.id }} details[open] .mb-faq__pm::after { transform: rotate(0deg); }
+  #mb-{{ section.id }} details[open] summary { color: var(--mb-red); }
+  #mb-{{ section.id }} .mb-faq__a { padding: 0 20px 20px; color: #4a4d52; font-size: 15.5px; line-height: 1.6; }
+  #mb-{{ section.id }} .mb-faq__a p { margin: 0 0 10px; }
   #mb-{{ section.id }} .mb-faq__a p:last-child { margin-bottom: 0; }
-  @media (max-width: 899px) { #mb-{{ section.id }} .mb-faq { grid-template-columns: 1fr; gap: 16px; } }
+  #mb-{{ section.id }} .mb-faq__btn { margin-top: 28px; }
+  #mb-{{ section.id }} .mb-faq__media { position: relative; border-radius: {{ section.settings.radius }}px; overflow: hidden; min-height: 100%; }
+  #mb-{{ section.id }} .mb-faq__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  @media (max-width: 899px) {
+    #mb-{{ section.id }} .mb-faq.has-img { grid-template-columns: 1fr; gap: 28px; }
+    #mb-{{ section.id }} .mb-faq__media { order: -1; aspect-ratio: 4 / 3; min-height: 0; }
+    #mb-{{ section.id }} .mb-faq__h { margin-bottom: 20px; }
+    #mb-{{ section.id }} .mb-faq__list { gap: 12px; }
+    #mb-{{ section.id }} summary { padding: 17px 16px; font-size: 15.5px; }
+    #mb-{{ section.id }} .mb-faq__a { padding: 0 16px 17px; font-size: 15px; }
+    {%- unless section.settings.image_mobile %}
+    #mb-{{ section.id }} .mb-faq__media { display: none; }
+    {%- endunless %}
+  }
 </style>
+
+{%- liquid
+  assign has_img = false
+  if section.settings.image != blank
+    assign has_img = true
+  endif
+-%}
 
 <section id="mb-{{ section.id }}" class="mb mb--{{ section.settings.scheme }}" style="--mb-red: {{ section.settings.accent }}; --mb-red-dark: {{ section.settings.accent | color_darken: 15 }};{% if section.settings.custom_font %} --mb-head: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }};{% endif %}">
   <div class="mb-wrap mb-pad">
-    <div class="mb-faq">
-      <div class="mb-faq__h">
-        <h2>{{ section.settings.heading }}</h2>
-        {%- if section.settings.text != blank -%}<div class="mb-lead">{{ section.settings.text }}</div>{%- endif -%}
-        {%- if section.settings.button_label != blank -%}<a class="mb-btn" href="{{ section.settings.button_link | default: '#mb-comprar' }}">{{ section.settings.button_label }}</a>{%- endif -%}
-      </div>
+    <div class="mb-faq{% if has_img %} has-img{% if section.settings.image_side == 'left' %} is-left{% endif %}{% endif %}">
       <div>
-        {%- for block in section.blocks -%}
-          <details {{ block.shopify_attributes }}{% if forloop.first and section.settings.open_first %} open{% endif %}>
-            <summary>{{ block.settings.question }}</summary>
-            <div class="mb-faq__a">{{ block.settings.answer }}</div>
-          </details>
-        {%- endfor -%}
+        <div class="mb-faq__h">
+          <h2>{{ section.settings.heading }}</h2>
+          {%- if section.settings.text != blank -%}<div class="mb-lead">{{ section.settings.text }}</div>{%- endif -%}
+        </div>
+        <div class="mb-faq__list">
+          {%- for block in section.blocks -%}
+            <details {{ block.shopify_attributes }}{% if forloop.first and section.settings.open_first %} open{% endif %}>
+              <summary><span>{{ block.settings.question }}</span><span class="mb-faq__pm" aria-hidden="true"></span></summary>
+              <div class="mb-faq__a">{{ block.settings.answer }}</div>
+            </details>
+          {%- endfor -%}
+        </div>
+        {%- if section.settings.button_label != blank -%}<div class="mb-faq__btn"><a class="mb-btn" href="{{ section.settings.button_link | default: '#mb-comprar' }}">{{ section.settings.button_label }}</a></div>{%- endif -%}
       </div>
+      {%- if has_img -%}
+        <div class="mb-faq__media">
+          {{ section.settings.image | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '480, 720, 960, 1200, 1400', sizes: '(min-width: 900px) 50vw, 100vw' }}
+        </div>
+      {%- endif -%}
     </div>
   </div>
 </section>
@@ -144,13 +180,18 @@
       "type": "inline_richtext",
       "id": "heading",
       "label": "Título",
-      "default": "Preguntas <em>frecuentes</em>"
+      "default": "Preguntas frecuentes"
+    },
+    {
+      "type": "checkbox",
+      "id": "heading_upper",
+      "label": "Título en mayúsculas",
+      "default": false
     },
     {
       "type": "richtext",
       "id": "text",
-      "label": "Texto",
-      "default": "<p>¿Te queda alguna duda? Escribinos y te respondemos.</p>"
+      "label": "Texto (opcional)"
     },
     {
       "type": "text",
@@ -167,13 +208,55 @@
       "type": "checkbox",
       "id": "open_first",
       "label": "Primera pregunta abierta",
-      "default": true
+      "default": false
     },
     {
       "type": "checkbox",
       "id": "schema_markup",
       "label": "Datos estructurados para Google",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Imagen"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Imagen",
+      "info": "Ideal vertical o cuadrada, mínimo 1200 px."
+    },
+    {
+      "type": "select",
+      "id": "image_side",
+      "label": "Lado de la imagen",
+      "default": "right",
+      "options": [
+        {
+          "value": "right",
+          "label": "Derecha"
+        },
+        {
+          "value": "left",
+          "label": "Izquierda"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "image_mobile",
+      "label": "Mostrar imagen en celular",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "radius",
+      "label": "Redondeo de la imagen",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 24
     },
     {
       "type": "select",
