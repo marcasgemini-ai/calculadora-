@@ -1,4 +1,4 @@
-{%- if section.settings.font == 'oswald' -%}<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&display=swap">{%- endif -%}
+{%- if section.settings.custom_font -%}<style>{{ section.settings.heading_font | font_face: font_display: 'swap' }}</style>{%- endif -%}
 
 <style>
   #mb-{{ section.id }} { --mb-pt: {{ section.settings.pt }}px; --mb-pb: {{ section.settings.pb }}px; }
@@ -12,7 +12,7 @@
   @media (max-width: 899px) { #mb-{{ section.id }} .mb-sc { grid-template-columns: 1fr; } }
 </style>
 
-<section id="mb-{{ section.id }}" class="mb mb--{{ section.settings.scheme }}" style="--mb-red: {{ section.settings.accent }}; --mb-red-dark: {{ section.settings.accent | color_darken: 15 }};{% if section.settings.font == 'oswald' %} --mb-head: 'Oswald', var(--font-heading-family, sans-serif);{% endif %}">
+<section id="mb-{{ section.id }}" class="mb mb--{{ section.settings.scheme }}" style="--mb-red: {{ section.settings.accent }}; --mb-red-dark: {{ section.settings.accent | color_darken: 15 }};{% if section.settings.custom_font %} --mb-head: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }};{% endif %}">
   <div class="mb-wrap mb-pad">
     <div class="mb-head">
       {%- if section.settings.eyebrow != blank -%}<span class="mb-eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
@@ -215,20 +215,17 @@
       "default": "#E1261C"
     },
     {
-      "type": "select",
-      "id": "font",
+      "type": "checkbox",
+      "id": "custom_font",
+      "label": "Usar otra tipografía en los títulos",
+      "default": false,
+      "info": "Si no, usa la del theme. Para el estilo Metabomen elegí Oswald."
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_font",
       "label": "Tipografía de títulos",
-      "default": "oswald",
-      "options": [
-        {
-          "value": "theme",
-          "label": "La del theme"
-        },
-        {
-          "value": "oswald",
-          "label": "Condensada (Oswald)"
-        }
-      ]
+      "default": "assistant_n4"
     }
   ],
   "blocks": [

@@ -1,42 +1,43 @@
-# Secciones nativas mb-* (estructura tipo Create)
+# Secciones mb-* · guía rápida
 
-Son **12 secciones** que funcionan solas: cada una trae sus estilos (`{% stylesheet %}`), su `{% schema %}`, bloques y presets.
-No necesitan ningún otro archivo, así que sirven para cualquier producto o marca.
+12 secciones que funcionan solas (estilos, schema, bloques y presets adentro de cada archivo).
+Validadas con Theme Check oficial de Shopify: 0 errores, 0 avisos.
 
-## Cómo instalarlas
-**Tienda online › Temas › … › Editar código › Sections › Agregar una nueva sección** → una por archivo, con el mismo nombre, y pegás el contenido completo:
+## 1 · Pegarlas (una sola vez por theme)
+Tienda online › Temas › … › **Editar código** › carpeta **Sections** › **Agregar una nueva sección**
+- Escribí el nombre EXACTO de la columna "Archivo" (sin .liquid), creá, borrá todo lo que trae y pegá el archivo entero. Guardar.
 
-`mb-hero` · `mb-trust-bar` · `mb-reviews-slider` · `mb-habit-videos` · `mb-benefits` · `mb-science` · `mb-buy-box` · `mb-compare` · `mb-image-text` · `mb-cta-band` · `mb-faq` · `mb-reviews`
+## 2 · Usarlas
+**Personalizar** › elegí la plantilla › **Agregar sección** › buscá **MB** › aparecen con el nombre de la columna "En el editor".
+Adentro de cada sección: **Agregar bloque** › los bloques de la última columna.
 
-Después, en **Personalizar**, en cualquier plantilla: **Agregar sección** → aparecen todas como "MB · …".
+| # | Archivo | En el editor (Agregar sección) | Bloques adentro |
+|---|---|---|---|
+| 1 | `mb-hero` | MB · Hero | Beneficio con tilde |
+| 2 | `mb-trust-bar` | MB · Barra de confianza | Logo o sello |
+| 3 | `mb-reviews-slider` | MB · Reseñas (carrusel) | Reseña |
+| 4 | `mb-habit-videos` | MB · Hábito + videos | Dato, Video de cliente |
+| 5 | `mb-benefits` | MB · Beneficios | Beneficio |
+| 6 | `mb-science` | MB · Datos con fuente | Dato |
+| 7 | `mb-buy-box` | MB · Compra (packs) | Pack, Regalo |
+| 8 | `mb-compare` | MB · Comparativa | Fila |
+| 9 | `mb-image-text` | MB · Oferta destacada **o** MB · Nuestra historia | — |
+| 10 | `mb-cta-band` | MB · Banda con botón | — |
+| 11 | `mb-faq` | MB · Preguntas frecuentes | Pregunta |
+| 12 | `mb-reviews` | MB · Reseñas (lista) | Reseña |
 
-## Para usarlas en otra marca
-Cada sección tiene, al final de sus ajustes, **Estilo de marca**:
-- **Color de acento:** el rojo de Metabomen por defecto; poné el color de la otra marca.
-- **Tipografía de títulos:** condensada (Oswald) o la del theme.
-- **Fondo:** blanco, crema, arena, negro o color de acento. Espacio arriba y abajo.
+## 3 · Ajustes que tienen todas
+- **Fondo:** Blanco, Crema, Arena, Negro, Rojo (color de acento).
+- **Espacio arriba / abajo.**
+- **Estilo de marca:** Color de acento (rojo Metabomen por defecto) · "Usar otra tipografía en los títulos" + Tipografía de títulos (para Metabomen: Oswald).
+- En los títulos, lo que pongas en *itálica* sale en el color de acento.
 
-Los textos de ejemplo son de Metabomen: se cambian desde el editor.
+## 4 · Compra (packs)
+- En plantilla de producto toma el producto solo. En otra página: elegilo en "Producto".
+- "Producto upsell": el TESTO BOOST. Variante a $0 o con "Gratis" en el nombre = gratis; la otra = con descuento.
+- Cada Pack: frascos, precios que se muestran, cinta, etiquetas (separadas por coma), upsell (sin / con descuento / gratis), "Elegido por defecto".
+- Cada Regalo: se desbloquea desde X frascos.
+- Todos los botones de las otras secciones bajan acá (link `#mb-comprar`).
 
-## Orden sugerido (como Create)
-1. MB · Hero
-2. MB · Barra de confianza
-3. MB · Reseñas (carrusel)
-4. MB · Hábito + videos
-5. MB · Beneficios
-6. MB · Datos con fuente
-7. MB · Compra (packs) — los botones de todas las secciones bajan acá (`#mb-comprar`)
-8. MB · Comparativa
-9. MB · Oferta destacada (es "Imagen con texto")
-10. MB · Nuestra historia (es "Imagen con texto")
-11. MB · Banda con botón
-12. MB · Preguntas frecuentes
-13. MB · Reseñas (lista)
-
-## Compra (packs)
-- En una plantilla de producto usa el producto de la página. En otra página, elegí el producto en sus ajustes.
-- Packs y regalos son bloques. Upsell: elegís el producto y en cada pack si va sin upsell, con descuento o gratis.
-- El precio del pack lo ponen los descuentos automáticos de Shopify (o un código por pack, o variantes por pack).
-
-## Reseñas
-Vienen con textos entre corchetes para ver el diseño: reemplazalos por reseñas reales, con permiso. Aceptan bloques de apps de reseñas.
+## 5 · Reseñas
+Vienen con textos entre corchetes: reemplazalos por reseñas reales con permiso. Cada reseña tiene "Beneficio" y así se arman los filtros.
