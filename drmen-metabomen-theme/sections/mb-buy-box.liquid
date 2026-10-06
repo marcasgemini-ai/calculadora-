@@ -56,7 +56,12 @@
   #mb-{{ section.id }} .bb-gal { position: relative; border: 1.5px solid var(--mb-line); border-radius: 22px; overflow: hidden; background: #fff; }
   #mb-{{ section.id }} .bb-gal__band { background: var(--mb-red); color: #fff; text-align: center; font-weight: 900; font-style: italic; font-size: clamp(14px, 1.6vw, 19px); text-transform: uppercase; padding: 12px 14px; }
   #mb-{{ section.id }} .bb-gal__main { position: relative; }
-  #mb-{{ section.id }} .bb-gal__main img, #mb-{{ section.id }} .bb-gal__main .mb-ph { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 0; border: 0; }
+  #mb-{{ section.id }} .bb-gal__main .mb-ph { width: 100%; aspect-ratio: {{ section.settings.media_ratio }}; border-radius: 0; border: 0; }
+  #mb-{{ section.id }} .bb-slides { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; scrollbar-width: none; }
+  #mb-{{ section.id }} .bb-slides::-webkit-scrollbar { display: none; }
+  #mb-{{ section.id }} .bb-slide { flex: 0 0 100%; scroll-snap-align: center; aspect-ratio: {{ section.settings.media_ratio }}; background: #fff; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  #mb-{{ section.id }} .bb-slide img, #mb-{{ section.id }} .bb-slide video { width: 100%; height: 100%; object-fit: {{ section.settings.media_fit }}; display: block; }
+  #mb-{{ section.id }} .bb-slide iframe { width: 100%; height: 100%; border: 0; }
   #mb-{{ section.id }} .bb-gal__arr { position: absolute; top: 50%; transform: translateY(-50%); width: 38px; height: 38px; border-radius: 50%; border: 0; background: rgba(0,0,0,.75); color: #fff; font-size: 20px; cursor: pointer; z-index: 2; display: flex; align-items: center; justify-content: center; }
   #mb-{{ section.id }} .bb-gal__arr.is-prev { left: 12px; background: rgba(255,255,255,.85); color: var(--mb-ink); }
   #mb-{{ section.id }} .bb-gal__arr.is-next { right: 12px; }
@@ -66,7 +71,9 @@
   #mb-{{ section.id }} .bb-th { display: flex; gap: 8px; margin-top: 10px; overflow-x: auto; scrollbar-width: none; }
   #mb-{{ section.id }} .bb-th button { flex: 0 0 74px; height: 74px; padding: 0; border: 2px solid transparent; border-radius: 10px; overflow: hidden; background: #fff; cursor: pointer; }
   #mb-{{ section.id }} .bb-th button.is-on { border-color: var(--mb-red); }
+  #mb-{{ section.id }} .bb-th button { position: relative; }
   #mb-{{ section.id }} .bb-th img { width: 100%; height: 100%; object-fit: cover; }
+  #mb-{{ section.id }} .bb-th__play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 16px; background: rgba(0,0,0,.28); }
   #mb-{{ section.id }} .bb-tiles { display: grid; grid-template-columns: repeat({{ features.size | at_least: 1 | at_most: 4 }}, 1fr); gap: 10px; margin-top: 16px; }
   #mb-{{ section.id }} .bb-tiles div { background: #fff; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,.05); padding: 16px 8px; text-align: center; font-size: 11.5px; font-weight: 800; text-transform: uppercase; color: var(--mb-red); line-height: 1.25; }
   #mb-{{ section.id }} .bb-tiles .mb-ic { width: 26px; height: 26px; display: block; margin: 0 auto 8px; }
@@ -187,34 +194,69 @@
           </div>
         {%- endif -%}
 
+        {%- capture feat_html -%}{%- for f in features -%}<div {{ f.shopify_attributes }}>{%- if f.settings.icon_image != blank -%}{{ f.settings.icon_image | image_url: width: 80 | image_tag: loading: 'lazy', alt: '' }}{%- else -%}<svg class="mb-ic" viewBox="0 0 24 24" aria-hidden="true">{%- case f.settings.icon -%}{%- when 'bolt' -%}<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>{%- when 'moon' -%}<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>{%- when 'belly' -%}<path d="M8 3v4c0 1-2 2-2 6 0 5 3 8 6 8s6-3 6-8c0-4-2-5-2-6V3"/><circle cx="12" cy="14" r="1"/>{%- when 'heart' -%}<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>{%- when 'hourglass' -%}<path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.17a2 2 0 0 0-.59-1.42L12 12l-4.41 4.41A2 2 0 0 0 7 17.83V22"/><path d="M7 2v4.17a2 2 0 0 0 .59 1.42L12 12l4.41-4.41A2 2 0 0 0 17 6.17V2"/>{%- when 'brain' -%}<path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/>{%- when 'shield' -%}<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>{%- when 'leaf' -%}<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>{%- when 'dumbbell' -%}<path d="m6.5 6.5 11 11"/><path d="m21 21-1-1"/><path d="m3 3 1 1"/><path d="m18 22 4-4"/><path d="m2 6 4-4"/><path d="m3 10 7-7"/><path d="m14 21 7-7"/>{%- when 'capsule' -%}<path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/>{%- else -%}<path d="M20 6 9 17l-5-5"/>{%- endcase -%}</svg>{%- endif -%}{{ f.settings.text }}</div>{%- endfor -%}{%- endcapture -%}
         <div class="bb-gal">
           {%- if section.settings.band != blank -%}<div class="bb-gal__band">{{ section.settings.band }}</div>{%- endif -%}
           <div class="bb-gal__main">
-            {%- assign imgs = prod.media | where: 'media_type', 'image' -%}
-            {%- if imgs.size > 0 -%}
-              <img data-main src="{{ imgs[0] | image_url: width: 1100 }}" alt="{{ prod.title | escape }}" width="1100" height="1100" loading="lazy">
+            {%- liquid
+              assign gal = prod.media
+              assign start = 0
+              assign fm = prod.selected_or_first_available_variant.featured_media
+              if fm
+                for m in gal
+                  if m.id == fm.id
+                    assign start = forloop.index0
+                    break
+                  endif
+                endfor
+              endif
+            -%}
+            {%- if gal.size > 0 -%}
+              <div class="bb-slides" data-slides data-start="{{ start }}">
+                {%- for m in gal limit: 12 -%}
+                  <div class="bb-slide" data-i="{{ forloop.index0 }}" data-type="{{ m.media_type }}">
+                    {%- case m.media_type -%}
+                      {%- when 'image' -%}
+                        {%- if forloop.index0 == start -%}
+                          {{ m | image_url: width: 1500 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '400, 600, 800, 1000, 1200, 1500', sizes: '(min-width: 990px) 50vw, 100vw', alt: m.alt | default: prod.title }}
+                        {%- else -%}
+                          {{ m | image_url: width: 1500 | image_tag: loading: 'lazy', widths: '400, 600, 800, 1000, 1200, 1500', sizes: '(min-width: 990px) 50vw, 100vw', alt: m.alt | default: prod.title }}
+                        {%- endif -%}
+                      {%- when 'video' -%}
+                        {{ m | video_tag: controls: true, playsinline: true, muted: true, preload: 'metadata', image_size: '1100x' }}
+                      {%- when 'external_video' -%}
+                        {{ m | external_video_tag: loading: 'lazy' }}
+                      {%- else -%}
+                        {{ m.preview_image | image_url: width: 1200 | image_tag: loading: 'lazy', alt: m.alt | default: prod.title }}
+                    {%- endcase -%}
+                  </div>
+                {%- endfor -%}
+              </div>
             {%- else -%}<div class="mb-ph">FOTOS DEL PRODUCTO · se toman de Shopify</div>{%- endif -%}
-            {%- if imgs.size > 1 -%}
+            {%- if gal.size > 1 -%}
               <button type="button" class="bb-gal__arr is-prev" data-gprev aria-label="Anterior">&#8249;</button>
               <button type="button" class="bb-gal__arr is-next" data-gnext aria-label="Siguiente">&#8250;</button>
             {%- endif -%}
             {%- if section.settings.side_list and features.size > 0 -%}
               <div class="bb-gal__side">
-                {%- for f in features -%}<div>{%- if f.settings.icon_image != blank -%}{{ f.settings.icon_image | image_url: width: 80 | image_tag: loading: 'lazy', alt: '' }}{%- else -%}<svg class="mb-ic" viewBox="0 0 24 24" aria-hidden="true">{%- case f.settings.icon -%}{%- when 'bolt' -%}<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>{%- when 'moon' -%}<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>{%- when 'belly' -%}<path d="M8 3v4c0 1-2 2-2 6 0 5 3 8 6 8s6-3 6-8c0-4-2-5-2-6V3"/><circle cx="12" cy="14" r="1"/>{%- when 'heart' -%}<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>{%- when 'hourglass' -%}<path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.17a2 2 0 0 0-.59-1.42L12 12l-4.41 4.41A2 2 0 0 0 7 17.83V22"/><path d="M7 2v4.17a2 2 0 0 0 .59 1.42L12 12l4.41-4.41A2 2 0 0 0 17 6.17V2"/>{%- when 'brain' -%}<path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/>{%- when 'shield' -%}<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>{%- when 'leaf' -%}<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>{%- when 'dumbbell' -%}<path d="m6.5 6.5 11 11"/><path d="m21 21-1-1"/><path d="m3 3 1 1"/><path d="m18 22 4-4"/><path d="m2 6 4-4"/><path d="m3 10 7-7"/><path d="m14 21 7-7"/>{%- when 'capsule' -%}<path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/>{%- else -%}<path d="M20 6 9 17l-5-5"/>{%- endcase -%}</svg>{%- endif -%}{{ f.settings.text }}</div>{%- endfor -%}
+                {{ feat_html }}
               </div>
             {%- endif -%}
           </div>
         </div>
-        {%- if imgs.size > 1 -%}
+        {%- if gal.size > 1 -%}
           <div class="bb-th">
-            {%- for m in imgs limit: 10 -%}
-              <button type="button" class="{% if forloop.first %}is-on{% endif %}" data-src="{{ m | image_url: width: 1100 }}"><img src="{{ m | image_url: width: 160 }}" alt="" loading="lazy" width="160" height="160"></button>
+            {%- for m in gal limit: 12 -%}
+              <button type="button" class="{% if forloop.index0 == start %}is-on{% endif %}" data-go="{{ forloop.index0 }}" aria-label="Ver {{ forloop.index }}">
+                {{ m.preview_image | image_url: width: 160 | image_tag: loading: 'lazy', widths: '80, 160', sizes: '74px', alt: '' }}
+                {%- if m.media_type == 'video' or m.media_type == 'external_video' -%}<span class="bb-th__play" aria-hidden="true">▶</span>{%- endif -%}
+              </button>
             {%- endfor -%}
           </div>
         {%- endif -%}
         {%- if section.settings.tiles and features.size > 0 -%}
           <div class="bb-tiles">
-            {%- for f in features limit: 4 -%}<div {{ f.shopify_attributes }}>{%- if f.settings.icon_image != blank -%}{{ f.settings.icon_image | image_url: width: 80 | image_tag: loading: 'lazy', alt: '' }}{%- else -%}<svg class="mb-ic" viewBox="0 0 24 24" aria-hidden="true">{%- case f.settings.icon -%}{%- when 'bolt' -%}<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>{%- when 'moon' -%}<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>{%- when 'belly' -%}<path d="M8 3v4c0 1-2 2-2 6 0 5 3 8 6 8s6-3 6-8c0-4-2-5-2-6V3"/><circle cx="12" cy="14" r="1"/>{%- when 'heart' -%}<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>{%- when 'hourglass' -%}<path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.17a2 2 0 0 0-.59-1.42L12 12l-4.41 4.41A2 2 0 0 0 7 17.83V22"/><path d="M7 2v4.17a2 2 0 0 0 .59 1.42L12 12l4.41-4.41A2 2 0 0 0 17 6.17V2"/>{%- when 'brain' -%}<path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/>{%- when 'shield' -%}<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>{%- when 'leaf' -%}<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>{%- when 'dumbbell' -%}<path d="m6.5 6.5 11 11"/><path d="m21 21-1-1"/><path d="m3 3 1 1"/><path d="m18 22 4-4"/><path d="m2 6 4-4"/><path d="m3 10 7-7"/><path d="m14 21 7-7"/>{%- when 'capsule' -%}<path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/>{%- else -%}<path d="M20 6 9 17l-5-5"/>{%- endcase -%}</svg>{%- endif -%}{{ f.settings.text }}</div>{%- endfor -%}
+            {{ feat_html }}
           </div>
         {%- endif -%}
       </div>
@@ -351,19 +393,33 @@
     var root = document.getElementById('mb-{{ section.id }}');
     if (!root) return;
 
-    var main = root.querySelector('[data-main]');
+    var track = root.querySelector('[data-slides]');
+    var slides = track ? Array.prototype.slice.call(track.children) : [];
     var thumbs = Array.prototype.slice.call(root.querySelectorAll('.bb-th button'));
-    var gi = 0;
-    function show(i) {
-      if (!thumbs.length || !main) return;
-      gi = (i + thumbs.length) % thumbs.length;
-      main.src = thumbs[gi].getAttribute('data-src');
+    var gi = track ? Number(track.getAttribute('data-start')) || 0 : 0;
+    function mark() {
       thumbs.forEach(function (t, k) { t.classList.toggle('is-on', k === gi); });
+      var on = thumbs[gi]; if (on && on.parentNode) { on.parentNode.scrollTo({ left: on.offsetLeft - 8, behavior: 'smooth' }); }
+      slides.forEach(function (sl, k) { if (k !== gi) { var v = sl.querySelector('video'); if (v && !v.paused) v.pause(); } });
     }
-    thumbs.forEach(function (t, k) { t.addEventListener('click', function () { show(k); }); });
+    function show(i, instant) {
+      if (!slides.length) return;
+      gi = (i + slides.length) % slides.length;
+      track.scrollTo({ left: slides[gi].offsetLeft, behavior: instant ? 'auto' : 'smooth' });
+      mark();
+    }
+    thumbs.forEach(function (t) { t.addEventListener('click', function () { show(Number(t.getAttribute('data-go'))); }); });
     var gp = root.querySelector('[data-gprev]'), gn = root.querySelector('[data-gnext]');
     if (gp) gp.addEventListener('click', function () { show(gi - 1); });
     if (gn) gn.addEventListener('click', function () { show(gi + 1); });
+    if (track) {
+      var st;
+      track.addEventListener('scroll', function () {
+        clearTimeout(st);
+        st = setTimeout(function () { var k = Math.round(track.scrollLeft / track.clientWidth); if (k !== gi && slides[k]) { gi = k; mark(); } }, 90);
+      }, { passive: true });
+      if (gi > 0) show(gi, true);
+    }
 
     var timer = root.querySelector('[data-timer]');
     if (timer) {
@@ -593,6 +649,46 @@
     {
       "type": "header",
       "content": "Galería"
+    },
+    {
+      "type": "paragraph",
+      "content": "La galería usa las fotos y videos del producto en Shopify (Productos › Multimedia), en ese orden. Arranca en la foto de la variante elegida."
+    },
+    {
+      "type": "select",
+      "id": "media_ratio",
+      "label": "Proporción de la galería",
+      "default": "1 / 1",
+      "options": [
+        {
+          "value": "1 / 1",
+          "label": "Cuadrada"
+        },
+        {
+          "value": "4 / 5",
+          "label": "Vertical"
+        },
+        {
+          "value": "3 / 4",
+          "label": "Vertical alta"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "media_fit",
+      "label": "Ajuste de las fotos",
+      "default": "cover",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Llenar el recuadro"
+        },
+        {
+          "value": "contain",
+          "label": "Mostrar la foto entera"
+        }
+      ]
     },
     {
       "type": "text",
