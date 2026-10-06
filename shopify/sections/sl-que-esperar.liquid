@@ -204,7 +204,7 @@
     {%- if n > 1 -%}{%- assign x = step | times: i | plus: plot_left -%}{%- else -%}{%- assign x = 270 -%}{%- endif -%}
     {%- assign y = block.settings.value | times: plot_h | divided_by: 100.0 -%}
     {%- assign y = plot_bottom | minus: y -%}
-    {{ x | round: 1 }},{{ y | round: 1 }}{% unless forloop.last %} {% endunless %}
+    {{ x | round: 1 }},{{ y | round: 1 }}{% unless forloop.last %};{% endunless %}
   {%- endfor -%}
 {%- endcapture -%}
 
@@ -272,13 +272,14 @@
               {%- if section.settings.y_label != blank -%}
                 <text class="sl-qe__ylabel" transform="translate(28 {{ plot_bottom | plus: 10 }}) rotate(-90)">{{ section.settings.y_label | escape }}</text>
               {%- endif -%}
-              {%- assign first_point = points | strip | split: ' ' | first -%}
-              {%- assign last_point = points | strip | split: ' ' | last -%}
+              {%- assign pts = points | strip | split: ';' -%}
+              {%- assign pts_line = pts | join: ' ' -%}
+              {%- assign first_point = pts | first -%}
+              {%- assign last_point = pts | last -%}
               {%- assign first_x = first_point | split: ',' | first -%}
               {%- assign last_x = last_point | split: ',' | first -%}
-              <polygon class="sl-qe__area" points="{{ first_x }},{{ plot_bottom | plus: 15 }} {{ points | strip }} {{ last_x }},{{ plot_bottom | plus: 15 }}"/>
-              <polyline class="sl-qe__line" points="{{ points | strip }}"/>
-              {%- assign pts = points | strip | split: ' ' -%}
+              <polygon class="sl-qe__area" points="{{ first_x }},{{ plot_bottom | plus: 15 }} {{ pts_line }} {{ last_x }},{{ plot_bottom | plus: 15 }}"/>
+              <polyline class="sl-qe__line" points="{{ pts_line }}"/>
               {%- for p in pts -%}
                 {%- assign xy = p | split: ',' -%}
                 <circle class="sl-qe__dot{% if forloop.first %} is-active{% endif %}" cx="{{ xy[0] }}" cy="{{ xy[1] }}" r="6" data-index="{{ forloop.index0 }}"/>
