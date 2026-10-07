@@ -1,6 +1,6 @@
 # Secciones mb-* · guía rápida
 
-13 secciones que funcionan solas (estilos, schema, bloques y presets adentro de cada archivo).
+14 secciones que funcionan solas (estilos, schema, bloques y presets adentro de cada archivo).
 Validadas con Theme Check oficial de Shopify: 0 errores, 0 avisos.
 
 ## 1 · Pegarlas (una sola vez por theme)
@@ -26,6 +26,7 @@ Adentro de cada sección: **Agregar bloque** › los bloques de la última colum
 | 11 | `mb-faq` | MB · Preguntas frecuentes | Pregunta |
 | 12 | `mb-reviews` | MB · Reseñas (lista) | Reseña |
 | 13 | `mb-ingredients` | MB · Ingredientes | Ingrediente |
+| 14 | `mb-hero-photo` | MB · Hero con foto | — |
 
 ## 3 · Ajustes que tienen todas
 - **Fondo:** Blanco, Crema, Arena, Negro, Rojo (color de acento).

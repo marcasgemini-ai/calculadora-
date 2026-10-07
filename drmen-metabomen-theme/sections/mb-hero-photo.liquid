@@ -1,0 +1,389 @@
+{%- if section.settings.custom_font -%}<style>{{ section.settings.heading_font | font_face: font_display: 'swap' }}</style>{%- endif -%}
+
+<style>
+  #mb-{{ section.id }} .hp { position: relative; isolation: isolate; display: flex; flex-direction: column; min-height: {{ section.settings.height }}vh; min-height: {{ section.settings.height }}svh; overflow: hidden; background: var(--mb-black); color: #fff; }
+  #mb-{{ section.id }} .hp__bg { position: absolute; inset: 0; z-index: -2; }
+  #mb-{{ section.id }} .hp__bg img, #mb-{{ section.id }} .hp__bg .mb-ph { width: 100%; height: 100%; object-fit: cover; }
+  #mb-{{ section.id }} .hp__bg .mb-ph { fill: rgba(255,255,255,.15); background: #2a2c30; }
+  #mb-{{ section.id }} .hp__bg--m { display: none; }
+  #mb-{{ section.id }} .hp::after { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: linear-gradient(180deg, rgba(0,0,0,{{ section.settings.overlay_top | divided_by: 100.0 }}) 0%, rgba(0,0,0,{{ section.settings.overlay | divided_by: 200.0 }}) 40%, rgba(0,0,0,{{ section.settings.overlay | divided_by: 100.0 }}) 100%); }
+  #mb-{{ section.id }} .hp__in { flex: 1; display: flex; flex-direction: column; width: 100%; max-width: 1180px; margin: 0 auto; padding: 24px 16px {{ section.settings.pb }}px; }
+  #mb-{{ section.id }} .hp__proof { align-self: {{ section.settings.proof_align }}; display: inline-flex; align-items: center; gap: 14px; padding: 8px 22px 8px 8px; border-radius: 999px; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.28); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); box-shadow: 0 8px 30px rgba(0,0,0,.18); max-width: 100%; }
+  #mb-{{ section.id }} .hp__proof.no-av { padding-left: 22px; }
+  #mb-{{ section.id }} .hp__av { display: flex; flex: 0 0 auto; }
+  #mb-{{ section.id }} .hp__av > * { width: 44px; height: 44px; border-radius: 50%; border: 2.5px solid #fff; object-fit: cover; background: #c9b8a6; }
+  #mb-{{ section.id }} .hp__av > * + * { margin-left: -12px; }
+  #mb-{{ section.id }} .hp__proof-t { min-width: 0; line-height: 1.25; }
+  #mb-{{ section.id }} .hp__proof .mb-stars { display: block; color: var(--hp-gold); font-size: 16px; }
+  #mb-{{ section.id }} .hp__proof b { display: block; font-size: 16px; font-weight: 700; letter-spacing: .01em; }
+  #mb-{{ section.id }} .hp__body { margin-top: auto; padding-top: 40px; display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 900px; margin-left: auto; margin-right: auto; width: 100%; }
+  #mb-{{ section.id }} .hp--middle .hp__body { margin-top: auto; margin-bottom: auto; }
+  #mb-{{ section.id }} .hp--top .hp__body { margin-top: 0; }
+  #mb-{{ section.id }} .hp h1 { font-size: clamp(38px, 6.4vw, 80px); line-height: 1.04; letter-spacing: -.01em; text-transform: none; color: #fff; text-shadow: 0 2px 24px rgba(0,0,0,.25); }
+  #mb-{{ section.id }} .hp h1 em { color: var(--hp-hl); }
+  #mb-{{ section.id }} .hp__sub { margin-top: 18px; max-width: 640px; font-size: clamp(17px, 1.7vw, 21px); line-height: 1.45; color: rgba(255,255,255,.92); }
+  #mb-{{ section.id }} .hp__sub p { margin: 0; }
+  #mb-{{ section.id }} .hp__btn { margin-top: 30px; width: 100%; max-width: 620px; border-radius: 12px; padding: 24px 28px; font-size: 18px; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
+  #mb-{{ section.id }} .hp__btn:hover { transform: translateY(-1px); }
+  #mb-{{ section.id }} .hp__under { margin-top: 22px; font-size: 14px; font-weight: 700; letter-spacing: .08em !important; text-transform: uppercase; color: rgba(255,255,255,.8); }
+  @media (max-width: 749px) {
+    #mb-{{ section.id }} .hp { min-height: {{ section.settings.height_mobile }}svh; min-height: {{ section.settings.height_mobile }}vh; min-height: {{ section.settings.height_mobile }}svh; }
+    {%- if section.settings.image_mobile != blank %}
+    #mb-{{ section.id }} .hp__bg--d { display: none; }
+    #mb-{{ section.id }} .hp__bg--m { display: block; }
+    {%- endif %}
+    #mb-{{ section.id }} .hp__in { padding: 16px 16px {{ section.settings.pb | at_most: 48 }}px; }
+    #mb-{{ section.id }} .hp__proof { gap: 10px; padding: 6px 16px 6px 6px; }
+    #mb-{{ section.id }} .hp__proof.no-av { padding-left: 16px; }
+    #mb-{{ section.id }} .hp__av > * { width: 36px; height: 36px; border-width: 2px; }
+    #mb-{{ section.id }} .hp__av > * + * { margin-left: -10px; }
+    #mb-{{ section.id }} .hp__proof .mb-stars { font-size: 13px; }
+    #mb-{{ section.id }} .hp__proof b { font-size: 13.5px; }
+    #mb-{{ section.id }} .hp h1 { font-size: clamp(34px, 10vw, 46px); }
+    #mb-{{ section.id }} .hp__sub { font-size: 16.5px; margin-top: 14px; }
+    #mb-{{ section.id }} .hp__btn { margin-top: 24px; padding: 20px 18px; font-size: 16px; }
+    #mb-{{ section.id }} .hp__under { font-size: 12.5px; margin-top: 18px; }
+  }
+</style>
+
+<section id="mb-{{ section.id }}" class="mb" style="--mb-red: {{ section.settings.accent }}; --mb-red-dark: {{ section.settings.accent | color_darken: 15 }}; --hp-hl: {{ section.settings.highlight }}; --hp-gold: {{ section.settings.stars_color }};{% if section.settings.custom_font %} --mb-head: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }};{% endif %}">
+  <div class="hp hp--{{ section.settings.text_position }}">
+    <div class="hp__bg hp__bg--d">
+      {%- if section.settings.image != blank -%}
+        {{ section.settings.image | image_url: width: 2400 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '750, 1100, 1500, 1920, 2400', sizes: '100vw', style: section.settings.image.presentation.focal_point | prepend: 'object-position: ' }}
+      {%- else -%}
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'mb-ph' }}
+      {%- endif -%}
+    </div>
+    {%- if section.settings.image_mobile != blank -%}
+      <div class="hp__bg hp__bg--m">
+        {{ section.settings.image_mobile | image_url: width: 1200 | image_tag: loading: 'eager', widths: '450, 750, 900, 1200', sizes: '100vw', style: section.settings.image_mobile.presentation.focal_point | prepend: 'object-position: ' }}
+      </div>
+    {%- endif -%}
+
+    <div class="hp__in">
+      {%- if section.settings.proof_text != blank -%}
+        <div class="hp__proof{% if section.settings.avatar_1 == blank and section.settings.avatar_2 == blank and section.settings.avatar_3 == blank %} no-av{% endif %}">
+          {%- if section.settings.avatar_1 != blank or section.settings.avatar_2 != blank or section.settings.avatar_3 != blank -%}
+            <div class="hp__av">
+              {%- if section.settings.avatar_1 != blank -%}{{ section.settings.avatar_1 | image_url: width: 120 | image_tag: loading: 'eager', alt: '' }}{%- endif -%}
+              {%- if section.settings.avatar_2 != blank -%}{{ section.settings.avatar_2 | image_url: width: 120 | image_tag: loading: 'eager', alt: '' }}{%- endif -%}
+              {%- if section.settings.avatar_3 != blank -%}{{ section.settings.avatar_3 | image_url: width: 120 | image_tag: loading: 'eager', alt: '' }}{%- endif -%}
+            </div>
+          {%- endif -%}
+          <div class="hp__proof-t">
+            <span class="mb-stars" aria-hidden="true">★★★★★</span>
+            <b>{{ section.settings.proof_text }}</b>
+          </div>
+        </div>
+      {%- endif -%}
+
+      <div class="hp__body">
+        <h1>{{ section.settings.heading }}</h1>
+        {%- if section.settings.subheading != blank -%}<div class="hp__sub">{{ section.settings.subheading }}</div>{%- endif -%}
+        {%- if section.settings.button_label != blank -%}
+          <a class="mb-btn hp__btn" href="{{ section.settings.button_link | default: '#mb-comprar' }}">{{ section.settings.button_label }}</a>
+        {%- endif -%}
+        {%- if section.settings.under_text != blank -%}<div class="hp__under">{{ section.settings.under_text }}</div>{%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+/* Estilos base de las secciones mb-* (iguales en todas: cada sección funciona sola) */
+
+.mb {
+  --mb-red: #E1261C;
+  --mb-red-dark: #A9170F;
+  --mb-ink: #141517;
+  --mb-black: #0E0F11;
+  --mb-cream: #F4F1EC;
+  --mb-sand: #EAE4DA;
+  --mb-line: #E2DDD4;
+  --mb-muted: #6E6A64;
+  --mb-good: #2F8A5B;
+  --mb-gold: #E9A23B;
+  --mb-head: var(--font-heading-family, sans-serif);
+  --mb-body: var(--font-body-family, sans-serif);
+  --mb-bg: #FFFFFF;
+  --mb-fg: var(--mb-ink);
+  --mb-sub: var(--mb-muted);
+  --mb-card: #FFFFFF;
+  --mb-card-line: var(--mb-line);
+  background: var(--mb-bg);
+  color: var(--mb-fg);
+  font-family: var(--mb-body);
+  font-size: 16px;
+  line-height: 1.55;
+  letter-spacing: 0;
+  -webkit-text-size-adjust: 100%;
+}
+.mb.mb--cream { --mb-bg: var(--mb-cream); }
+.mb.mb--sand { --mb-bg: var(--mb-sand); }
+.mb.mb--red { --mb-bg: var(--mb-red); --mb-fg: #fff; --mb-sub: #FFE3E0; --mb-card: rgba(255,255,255,.1); --mb-card-line: rgba(255,255,255,.25); }
+.mb.mb--dark { --mb-bg: var(--mb-black); --mb-fg: #fff; --mb-sub: #A9AEB4; --mb-card: #17191C; --mb-card-line: #2A2E33; }
+
+.mb *, .mb *::before, .mb *::after { box-sizing: border-box; }
+.mb :where(p, li, span, b, strong, small, a, div, td, th, summary, em, label) { letter-spacing: 0; }
+.mb :where(p, li, td, th, summary) { font-size: inherit; line-height: inherit; }
+.mb p { margin: 0 0 14px; }
+.mb img, .mb video { display: block; max-width: 100%; height: auto; }
+.mb :where(h1, h2, h3, h4) { font-family: var(--mb-head); font-weight: 700; text-transform: uppercase; letter-spacing: .01em; line-height: 1.05; margin: 0; color: inherit; }
+.mb :where(h1, h2, h3) em, .mb .mb-accent { font-style: normal; color: var(--mb-red); }
+.mb.mb--red :where(h1, h2, h3) em, .mb.mb--red .mb-accent { color: var(--mb-black); }
+
+.mb-wrap { max-width: 1180px; margin: 0 auto; padding: 0 16px; }
+.mb-pad { padding-top: var(--mb-pt, 64px); padding-bottom: var(--mb-pb, 64px); }
+.mb-head { text-align: center; max-width: 780px; margin: 0 auto 30px; }
+.mb-eyebrow { display: inline-block; font-size: 12px; font-weight: 800; letter-spacing: .16em !important; text-transform: uppercase; color: var(--mb-red); margin-bottom: 10px; }
+.mb--red .mb-eyebrow { color: #fff; }
+.mb-h2 { font-size: clamp(30px, 4.6vw, 50px); }
+.mb-lead { font-size: 17px; color: var(--mb-sub); margin: 12px 0 0 !important; }
+.mb-lead p:last-child { margin-bottom: 0; }
+.mb-center { text-align: center; }
+
+.mb-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: var(--mb-red); color: #fff !important; text-decoration: none !important; border: 0; border-radius: 999px; padding: 17px 34px; font-family: var(--mb-body); font-weight: 800; font-size: 15px; letter-spacing: .06em !important; text-transform: uppercase; cursor: pointer; box-shadow: 0 5px 0 var(--mb-red-dark); transition: transform .12s ease, background .15s ease; }
+.mb-btn:hover { background: var(--mb-red-dark); transform: translateY(2px); }
+.mb-btn--dark { background: var(--mb-ink); box-shadow: 0 5px 0 #000; }
+.mb-btn--light { background: #fff; color: var(--mb-ink) !important; box-shadow: 0 5px 0 rgba(0,0,0,.18); }
+.mb-btn[disabled] { opacity: .55; cursor: default; transform: none; }
+.mb-under { font-size: 13px; color: var(--mb-sub); margin-top: 12px; }
+.mb-stars { color: var(--mb-gold); letter-spacing: 2px; white-space: nowrap; }
+.mb-rating { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; }
+
+.mb-ph { width: 100%; aspect-ratio: 1 / 1; border: 2px dashed #C8C1B5; border-radius: 18px; background: var(--mb-sand); color: #5B554D; display: flex; align-items: center; justify-content: center; text-align: center; padding: 16px; font-size: 13px; font-weight: 600; }
+.mb--dark .mb-ph, .mb--red .mb-ph { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.3); color: rgba(255,255,255,.75); }
+.mb-ph svg { width: 70%; height: auto; opacity: .35; }
+
+.mb-card { background: var(--mb-card); border: 1px solid var(--mb-card-line); border-radius: 18px; }
+.mb-ic { width: 1em; height: 1em; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.mb-check { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.mb-check li { display: flex; gap: 10px; align-items: flex-start; margin: 0; font-size: 16px; }
+.mb-check li::before { content: ''; flex: 0 0 20px; height: 20px; margin-top: 2px; border-radius: 50%; background: var(--mb-red) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / 12px no-repeat; }
+
+.mb-scroller { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(280px, calc((100% - 32px) / 3)); gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 4px 2px 14px; scrollbar-width: thin; }
+.mb-scroller > * { scroll-snap-align: start; min-width: 0; }
+.mb-arrows { display: flex; justify-content: center; gap: 10px; margin-top: 10px; }
+.mb-arrows button { width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--mb-card-line); background: var(--mb-card); color: var(--mb-fg); font-size: 18px; cursor: pointer; }
+
+@media (max-width: 749px) {
+  .mb-pad { padding-top: var(--mb-pt-m, 44px); padding-bottom: var(--mb-pb-m, 44px); }
+  .mb-btn { display: flex; width: 100%; }
+  .mb-scroller { grid-auto-columns: 84%; }
+  .mb-lead { font-size: 16px; }
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "MB · Hero con foto",
+  "tag": "div",
+  "class": "mb-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Foto de fondo"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Foto (compu)",
+      "info": "Horizontal, mínimo 2000 px. Usá el punto focal de Shopify para elegir qué parte no se corta."
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Foto (celular, opcional)",
+      "info": "Vertical 4:5 o 9:16. Si no subís, usa la de compu."
+    },
+    {
+      "type": "range",
+      "id": "overlay",
+      "label": "Oscurecer abajo (para leer el texto)",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "overlay_top",
+      "label": "Oscurecer arriba",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "height",
+      "label": "Alto en compu",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 90
+    },
+    {
+      "type": "range",
+      "id": "height_mobile",
+      "label": "Alto en celular",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 95
+    },
+    {
+      "type": "select",
+      "id": "text_position",
+      "label": "Posición del texto",
+      "default": "bottom",
+      "options": [
+        {
+          "value": "top",
+          "label": "Arriba"
+        },
+        {
+          "value": "middle",
+          "label": "Centro"
+        },
+        {
+          "value": "bottom",
+          "label": "Abajo"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Prueba social (cápsula de arriba)"
+    },
+    {
+      "type": "image_picker",
+      "id": "avatar_1",
+      "label": "Foto cliente 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "avatar_2",
+      "label": "Foto cliente 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "avatar_3",
+      "label": "Foto cliente 3"
+    },
+    {
+      "type": "text",
+      "id": "proof_text",
+      "label": "Texto",
+      "default": "[+X mil reseñas] · [+X mil vendidos]",
+      "info": "Poné tus números reales. Si lo dejás vacío, la cápsula no aparece."
+    },
+    {
+      "type": "select",
+      "id": "proof_align",
+      "label": "Ubicación de la cápsula",
+      "default": "flex-start",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Izquierda"
+        },
+        {
+          "value": "center",
+          "label": "Centro"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "stars_color",
+      "label": "Color de las estrellas",
+      "default": "#F5C04A"
+    },
+    {
+      "type": "header",
+      "content": "Textos"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Título",
+      "default": "Volvé a sentirte <em>joven</em>",
+      "info": "Lo que pongas en itálica sale en el color de resaltado."
+    },
+    {
+      "type": "color",
+      "id": "highlight",
+      "label": "Color de resaltado del título",
+      "default": "#F5C04A"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Bajada",
+      "default": "<p>El tratamiento integral para el hombre de +40: sueño, panza, energía y ganas en 1 cápsula por día.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Texto del botón",
+      "default": "Ver packs · Ahorrá hasta 65%"
+    },
+    {
+      "type": "text",
+      "id": "button_link",
+      "label": "Link del botón",
+      "default": "#mb-comprar"
+    },
+    {
+      "type": "text",
+      "id": "under_text",
+      "label": "Texto debajo del botón",
+      "default": "60 días de garantía o te devolvemos el dinero"
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Espacio abajo",
+      "min": 16,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "header",
+      "content": "Estilo de marca"
+    },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Color de acento",
+      "default": "#E1261C"
+    },
+    {
+      "type": "checkbox",
+      "id": "custom_font",
+      "label": "Usar otra tipografía en los títulos",
+      "default": false,
+      "info": "Para que quede como la referencia elegí Playfair Display (negrita)."
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_font",
+      "label": "Tipografía de títulos",
+      "default": "assistant_n4"
+    }
+  ],
+  "presets": [
+    {
+      "name": "MB · Hero con foto"
+    }
+  ]
+}
+{% endschema %}
