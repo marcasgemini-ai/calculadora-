@@ -25,6 +25,9 @@
   #mb-{{ section.id }} .hp__bg--m img { object-position: {{ focal_m }}; }
   #mb-{{ section.id }} .hp__bg svg { background: #2a2c30; fill: rgba(255,255,255,.12); }
   #mb-{{ section.id }} .hp__bg--m { display: none; }
+  {%- if section.settings.fit_desktop and section.settings.image != blank %}
+  @media (min-width: 750px) { #mb-{{ section.id }} .hp { min-height: 0; aspect-ratio: {{ section.settings.image.aspect_ratio }}; } }
+  {%- endif %}
   #mb-{{ section.id }} .hp::before { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
     background: linear-gradient(180deg, rgba(0,0,0,{{ ovt }}) 0%, rgba(0,0,0,0) 22%), linear-gradient(90deg, rgba(0,0,0,{{ ov | times: 1.4 | at_most: 0.92 }}) 0%, rgba(0,0,0,{{ ov | times: 0.8 }}) 40%, rgba(0,0,0,0) 72%); }
   #mb-{{ section.id }} .hp--center::before { background: linear-gradient(180deg, rgba(0,0,0,{{ ovt }}) 0%, rgba(0,0,0,0) 22%), radial-gradient(ellipse at center, rgba(0,0,0,{{ ov }}) 0%, rgba(0,0,0,{{ ov | times: 0.55 }}) 60%, rgba(0,0,0,{{ ov | times: 0.35 }}) 100%); }
@@ -85,6 +88,19 @@
     #mb-{{ section.id }} .hp__btn { margin-top: 22px; min-width: 0; width: 100%; padding: 19px 16px; font-size: 15px; letter-spacing: .03em !important; }
     #mb-{{ section.id }} .hp__under { margin-top: 14px; font-size: 13px; }
   }
+  {%- if section.settings.mobile_layout == 'stack' %}
+  @media (max-width: 749px) {
+    #mb-{{ section.id }} .hp { display: block; min-height: 0; }
+    #mb-{{ section.id }} .hp::before, #mb-{{ section.id }} .hp--center::before { display: none; }
+    #mb-{{ section.id }} .hp__bg { position: relative; inset: auto; z-index: 0; }
+    #mb-{{ section.id }} .hp__bg img, #mb-{{ section.id }} .hp__bg svg { height: auto; max-height: 75svh; object-fit: cover; }
+    #mb-{{ section.id }} .hp__bg svg { aspect-ratio: 4 / 5; }
+    #mb-{{ section.id }} .hp__bg::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 45%; background: linear-gradient(180deg, rgba(13,14,16,0) 0%, rgba(13,14,16,.75) 55%, #0d0e10 100%); }
+    #mb-{{ section.id }} .hp__bg::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 22%; z-index: 1; background: linear-gradient(180deg, rgba(0,0,0,{{ ovt }}), rgba(0,0,0,0)); }
+    #mb-{{ section.id }} .hp__in { position: relative; z-index: 1; margin-top: -96px; padding-top: 0; }
+    #mb-{{ section.id }} .hp__proof--top, #mb-{{ section.id }} .hp--center .hp__proof--top { position: static; transform: none; align-self: center; margin-bottom: 14px; }
+  }
+  {%- endif %}
 </style>
 
 {%- capture proof -%}
@@ -263,6 +279,13 @@
       "default": 20
     },
     {
+      "type": "checkbox",
+      "id": "fit_desktop",
+      "label": "Compu: mostrar la foto entera (alto según la foto)",
+      "default": false,
+      "info": "Apagado: la foto llena la pantalla y se recorta según el punto focal."
+    },
+    {
       "type": "range",
       "id": "height",
       "label": "Alto en compu",
@@ -273,14 +296,31 @@
       "default": 85
     },
     {
+      "type": "select",
+      "id": "mobile_layout",
+      "label": "Diseño en celular",
+      "default": "stack",
+      "options": [
+        {
+          "value": "stack",
+          "label": "Foto entera arriba + texto abajo"
+        },
+        {
+          "value": "overlay",
+          "label": "Texto sobre la foto"
+        }
+      ],
+      "info": "\"Foto entera\" nunca recorta la imagen: se adapta a cualquier foto."
+    },
+    {
       "type": "range",
       "id": "height_mobile",
-      "label": "Alto en celular",
+      "label": "Alto en celular (solo con texto sobre la foto)",
       "min": 50,
       "max": 100,
       "step": 5,
       "unit": "%",
-      "default": 92
+      "default": 90
     },
     {
       "type": "select",
