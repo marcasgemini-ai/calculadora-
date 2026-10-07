@@ -1,90 +1,135 @@
 {%- if section.settings.custom_font -%}<style>{{ section.settings.heading_font | font_face: font_display: 'swap' }}</style>{%- endif -%}
 
+{%- liquid
+  assign ov = section.settings.overlay | divided_by: 100.0
+  assign ovt = section.settings.overlay_top | divided_by: 100.0
+  assign focal_d = 'center'
+  if section.settings.image.presentation.focal_point != blank
+    assign focal_d = section.settings.image.presentation.focal_point
+  endif
+  assign focal_m = focal_d
+  if section.settings.image_mobile.presentation.focal_point != blank
+    assign focal_m = section.settings.image_mobile.presentation.focal_point
+  endif
+  assign has_av = false
+  if section.settings.avatar_1 != blank or section.settings.avatar_2 != blank or section.settings.avatar_3 != blank
+    assign has_av = true
+  endif
+-%}
+
 <style>
-  #mb-{{ section.id }} .hp { position: relative; isolation: isolate; display: flex; flex-direction: column; min-height: {{ section.settings.height }}vh; min-height: {{ section.settings.height }}svh; overflow: hidden; background: var(--mb-black); color: #fff; }
+  #mb-{{ section.id }} .hp { position: relative; isolation: isolate; display: flex; min-height: {{ section.settings.height }}vh; min-height: {{ section.settings.height }}svh; overflow: hidden; background: #0d0e10; color: #fff; }
   #mb-{{ section.id }} .hp__bg { position: absolute; inset: 0; z-index: -2; }
-  #mb-{{ section.id }} .hp__bg img, #mb-{{ section.id }} .hp__bg .mb-ph { width: 100%; height: 100%; object-fit: cover; }
-  #mb-{{ section.id }} .hp__bg .mb-ph { fill: rgba(255,255,255,.15); background: #2a2c30; }
+  #mb-{{ section.id }} .hp__bg img, #mb-{{ section.id }} .hp__bg svg { width: 100%; height: 100%; object-fit: cover; }
+  #mb-{{ section.id }} .hp__bg--d img { object-position: {{ focal_d }}; }
+  #mb-{{ section.id }} .hp__bg--m img { object-position: {{ focal_m }}; }
+  #mb-{{ section.id }} .hp__bg svg { background: #2a2c30; fill: rgba(255,255,255,.12); }
   #mb-{{ section.id }} .hp__bg--m { display: none; }
-  #mb-{{ section.id }} .hp::after { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: linear-gradient(180deg, rgba(0,0,0,{{ section.settings.overlay_top | divided_by: 100.0 }}) 0%, rgba(0,0,0,{{ section.settings.overlay | divided_by: 200.0 }}) 40%, rgba(0,0,0,{{ section.settings.overlay | divided_by: 100.0 }}) 100%); }
-  #mb-{{ section.id }} .hp__in { flex: 1; display: flex; flex-direction: column; width: 100%; max-width: 1180px; margin: 0 auto; padding: 24px 16px {{ section.settings.pb }}px; }
-  #mb-{{ section.id }} .hp__proof { align-self: {{ section.settings.proof_align }}; display: inline-flex; align-items: center; gap: 14px; padding: 8px 22px 8px 8px; border-radius: 999px; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.28); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); box-shadow: 0 8px 30px rgba(0,0,0,.18); max-width: 100%; }
-  #mb-{{ section.id }} .hp__proof.no-av { padding-left: 22px; }
-  #mb-{{ section.id }} .hp__av { display: flex; flex: 0 0 auto; }
-  #mb-{{ section.id }} .hp__av > * { width: 44px; height: 44px; border-radius: 50%; border: 2.5px solid #fff; object-fit: cover; background: #c9b8a6; }
-  #mb-{{ section.id }} .hp__av > * + * { margin-left: -12px; }
-  #mb-{{ section.id }} .hp__proof-t { min-width: 0; line-height: 1.25; }
-  #mb-{{ section.id }} .hp__proof .mb-stars { display: block; color: var(--hp-gold); font-size: 16px; }
-  #mb-{{ section.id }} .hp__proof b { display: block; font-size: 16px; font-weight: 700; letter-spacing: .01em; }
-  #mb-{{ section.id }} .hp__body { margin-top: auto; padding-top: 40px; display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 900px; margin-left: auto; margin-right: auto; width: 100%; }
-  #mb-{{ section.id }} .hp--middle .hp__body { margin-top: auto; margin-bottom: auto; }
+  #mb-{{ section.id }} .hp::before { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    background: linear-gradient(180deg, rgba(0,0,0,{{ ovt }}) 0%, rgba(0,0,0,0) 22%), linear-gradient(90deg, rgba(0,0,0,{{ ov | times: 1.4 | at_most: 0.92 }}) 0%, rgba(0,0,0,{{ ov | times: 0.8 }}) 40%, rgba(0,0,0,0) 72%); }
+  #mb-{{ section.id }} .hp--center::before { background: linear-gradient(180deg, rgba(0,0,0,{{ ovt }}) 0%, rgba(0,0,0,0) 22%), radial-gradient(ellipse at center, rgba(0,0,0,{{ ov }}) 0%, rgba(0,0,0,{{ ov | times: 0.55 }}) 60%, rgba(0,0,0,{{ ov | times: 0.35 }}) 100%); }
+  #mb-{{ section.id }} .hp__in { position: relative; flex: 1; display: flex; flex-direction: column; width: 100%; max-width: 1240px; margin: 0 auto; padding: 32px 24px {{ section.settings.pb }}px; }
+  #mb-{{ section.id }} .hp__body { width: 100%; max-width: 620px; display: flex; flex-direction: column; align-items: flex-start; text-align: left; margin: auto 0; }
+  #mb-{{ section.id }} .hp--center .hp__body { max-width: 780px; align-items: center; text-align: center; margin-left: auto; margin-right: auto; }
   #mb-{{ section.id }} .hp--top .hp__body { margin-top: 0; }
-  #mb-{{ section.id }} .hp h1 { font-size: clamp(38px, 6.4vw, 80px); line-height: 1.04; letter-spacing: -.01em; text-transform: none; color: #fff; text-shadow: 0 2px 24px rgba(0,0,0,.25); }
+  #mb-{{ section.id }} .hp--bottom .hp__body { margin-bottom: 0; }
+
+  #mb-{{ section.id }} .hp__proof { display: inline-flex; align-items: center; gap: 10px; max-width: 100%; padding: 6px 16px 6px 6px; border-radius: 999px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); font-size: 14px; line-height: 1.2; }
+  #mb-{{ section.id }} .hp__proof.no-av { padding-left: 14px; }
+  #mb-{{ section.id }} .hp__proof--above { margin-bottom: 20px; }
+  #mb-{{ section.id }} .hp__proof--top { position: absolute; top: 20px; left: 24px; }
+  #mb-{{ section.id }} .hp--center .hp__proof--top { left: 50%; transform: translateX(-50%); }
+  #mb-{{ section.id }} .hp__av { display: flex; flex: 0 0 auto; }
+  #mb-{{ section.id }} .hp__av img { width: 30px; height: 30px; border-radius: 50%; border: 2px solid #fff; object-fit: cover; }
+  #mb-{{ section.id }} .hp__av img + img { margin-left: -9px; }
+  #mb-{{ section.id }} .hp__proof .mb-stars { color: var(--hp-gold); font-size: 13px; letter-spacing: 1px; }
+  #mb-{{ section.id }} .hp__proof b { font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  #mb-{{ section.id }} .hp h1 { font-size: clamp(44px, 5.6vw, 76px); line-height: 1.02; letter-spacing: -.025em; text-transform: none; color: #fff; text-wrap: balance; }
   #mb-{{ section.id }} .hp h1 em { color: var(--hp-hl); }
-  #mb-{{ section.id }} .hp__sub { margin-top: 18px; max-width: 640px; font-size: clamp(17px, 1.7vw, 21px); line-height: 1.45; color: rgba(255,255,255,.92); }
+  #mb-{{ section.id }} .hp__sub { margin-top: 18px; max-width: 520px; font-size: 19px; line-height: 1.5; color: rgba(255,255,255,.86); text-wrap: pretty; }
   #mb-{{ section.id }} .hp__sub p { margin: 0; }
-  #mb-{{ section.id }} .hp__btn { margin-top: 30px; width: 100%; max-width: 620px; border-radius: 12px; padding: 24px 28px; font-size: 18px; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
+  #mb-{{ section.id }} .hp__btn { margin-top: 30px; min-width: 340px; max-width: 100%; border-radius: 12px; padding: 21px 32px; font-size: 16px; letter-spacing: .05em !important; white-space: nowrap; box-shadow: 0 12px 30px -8px color-mix(in srgb, var(--mb-red) 70%, transparent); }
+  #mb-{{ section.id }} .hp__btn svg { width: 18px; height: 18px; flex: 0 0 18px; transition: transform .2s ease; }
   #mb-{{ section.id }} .hp__btn:hover { transform: translateY(-1px); }
-  #mb-{{ section.id }} .hp__under { margin-top: 22px; font-size: 14px; font-weight: 700; letter-spacing: .08em !important; text-transform: uppercase; color: rgba(255,255,255,.8); }
+  #mb-{{ section.id }} .hp__btn:hover svg { transform: translateX(3px); }
+  #mb-{{ section.id }} .hp__under { margin-top: 16px; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: rgba(255,255,255,.78); }
+  #mb-{{ section.id }} .hp__under svg { width: 16px; height: 16px; flex: 0 0 16px; color: #6FD38A; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    #mb-{{ section.id }} .hp__body > * { animation: hpUp-{{ section.id }} .7s cubic-bezier(.2,.7,.2,1) both; }
+    #mb-{{ section.id }} .hp__body > *:nth-child(2) { animation-delay: .06s; }
+    #mb-{{ section.id }} .hp__body > *:nth-child(3) { animation-delay: .12s; }
+    #mb-{{ section.id }} .hp__body > *:nth-child(4) { animation-delay: .18s; }
+    #mb-{{ section.id }} .hp__body > *:nth-child(5) { animation-delay: .24s; }
+    @keyframes hpUp-{{ section.id }} { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  }
+
   @media (max-width: 749px) {
-    #mb-{{ section.id }} .hp { min-height: {{ section.settings.height_mobile }}svh; min-height: {{ section.settings.height_mobile }}vh; min-height: {{ section.settings.height_mobile }}svh; }
+    #mb-{{ section.id }} .hp { min-height: {{ section.settings.height_mobile }}vh; min-height: {{ section.settings.height_mobile }}svh; }
     {%- if section.settings.image_mobile != blank %}
     #mb-{{ section.id }} .hp__bg--d { display: none; }
     #mb-{{ section.id }} .hp__bg--m { display: block; }
     {%- endif %}
-    #mb-{{ section.id }} .hp__in { padding: 16px 16px {{ section.settings.pb | at_most: 48 }}px; }
-    #mb-{{ section.id }} .hp__proof { gap: 10px; padding: 6px 16px 6px 6px; }
-    #mb-{{ section.id }} .hp__proof.no-av { padding-left: 16px; }
-    #mb-{{ section.id }} .hp__av > * { width: 36px; height: 36px; border-width: 2px; }
-    #mb-{{ section.id }} .hp__av > * + * { margin-left: -10px; }
-    #mb-{{ section.id }} .hp__proof .mb-stars { font-size: 13px; }
-    #mb-{{ section.id }} .hp__proof b { font-size: 13.5px; }
-    #mb-{{ section.id }} .hp h1 { font-size: clamp(34px, 10vw, 46px); }
-    #mb-{{ section.id }} .hp__sub { font-size: 16.5px; margin-top: 14px; }
-    #mb-{{ section.id }} .hp__btn { margin-top: 24px; padding: 20px 18px; font-size: 16px; }
-    #mb-{{ section.id }} .hp__under { font-size: 12.5px; margin-top: 18px; }
+    #mb-{{ section.id }} .hp::before, #mb-{{ section.id }} .hp--center::before { background: linear-gradient(180deg, rgba(0,0,0,{{ ovt }}) 0%, rgba(0,0,0,0) 16%, rgba(0,0,0,0) 36%, rgba(0,0,0,{{ ov | times: 1.2 | at_most: 0.9 }}) 62%, rgba(0,0,0,.94) 100%); }
+    #mb-{{ section.id }} .hp__in { padding: 16px 16px {{ section.settings.pb | at_most: 40 }}px; }
+    #mb-{{ section.id }} .hp__body, #mb-{{ section.id }} .hp--center .hp__body { margin: auto 0 0; max-width: none; align-items: center; text-align: center; }
+    #mb-{{ section.id }} .hp__proof { font-size: 12.5px; gap: 8px; padding: 5px 12px 5px 5px; }
+    #mb-{{ section.id }} .hp__proof.no-av { padding-left: 12px; }
+    #mb-{{ section.id }} .hp__proof--above { margin-bottom: 14px; }
+    #mb-{{ section.id }} .hp__proof--top, #mb-{{ section.id }} .hp--center .hp__proof--top { top: 14px; left: 50%; transform: translateX(-50%); }
+    #mb-{{ section.id }} .hp__av img { width: 26px; height: 26px; }
+    #mb-{{ section.id }} .hp__proof .mb-stars { font-size: 12px; }
+    #mb-{{ section.id }} .hp h1 { font-size: clamp(34px, 9.6vw, 44px); line-height: 1.04; }
+    #mb-{{ section.id }} .hp__sub { margin-top: 12px; font-size: 16px; line-height: 1.45; max-width: 340px; }
+    #mb-{{ section.id }} .hp__btn { margin-top: 22px; min-width: 0; width: 100%; padding: 19px 16px; font-size: 15px; letter-spacing: .03em !important; }
+    #mb-{{ section.id }} .hp__under { margin-top: 14px; font-size: 13px; }
   }
 </style>
 
+{%- capture proof -%}
+  {%- if section.settings.proof_text != blank -%}
+    <div class="hp__proof hp__proof--{{ section.settings.proof_position }}{% unless has_av %} no-av{% endunless %}">
+      {%- if has_av -%}
+        <div class="hp__av">
+          {%- if section.settings.avatar_1 != blank -%}{{ section.settings.avatar_1 | image_url: width: 90 | image_tag: loading: 'eager', alt: '' }}{%- endif -%}
+          {%- if section.settings.avatar_2 != blank -%}{{ section.settings.avatar_2 | image_url: width: 90 | image_tag: loading: 'eager', alt: '' }}{%- endif -%}
+          {%- if section.settings.avatar_3 != blank -%}{{ section.settings.avatar_3 | image_url: width: 90 | image_tag: loading: 'eager', alt: '' }}{%- endif -%}
+        </div>
+      {%- endif -%}
+      <span class="mb-stars" aria-hidden="true">★★★★★</span>
+      <b>{{ section.settings.proof_text }}</b>
+    </div>
+  {%- endif -%}
+{%- endcapture -%}
+
 <section id="mb-{{ section.id }}" class="mb" style="--mb-red: {{ section.settings.accent }}; --mb-red-dark: {{ section.settings.accent | color_darken: 15 }}; --hp-hl: {{ section.settings.highlight }}; --hp-gold: {{ section.settings.stars_color }};{% if section.settings.custom_font %} --mb-head: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }};{% endif %}">
-  <div class="hp hp--{{ section.settings.text_position }}">
+  <div class="hp hp--{{ section.settings.text_position }} hp--{{ section.settings.content_align }}">
     <div class="hp__bg hp__bg--d">
       {%- if section.settings.image != blank -%}
-        {{ section.settings.image | image_url: width: 2400 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '750, 1100, 1500, 1920, 2400', sizes: '100vw', style: section.settings.image.presentation.focal_point | prepend: 'object-position: ' }}
+        {{ section.settings.image | image_url: width: 2400 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '750, 1100, 1500, 1920, 2400', sizes: '100vw', alt: '' }}
       {%- else -%}
-        {{ 'lifestyle-1' | placeholder_svg_tag: 'mb-ph' }}
+        {{ 'lifestyle-1' | placeholder_svg_tag }}
       {%- endif -%}
     </div>
     {%- if section.settings.image_mobile != blank -%}
       <div class="hp__bg hp__bg--m">
-        {{ section.settings.image_mobile | image_url: width: 1200 | image_tag: loading: 'eager', widths: '450, 750, 900, 1200', sizes: '100vw', style: section.settings.image_mobile.presentation.focal_point | prepend: 'object-position: ' }}
+        {{ section.settings.image_mobile | image_url: width: 1200 | image_tag: loading: 'eager', widths: '450, 750, 900, 1200', sizes: '100vw', alt: '' }}
       </div>
     {%- endif -%}
 
     <div class="hp__in">
-      {%- if section.settings.proof_text != blank -%}
-        <div class="hp__proof{% if section.settings.avatar_1 == blank and section.settings.avatar_2 == blank and section.settings.avatar_3 == blank %} no-av{% endif %}">
-          {%- if section.settings.avatar_1 != blank or section.settings.avatar_2 != blank or section.settings.avatar_3 != blank -%}
-            <div class="hp__av">
-              {%- if section.settings.avatar_1 != blank -%}{{ section.settings.avatar_1 | image_url: width: 120 | image_tag: loading: 'eager', alt: '' }}{%- endif -%}
-              {%- if section.settings.avatar_2 != blank -%}{{ section.settings.avatar_2 | image_url: width: 120 | image_tag: loading: 'eager', alt: '' }}{%- endif -%}
-              {%- if section.settings.avatar_3 != blank -%}{{ section.settings.avatar_3 | image_url: width: 120 | image_tag: loading: 'eager', alt: '' }}{%- endif -%}
-            </div>
-          {%- endif -%}
-          <div class="hp__proof-t">
-            <span class="mb-stars" aria-hidden="true">★★★★★</span>
-            <b>{{ section.settings.proof_text }}</b>
-          </div>
-        </div>
-      {%- endif -%}
-
+      {%- if section.settings.proof_position == 'top' -%}{{ proof }}{%- endif -%}
       <div class="hp__body">
+        {%- if section.settings.proof_position == 'above' -%}{{ proof }}{%- endif -%}
         <h1>{{ section.settings.heading }}</h1>
         {%- if section.settings.subheading != blank -%}<div class="hp__sub">{{ section.settings.subheading }}</div>{%- endif -%}
         {%- if section.settings.button_label != blank -%}
-          <a class="mb-btn hp__btn" href="{{ section.settings.button_link | default: '#mb-comprar' }}">{{ section.settings.button_label }}</a>
+          <a class="mb-btn hp__btn" href="{{ section.settings.button_link | default: '#mb-comprar' }}">{{ section.settings.button_label }}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         {%- endif -%}
-        {%- if section.settings.under_text != blank -%}<div class="hp__under">{{ section.settings.under_text }}</div>{%- endif -%}
+        {%- if section.settings.under_text != blank -%}
+          <div class="hp__under"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l8 3v6c0 5-3.5 9.5-8 11-4.5-1.5-8-6-8-11V5z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>{{ section.settings.under_text }}</div>
+        {%- endif -%}
       </div>
     </div>
   </div>
@@ -200,22 +245,22 @@
     {
       "type": "range",
       "id": "overlay",
-      "label": "Oscurecer abajo (para leer el texto)",
+      "label": "Oscurecer la foto",
       "min": 0,
       "max": 90,
       "step": 5,
       "unit": "%",
-      "default": 70
+      "default": 60
     },
     {
       "type": "range",
       "id": "overlay_top",
-      "label": "Oscurecer arriba",
+      "label": "Oscurecer arriba (para la cápsula y el menú)",
       "min": 0,
       "max": 90,
       "step": 5,
       "unit": "%",
-      "default": 25
+      "default": 20
     },
     {
       "type": "range",
@@ -225,7 +270,7 @@
       "max": 100,
       "step": 5,
       "unit": "%",
-      "default": 90
+      "default": 85
     },
     {
       "type": "range",
@@ -235,13 +280,13 @@
       "max": 100,
       "step": 5,
       "unit": "%",
-      "default": 95
+      "default": 92
     },
     {
       "type": "select",
       "id": "text_position",
-      "label": "Posición del texto",
-      "default": "bottom",
+      "label": "Posición del texto (compu)",
+      "default": "middle",
       "options": [
         {
           "value": "top",
@@ -255,7 +300,25 @@
           "value": "bottom",
           "label": "Abajo"
         }
-      ]
+      ],
+      "info": "En celular el texto siempre va abajo, para que se vea la cara."
+    },
+    {
+      "type": "select",
+      "id": "content_align",
+      "label": "Alineación del texto (compu)",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "Izquierda"
+        },
+        {
+          "value": "center",
+          "label": "Centro"
+        }
+      ],
+      "info": "Con Izquierda, poné la persona del lado derecho de la foto."
     },
     {
       "type": "header",
@@ -280,22 +343,22 @@
       "type": "text",
       "id": "proof_text",
       "label": "Texto",
-      "default": "[+X mil reseñas] · [+X mil vendidos]",
+      "default": "[+X mil] hombres ya lo usan",
       "info": "Poné tus números reales. Si lo dejás vacío, la cápsula no aparece."
     },
     {
       "type": "select",
-      "id": "proof_align",
+      "id": "proof_position",
       "label": "Ubicación de la cápsula",
-      "default": "flex-start",
+      "default": "above",
       "options": [
         {
-          "value": "flex-start",
-          "label": "Izquierda"
+          "value": "above",
+          "label": "Arriba del título"
         },
         {
-          "value": "center",
-          "label": "Centro"
+          "value": "top",
+          "label": "Arriba de todo"
         }
       ]
     },
@@ -320,19 +383,20 @@
       "type": "color",
       "id": "highlight",
       "label": "Color de resaltado del título",
-      "default": "#F5C04A"
+      "default": "#FF5A4E",
+      "info": "Para que se lea sobre la foto usá un tono claro (rojo claro, dorado)."
     },
     {
       "type": "richtext",
       "id": "subheading",
       "label": "Bajada",
-      "default": "<p>El tratamiento integral para el hombre de +40: sueño, panza, energía y ganas en 1 cápsula por día.</p>"
+      "default": "<p>Sueño, panza, energía y ganas: el tratamiento integral para el hombre de +40.</p>"
     },
     {
       "type": "text",
       "id": "button_label",
       "label": "Texto del botón",
-      "default": "Ver packs · Ahorrá hasta 65%"
+      "default": "Ver packs · hasta 65% OFF"
     },
     {
       "type": "text",
@@ -344,7 +408,7 @@
       "type": "text",
       "id": "under_text",
       "label": "Texto debajo del botón",
-      "default": "60 días de garantía o te devolvemos el dinero"
+      "default": "60 días de garantía · Envío a todo el país"
     },
     {
       "type": "range",
@@ -354,7 +418,7 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "default": 56
+      "default": 48
     },
     {
       "type": "header",
