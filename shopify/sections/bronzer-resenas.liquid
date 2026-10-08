@@ -1,0 +1,707 @@
+{%- comment -%}
+  Bronzer · Reseñas
+  Carrusel de reseñas con foto de antes y después. Cada reseña es un bloque:
+  se agregan, quitan y reordenan arrastrando desde Tienda online > Personalizar.
+{%- endcomment -%}
+
+{%- liquid
+  assign s = section.settings
+  assign sid = '#bz-rev-' | append: section.id
+-%}
+
+<style>
+  {{ s.heading_font | font_face: font_display: 'swap' }}
+
+  {{ sid }} {
+    --bz-bg: {{ s.color_bg | default: '#F7EFE6' }};
+    --bz-card: {{ s.color_card | default: '#FFFCF8' }};
+    --bz-text: {{ s.color_text | default: '#1E140F' }};
+    --bz-text-soft: {{ s.color_text | default: '#1E140F' | color_modify: 'alpha', 0.72 }};
+    --bz-line: {{ s.color_text | default: '#1E140F' | color_modify: 'alpha', 0.1 }};
+    --bz-accent: {{ s.color_accent | default: '#B46F34' }};
+    --bz-stars: {{ s.color_stars | default: '#E0A33A' }};
+    --bz-btn-bg: {{ s.color_button_bg | default: '#B46F34' }};
+    --bz-btn-text: {{ s.color_button_text | default: '#FFFFFF' }};
+    --bz-display-font: {{ s.heading_font.family }}, {{ s.heading_font.fallback_families }};
+    --bz-display-weight: {{ s.heading_font.weight }};
+    --bz-pt: {{ s.padding_top }}px;
+    --bz-pb: {{ s.padding_bottom }}px;
+  }
+
+  {{ sid }}, {{ sid }} *, {{ sid }} *::before, {{ sid }} *::after { box-sizing: border-box; }
+  {{ sid }} p, {{ sid }} li, {{ sid }} span { color: inherit; }
+
+  {{ sid }} {
+    display: block;
+    background: var(--bz-bg);
+    color: var(--bz-text);
+    padding: calc(var(--bz-pt) * 0.7) 0 calc(var(--bz-pb) * 0.7);
+    overflow: hidden;
+  }
+
+  /* ---------- Encabezado ---------- */
+  {{ sid }} .bz-rev__header {
+    max-width: 920px;
+    margin: 0 auto 36px;
+    padding: 0 20px;
+    text-align: center;
+  }
+  {{ sid }} .bz-rev__rating {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: 0 0 14px;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  {{ sid }} .bz-rev__rating p { margin: 0; }
+  {{ sid }} .bz-rev__stars { display: inline-flex; gap: 3px; }
+  {{ sid }} .bz-rev__stars svg { width: 18px; height: 18px; fill: var(--bz-stars); }
+  {{ sid }} .bz-rev__heading {
+    margin: 0;
+    font-family: var(--bz-display-font);
+    font-weight: var(--bz-display-weight);
+    font-size: clamp(32px, 8vw, 42px);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--bz-text);
+    text-wrap: balance;
+  }
+  {{ sid }} .bz-rev__heading em { font-style: italic; color: var(--bz-accent); }
+  {{ sid }} .bz-rev__sub {
+    max-width: 52ch;
+    margin: 16px auto 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--bz-text-soft);
+  }
+  {{ sid }} .bz-rev__sub p { margin: 0; }
+
+  /* ---------- Carrusel ---------- */
+  {{ sid }} .bz-rev__viewport { width: 100%; }
+  {{ sid }} .bz-rev__track {
+    position: relative;
+    display: flex;
+    gap: 16px;
+    margin: 0;
+    padding: 8px 20px 44px;
+    list-style: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0 20px;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  {{ sid }} .bz-rev__track::-webkit-scrollbar { display: none; }
+  {{ sid }} .bz-rev__slide {
+    flex: 0 0 86%;
+    scroll-snap-align: start;
+    display: flex;
+  }
+
+  /* ---------- Tarjeta ---------- */
+  {{ sid }} .bz-rev__card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 22px;
+    background: var(--bz-card);
+    border: 1px solid var(--bz-line);
+    box-shadow: 0 18px 36px -26px rgba(30, 20, 15, 0.35);
+  }
+
+  {{ sid }} .bz-rev__ba {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px;
+    aspect-ratio: 8 / 5;
+    background: var(--bz-card);
+  }
+  {{ sid }} .bz-rev__ba--single { grid-template-columns: 1fr; }
+  {{ sid }} .bz-rev__photo { position: relative; overflow: hidden; background: #e9dccd; }
+  {{ sid }} .bz-rev__photo img,
+  {{ sid }} .bz-rev__photo svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+  }
+  {{ sid }} .bz-rev__photo svg { fill: rgba(30, 20, 15, 0.18); }
+  {{ sid }} .bz-rev__label {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    z-index: 1;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    line-height: 1;
+    color: #fff;
+    background: rgba(20, 13, 9, 0.45);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+  }
+  {{ sid }} .bz-rev__label--after { background: var(--bz-accent); }
+  {{ sid }} .bz-rev__arrow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 2;
+    width: 34px;
+    height: 34px;
+    margin: -17px 0 0 -17px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--bz-card);
+    color: var(--bz-accent);
+    box-shadow: 0 6px 16px -6px rgba(30, 20, 15, 0.4);
+  }
+  {{ sid }} .bz-rev__arrow svg { width: 16px; height: 16px; }
+
+  {{ sid }} .bz-rev__body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    gap: 12px;
+    padding: 24px 22px 26px;
+    text-align: center;
+  }
+  {{ sid }} .bz-rev__body > * { margin: 0; }
+  {{ sid }} .bz-rev__card .bz-rev__stars svg { width: 16px; height: 16px; }
+  {{ sid }} .bz-rev__title {
+    font-family: var(--bz-display-font);
+    font-weight: var(--bz-display-weight);
+    font-size: 22px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--bz-text);
+  }
+  {{ sid }} .bz-rev__text {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--bz-text-soft);
+  }
+  {{ sid }} .bz-rev__author {
+    margin-top: auto;
+    padding-top: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  {{ sid }} .bz-rev__name { font-size: 15px; font-weight: 700; }
+  {{ sid }} .bz-rev__detail { font-size: 12px; letter-spacing: 0.04em; color: var(--bz-text-soft); }
+  {{ sid }} .bz-rev__verified {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--bz-text-soft);
+  }
+  {{ sid }} .bz-rev__verified svg { width: 16px; height: 16px; color: var(--bz-accent); }
+
+  /* ---------- Controles ---------- */
+  {{ sid }} .bz-rev__controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    padding: 0 20px;
+  }
+  {{ sid }} .bz-rev__nav {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--bz-text);
+    color: var(--bz-bg);
+    cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  {{ sid }} .bz-rev__nav:hover { transform: scale(1.06); }
+  {{ sid }} .bz-rev__nav[disabled] { opacity: 0.25; cursor: default; transform: none; }
+  {{ sid }} .bz-rev__nav svg { width: 18px; height: 18px; }
+  {{ sid }} .bz-rev__dots { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+  {{ sid }} .bz-rev__dot {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: var(--bz-line);
+    cursor: pointer;
+    transition: width 0.3s ease, background-color 0.3s ease;
+  }
+  {{ sid }} .bz-rev__dot[aria-current="true"] { width: 26px; background: var(--bz-accent); }
+
+  {{ sid }} .bz-rev__cta { display: flex; justify-content: center; margin-top: 32px; padding: 0 20px; }
+  {{ sid }} .bz-rev__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 420px;
+    min-height: 58px;
+    padding: 0 28px;
+    border-radius: 12px;
+    background: var(--bz-btn-bg);
+    color: var(--bz-btn-text);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    text-align: center;
+    transition: transform 0.25s ease, filter 0.25s ease;
+  }
+  {{ sid }} .bz-rev__button:hover { transform: translateY(-2px); filter: brightness(1.08); color: var(--bz-btn-text); }
+
+  /* ---------- Tablet ---------- */
+  @media screen and (min-width: 750px) {
+    {{ sid }} { padding: var(--bz-pt) 0 var(--bz-pb); }
+    {{ sid }} .bz-rev__header { margin-bottom: 48px; }
+    {{ sid }} .bz-rev__heading { font-size: clamp(40px, 5vw, 64px); }
+    {{ sid }} .bz-rev__sub { font-size: 18px; }
+    {{ sid }} .bz-rev__track {
+      --bz-gutter: max(40px, calc((100vw - 1240px) / 2));
+      gap: 24px;
+      padding: 8px var(--bz-gutter) 48px;
+      scroll-padding: 0 var(--bz-gutter);
+    }
+    {{ sid }} .bz-rev__slide { flex-basis: calc((100vw - var(--bz-gutter) * 2 - 24px) / 2); }
+    {{ sid }} .bz-rev__title { font-size: 24px; }
+  }
+
+  /* ---------- Escritorio ---------- */
+  @media screen and (min-width: 1100px) {
+    {{ sid }} .bz-rev__slide { flex-basis: calc((100vw - var(--bz-gutter) * 2 - 48px) / 3); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    {{ sid }} .bz-rev__track { scroll-behavior: auto; }
+  }
+</style>
+
+<bz-reviews id="bz-rev-{{ section.id }}" class="bz-rev">
+  <div class="bz-rev__header">
+    {%- if s.rating_text != blank or s.show_header_stars -%}
+      <div class="bz-rev__rating">
+        {%- if s.show_header_stars -%}
+          <span class="bz-rev__stars" aria-hidden="true">
+            {%- for i in (1..5) -%}
+              <svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.2 6.6.7-5 4.5 1.4 6.6L12 17.2l-5.9 3.3 1.4-6.6-5-4.5 6.6-.7z"/></svg>
+            {%- endfor -%}
+          </span>
+        {%- endif -%}
+        {%- if s.rating_text != blank -%}
+          <span>{{ s.rating_text }}</span>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+    {%- if s.heading != blank -%}
+      <h2 class="bz-rev__heading">{{ s.heading }}</h2>
+    {%- endif -%}
+    {%- if s.subheading != blank -%}
+      <div class="bz-rev__sub">{{ s.subheading }}</div>
+    {%- endif -%}
+  </div>
+
+  <div class="bz-rev__viewport">
+    <ul class="bz-rev__track" role="list" data-track>
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign b = block.settings
+          assign has_before = false
+          assign has_after = false
+          if b.image_before != blank
+            assign has_before = true
+          endif
+          if b.image_after != blank
+            assign has_after = true
+          endif
+          assign single = false
+          if has_before == false and has_after
+            assign single = true
+          endif
+        -%}
+        <li class="bz-rev__slide" data-slide {{ block.shopify_attributes }}>
+          <article class="bz-rev__card">
+            <div class="bz-rev__ba{% if single %} bz-rev__ba--single{% endif %}">
+              {%- unless single -%}
+                <div class="bz-rev__photo">
+                  {%- if has_before -%}
+                    {{
+                      b.image_before
+                      | image_url: width: 800
+                      | image_tag:
+                        loading: 'lazy',
+                        widths: '300, 450, 600, 800',
+                        sizes: '(min-width: 1100px) 220px, (min-width: 750px) 25vw, 45vw',
+                        alt: b.image_before.alt
+                    }}
+                  {%- else -%}
+                    {{ 'image' | placeholder_svg_tag }}
+                  {%- endif -%}
+                  {%- if s.label_before != blank -%}
+                    <span class="bz-rev__label">{{ s.label_before | escape }}</span>
+                  {%- endif -%}
+                </div>
+              {%- endunless -%}
+              <div class="bz-rev__photo">
+                {%- if has_after -%}
+                  {{
+                    b.image_after
+                    | image_url: width: 800
+                    | image_tag:
+                      loading: 'lazy',
+                      widths: '300, 450, 600, 800',
+                      sizes: '(min-width: 1100px) 220px, (min-width: 750px) 25vw, 45vw',
+                      alt: b.image_after.alt
+                  }}
+                {%- else -%}
+                  {{ 'image' | placeholder_svg_tag }}
+                {%- endif -%}
+                {%- if s.label_after != blank -%}
+                  <span class="bz-rev__label bz-rev__label--after">{{ s.label_after | escape }}</span>
+                {%- endif -%}
+              </div>
+              {%- unless single -%}
+                <span class="bz-rev__arrow" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </span>
+              {%- endunless -%}
+            </div>
+
+            <div class="bz-rev__body">
+              <span class="bz-rev__stars" role="img" aria-label="{{ b.stars }} de 5 estrellas">
+                {%- for i in (1..b.stars) -%}
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6.2 6.6.7-5 4.5 1.4 6.6L12 17.2l-5.9 3.3 1.4-6.6-5-4.5 6.6-.7z"/></svg>
+                {%- endfor -%}
+              </span>
+              {%- if b.title != blank -%}
+                <h3 class="bz-rev__title">{{ b.title | escape }}</h3>
+              {%- endif -%}
+              {%- if b.text != blank -%}
+                <p class="bz-rev__text">{{ b.text | escape | newline_to_br }}</p>
+              {%- endif -%}
+              <div class="bz-rev__author">
+                {%- if b.author != blank -%}
+                  <span class="bz-rev__name">{{ b.author | escape }}</span>
+                {%- endif -%}
+                {%- if b.detail != blank -%}
+                  <span class="bz-rev__detail">{{ b.detail | escape }}</span>
+                {%- endif -%}
+                {%- if b.verified -%}
+                  <span class="bz-rev__verified">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l2.4 1.8 3-.2.9 2.9 2.5 1.7-1 2.8 1 2.8-2.5 1.7-.9 2.9-3-.2L12 22l-2.4-1.8-3 .2-.9-2.9-2.5-1.7 1-2.8-1-2.8 2.5-1.7.9-2.9 3 .2z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>
+                    {{ s.verified_text | escape }}
+                  </span>
+                {%- endif -%}
+              </div>
+            </div>
+          </article>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+
+  {%- if section.blocks.size > 1 -%}
+    <div class="bz-rev__controls">
+      {%- if s.show_arrows -%}
+        <button type="button" class="bz-rev__nav" data-prev aria-label="Reseña anterior">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+        </button>
+      {%- endif -%}
+      {%- if s.show_dots -%}
+        <div class="bz-rev__dots" data-dots>
+          {%- for block in section.blocks -%}
+            <button type="button" class="bz-rev__dot" aria-label="Ir a la reseña {{ forloop.index }}"{% if forloop.first %} aria-current="true"{% endif %}></button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+      {%- if s.show_arrows -%}
+        <button type="button" class="bz-rev__nav" data-next aria-label="Reseña siguiente">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  {%- if s.button_label != blank -%}
+    <div class="bz-rev__cta">
+      <a {% if s.button_link != blank %}href="{{ s.button_link }}"{% else %}role="link" aria-disabled="true"{% endif %} class="bz-rev__button">
+        {{- s.button_label | escape -}}
+      </a>
+    </div>
+  {%- endif -%}
+</bz-reviews>
+
+<script>
+  if (!customElements.get('bz-reviews')) {
+    customElements.define('bz-reviews', class extends HTMLElement {
+      connectedCallback() {
+        this.track = this.querySelector('[data-track]');
+        this.slides = Array.from(this.querySelectorAll('[data-slide]'));
+        this.prev = this.querySelector('[data-prev]');
+        this.next = this.querySelector('[data-next]');
+        this.dots = Array.from(this.querySelectorAll('[data-dots] button'));
+        if (!this.track || !this.slides.length) return;
+
+        this.onScroll = () => {
+          cancelAnimationFrame(this.raf);
+          this.raf = requestAnimationFrame(() => this.update());
+        };
+        this.track.addEventListener('scroll', this.onScroll, { passive: true });
+        window.addEventListener('resize', this.onScroll);
+        if (this.prev) this.prev.addEventListener('click', () => this.go(this.index() - 1));
+        if (this.next) this.next.addEventListener('click', () => this.go(this.index() + 1));
+        this.dots.forEach((dot, i) => dot.addEventListener('click', () => this.go(i)));
+        this.addEventListener('shopify:block:select', (event) => {
+          const i = this.slides.indexOf(event.target);
+          if (i > -1) this.go(i);
+        });
+        this.update();
+      }
+
+      disconnectedCallback() {
+        window.removeEventListener('resize', this.onScroll);
+      }
+
+      index() {
+        const start = this.track.scrollLeft;
+        const pad = parseFloat(getComputedStyle(this.track).paddingLeft) || 0;
+        let best = 0;
+        let min = Infinity;
+        this.slides.forEach((slide, i) => {
+          const d = Math.abs(slide.offsetLeft - pad - start);
+          if (d < min) { min = d; best = i; }
+        });
+        return best;
+      }
+
+      go(i) {
+        const target = this.slides[Math.max(0, Math.min(i, this.slides.length - 1))];
+        const pad = parseFloat(getComputedStyle(this.track).paddingLeft) || 0;
+        this.track.scrollTo({ left: target.offsetLeft - pad });
+      }
+
+      update() {
+        const i = this.index();
+        const end = this.track.scrollLeft + this.track.clientWidth >= this.track.scrollWidth - 4;
+        this.dots.forEach((dot, n) => dot.setAttribute('aria-current', n === i ? 'true' : 'false'));
+        if (this.prev) this.prev.disabled = this.track.scrollLeft <= 4;
+        if (this.next) this.next.disabled = end;
+      }
+    });
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Bronzer · Reseñas",
+  "tag": "section",
+  "class": "section-bronzer-resenas",
+  "max_blocks": 16,
+  "settings": [
+    { "type": "header", "content": "Encabezado" },
+    {
+      "type": "checkbox",
+      "id": "show_header_stars",
+      "label": "Mostrar estrellas",
+      "default": true
+    },
+    {
+      "type": "inline_richtext",
+      "id": "rating_text",
+      "label": "Calificación",
+      "default": "<strong>4.9/5</strong> · +3mil reseñas"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Título",
+      "info": "La palabra en cursiva se pinta con el color de acento.",
+      "default": "Miles de mujeres ya tienen su <em>glow natural</em>"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Texto",
+      "default": "<p>Resultados reales en 18 días. Sin sol, sin camas solares, sin autobronceantes.</p>"
+    },
+    { "type": "header", "content": "Antes y después" },
+    {
+      "type": "text",
+      "id": "label_before",
+      "label": "Etiqueta de la foto de antes",
+      "default": "Antes"
+    },
+    {
+      "type": "text",
+      "id": "label_after",
+      "label": "Etiqueta de la foto de después",
+      "default": "Día 18"
+    },
+    {
+      "type": "text",
+      "id": "verified_text",
+      "label": "Texto de compra verificada",
+      "default": "Compra verificada"
+    },
+    { "type": "header", "content": "Carrusel" },
+    { "type": "checkbox", "id": "show_arrows", "label": "Mostrar flechas", "default": true },
+    { "type": "checkbox", "id": "show_dots", "label": "Mostrar puntos", "default": true },
+    { "type": "header", "content": "Botón" },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Texto del botón",
+      "info": "Dejalo vacío para ocultarlo.",
+      "default": "Quiero mi glow"
+    },
+    { "type": "url", "id": "button_link", "label": "Link del botón" },
+    { "type": "header", "content": "Estilo" },
+    {
+      "type": "font_picker",
+      "id": "heading_font",
+      "label": "Tipografía de títulos",
+      "default": "playfair_display_n4"
+    },
+    { "type": "color", "id": "color_bg", "label": "Fondo", "default": "#F7EFE6" },
+    { "type": "color", "id": "color_card", "label": "Fondo de las tarjetas", "default": "#FFFCF8" },
+    { "type": "color", "id": "color_text", "label": "Texto", "default": "#1E140F" },
+    {
+      "type": "color",
+      "id": "color_accent",
+      "label": "Acento",
+      "info": "Palabra resaltada, etiqueta de después y puntos.",
+      "default": "#B46F34"
+    },
+    { "type": "color", "id": "color_stars", "label": "Estrellas", "default": "#E0A33A" },
+    { "type": "color", "id": "color_button_bg", "label": "Fondo del botón", "default": "#B46F34" },
+    { "type": "color", "id": "color_button_text", "label": "Texto del botón", "default": "#FFFFFF" },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Margen superior",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "default": 96
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Margen inferior",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "default": 96
+    }
+  ],
+  "blocks": [
+    {
+      "type": "resena",
+      "name": "Reseña",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image_before",
+          "label": "Foto antes",
+          "info": "Vertical 4:5. Si la dejás vacía se muestra solo la de después."
+        },
+        {
+          "type": "image_picker",
+          "id": "image_after",
+          "label": "Foto después",
+          "info": "Vertical 4:5, misma luz y encuadre que la de antes."
+        },
+        {
+          "type": "range",
+          "id": "stars",
+          "label": "Estrellas",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Título",
+          "default": "Por fin un bronceado que no mancha"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Reseña",
+          "default": "Reemplazá este texto por la reseña real de tu clienta."
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Nombre",
+          "default": "Nombre de la clienta"
+        },
+        {
+          "type": "text",
+          "id": "detail",
+          "label": "Detalle",
+          "info": "Ej: 32 años · Córdoba",
+          "default": "Edad · Ciudad"
+        },
+        {
+          "type": "checkbox",
+          "id": "verified",
+          "label": "Mostrar compra verificada",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bronzer · Reseñas",
+      "blocks": [
+        {
+          "type": "resena",
+          "settings": { "title": "Por fin un bronceado que no mancha" }
+        },
+        {
+          "type": "resena",
+          "settings": { "title": "Dorada todo el año, sin cama solar" }
+        },
+        {
+          "type": "resena",
+          "settings": { "title": "Mi piel se ve luminosa y pareja" }
+        },
+        {
+          "type": "resena",
+          "settings": { "title": "Chau autobronceante naranja" }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
