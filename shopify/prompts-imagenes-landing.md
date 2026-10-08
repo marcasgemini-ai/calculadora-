@@ -4,7 +4,7 @@ Un prompt por imagen, en inglés, listo para copiar y pegar.
 
 **Reglas que respetan todos los prompts**
 - Misma luz (cálida, dorada, suave), misma paleta (crema, arena, bronce, cacao) y mismo estilo de campaña de lujo: la landing se ve como una sola sesión de fotos.
-- **Nada de sol directo, playa tomando sol ni camas solares**: la marca es "bronceado sin sol". El glow se muestra en interiores, en sombra o con luz cálida filtrada.
+- **Nada de tomar sol ni camas solares**: la marca es "bronceado sin sol". En el Hero la playa aparece al atardecer: *llegás a la playa ya dorada*. Nunca tirada al mediodía, piel roja ni aceite bronceador.
 - **El frasco real**: ninguna IA copia bien la etiqueta. En los prompts con producto, subí la **foto real del frasco** como imagen de referencia (ChatGPT: adjuntala; Midjourney: `--oref` o image prompt; Flux Kontext / Gemini: edición con referencia) y pedí que mantenga la etiqueta idéntica. Si la etiqueta sale deformada, retocala en Photoshop o Canva con la etiqueta original.
 - Modelos: mujeres argentinas reales y diversas (25–45 años), piel con textura natural, sin retoque plástico.
 
@@ -14,8 +14,8 @@ Un prompt por imagen, en inglés, listo para copiar y pegar.
 
 | # | Sección | Imagen | Formato | Cantidad |
 |---|---|---|---|---|
-| 1 | Hero | Campaña horizontal (escritorio) | 16:9 · 2400×1350 | 1 |
-| 2 | Hero | Campaña vertical (celular) | 4:5 · 1200×1500 | 1 |
+| 1 | Hero | Playa al atardecer (escritorio, columna derecha) | 1:1 · 2000×2000 | 1 |
+| 2 | Hero | Playa al atardecer (celular) + variante 2B | 4:5 · 1200×1500 | 1 (+1) |
 | 3 | Hero | Avatares de la prueba social | 1:1 · 400×400 | 3 |
 | 4 | Beneficios | Frasco sin fondo (packshot) | 1:1 · 1600×1600 PNG | 1 |
 | 5–9 | Oferta | Galería del producto | 1:1 · 2000×2000 | 5 |
@@ -25,17 +25,38 @@ Un prompt por imagen, en inglés, listo para copiar y pegar.
 
 ---
 
-## 1. Hero · Campaña horizontal (escritorio)
+## 1. Hero · Escritorio — playa, atardecer (foto estilo celular)
+
+> Va en la columna derecha del Hero (pantalla dividida): formato **cuadrado 1:1, 2000×2000**. Realismo de foto tomada con un Samsung, no de estudio.
 
 ```
-Ultra-realistic luxury beauty campaign photograph for a premium supplement brand called Bronzer, horizontal 16:9 composition. A radiant Argentine woman in her early 30s with naturally sun-kissed golden skin that looks warm, even and luminous — achieved without sun — is seated on a cream linen sofa inside a sunlit Mediterranean-style living room with whitewashed walls, arched windows and sheer linen curtains that diffuse warm late-afternoon light. She wears a minimal ivory silk slip dress, her shoulders and collarbones softly glowing, natural wavy chestnut hair, minimal dewy makeup with a hint of bronze on the cheeks. She looks directly at the camera with a calm, confident, aspirational expression, holding the Bronzer supplement bottle from the reference image elegantly near her collarbone, label facing camera and fully legible, exactly as in the reference. The subject occupies the right half of the frame; the left half is clean negative space with softly blurred warm cream tones for headline text. Lighting: soft, warm, diffused golden-hour light filtered through curtains, gentle wraparound fill, subtle rim light on her hair and shoulders, true-to-life skin texture with visible pores, no plastic retouching. Color palette: warm cream, sand, honey gold, soft bronze and deep cocoa accents. Shot on a medium-format camera, 85mm lens, f/2.8, shallow depth of field, editorial high-end beauty campaign look, magazine-cover quality. No direct sunlight on skin, no beach, no tanning bed, no text, no logos other than the product label, no watermark.
+A candid, hyper-realistic photo taken on a Samsung Galaxy S24 Ultra main camera (24mm wide lens, default phone processing, slight HDR, natural phone sharpening), square 1:1 format. A real-looking Argentine woman, 29 years old, from Buenos Aires, with natural features, light olive skin that already has an even, warm golden tan, a few freckles on her nose and shoulders, sun-lightened honey-brown hair loose, messy and slightly wind-blown with flyaway strands, minimal makeup and natural brows. She sits on a sand dune covered in beach grass at a wide Argentine Atlantic beach like Cariló or Pinamar, at golden hour just before sunset, wearing a terracotta bikini under an open oversized white linen shirt slipping off one shoulder, a thin gold chain necklace and small gold hoops. She is laughing naturally while looking at the camera, one knee up, relaxed and spontaneous, as if a friend just took the photo. Next to her on a striped Turkish towel: a straw tote bag, a pair of sunglasses and the Bronzer supplement bottle from the reference image, label facing the camera and identical to the reference. Light: low warm sun behind her and to the side, creating a soft golden rim light on her hair and shoulders, her face evenly lit by the bright sand reflection, warm glowing skin with real texture, visible pores, tiny imperfections, a bit of sand on her legs. Background: soft dunes, the ocean and a pastel peach-and-gold sky, slightly hazy. Composition: subject in the center-right, face in the upper half of the frame, natural phone-photo framing, not perfectly symmetrical. Colors natural and warm, not over-saturated, not orange skin. Aspirational yet authentic Instagram summer moment. No studio lighting, no heavy bokeh, no beauty filter, no plastic skin, no sunburn, no lying down sunbathing, no tanning oil shine, no text, no watermark, no extra logos.
 ```
 
-## 2. Hero · Campaña vertical (celular)
+## 2. Hero · Celular — playa, atardecer (foto estilo celular)
+
+> Formato **vertical 4:5, 1200×1500**. La cara va en la mitad de arriba; la mitad de abajo (arena) queda libre para el título que se funde con el fondo.
 
 ```
-Ultra-realistic luxury beauty campaign photograph, vertical 4:5 composition designed for mobile, for a premium beta-carotene supplement brand called Bronzer. Close portrait of a radiant Argentine woman around 30 with luminous, warm golden skin that glows evenly, framed from the top of her head to just below the collarbones, her face positioned in the upper half of the frame. Natural wavy honey-brown hair falling over one shoulder, minimal dewy skin makeup, softly flushed bronze cheeks, relaxed confident expression, looking straight into the camera. She gently holds the Bronzer bottle from the reference image beside her jawline, label facing the camera and identical to the reference. Background: a warm, softly blurred interior with cream linen curtains and dappled warm light, no visible sun. The lower 40% of the image is softer and slightly darker in tone so white headline text can sit over it. Lighting: diffused warm golden light from the left, soft reflector fill, delicate highlight on cheekbones, nose bridge and collarbones creating a healthy glow, authentic skin texture, no plastic smoothing. Color palette: honey gold, warm cream, bronze, deep cocoa shadows. Shot on 85mm lens, f/2.2, editorial luxury skincare campaign aesthetic. No beach, no tanning bed, no direct sunbathing, no text, no extra logos, no watermark.
+A candid, hyper-realistic vertical 4:5 photo taken on a Samsung Galaxy S24 Ultra main camera (24mm wide lens, default phone processing, slight HDR, natural phone sharpening), for a mobile hero banner. A real-looking Argentine woman around 30, natural features, light olive skin with an even, warm golden tan already glowing, freckles on her cheeks and shoulders, long honey-brown hair loose and tousled by the sea breeze, minimal makeup. She walks barefoot toward the camera along the shoreline of a wide Argentine Atlantic beach (Mar del Plata or Pinamar style) at golden hour, wearing a simple white linen button-up shirt open over a nude-toned bikini, holding her sandals in one hand and the Bronzer supplement bottle from the reference image in the other hand at chest height, label facing the camera and identical to the reference, smiling softly with a confident, effortless look into the camera. Her face and shoulders are in the upper half of the frame; the lower half shows her legs, the wet sand reflecting golden light and gentle foamy waves, softer and slightly darker in tone so text can be placed over it. Light: low warm sunset light from behind and to the side, golden rim light on hair and arms, face softly lit by sky reflection, realistic skin texture with pores, peach fuzz and tiny imperfections, a few grains of sand on her calves. Natural phone-camera depth of field, slight wind motion in the hair, warm but true-to-life colors, not orange skin, not over-saturated. Aspirational, authentic summer moment as if shot by a friend. No studio lighting, no beauty filter, no plastic skin, no sunburn, no sunbathing pose, no tanning oil shine, no text, no watermark, no extra logos.
 ```
+
+## 2B. Hero · Variante alternativa (para testear)
+
+> Misma estética, otra escena. Sirve como segunda opción para el Hero o para un anuncio A/B. Formato 1:1 (o 4:5 cambiando "square 1:1").
+
+```
+A candid, hyper-realistic square 1:1 photo taken on a Samsung Galaxy S24 Ultra (main 24mm camera, default processing, slight HDR), golden hour at a beach bar terrace on an Argentine Atlantic beach. A real-looking Argentine woman in her early 30s with dark wavy hair in a loose low bun with escaping strands, medium-light skin with an even warm golden tan, freckles, natural brows, sitting in the shade of a straw umbrella on a wooden deck, wearing a ribbed cream knit dress over a black bikini, gold hoop earrings, laughing with her head slightly tilted while holding a glass of lemonade; on the wooden table in front of her, the Bronzer supplement bottle from the reference image next to her phone and sunglasses, label facing the camera and identical to the reference. Behind her, blurred dunes, the ocean and a soft peach sky. Light: warm sunset light bouncing off the sand and wood, soft golden glow on her shoulders and cheekbones, real skin texture with pores and tiny imperfections. Natural phone framing, slightly off-center, spontaneous moment captured by a friend, warm true-to-life colors, not orange skin. No studio lighting, no beauty filter, no plastic skin, no sunburn, no sunbathing, no text, no watermark, no extra logos.
+```
+
+### Consejos para que se vean 100% reales
+
+- **Pedí "photo", no "render" ni "illustration"**, y mantené la mención al Samsung: eso le da el procesado típico del celular (HDR suave, nitidez de teléfono, sin bokeh exagerado).
+- **Si sale demasiado perfecta**, agregá al final: `slight lens flare, minor noise in the shadows, imperfect framing, a few stray hairs across the face`.
+- **Si la piel sale naranja**, agregá: `skin tone 30% less saturated, natural honey-gold, not orange`.
+- **El frasco**: subí la foto real como referencia. Si la etiqueta se deforma, generá la escena sin frasco (borrá esa parte del prompt) y pegalo después en Canva o Photoshop con una sombra suave sobre la toalla o en la mano.
+- **ChatGPT / imagen 4o**: adjuntá la foto del frasco y pegá el prompt. **Midjourney v7**: agregá `--ar 1:1 --style raw --v 7` (o `--ar 4:5`) y el frasco con `--oref`.
+- **Misma modelo en toda la landing**: cuando tengas la del Hero, usala como referencia de personaje (ChatGPT: "same woman as this image"; Midjourney: `--cref`) para la galería de la oferta y la foto de preguntas.
 
 ## 3. Hero · Avatares de la prueba social (hacer 3 veces cambiando la descripción)
 
@@ -141,7 +162,7 @@ Los 7 prompts (betacaroteno, licopeno, cúrcuma, vitamina C, vitamina E, complej
 
 ## Consejos para que salgan nivel marca top
 
-- **Generá primero la imagen 1 (Hero)** y usala como **referencia de estilo** para todas las demás: así toda la landing tiene la misma luz y paleta.
+- **Generá primero la imagen 1 (Hero)** y usala como **referencia de estilo y de modelo** para todas las demás: así toda la landing tiene la misma luz, paleta y protagonista.
 - **Usá la misma modelo** en Hero, Galería 5 y Preguntas para que se sienta como una campaña real (en ChatGPT, pedí "same woman as the previous image"; en Midjourney, `--cref`).
 - **Midjourney:** agregá al final `--ar 16:9` / `--ar 4:5` / `--ar 1:1` / `--ar 8:5`, más `--style raw --v 7`.
 - **Producto:** si el frasco sale con la etiqueta deformada, generá la escena sin frasco y después pegá encima la foto real del producto en Photoshop o Canva (sombra suave abajo).
