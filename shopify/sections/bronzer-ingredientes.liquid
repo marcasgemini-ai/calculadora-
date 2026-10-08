@@ -1,0 +1,679 @@
+{%- comment -%}
+  Bronzer · Ingredientes
+  Grilla de ingredientes con foto, beneficio, nombre y descripción.
+  Todo es editable desde Tienda online > Personalizar:
+  - Encabezado: bloques Subtítulo, Título y Texto.
+  - Ingredientes: un bloque por ingrediente (se reordenan arrastrando).
+  - Botón: bloque Botón con garantía (va debajo de la grilla).
+{%- endcomment -%}
+
+{%- liquid
+  assign s = section.settings
+  assign sid = '#bz-ing-' | append: section.id
+  assign header_types = 'subtitulo,titulo,texto' | split: ','
+-%}
+
+<style>
+  {{ s.heading_font | font_face: font_display: 'swap' }}
+
+  {{ sid }} {
+    --bz-bg: {{ s.color_bg | default: '#FBF6EF' }};
+    --bz-card: {{ s.color_card | default: '#FFF8F1' }};
+    --bz-border: {{ s.color_border | default: '#E8B892' }};
+    --bz-text: {{ s.color_text | default: '#1E140F' }};
+    --bz-text-soft: {{ s.color_text | default: '#1E140F' | color_modify: 'alpha', 0.72 }};
+    --bz-accent: {{ s.color_accent | default: '#B46F34' }};
+    --bz-btn-bg: {{ s.color_button_bg | default: '#B46F34' }};
+    --bz-btn-bg-2: {% if s.button_gradient %}{{ s.color_button_bg_2 | default: '#8E4A22' }}{% else %}{{ s.color_button_bg | default: '#B46F34' }}{% endif %};
+    --bz-btn-text: {{ s.color_button_text | default: '#FFFFFF' }};
+    --bz-display-font: {{ s.heading_font.family }}, {{ s.heading_font.fallback_families }};
+    --bz-display-weight: {{ s.heading_font.weight }};
+    --bz-radius: {{ s.card_radius }}px;
+    --bz-cols: {{ s.columns_desktop }};
+    --bz-img-w: {{ s.image_width }}%;
+    --bz-pt: {{ s.padding_top }}px;
+    --bz-pb: {{ s.padding_bottom }}px;
+  }
+
+  {{ sid }}, {{ sid }} *, {{ sid }} *::before, {{ sid }} *::after { box-sizing: border-box; }
+  {{ sid }} p, {{ sid }} li, {{ sid }} span { color: inherit; }
+
+  {{ sid }} {
+    display: block;
+    background: var(--bz-bg);
+    color: var(--bz-text);
+    padding: calc(var(--bz-pt) * 0.7) 20px calc(var(--bz-pb) * 0.7);
+  }
+  {{ sid }} .bz-ing__inner { max-width: 1200px; margin: 0 auto; }
+
+  /* ---------- Encabezado ---------- */
+  {{ sid }} .bz-ing__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    max-width: 760px;
+    margin: 0 auto 36px;
+    text-align: center;
+  }
+  {{ sid }}.bz-ing--head-left .bz-ing__header { align-items: flex-start; margin-left: 0; text-align: left; }
+  {{ sid }} .bz-ing__header > * { margin: 0; }
+  {{ sid }} .bz-ing__eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--bz-accent);
+  }
+  {{ sid }} .bz-ing__heading {
+    font-family: var(--bz-display-font);
+    font-weight: var(--bz-display-weight);
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+    color: var(--bz-text);
+    text-wrap: balance;
+  }
+  {{ sid }} .bz-ing__heading--medium { font-size: clamp(28px, 7vw, 36px); }
+  {{ sid }} .bz-ing__heading--large { font-size: clamp(32px, 8.5vw, 44px); }
+  {{ sid }} .bz-ing__heading em { color: var(--bz-accent); font-style: normal; }
+  {{ sid }}.bz-ing--hl-italic .bz-ing__heading em { font-style: italic; }
+  {{ sid }} .bz-ing__sub {
+    max-width: 60ch;
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--bz-text-soft);
+  }
+  {{ sid }} .bz-ing__sub p { margin: 0; }
+  {{ sid }} .bz-ing__sub p + p { margin-top: 0.6em; }
+
+  /* ---------- Grilla ---------- */
+  {{ sid }} .bz-ing__grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  {{ sid }}.bz-ing--grid-start .bz-ing__grid { justify-content: flex-start; }
+  {{ sid }} .bz-ing__item { flex: 0 0 100%; display: flex; }
+  {{ sid }}.bz-ing--mobile-2 .bz-ing__item { flex-basis: calc((100% - 14px) / 2); }
+
+  /* ---------- Tarjeta ---------- */
+  {{ sid }} .bz-ing__card {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    min-height: 140px;
+    overflow: hidden;
+    border-radius: var(--bz-radius);
+    background: var(--bz-card);
+    color: inherit;
+    text-decoration: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  {{ sid }}.bz-ing--border .bz-ing__card { border: 1.5px solid var(--bz-border); }
+  {{ sid }}.bz-ing--shadow .bz-ing__card { box-shadow: 0 16px 34px -26px rgba(30, 20, 15, 0.45); }
+  {{ sid }} a.bz-ing__card:hover { transform: translateY(-3px); box-shadow: 0 22px 40px -24px rgba(30, 20, 15, 0.45); }
+
+  {{ sid }} .bz-ing__copy {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 20px 8px 20px 20px;
+  }
+  {{ sid }} .bz-ing__copy > * { margin: 0; }
+  {{ sid }} .bz-ing__benefit {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--bz-accent);
+  }
+  {{ sid }} .bz-ing__name {
+    font-family: var(--bz-display-font);
+    font-weight: var(--bz-display-weight);
+    font-size: 19px;
+    line-height: 1.2;
+    color: var(--bz-text);
+  }
+  {{ sid }} .bz-ing__text {
+    margin-top: 4px !important;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--bz-text-soft);
+  }
+  {{ sid }} .bz-ing__text p { margin: 0; }
+
+  {{ sid }} .bz-ing__media {
+    position: relative;
+    flex: 0 0 var(--bz-img-w);
+    min-height: 100%;
+  }
+  {{ sid }} .bz-ing__media img,
+  {{ sid }} .bz-ing__media svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: contain;
+    object-position: right center;
+  }
+  {{ sid }}.bz-ing--fit-cover .bz-ing__media img { object-fit: cover; object-position: center; }
+  {{ sid }}.bz-ing--fit-contain .bz-ing__media img { padding: 12px 12px 12px 0; }
+  {{ sid }} .bz-ing__media svg { fill: var(--bz-border); opacity: 0.35; }
+
+  /* Imagen arriba */
+  {{ sid }}.bz-ing--img-top .bz-ing__card { flex-direction: column; }
+  {{ sid }}.bz-ing--img-top .bz-ing__media { order: -1; flex: 0 0 auto; aspect-ratio: 4 / 3; min-height: 0; }
+  {{ sid }}.bz-ing--img-top .bz-ing__media img { object-position: center; padding: 0; }
+  {{ sid }}.bz-ing--img-top.bz-ing--fit-contain .bz-ing__media img { padding: 16px; }
+  {{ sid }}.bz-ing--img-top .bz-ing__copy { justify-content: flex-start; padding: 18px 20px 22px; }
+  {{ sid }}.bz-ing--img-top.bz-ing--card-center .bz-ing__copy { align-items: center; text-align: center; }
+
+  /* ---------- Botón ---------- */
+  {{ sid }} .bz-ing__footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    margin-top: 36px;
+  }
+  {{ sid }} .bz-ing__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    max-width: 380px;
+    min-height: 58px;
+    padding: 0 28px;
+    border-radius: {{ s.button_radius }}px;
+    background: linear-gradient(90deg, var(--bz-btn-bg), var(--bz-btn-bg-2));
+    color: var(--bz-btn-text);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    box-shadow: 0 14px 30px -16px var(--bz-btn-bg);
+    transition: transform 0.25s ease, filter 0.25s ease, gap 0.25s ease;
+  }
+  {{ sid }} .bz-ing__button:hover { transform: translateY(-2px); filter: brightness(1.07); gap: 18px; color: var(--bz-btn-text); }
+  {{ sid }} .bz-ing__button svg { width: 18px; height: 18px; flex: 0 0 18px; }
+  {{ sid }} .bz-ing__guarantee {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--bz-text-soft);
+  }
+  {{ sid }} .bz-ing__guarantee svg { width: 18px; height: 18px; flex: 0 0 18px; color: var(--bz-accent); }
+
+  /* ---------- Tablet ---------- */
+  @media screen and (min-width: 750px) {
+    {{ sid }} { padding: var(--bz-pt) 32px var(--bz-pb); }
+    {{ sid }} .bz-ing__header { margin-bottom: 48px; gap: 16px; }
+    {{ sid }} .bz-ing__heading--medium { font-size: clamp(34px, 4vw, 46px); }
+    {{ sid }} .bz-ing__heading--large { font-size: clamp(40px, 4.8vw, 58px); }
+    {{ sid }} .bz-ing__sub { font-size: 17px; }
+    {{ sid }} .bz-ing__grid { gap: 20px; }
+    {{ sid }} .bz-ing__item,
+    {{ sid }}.bz-ing--mobile-2 .bz-ing__item { flex-basis: calc((100% - 20px) / 2); }
+    {{ sid }} .bz-ing__card { min-height: 150px; }
+    {{ sid }} .bz-ing__copy { padding: 22px 8px 22px 24px; }
+    {{ sid }} .bz-ing__footer { margin-top: 48px; }
+  }
+
+  /* ---------- Escritorio ---------- */
+  @media screen and (min-width: 1100px) {
+    {{ sid }} .bz-ing__grid { gap: 24px; }
+    {{ sid }} .bz-ing__item,
+    {{ sid }}.bz-ing--mobile-2 .bz-ing__item {
+      flex-basis: calc((100% - 24px * (var(--bz-cols) - 1)) / var(--bz-cols));
+    }
+    {{ sid }} .bz-ing__name { font-size: 20px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    {{ sid }} .bz-ing__card, {{ sid }} .bz-ing__button { transition: none; }
+  }
+</style>
+
+<div
+  id="bz-ing-{{ section.id }}"
+  class="bz-ing bz-ing--img-{{ s.image_position }} bz-ing--fit-{{ s.image_fit }} bz-ing--head-{{ s.header_align }} bz-ing--card-{{ s.card_align }} bz-ing--hl-{{ s.highlight_style }}{% if s.mobile_columns == '2' %} bz-ing--mobile-2{% endif %}{% if s.center_last_row == false %} bz-ing--grid-start{% endif %}{% if s.card_border %} bz-ing--border{% endif %}{% if s.card_shadow %} bz-ing--shadow{% endif %}"
+>
+  <div class="bz-ing__inner">
+    {%- capture header -%}
+      {%- for block in section.blocks -%}
+        {%- unless header_types contains block.type -%}{%- continue -%}{%- endunless -%}
+        {%- case block.type -%}
+          {%- when 'subtitulo' -%}
+            <p class="bz-ing__eyebrow" {{ block.shopify_attributes }}>{{ block.settings.text | escape }}</p>
+          {%- when 'titulo' -%}
+            <h2 class="bz-ing__heading bz-ing__heading--{{ block.settings.size }}" {{ block.shopify_attributes }}>
+              {{- block.settings.heading -}}
+            </h2>
+          {%- when 'texto' -%}
+            <div class="bz-ing__sub" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+        {%- endcase -%}
+      {%- endfor -%}
+    {%- endcapture -%}
+
+    {%- if header != blank -%}
+      <div class="bz-ing__header">{{ header }}</div>
+    {%- endif -%}
+
+    <ul class="bz-ing__grid" role="list">
+      {%- for block in section.blocks -%}
+        {%- if block.type != 'ingrediente' -%}{%- continue -%}{%- endif -%}
+        {%- assign b = block.settings -%}
+        <li class="bz-ing__item" {{ block.shopify_attributes }}>
+          {%- if b.link != blank -%}
+            <a href="{{ b.link }}" class="bz-ing__card">
+          {%- else -%}
+            <div class="bz-ing__card">
+          {%- endif -%}
+            <div class="bz-ing__copy">
+              {%- if b.benefit != blank -%}
+                <p class="bz-ing__benefit">{{ b.benefit | escape }}</p>
+              {%- endif -%}
+              {%- if b.name != blank -%}
+                <h3 class="bz-ing__name">{{ b.name | escape }}</h3>
+              {%- endif -%}
+              {%- if b.text != blank -%}
+                <div class="bz-ing__text">{{ b.text }}</div>
+              {%- endif -%}
+            </div>
+            {%- if b.image != blank or request.design_mode -%}
+              <div class="bz-ing__media">
+                {%- if b.image != blank -%}
+                  {{
+                    b.image
+                    | image_url: width: 600
+                    | image_tag:
+                      loading: 'lazy',
+                      widths: '200, 300, 450, 600',
+                      sizes: '(min-width: 1100px) 160px, (min-width: 750px) 20vw, 40vw',
+                      alt: b.image.alt
+                  }}
+                {%- else -%}
+                  {{ 'image' | placeholder_svg_tag }}
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          {%- if b.link != blank -%}
+            </a>
+          {%- else -%}
+            </div>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+
+    {%- for block in section.blocks -%}
+      {%- if block.type != 'boton' -%}{%- continue -%}{%- endif -%}
+      <div class="bz-ing__footer" {{ block.shopify_attributes }}>
+        {%- if block.settings.label != blank -%}
+          <a
+            {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% else %}role="link" aria-disabled="true"{% endif %}
+            class="bz-ing__button"
+          >
+            <span>{{ block.settings.label | escape }}</span>
+            {%- if block.settings.show_arrow -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            {%- endif -%}
+          </a>
+        {%- endif -%}
+        {%- if block.settings.guarantee != blank -%}
+          <p class="bz-ing__guarantee">
+            {%- if block.settings.show_icon -%}
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1.5l2.6 1.9 3.2-.2 1 3.1 2.7 1.8-1.1 3 1.1 3-2.7 1.8-1 3.1-3.2-.2L12 22.5l-2.6-1.9-3.2.2-1-3.1-2.7-1.8 1.1-3-1.1-3 2.7-1.8 1-3.1 3.2.2z"/><path d="M8.3 12.2l2.5 2.5 4.9-5.2" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            {%- endif -%}
+            <span>{{ block.settings.guarantee | escape }}</span>
+          </p>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Bronzer · Ingredientes",
+  "tag": "section",
+  "class": "section-bronzer-ingredientes",
+  "max_blocks": 24,
+  "settings": [
+    { "type": "header", "content": "Grilla" },
+    {
+      "type": "select",
+      "id": "columns_desktop",
+      "label": "Columnas en computadora",
+      "options": [
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "select",
+      "id": "mobile_columns",
+      "label": "Columnas en celular",
+      "info": "Con 2 columnas conviene usar la imagen arriba.",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "checkbox",
+      "id": "center_last_row",
+      "label": "Centrar la última fila",
+      "info": "Si la última fila queda incompleta, sus tarjetas van al centro.",
+      "default": true
+    },
+    { "type": "header", "content": "Tarjetas" },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Posición de la imagen",
+      "options": [
+        { "value": "right", "label": "A la derecha" },
+        { "value": "top", "label": "Arriba" }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Ajuste de la imagen",
+      "info": "Usá \"Completa\" para fotos con fondo transparente (PNG).",
+      "options": [
+        { "value": "contain", "label": "Completa (sin recortar)" },
+        { "value": "bleed", "label": "Completa, pegada al borde" },
+        { "value": "cover", "label": "Rellenar (recorta)" }
+      ],
+      "default": "bleed"
+    },
+    {
+      "type": "range",
+      "id": "image_width",
+      "label": "Ancho de la imagen (a la derecha)",
+      "min": 25,
+      "max": 50,
+      "step": 1,
+      "unit": "%",
+      "default": 38
+    },
+    {
+      "type": "select",
+      "id": "card_align",
+      "label": "Alineación del texto (imagen arriba)",
+      "options": [
+        { "value": "left", "label": "Izquierda" },
+        { "value": "center", "label": "Centrado" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Redondeo",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    { "type": "checkbox", "id": "card_border", "label": "Borde", "default": true },
+    { "type": "checkbox", "id": "card_shadow", "label": "Sombra", "default": false },
+    { "type": "header", "content": "Encabezado" },
+    {
+      "type": "select",
+      "id": "header_align",
+      "label": "Alineación",
+      "options": [
+        { "value": "center", "label": "Centrado" },
+        { "value": "left", "label": "Izquierda" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "highlight_style",
+      "label": "Palabra resaltada del título",
+      "info": "Para resaltar, poné la palabra en cursiva.",
+      "options": [
+        { "value": "color", "label": "Solo color" },
+        { "value": "italic", "label": "Color + cursiva" }
+      ],
+      "default": "color"
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_font",
+      "label": "Tipografía de títulos",
+      "default": "playfair_display_n7"
+    },
+    { "type": "header", "content": "Botón" },
+    { "type": "color", "id": "color_button_bg", "label": "Color del botón", "default": "#B46F34" },
+    { "type": "checkbox", "id": "button_gradient", "label": "Botón con degradado", "default": true },
+    { "type": "color", "id": "color_button_bg_2", "label": "Segundo color del degradado", "default": "#8E4A22" },
+    { "type": "color", "id": "color_button_text", "label": "Texto del botón", "default": "#FFFFFF" },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "label": "Redondeo del botón",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    { "type": "header", "content": "Colores" },
+    { "type": "color", "id": "color_bg", "label": "Fondo", "default": "#FBF6EF" },
+    { "type": "color", "id": "color_card", "label": "Fondo de las tarjetas", "default": "#FFF8F1" },
+    { "type": "color", "id": "color_border", "label": "Borde de las tarjetas", "default": "#E8B892" },
+    { "type": "color", "id": "color_text", "label": "Texto", "default": "#1E140F" },
+    {
+      "type": "color",
+      "id": "color_accent",
+      "label": "Acento",
+      "info": "Subtítulo, beneficios, palabra resaltada e ícono de garantía.",
+      "default": "#B46F34"
+    },
+    { "type": "header", "content": "Espaciado" },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Margen superior",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "default": 96
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Margen inferior",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "default": 96
+    }
+  ],
+  "blocks": [
+    {
+      "type": "subtitulo",
+      "name": "Subtítulo",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "text", "label": "Texto", "default": "La fórmula" }
+      ]
+    },
+    {
+      "type": "titulo",
+      "name": "Título",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Título",
+          "info": "La parte en cursiva se pinta con el color de acento.",
+          "default": "Tu glow empieza adentro: <em>Fórmula Beta-Caroteno</em>"
+        },
+        {
+          "type": "select",
+          "id": "size",
+          "label": "Tamaño",
+          "options": [
+            { "value": "medium", "label": "Mediano" },
+            { "value": "large", "label": "Grande" }
+          ],
+          "default": "large"
+        }
+      ]
+    },
+    {
+      "type": "texto",
+      "name": "Texto",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Texto",
+          "default": "<p>Cada ingrediente fue elegido para darle a tu piel un tono dorado, luminoso y parejo en 18 días. Sin sol, sin camas solares y sin autobronceantes.</p>"
+        }
+      ]
+    },
+    {
+      "type": "ingrediente",
+      "name": "Ingrediente",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Imagen",
+          "info": "Ideal: PNG con fondo transparente, 600 x 600 px."
+        },
+        { "type": "text", "id": "benefit", "label": "Beneficio", "default": "Para tu tono dorado" },
+        { "type": "text", "id": "name", "label": "Ingrediente", "default": "Beta-caroteno" },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Descripción",
+          "default": "<p>Describí en una o dos líneas qué aporta este ingrediente.</p>"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link (opcional)",
+          "info": "Si lo cargás, toda la tarjeta es clickeable."
+        }
+      ]
+    },
+    {
+      "type": "boton",
+      "name": "Botón",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "label", "label": "Texto del botón", "default": "Quiero mi glow" },
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "checkbox", "id": "show_arrow", "label": "Mostrar flecha", "default": true },
+        {
+          "type": "text",
+          "id": "guarantee",
+          "label": "Garantía debajo del botón",
+          "default": "Garantía de satisfacción de 30 días"
+        },
+        { "type": "checkbox", "id": "show_icon", "label": "Mostrar sello", "default": true }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bronzer · Ingredientes",
+      "blocks": [
+        { "type": "subtitulo" },
+        { "type": "titulo" },
+        { "type": "texto" },
+        {
+          "type": "ingrediente",
+          "settings": {
+            "benefit": "Para tu tono dorado",
+            "name": "Beta-caroteno",
+            "text": "<p>El pigmento natural de la zanahoria que le da a tu piel un dorado cálido y uniforme.</p>"
+          }
+        },
+        {
+          "type": "ingrediente",
+          "settings": {
+            "benefit": "Para tu luminosidad",
+            "name": "Licopeno",
+            "text": "<p>Antioxidante del tomate que realza el brillo natural de la piel.</p>"
+          }
+        },
+        {
+          "type": "ingrediente",
+          "settings": {
+            "benefit": "Para una piel pareja",
+            "name": "Luteína",
+            "text": "<p>Carotenoide que acompaña al beta-caroteno para un tono más homogéneo.</p>"
+          }
+        },
+        {
+          "type": "ingrediente",
+          "settings": {
+            "benefit": "Para tu protección",
+            "name": "Vitamina E",
+            "text": "<p>Antioxidante que ayuda a cuidar la piel del daño oxidativo.</p>"
+          }
+        },
+        {
+          "type": "ingrediente",
+          "settings": {
+            "benefit": "Para tu firmeza",
+            "name": "Vitamina C",
+            "text": "<p>Participa en la formación normal de colágeno.</p>"
+          }
+        },
+        {
+          "type": "ingrediente",
+          "settings": {
+            "benefit": "Para tu renovación",
+            "name": "Zinc",
+            "text": "<p>Contribuye al mantenimiento normal de la piel.</p>"
+          }
+        },
+        {
+          "type": "ingrediente",
+          "settings": {
+            "benefit": "Para tu glow diario",
+            "name": "Biotina",
+            "text": "<p>Vitamina del grupo B asociada a piel, pelo y uñas saludables.</p>"
+          }
+        },
+        { "type": "boton" }
+      ]
+    }
+  ]
+}
+{% endschema %}
