@@ -31,6 +31,7 @@
     --bz-radius: {{ s.card_radius }}px;
     --bz-cols: {{ s.columns_desktop }};
     --bz-img-w: {{ s.image_width }}%;
+    --bz-img-scale: {{ s.image_scale | divided_by: 100.0 }};
     --bz-pt: {{ s.padding_top }}px;
     --bz-pb: {{ s.padding_bottom }}px;
   }
@@ -144,6 +145,18 @@
     line-height: 1.2;
     color: var(--bz-text);
   }
+  {{ sid }} .bz-ing__dose {
+    align-self: flex-start;
+    margin-top: 2px !important;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--bz-accent);
+    background: color-mix(in srgb, var(--bz-accent) 10%, transparent);
+  }
+  {{ sid }}.bz-ing--img-top.bz-ing--card-center .bz-ing__dose { align-self: center; }
   {{ sid }} .bz-ing__text {
     margin-top: 4px !important;
     font-size: 13.5px;
@@ -166,15 +179,17 @@
     max-width: none;
     object-fit: contain;
     object-position: right center;
+    transform: scale(var(--bz-img-scale));
+    transform-origin: right center;
   }
-  {{ sid }}.bz-ing--fit-cover .bz-ing__media img { object-fit: cover; object-position: center; }
+  {{ sid }}.bz-ing--fit-cover .bz-ing__media img { object-fit: cover; object-position: center; transform: none; }
   {{ sid }}.bz-ing--fit-contain .bz-ing__media img { padding: 12px 12px 12px 0; }
-  {{ sid }} .bz-ing__media svg { fill: var(--bz-border); opacity: 0.35; }
+  {{ sid }} .bz-ing__media svg { fill: var(--bz-border); opacity: 0.35; transform: none; }
 
   /* Imagen arriba */
   {{ sid }}.bz-ing--img-top .bz-ing__card { flex-direction: column; }
   {{ sid }}.bz-ing--img-top .bz-ing__media { order: -1; flex: 0 0 auto; aspect-ratio: 4 / 3; min-height: 0; }
-  {{ sid }}.bz-ing--img-top .bz-ing__media img { object-position: center; padding: 0; }
+  {{ sid }}.bz-ing--img-top .bz-ing__media img { object-position: center; padding: 0; transform-origin: center; }
   {{ sid }}.bz-ing--img-top.bz-ing--fit-contain .bz-ing__media img { padding: 16px; }
   {{ sid }}.bz-ing--img-top .bz-ing__copy { justify-content: flex-start; padding: 18px 20px 22px; }
   {{ sid }}.bz-ing--img-top.bz-ing--card-center .bz-ing__copy { align-items: center; text-align: center; }
@@ -292,6 +307,9 @@
               {%- if b.name != blank -%}
                 <h3 class="bz-ing__name">{{ b.name | escape }}</h3>
               {%- endif -%}
+              {%- if b.dose != blank -%}
+                <span class="bz-ing__dose">{{ b.dose | escape }}</span>
+              {%- endif -%}
               {%- if b.text != blank -%}
                 <div class="bz-ing__text">{{ b.text }}</div>
               {%- endif -%}
@@ -356,15 +374,27 @@
   "class": "section-bronzer-ingredientes",
   "max_blocks": 24,
   "settings": [
-    { "type": "header", "content": "Grilla" },
+    {
+      "type": "header",
+      "content": "Grilla"
+    },
     {
       "type": "select",
       "id": "columns_desktop",
       "label": "Columnas en computadora",
       "options": [
-        { "value": "2", "label": "2" },
-        { "value": "3", "label": "3" },
-        { "value": "4", "label": "4" }
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        }
       ],
       "default": "3"
     },
@@ -374,8 +404,14 @@
       "label": "Columnas en celular",
       "info": "Con 2 columnas conviene usar la imagen arriba.",
       "options": [
-        { "value": "1", "label": "1" },
-        { "value": "2", "label": "2" }
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
       ],
       "default": "1"
     },
@@ -386,14 +422,23 @@
       "info": "Si la última fila queda incompleta, sus tarjetas van al centro.",
       "default": true
     },
-    { "type": "header", "content": "Tarjetas" },
+    {
+      "type": "header",
+      "content": "Tarjetas"
+    },
     {
       "type": "select",
       "id": "image_position",
       "label": "Posición de la imagen",
       "options": [
-        { "value": "right", "label": "A la derecha" },
-        { "value": "top", "label": "Arriba" }
+        {
+          "value": "right",
+          "label": "A la derecha"
+        },
+        {
+          "value": "top",
+          "label": "Arriba"
+        }
       ],
       "default": "right"
     },
@@ -403,9 +448,18 @@
       "label": "Ajuste de la imagen",
       "info": "Usá \"Completa\" para fotos con fondo transparente (PNG).",
       "options": [
-        { "value": "contain", "label": "Completa (sin recortar)" },
-        { "value": "bleed", "label": "Completa, pegada al borde" },
-        { "value": "cover", "label": "Rellenar (recorta)" }
+        {
+          "value": "contain",
+          "label": "Completa (sin recortar)"
+        },
+        {
+          "value": "bleed",
+          "label": "Completa, pegada al borde"
+        },
+        {
+          "value": "cover",
+          "label": "Rellenar (recorta)"
+        }
       ],
       "default": "bleed"
     },
@@ -420,12 +474,29 @@
       "default": 38
     },
     {
+      "type": "range",
+      "id": "image_scale",
+      "label": "Tamaño de la foto",
+      "info": "Más de 100% hace que la foto sobresalga y se corte en el borde, como en las marcas premium.",
+      "min": 80,
+      "max": 150,
+      "step": 5,
+      "unit": "%",
+      "default": 110
+    },
+    {
       "type": "select",
       "id": "card_align",
       "label": "Alineación del texto (imagen arriba)",
       "options": [
-        { "value": "left", "label": "Izquierda" },
-        { "value": "center", "label": "Centrado" }
+        {
+          "value": "left",
+          "label": "Izquierda"
+        },
+        {
+          "value": "center",
+          "label": "Centrado"
+        }
       ],
       "default": "left"
     },
@@ -439,16 +510,35 @@
       "unit": "px",
       "default": 16
     },
-    { "type": "checkbox", "id": "card_border", "label": "Borde", "default": true },
-    { "type": "checkbox", "id": "card_shadow", "label": "Sombra", "default": false },
-    { "type": "header", "content": "Encabezado" },
+    {
+      "type": "checkbox",
+      "id": "card_border",
+      "label": "Borde",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "card_shadow",
+      "label": "Sombra",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Encabezado"
+    },
     {
       "type": "select",
       "id": "header_align",
       "label": "Alineación",
       "options": [
-        { "value": "center", "label": "Centrado" },
-        { "value": "left", "label": "Izquierda" }
+        {
+          "value": "center",
+          "label": "Centrado"
+        },
+        {
+          "value": "left",
+          "label": "Izquierda"
+        }
       ],
       "default": "center"
     },
@@ -458,8 +548,14 @@
       "label": "Palabra resaltada del título",
       "info": "Para resaltar, poné la palabra en cursiva.",
       "options": [
-        { "value": "color", "label": "Solo color" },
-        { "value": "italic", "label": "Color + cursiva" }
+        {
+          "value": "color",
+          "label": "Solo color"
+        },
+        {
+          "value": "italic",
+          "label": "Color + cursiva"
+        }
       ],
       "default": "color"
     },
@@ -469,11 +565,34 @@
       "label": "Tipografía de títulos",
       "default": "playfair_display_n7"
     },
-    { "type": "header", "content": "Botón" },
-    { "type": "color", "id": "color_button_bg", "label": "Color del botón", "default": "#B46F34" },
-    { "type": "checkbox", "id": "button_gradient", "label": "Botón con degradado", "default": true },
-    { "type": "color", "id": "color_button_bg_2", "label": "Segundo color del degradado", "default": "#8E4A22" },
-    { "type": "color", "id": "color_button_text", "label": "Texto del botón", "default": "#FFFFFF" },
+    {
+      "type": "header",
+      "content": "Botón"
+    },
+    {
+      "type": "color",
+      "id": "color_button_bg",
+      "label": "Color del botón",
+      "default": "#B46F34"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_gradient",
+      "label": "Botón con degradado",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "color_button_bg_2",
+      "label": "Segundo color del degradado",
+      "default": "#8E4A22"
+    },
+    {
+      "type": "color",
+      "id": "color_button_text",
+      "label": "Texto del botón",
+      "default": "#FFFFFF"
+    },
     {
       "type": "range",
       "id": "button_radius",
@@ -484,11 +603,34 @@
       "unit": "px",
       "default": 12
     },
-    { "type": "header", "content": "Colores" },
-    { "type": "color", "id": "color_bg", "label": "Fondo", "default": "#FBF6EF" },
-    { "type": "color", "id": "color_card", "label": "Fondo de las tarjetas", "default": "#FFF8F1" },
-    { "type": "color", "id": "color_border", "label": "Borde de las tarjetas", "default": "#E8B892" },
-    { "type": "color", "id": "color_text", "label": "Texto", "default": "#1E140F" },
+    {
+      "type": "header",
+      "content": "Colores"
+    },
+    {
+      "type": "color",
+      "id": "color_bg",
+      "label": "Fondo",
+      "default": "#FBF6EF"
+    },
+    {
+      "type": "color",
+      "id": "color_card",
+      "label": "Fondo de las tarjetas",
+      "default": "#FFF8F1"
+    },
+    {
+      "type": "color",
+      "id": "color_border",
+      "label": "Borde de las tarjetas",
+      "default": "#E8B892"
+    },
+    {
+      "type": "color",
+      "id": "color_text",
+      "label": "Texto",
+      "default": "#1E140F"
+    },
     {
       "type": "color",
       "id": "color_accent",
@@ -496,7 +638,10 @@
       "info": "Subtítulo, beneficios, palabra resaltada e ícono de garantía.",
       "default": "#B46F34"
     },
-    { "type": "header", "content": "Espaciado" },
+    {
+      "type": "header",
+      "content": "Espaciado"
+    },
     {
       "type": "range",
       "id": "padding_top",
@@ -524,7 +669,12 @@
       "name": "Subtítulo",
       "limit": 1,
       "settings": [
-        { "type": "text", "id": "text", "label": "Texto", "default": "La fórmula" }
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texto",
+          "default": "La fórmula"
+        }
       ]
     },
     {
@@ -544,8 +694,14 @@
           "id": "size",
           "label": "Tamaño",
           "options": [
-            { "value": "medium", "label": "Mediano" },
-            { "value": "large", "label": "Grande" }
+            {
+              "value": "medium",
+              "label": "Mediano"
+            },
+            {
+              "value": "large",
+              "label": "Grande"
+            }
           ],
           "default": "large"
         }
@@ -560,7 +716,7 @@
           "type": "richtext",
           "id": "text",
           "label": "Texto",
-          "default": "<p>Cada ingrediente fue elegido para darle a tu piel un tono dorado, luminoso y parejo en 18 días. Sin sol, sin camas solares y sin autobronceantes.</p>"
+          "default": "<p>Una cápsula diaria con betacaroteno, licopeno, cúrcuma y vitaminas para un tono dorado, luminoso y parejo en 18 días. Sin sol, sin camas solares, sin autobronceantes.</p>"
         }
       ]
     },
@@ -571,11 +727,27 @@
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Imagen",
-          "info": "Ideal: PNG con fondo transparente, 600 x 600 px."
+          "label": "Foto del ingrediente",
+          "info": "Foto real del ingrediente recortada, en PNG con fondo transparente (600 x 600 px o más). Ej: zanahoria, tomate, raíz de cúrcuma, naranja."
         },
-        { "type": "text", "id": "benefit", "label": "Beneficio", "default": "Para tu tono dorado" },
-        { "type": "text", "id": "name", "label": "Ingrediente", "default": "Beta-caroteno" },
+        {
+          "type": "text",
+          "id": "benefit",
+          "label": "Beneficio",
+          "default": "Para tu tono dorado"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Ingrediente",
+          "default": "Betacaroteno"
+        },
+        {
+          "type": "text",
+          "id": "dose",
+          "label": "Dosis (opcional)",
+          "info": "Ej: 50 mg por cápsula"
+        },
         {
           "type": "richtext",
           "id": "text",
@@ -595,16 +767,35 @@
       "name": "Botón",
       "limit": 1,
       "settings": [
-        { "type": "text", "id": "label", "label": "Texto del botón", "default": "Quiero mi glow" },
-        { "type": "url", "id": "link", "label": "Link" },
-        { "type": "checkbox", "id": "show_arrow", "label": "Mostrar flecha", "default": true },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Texto del botón",
+          "default": "Quiero mi glow"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_arrow",
+          "label": "Mostrar flecha",
+          "default": true
+        },
         {
           "type": "text",
           "id": "guarantee",
           "label": "Garantía debajo del botón",
           "default": "Garantía de satisfacción de 30 días"
         },
-        { "type": "checkbox", "id": "show_icon", "label": "Mostrar sello", "default": true }
+        {
+          "type": "checkbox",
+          "id": "show_icon",
+          "label": "Mostrar sello",
+          "default": true
+        }
       ]
     }
   ],
@@ -612,15 +803,22 @@
     {
       "name": "Bronzer · Ingredientes",
       "blocks": [
-        { "type": "subtitulo" },
-        { "type": "titulo" },
-        { "type": "texto" },
+        {
+          "type": "subtitulo"
+        },
+        {
+          "type": "titulo"
+        },
+        {
+          "type": "texto"
+        },
         {
           "type": "ingrediente",
           "settings": {
             "benefit": "Para tu tono dorado",
-            "name": "Beta-caroteno",
-            "text": "<p>El pigmento natural de la zanahoria que le da a tu piel un dorado cálido y uniforme.</p>"
+            "name": "Betacaroteno",
+            "dose": "50 mg por cápsula",
+            "text": "<p>El pigmento natural de la zanahoria que le da a tu piel un dorado cálido y uniforme, desde adentro.</p>"
           }
         },
         {
@@ -628,23 +826,17 @@
           "settings": {
             "benefit": "Para tu luminosidad",
             "name": "Licopeno",
-            "text": "<p>Antioxidante del tomate que realza el brillo natural de la piel.</p>"
+            "dose": "10 mg por cápsula",
+            "text": "<p>El antioxidante del tomate que realza el brillo natural de tu piel.</p>"
           }
         },
         {
           "type": "ingrediente",
           "settings": {
-            "benefit": "Para una piel pareja",
-            "name": "Luteína",
-            "text": "<p>Carotenoide que acompaña al beta-caroteno para un tono más homogéneo.</p>"
-          }
-        },
-        {
-          "type": "ingrediente",
-          "settings": {
-            "benefit": "Para tu protección",
-            "name": "Vitamina E",
-            "text": "<p>Antioxidante que ayuda a cuidar la piel del daño oxidativo.</p>"
+            "benefit": "Para tu piel radiante",
+            "name": "Cúrcuma",
+            "dose": "150 mg por cápsula",
+            "text": "<p>Extracto seco de cúrcuma, con poder antioxidante para una piel que se ve más vital.</p>"
           }
         },
         {
@@ -652,26 +844,40 @@
           "settings": {
             "benefit": "Para tu firmeza",
             "name": "Vitamina C",
-            "text": "<p>Participa en la formación normal de colágeno.</p>"
+            "dose": "50 mg por cápsula",
+            "text": "<p>Contribuye a la formación normal de colágeno para una piel firme.</p>"
+          }
+        },
+        {
+          "type": "ingrediente",
+          "settings": {
+            "benefit": "Para tu protección",
+            "name": "Vitamina E",
+            "dose": "10 mg por cápsula",
+            "text": "<p>Antioxidante que ayuda a proteger las células del daño oxidativo.</p>"
+          }
+        },
+        {
+          "type": "ingrediente",
+          "settings": {
+            "benefit": "Para una piel sana",
+            "name": "Complejo B",
+            "dose": "B3 · B5 · B6 · B12",
+            "text": "<p>Vitaminas que contribuyen al mantenimiento de una piel sana y a tu energía diaria.</p>"
           }
         },
         {
           "type": "ingrediente",
           "settings": {
             "benefit": "Para tu renovación",
-            "name": "Zinc",
-            "text": "<p>Contribuye al mantenimiento normal de la piel.</p>"
+            "name": "Ácido fólico",
+            "dose": "640 mcg por cápsula",
+            "text": "<p>Contribuye a la división celular normal, clave para la renovación de la piel.</p>"
           }
         },
         {
-          "type": "ingrediente",
-          "settings": {
-            "benefit": "Para tu glow diario",
-            "name": "Biotina",
-            "text": "<p>Vitamina del grupo B asociada a piel, pelo y uñas saludables.</p>"
-          }
-        },
-        { "type": "boton" }
+          "type": "boton"
+        }
       ]
     }
   ]
