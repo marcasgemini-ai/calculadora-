@@ -755,7 +755,7 @@
 
           {%- capture checks -%}
             {%- for block in section.blocks -%}
-              {%- if block.type == 'check' -%}
+              {%- if block.type == 'ventaja' -%}
                 <li {{ block.shopify_attributes }}><span class="of-check"><svg class="of-i" aria-hidden="true"><use href="#ofi-check-{{ section.id }}"/></svg></span>{{ block.settings.text | escape }}</li>
               {%- endif -%}
             {%- endfor -%}
@@ -1771,8 +1771,8 @@
       ]
     },
     {
-      "type": "check",
-      "name": "Check bajo el botón",
+      "type": "ventaja",
+      "name": "Ventaja bajo el botón",
       "limit": 6,
       "settings": [
         {
@@ -2013,25 +2013,25 @@
           }
         },
         {
-          "type": "check",
+          "type": "ventaja",
           "settings": {
             "text": "Envío gratis a todo el país"
           }
         },
         {
-          "type": "check",
+          "type": "ventaja",
           "settings": {
             "text": "3 cuotas sin interés"
           }
         },
         {
-          "type": "check",
+          "type": "ventaja",
           "settings": {
             "text": "Regalos exclusivos"
           }
         },
         {
-          "type": "check",
+          "type": "ventaja",
           "settings": {
             "text": "Garantía de 30 días"
           }
