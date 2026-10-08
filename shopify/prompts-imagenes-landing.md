@@ -20,7 +20,7 @@ Un prompt por imagen, en inglés, listo para copiar y pegar.
 | 4 | Beneficios | 3 cápsulas flotando (o frasco, alternativa) | 1:1 · 2000×2000 PNG | 1 |
 | 5–9 | Oferta | Galería del producto | 1:1 · 2000×2000 | 5 |
 | 10 | Preguntas | Lifestyle con el producto | 4:5 · 1600×2000 | 1 |
-| 11–16 | Reseñas | Antes / después **ilustrativos** | 8:5 · 1600×1000 | 6 |
+| 11–16 | Reseñas | Antes / después **ilustrativos** (fotos separadas) | 4:5 · 1200×1500 | 6 pares |
 | 17–23 | Ingredientes | Ingredientes sin fondo | 1:1 · 2048×2048 PNG | 7 (ver `prompts-ingredientes.md`) |
 
 ---
@@ -128,44 +128,84 @@ Ultra-realistic lifestyle photograph, vertical 4:5, close crop of a woman's tors
 
 ## 11–16. Reseñas · Antes / después — SOLO EJEMPLO PARA LA CLIENTA
 
-> **Importante:** estas imágenes son **ilustrativas**, para mostrarle a tu clienta cómo se vería la sección. **No las publiques como resultados reales** (son personas generadas por IA; publicarlas como clientas sería publicidad engañosa y va contra las políticas de Meta y la normativa de ANMAT y Defensa del Consumidor). Para producción, usá fotos reales de clientas con su autorización escrita.
->
-> Cada prompt genera **una sola imagen dividida en dos** (izquierda = antes, derecha = día 18). Después la cortás al medio y cargás cada mitad en "Foto antes" y "Foto después". El cambio es **sutil y creíble**: un matiz dorado cálido, nunca naranja.
+> **Importante:** estas imágenes son **ilustrativas**, para mostrarle a tu clienta cómo se vería la sección. **No las publiques como resultados reales**: son personas generadas por IA, y publicarlas como clientas sería publicidad engañosa (va contra las políticas de Meta, ANMAT y Defensa del Consumidor). Para la tienda, usá fotos reales de clientas con su autorización escrita.
+
+**Cómo hacerlas para que sea la misma mujer en las dos fotos:**
+1. Generá la foto **ANTES** con su prompt (formato vertical 4:5).
+2. Para la foto **DESPUÉS**, **adjuntá la foto del ANTES** y pegá el prompt de edición. Así la herramienta solo cambia el tono de piel y deja todo lo demás igual. (ChatGPT: adjuntá la imagen y pegá el texto · Gemini / Flux Kontext: modo edición · Midjourney: editor / "Vary Region" sobre la piel.)
+3. Cargá cada una en **Foto antes** y **Foto después** del bloque Reseña.
+4. Si el cambio se ve exagerado o naranja, pedí: `make the tan 30% more subtle and less orange`. Si se nota poco: `make the golden tan one shade deeper, keep it natural`.
 
 ### 11. Rostro — piel clara
 
+**ANTES** (generar desde cero):
 ```
-Ultra-realistic before-and-after diptych for an illustrative mockup, horizontal 8:5, split vertically into two equal halves with a thin clean white divider line. Both halves show the exact same Argentine woman in her late 20s with fair skin, light freckles and straight light-brown hair pulled back, photographed from the shoulders up, facing the camera with a neutral relaxed expression, identical pose, framing, clothing (simple white tank top), background (plain warm light-grey wall) and lighting (soft, even, diffused frontal studio light). LEFT half: her natural fair skin, slightly pale and cool-toned, a little dull. RIGHT half: the same skin with a subtle, believable warm golden glow, as after 18 days of a beta-carotene supplement — a gentle honey-gold warmth on cheeks, forehead, neck and shoulders, more luminous and even, still natural and realistic, definitely not orange, not a spray tan, no makeup change. Natural skin texture and pores visible in both halves, no beauty filter, documentary clinical-comparison style. No text, no labels, no arrows, no watermark.
+A hyper-realistic vertical 4:5 photo taken on a Samsung Galaxy S24 Ultra main camera (default phone processing, slight HDR, natural phone sharpening), used as the 'before' photo of a skincare progress comparison. A real-looking Argentine woman, 27 years old, with very fair, slightly pale and cool-toned skin, light freckles on her nose and cheeks, natural light-brown hair pulled back in a low ponytail with a few loose strands, no makeup, natural brows. She faces the camera with a neutral, relaxed expression, framed from the top of her head to mid-chest, wearing a plain white ribbed tank top. Background: a plain warm off-white wall in her apartment. Light: soft, even, diffused daylight from a window in front of her, no harsh shadows, no warm filter. Her skin looks natural but a bit dull and washed out, with visible pores, a few tiny blemishes and real texture. Honest, unretouched progress-photo style, like a real customer photo. No beauty filter, no makeup, no text, no watermark.
 ```
 
-### 12. Rostro — piel trigueña / oliva
-
+**DESPUÉS** (adjuntá la foto del ANTES y pedí que la edite):
 ```
-Ultra-realistic before-and-after diptych for an illustrative mockup, horizontal 8:5, split vertically into two equal halves with a thin clean white divider line. Both halves show the exact same Argentine woman in her mid 30s with light olive skin and dark wavy hair loose, photographed from the chest up, three-quarter angle toward the camera, soft natural expression, identical pose, framing, black ribbed top, warm beige wall background and soft diffused window light from the left. LEFT half: her natural light olive skin with a slightly sallow, tired, uneven tone. RIGHT half: the same skin with a subtle, believable warm bronze-gold glow after 18 days of a beta-carotene supplement — warmer, more even and radiant on face, neck and décolletage, natural highlights on the cheekbones, still realistic, not orange, not a self-tanner, no makeup change. Natural skin texture visible in both halves, no filters, honest comparison photography style. No text, no labels, no watermark.
+Keep absolutely everything identical to the attached photo: same woman, same face and features, same expression, same pose, same framing, same hair, same clothing, same background, same lighting, same phone-camera look and image quality. Change ONLY her skin tone: her face, neck, ears, shoulders and chest. The new tone must be a clearly visible, natural, warm golden-bronze tan, about two shades deeper than in the attached photo, like a healthy summer glow achieved from within with a beta-carotene supplement after 18 days: rich honey-gold and bronze undertones, even and uniform, luminous, with a soft healthy sheen on the high points. It must still look like real skin with the same pores, freckles, moles and texture — not orange, not yellow, not a spray tan, no streaks, no patches, no tan lines, no makeup added, no beauty filter, no smoothing.
+```
+
+### 12. Rostro — piel trigueña
+
+**ANTES** (generar desde cero):
+```
+A hyper-realistic vertical 4:5 photo taken on a Samsung Galaxy S24 Ultra main camera (default phone processing, slight HDR), used as the 'before' photo of a skincare progress comparison. A real-looking Argentine woman, 34 years old, with light olive skin that looks slightly sallow, tired and uneven, dark wavy shoulder-length hair loose behind her shoulders, no makeup, natural thick brows. Three-quarter angle toward the camera, soft neutral expression, framed from the top of her head to the chest, wearing a plain black ribbed crew-neck top. Background: a plain light beige wall. Light: soft diffused daylight from a window on the left, even and neutral, no warm tones. Real skin texture with visible pores, slight under-eye shadows and small imperfections. Honest, unretouched progress-photo style, like a real customer photo. No beauty filter, no makeup, no text, no watermark.
+```
+
+**DESPUÉS** (adjuntá la foto del ANTES y pedí que la edite):
+```
+Keep absolutely everything identical to the attached photo: same woman, same face and features, same expression, same pose, same framing, same hair, same clothing, same background, same lighting, same phone-camera look and image quality. Change ONLY her skin tone: her face, neck, ears and décolletage. The new tone must be a clearly visible, natural, warm golden-bronze tan, about two shades deeper than in the attached photo, like a healthy summer glow achieved from within with a beta-carotene supplement after 18 days: rich honey-gold and bronze undertones, even and uniform, luminous, with a soft healthy sheen on the high points. It must still look like real skin with the same pores, freckles, moles and texture — not orange, not yellow, not a spray tan, no streaks, no patches, no tan lines, no makeup added, no beauty filter, no smoothing.
 ```
 
 ### 13. Escote y hombros
 
+**ANTES** (generar desde cero):
 ```
-Ultra-realistic before-and-after diptych for an illustrative mockup, horizontal 8:5, split vertically into two equal halves with a thin clean white divider line. Both halves show the same close crop of an Argentine woman's collarbones, shoulders and upper chest (no face, cropped at the chin), wearing an identical thin-strap ivory camisole, same pose, same framing, same plain warm-grey background and the same soft, even, diffused light. LEFT half: fair-to-light natural skin, slightly cool and pale. RIGHT half: the same skin with a subtle, believable warm golden glow after 18 days of a beta-carotene supplement — evenly warmer and luminous across shoulders and collarbones, soft natural sheen, still realistic, not orange, no streaks, no tan lines, no self-tanner look. Natural skin texture, tiny moles and pores visible in both halves, no retouching. Clean clinical comparison style. No text, no labels, no watermark.
+A hyper-realistic vertical 4:5 close-up photo taken on a Samsung Galaxy S24 Ultra main camera (default phone processing), used as the 'before' photo of a skin progress comparison. A real-looking woman's upper body from the chin down to just below the collarbones, no face visible except the lower jawline, wearing a thin-strap ivory cotton camisole, standing straight in front of a plain light-grey wall. Her skin is fair to light, slightly cool and pale, with a couple of small moles on the shoulder, fine natural texture and visible pores. Light: soft, even, diffused daylight from a window in front, neutral color, no shadows. Honest, unretouched progress-photo style, centered framing, like a real customer photo. No beauty filter, no oil shine, no text, no watermark.
+```
+
+**DESPUÉS** (adjuntá la foto del ANTES y pedí que la edite):
+```
+Keep absolutely everything identical to the attached photo: same woman, same face and features, same expression, same pose, same framing, same hair, same clothing, same background, same lighting, same phone-camera look and image quality. Change ONLY her skin tone: her neck, collarbones, shoulders, upper arms and chest. The new tone must be a clearly visible, natural, warm golden-bronze tan, about two shades deeper than in the attached photo, like a healthy summer glow achieved from within with a beta-carotene supplement after 18 days: rich honey-gold and bronze undertones, even and uniform, luminous, with a soft healthy sheen on the high points. It must still look like real skin with the same pores, freckles, moles and texture — not orange, not yellow, not a spray tan, no streaks, no patches, no tan lines, no makeup added, no beauty filter, no smoothing.
 ```
 
 ### 14. Brazos y manos
 
+**ANTES** (generar desde cero):
 ```
-Ultra-realistic before-and-after diptych for an illustrative mockup, horizontal 8:5, split vertically into two equal halves with a thin clean white divider line. Both halves show the same woman's forearm and hand resting on a cream linen surface, palm down, identical position, same thin gold ring, same neutral nude manicure, same soft overhead diffused light and same framing. LEFT half: the natural fair skin of the forearm and the back of the hand, slightly pale and cool. RIGHT half: the same arm and hand with a subtle, believable warm golden tone after 18 days of a beta-carotene supplement — evenly warmer, healthier and more luminous, natural and realistic, no orange palms, no streaks around knuckles or wrists, no self-tanner patches. Natural skin texture and fine hairs visible in both halves, no filters. Clean product-comparison photography style. No text, no labels, no watermark.
+A hyper-realistic vertical 4:5 close-up photo taken on a Samsung Galaxy S24 Ultra main camera (default phone processing), used as the 'before' photo of a skin progress comparison. A real-looking woman's forearm and hand resting palm down on a plain cream linen sofa cushion, seen from above at a slight angle, wearing a thin gold ring and with short nude-colored nails. Her skin is naturally fair and slightly pale with cool undertones, visible fine hairs, a few freckles and realistic texture on the knuckles. Light: soft, even overhead daylight from a nearby window, neutral color temperature, no harsh shadows. Honest, unretouched progress-photo style, like a real customer photo. No beauty filter, no lotion shine, no text, no watermark.
+```
+
+**DESPUÉS** (adjuntá la foto del ANTES y pedí que la edite):
+```
+Keep absolutely everything identical to the attached photo: same woman, same face and features, same expression, same pose, same framing, same hair, same clothing, same background, same lighting, same phone-camera look and image quality. Change ONLY her skin tone: her forearm, wrist and the back of her hand (keep the palms and nails natural). The new tone must be a clearly visible, natural, warm golden-bronze tan, about two shades deeper than in the attached photo, like a healthy summer glow achieved from within with a beta-carotene supplement after 18 days: rich honey-gold and bronze undertones, even and uniform, luminous, with a soft healthy sheen on the high points. It must still look like real skin with the same pores, freckles, moles and texture — not orange, not yellow, not a spray tan, no streaks, no patches, no tan lines, no makeup added, no beauty filter, no smoothing.
 ```
 
 ### 15. Piernas
 
+**ANTES** (generar desde cero):
 ```
-Ultra-realistic before-and-after diptych for an illustrative mockup, horizontal 8:5, split vertically into two equal halves with a thin clean white divider line. Both halves show the same woman's lower legs from knee to ankle, standing, feet in identical minimal cream sandals on a light travertine floor, same pose, same framing, same soft diffused indoor light and same warm-white wall background. LEFT half: naturally fair, slightly pale and cool-toned legs. RIGHT half: the same legs with a subtle, believable, even warm golden glow after 18 days of a beta-carotene supplement — luminous, healthy and uniform, realistic, not orange, no streaks on ankles or knees, no tanning lines, no shine from oils. Natural skin texture visible in both halves, no retouching. Clean comparison photography style. No text, no labels, no watermark.
+A hyper-realistic vertical 4:5 photo taken on a Samsung Galaxy S24 Ultra main camera (default phone processing), used as the 'before' photo of a skin progress comparison. A real-looking woman's legs from mid-thigh to feet, standing relaxed with feet slightly apart on a light grey porcelain tile floor in front of a plain white wall, wearing short light-blue denim shorts and barefoot. Her legs are naturally fair, slightly pale and cool-toned, with real skin texture, a few tiny moles and slight natural unevenness around the knees. Light: soft, even, diffused daylight from a window, neutral color, no strong shadows. Honest, unretouched progress-photo style taken by someone standing in front of her, like a real customer photo. No beauty filter, no oil shine, no text, no watermark.
+```
+
+**DESPUÉS** (adjuntá la foto del ANTES y pedí que la edite):
+```
+Keep absolutely everything identical to the attached photo: same woman, same face and features, same expression, same pose, same framing, same hair, same clothing, same background, same lighting, same phone-camera look and image quality. Change ONLY her skin tone: her thighs, knees, calves, ankles and the top of her feet. The new tone must be a clearly visible, natural, warm golden-bronze tan, about two shades deeper than in the attached photo, like a healthy summer glow achieved from within with a beta-carotene supplement after 18 days: rich honey-gold and bronze undertones, even and uniform, luminous, with a soft healthy sheen on the high points. It must still look like real skin with the same pores, freckles, moles and texture — not orange, not yellow, not a spray tan, no streaks, no patches, no tan lines, no makeup added, no beauty filter, no smoothing.
 ```
 
 ### 16. Rostro — mujer de 40+
 
+**ANTES** (generar desde cero):
 ```
-Ultra-realistic before-and-after diptych for an illustrative mockup, horizontal 8:5, split vertically into two equal halves with a thin clean white divider line. Both halves show the exact same Argentine woman in her mid 40s with fair-to-medium skin, soft natural expression lines and shoulder-length dark blonde hair, photographed from the shoulders up facing the camera, identical pose, framing, white linen shirt, plain warm-grey background and soft, even, diffused frontal light. LEFT half: her natural skin, slightly dull and uneven, a little tired-looking. RIGHT half: the same skin with a subtle, believable warm golden radiance after 18 days of a beta-carotene supplement — healthier, more even and luminous on cheeks, forehead and neck, still completely natural and age-appropriate, not orange, no makeup change, no smoothing of wrinkles. Natural skin texture visible in both halves, honest comparison style without filters. No text, no labels, no watermark.
+A hyper-realistic vertical 4:5 photo taken on a Samsung Galaxy S24 Ultra main camera (default phone processing, slight HDR), used as the 'before' photo of a skin progress comparison. A real-looking Argentine woman, 45 years old, with fair-to-medium skin that looks slightly dull and uneven, natural expression lines around the eyes and mouth, shoulder-length dark blonde hair with some natural grey strands, no makeup. She faces the camera with a calm, natural half-smile, framed from the top of her head to the chest, wearing a white linen button-up shirt. Background: a plain warm light-grey wall at home. Light: soft, even, diffused daylight from a window in front, neutral color, no warm filter. Real skin texture with pores, fine lines and small sunspots, honest and unretouched, like a real customer photo. No beauty filter, no makeup, no text, no watermark.
+```
+
+**DESPUÉS** (adjuntá la foto del ANTES y pedí que la edite):
+```
+Keep absolutely everything identical to the attached photo: same woman, same face and features, same expression, same pose, same framing, same hair, same clothing, same background, same lighting, same phone-camera look and image quality. Change ONLY her skin tone: her face, neck, ears and the open collar area of her chest (keep every wrinkle, line and spot exactly as they are). The new tone must be a clearly visible, natural, warm golden-bronze tan, about two shades deeper than in the attached photo, like a healthy summer glow achieved from within with a beta-carotene supplement after 18 days: rich honey-gold and bronze undertones, even and uniform, luminous, with a soft healthy sheen on the high points. It must still look like real skin with the same pores, freckles, moles and texture — not orange, not yellow, not a spray tan, no streaks, no patches, no tan lines, no makeup added, no beauty filter, no smoothing.
 ```
 
 ---
