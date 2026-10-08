@@ -1,34 +1,91 @@
 {%- comment -%}
-  Bronzer · Hero
-  Sección 100% editable desde el personalizador de temas (Tienda online > Personalizar).
-  Todo el contenido vive en bloques: se pueden agregar, quitar y reordenar arrastrando.
+  Bronzer · Hero (editorial / aspiracional)
+  Imagen o video a pantalla completa, tipografía display y contenido en bloques.
+  Todo se edita desde Tienda online > Personalizar: los bloques se agregan, quitan y reordenan arrastrando.
 {%- endcomment -%}
 
 {%- liquid
   assign s = section.settings
   assign main_image = s.image | default: s.image_mobile
+  assign overlay_opacity = s.overlay_opacity | divided_by: 100.0
+  assign animate = s.animate
+  if request.design_mode
+    assign animate = false
+  endif
 -%}
 
-<section
-  class="bz-hero bz-hero--img-{{ s.image_position }}{% if s.mobile_image_first %} bz-hero--mobile-img-first{% endif %}"
-  style="
-    --bz-bg: {{ s.color_bg }};
+<style>
+  {{ s.heading_font | font_face: font_display: 'swap' }}
+  #bz-hero-{{ section.id }} {
     --bz-text: {{ s.color_text }};
     --bz-accent: {{ s.color_accent }};
+    --bz-overlay: {{ s.color_overlay }};
+    --bz-overlay-opacity: {{ overlay_opacity }};
     --bz-btn-bg: {{ s.color_button_bg }};
     --bz-btn-text: {{ s.color_button_text }};
-    --bz-pt: {{ s.padding_top }}px;
-    --bz-pb: {{ s.padding_bottom }}px;
-    --bz-pt-mobile: {{ s.padding_top | times: 0.6 | round }}px;
-    --bz-pb-mobile: {{ s.padding_bottom | times: 0.6 | round }}px;
-  "
+    --bz-display-font: {{ s.heading_font.family }}, {{ s.heading_font.fallback_families }};
+    --bz-display-weight: {{ s.heading_font.weight }};
+    --bz-display-style: {{ s.heading_font.style }};
+  }
+</style>
+
+<section
+  id="bz-hero-{{ section.id }}"
+  class="bz-hero bz-hero--h-{{ s.height }} bz-hero--pos-{{ s.content_position }}{% if animate %} bz-hero--animate{% endif %}"
 >
+  <div class="bz-hero__media" aria-hidden="true">
+    {%- if s.video != blank -%}
+      {{
+        s.video
+        | video_tag:
+          autoplay: true,
+          loop: true,
+          muted: true,
+          controls: false,
+          playsinline: true,
+          image_size: '1500x',
+          class: 'bz-hero__asset'
+      }}
+    {%- elsif main_image != blank -%}
+      <picture>
+        {%- if s.image_mobile != blank and s.image != blank -%}
+          <source
+            media="(max-width: 749px)"
+            srcset="
+              {{ s.image_mobile | image_url: width: 500 }} 500w,
+              {{ s.image_mobile | image_url: width: 750 }} 750w,
+              {{ s.image_mobile | image_url: width: 1100 }} 1100w
+            "
+            sizes="100vw"
+            width="{{ s.image_mobile.width }}"
+            height="{{ s.image_mobile.height }}"
+          >
+        {%- endif -%}
+        {{
+          main_image
+          | image_url: width: 2400
+          | image_tag:
+            loading: 'eager',
+            fetchpriority: 'high',
+            sizes: '100vw',
+            widths: '750, 1100, 1500, 1920, 2400',
+            class: 'bz-hero__asset',
+            alt: ''
+        }}
+      </picture>
+    {%- else -%}
+      {{ 'lifestyle-2' | placeholder_svg_tag: 'bz-hero__asset bz-hero__placeholder' }}
+    {%- endif -%}
+    <span class="bz-hero__overlay"></span>
+  </div>
+
   <div class="bz-hero__inner">
-    <div class="bz-hero__content bz-hero__content--{{ s.content_align }}">
+    <div class="bz-hero__content">
       {%- for block in section.blocks -%}
         {%- case block.type -%}
           {%- when 'subtitulo' -%}
-            <p class="bz-hero__eyebrow{% if block.settings.uppercase %} bz-hero__eyebrow--upper{% endif %}" {{ block.shopify_attributes }}>
+            <p class="bz-hero__eyebrow" {{ block.shopify_attributes }}>
+              <span class="bz-hero__eyebrow-line" aria-hidden="true"></span>
               {{- block.settings.text | escape -}}
             </p>
 
@@ -38,34 +95,19 @@
             </{{ block.settings.tag }}>
 
           {%- when 'texto' -%}
-            <div class="bz-hero__text rte" {{ block.shopify_attributes }}>
+            <div class="bz-hero__text" {{ block.shopify_attributes }}>
               {{- block.settings.text -}}
             </div>
 
-          {%- when 'beneficio' -%}
-            <div class="bz-hero__benefit" {{ block.shopify_attributes }}>
-              {%- unless block.settings.icon == 'none' -%}
-                <span class="bz-hero__benefit-icon" aria-hidden="true">
-                  {%- case block.settings.icon -%}
-                    {%- when 'check' -%}
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
-                    {%- when 'sun_off' -%}
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/><path d="M3 3l18 18" stroke-width="2.4"/></svg>
-                    {%- when 'clock' -%}
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-                    {%- when 'leaf' -%}
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19c0-8 5-14 15-14 0 10-6 15-14 15"/><path d="M5 19c3-4 6-7 10-9"/></svg>
-                    {%- when 'drop' -%}
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s7 7.5 7 12a7 7 0 01-14 0c0-4.5 7-12 7-12z"/></svg>
-                    {%- when 'shield' -%}
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>
-                    {%- when 'sparkle' -%}
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l2 6.5L20.5 12 14 14l-2 7-2-7-6.5-2L10 9.5 12 3z"/></svg>
-                  {%- endcase -%}
-                </span>
-              {%- endunless -%}
-              <span class="bz-hero__benefit-text">{{ block.settings.text }}</span>
-            </div>
+          {%- when 'beneficios' -%}
+            <ul class="bz-hero__benefits" role="list" {{ block.shopify_attributes }}>
+              {%- for i in (1..4) -%}
+                {%- capture key -%}item_{{ i }}{%- endcapture -%}
+                {%- if block.settings[key] != blank -%}
+                  <li>{{ block.settings[key] | escape }}</li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
 
           {%- when 'destacado' -%}
             <div class="bz-hero__highlight" {{ block.shopify_attributes }}>
@@ -78,219 +120,293 @@
               </span>
             </div>
 
-          {%- when 'resenas' -%}
-            <div class="bz-hero__rating" {{ block.shopify_attributes }}>
-              <span class="bz-hero__stars" aria-label="{{ block.settings.stars }} de 5 estrellas">
-                {%- for i in (1..5) -%}
-                  <svg viewBox="0 0 24 24" class="{% if i > block.settings.stars %}is-empty{% endif %}" aria-hidden="true"><path d="M12 2.5l2.9 6.2 6.6.7-5 4.5 1.4 6.6L12 17.2l-5.9 3.3 1.4-6.6-5-4.5 6.6-.7z"/></svg>
-                {%- endfor -%}
-              </span>
-              {%- if block.settings.text != blank -%}
-                <span class="bz-hero__rating-text">{{ block.settings.text }}</span>
+          {%- when 'botones' -%}
+            <div class="bz-hero__buttons" {{ block.shopify_attributes }}>
+              {%- if block.settings.label_1 != blank -%}
+                <a
+                  {% if block.settings.link_1 != blank %}href="{{ block.settings.link_1 }}"{% else %}role="link" aria-disabled="true"{% endif %}
+                  class="bz-hero__button bz-hero__button--primary"
+                >
+                  <span>{{ block.settings.label_1 | escape }}</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </a>
+              {%- endif -%}
+              {%- if block.settings.label_2 != blank -%}
+                <a
+                  {% if block.settings.link_2 != blank %}href="{{ block.settings.link_2 }}"{% else %}role="link" aria-disabled="true"{% endif %}
+                  class="bz-hero__button bz-hero__button--ghost"
+                >
+                  {{- block.settings.label_2 | escape -}}
+                </a>
               {%- endif -%}
             </div>
-
-          {%- when 'boton' -%}
-            {%- if block.settings.label != blank -%}
-              <div class="bz-hero__buttons" {{ block.shopify_attributes }}>
-                <a
-                  {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% else %}role="link" aria-disabled="true"{% endif %}
-                  class="bz-hero__button bz-hero__button--{{ block.settings.style }}{% if block.settings.full_width_mobile %} bz-hero__button--full-mobile{% endif %}"
-                >
-                  {{- block.settings.label | escape -}}
-                </a>
-                {%- if block.settings.note != blank -%}
-                  <p class="bz-hero__button-note">{{ block.settings.note | escape }}</p>
-                {%- endif -%}
-              </div>
+            {%- if block.settings.note != blank -%}
+              <p class="bz-hero__note">{{ block.settings.note | escape }}</p>
             {%- endif -%}
+
+          {%- when 'testimonio' -%}
+            <figure class="bz-hero__quote" {{ block.shopify_attributes }}>
+              <span class="bz-hero__stars" aria-label="{{ block.settings.stars }} de 5 estrellas">
+                {%- for i in (1..block.settings.stars) -%}
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6.2 6.6.7-5 4.5 1.4 6.6L12 17.2l-5.9 3.3 1.4-6.6-5-4.5 6.6-.7z"/></svg>
+                {%- endfor -%}
+              </span>
+              <blockquote>{{ block.settings.quote | escape }}</blockquote>
+              {%- if block.settings.author != blank -%}
+                <figcaption>{{ block.settings.author | escape }}</figcaption>
+              {%- endif -%}
+            </figure>
         {%- endcase -%}
       {%- endfor -%}
     </div>
-
-    <div class="bz-hero__media bz-hero__media--{{ s.image_ratio }}">
-      {%- if main_image != blank -%}
-        <picture>
-          {%- if s.image_mobile != blank and s.image != blank -%}
-            <source
-              media="(max-width: 749px)"
-              srcset="
-                {{ s.image_mobile | image_url: width: 375 }} 375w,
-                {{ s.image_mobile | image_url: width: 750 }} 750w,
-                {{ s.image_mobile | image_url: width: 1100 }} 1100w
-              "
-              sizes="100vw"
-              width="{{ s.image_mobile.width }}"
-              height="{{ s.image_mobile.height }}"
-            >
-          {%- endif -%}
-          {{
-            main_image
-            | image_url: width: 1500
-            | image_tag:
-              loading: 'eager',
-              fetchpriority: 'high',
-              sizes: '(min-width: 990px) 50vw, 100vw',
-              widths: '375, 550, 750, 1100, 1500',
-              class: 'bz-hero__image',
-              alt: main_image.alt
-          }}
-        </picture>
-      {%- else -%}
-        {{ 'product-1' | placeholder_svg_tag: 'bz-hero__image bz-hero__placeholder' }}
-      {%- endif -%}
-    </div>
   </div>
+
+  {%- if s.show_scroll -%}
+    <span class="bz-hero__scroll" aria-hidden="true"><span></span></span>
+  {%- endif -%}
 </section>
 
 {% stylesheet %}
   .bz-hero {
-    background: var(--bz-bg);
+    position: relative;
+    display: flex;
+    overflow: hidden;
     color: var(--bz-text);
-    padding: var(--bz-pt) 0 var(--bz-pb);
+    background: #1e140f;
+    isolation: isolate;
   }
+  .bz-hero--h-medium { min-height: 70vh; }
+  .bz-hero--h-large  { min-height: 88vh; }
+  .bz-hero--h-full   { min-height: 100vh; min-height: 100svh; }
+
+  /* Fondo */
+  .bz-hero__media { position: absolute; inset: 0; z-index: -1; }
+  .bz-hero__media picture { display: block; width: 100%; height: 100%; }
+  .bz-hero__asset { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .bz-hero__placeholder { background: #8a6a52; fill: rgba(255, 255, 255, 0.25); }
+  .bz-hero__overlay {
+    position: absolute;
+    inset: 0;
+    background: var(--bz-overlay);
+    opacity: var(--bz-overlay-opacity);
+  }
+  .bz-hero--pos-bottom-left .bz-hero__overlay,
+  .bz-hero--pos-center-left .bz-hero__overlay {
+    background: linear-gradient(100deg, var(--bz-overlay) 0%, transparent 72%);
+    opacity: calc(var(--bz-overlay-opacity) + 0.15);
+  }
+  .bz-hero--pos-bottom-center .bz-hero__overlay {
+    background: linear-gradient(0deg, var(--bz-overlay) 0%, transparent 70%);
+    opacity: calc(var(--bz-overlay-opacity) + 0.15);
+  }
+
+  /* Layout del contenido */
   .bz-hero__inner {
-    max-width: 1200px;
+    width: 100%;
+    max-width: 1320px;
     margin: 0 auto;
-    padding: 0 20px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 64px;
-    align-items: center;
+    padding: 120px 48px 96px;
+    display: flex;
   }
-  .bz-hero--img-left .bz-hero__media { order: -1; }
-
-  /* Contenido */
-  .bz-hero__content { display: flex; flex-direction: column; gap: 18px; }
-  .bz-hero__content--center { align-items: center; text-align: center; }
-  .bz-hero__content--left { align-items: flex-start; text-align: left; }
+  .bz-hero__content {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    max-width: 620px;
+  }
   .bz-hero__content > * { margin: 0; }
+  .bz-hero--pos-bottom-left .bz-hero__inner   { align-items: flex-end; }
+  .bz-hero--pos-center-left .bz-hero__inner   { align-items: center; }
+  .bz-hero--pos-center .bz-hero__inner,
+  .bz-hero--pos-bottom-center .bz-hero__inner { justify-content: center; text-align: center; }
+  .bz-hero--pos-center .bz-hero__inner        { align-items: center; }
+  .bz-hero--pos-bottom-center .bz-hero__inner { align-items: flex-end; }
+  .bz-hero--pos-center .bz-hero__content,
+  .bz-hero--pos-bottom-center .bz-hero__content { align-items: center; max-width: 760px; }
 
+  /* Subtítulo */
   .bz-hero__eyebrow {
-    color: var(--bz-accent);
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-  }
-  .bz-hero__eyebrow--upper { text-transform: uppercase; }
-
-  .bz-hero__title {
-    color: var(--bz-text);
-    font-family: var(--font-heading-family, inherit);
-    line-height: 1.08;
-    letter-spacing: -0.01em;
-  }
-  .bz-hero__title em { color: var(--bz-accent); font-style: normal; }
-  .bz-hero__title--small  { font-size: clamp(28px, 4vw, 40px); }
-  .bz-hero__title--medium { font-size: clamp(34px, 5vw, 54px); }
-  .bz-hero__title--large  { font-size: clamp(40px, 6vw, 68px); }
-
-  .bz-hero__text { font-size: 17px; line-height: 1.6; opacity: 0.88; max-width: 52ch; }
-  .bz-hero__text p { margin: 0 0 0.6em; }
-  .bz-hero__text p:last-child { margin-bottom: 0; }
-
-  /* Beneficios */
-  .bz-hero__benefit { display: flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 500; text-align: left; }
-  .bz-hero__content > .bz-hero__benefit + .bz-hero__benefit { margin-top: -8px; }
-  .bz-hero__benefit-icon {
-    flex: 0 0 30px;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: color-mix(in srgb, var(--bz-accent) 15%, transparent);
-    color: var(--bz-accent);
-  }
-  .bz-hero__benefit-icon svg { width: 17px; height: 17px; }
-  .bz-hero__benefit-text p { margin: 0; }
-
-  /* Destacado 18 días */
-  .bz-hero__highlight {
     display: inline-flex;
     align-items: center;
     gap: 14px;
-    padding: 12px 20px 12px 12px;
-    border-radius: 999px;
-    border: 1px solid color-mix(in srgb, var(--bz-accent) 35%, transparent);
-    background: color-mix(in srgb, var(--bz-accent) 8%, transparent);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--bz-accent);
+  }
+  .bz-hero__eyebrow-line { width: 40px; height: 1px; background: currentColor; }
+
+  /* Título display */
+  .bz-hero__title {
+    font-family: var(--bz-display-font);
+    font-weight: var(--bz-display-weight);
+    font-style: var(--bz-display-style);
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    color: var(--bz-text);
+    text-wrap: balance;
+  }
+  .bz-hero__title em { font-style: italic; color: var(--bz-accent); }
+  .bz-hero__title--medium { font-size: clamp(40px, 6vw, 72px); }
+  .bz-hero__title--large  { font-size: clamp(46px, 7.5vw, 96px); }
+  .bz-hero__title--xlarge { font-size: clamp(52px, 9vw, 124px); }
+
+  .bz-hero__text {
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1.65;
+    max-width: 46ch;
+    opacity: 0.9;
+  }
+  .bz-hero__text p { margin: 0; }
+  .bz-hero__text p + p { margin-top: 0.7em; }
+
+  /* Beneficios en línea */
+  .bz-hero__benefits {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 0;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .bz-hero--pos-center .bz-hero__benefits,
+  .bz-hero--pos-bottom-center .bz-hero__benefits { justify-content: center; }
+  .bz-hero__benefits li { display: inline-flex; align-items: center; opacity: 0.85; }
+  .bz-hero__benefits li + li::before {
+    content: "";
+    width: 4px;
+    height: 4px;
+    margin: 0 16px;
+    border-radius: 50%;
+    background: var(--bz-accent);
+  }
+
+  /* Destacado 18 días (vidrio) */
+  .bz-hero__highlight {
+    display: inline-flex;
+    align-items: center;
+    gap: 18px;
+    padding: 14px 26px 14px 18px;
+    border-radius: 2px;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    background: rgba(255, 255, 255, 0.08);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
     text-align: left;
   }
   .bz-hero__highlight-number {
-    min-width: 56px;
-    height: 56px;
-    padding: 0 8px;
-    border-radius: 999px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--bz-accent);
-    color: var(--bz-btn-text);
-    font-size: 24px;
-    font-weight: 700;
+    font-family: var(--bz-display-font);
+    font-style: italic;
+    font-size: 56px;
+    line-height: 1;
+    color: var(--bz-accent);
   }
-  .bz-hero__highlight-copy { display: flex; flex-direction: column; line-height: 1.3; font-size: 15px; }
-  .bz-hero__highlight-copy span { opacity: 0.75; font-size: 13px; }
-
-  /* Reseñas */
-  .bz-hero__rating { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 14px; }
-  .bz-hero__stars { display: inline-flex; gap: 2px; }
-  .bz-hero__stars svg { width: 18px; height: 18px; fill: var(--bz-accent); }
-  .bz-hero__stars svg.is-empty { fill: color-mix(in srgb, var(--bz-text) 20%, transparent); }
-  .bz-hero__rating-text p { margin: 0; }
+  .bz-hero__highlight-copy { display: flex; flex-direction: column; gap: 4px; }
+  .bz-hero__highlight-copy strong { font-size: 15px; font-weight: 500; letter-spacing: 0.02em; }
+  .bz-hero__highlight-copy span { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.7; }
 
   /* Botones */
-  .bz-hero__buttons { display: flex; flex-direction: column; gap: 10px; align-items: inherit; margin-top: 6px; }
+  .bz-hero__buttons { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 10px; }
   .bz-hero__button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 54px;
-    padding: 0 36px;
-    border-radius: 999px;
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 0.02em;
+    gap: 14px;
+    min-height: 58px;
+    padding: 0 40px;
+    border-radius: 0;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
     text-decoration: none;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
-    cursor: pointer;
+    transition: background-color 0.35s ease, color 0.35s ease, gap 0.35s ease;
   }
-  .bz-hero__button--primary {
-    background: var(--bz-btn-bg);
-    color: var(--bz-btn-text);
-    box-shadow: 0 10px 24px -10px var(--bz-btn-bg);
-  }
-  .bz-hero__button--secondary {
-    background: transparent;
-    color: var(--bz-text);
-    border: 1.5px solid currentColor;
-  }
-  .bz-hero__button:hover { transform: translateY(-2px); }
-  .bz-hero__button[aria-disabled="true"] { opacity: 0.6; cursor: default; }
-  .bz-hero__button-note { margin: 0; font-size: 13px; opacity: 0.75; }
+  .bz-hero__button svg { width: 18px; height: 18px; }
+  .bz-hero__button--primary { background: var(--bz-btn-bg); color: var(--bz-btn-text); }
+  .bz-hero__button--primary:hover { gap: 22px; }
+  .bz-hero__button--ghost { color: var(--bz-text); border: 1px solid currentColor; background: transparent; }
+  .bz-hero__button--ghost:hover { background: var(--bz-text); color: #1e140f; }
+  .bz-hero__button[aria-disabled="true"] { cursor: default; }
+  .bz-hero__note { font-size: 12px; letter-spacing: 0.08em; opacity: 0.7; }
 
-  /* Imagen */
-  .bz-hero__media { position: relative; border-radius: 24px; overflow: hidden; }
-  .bz-hero__media picture { display: block; height: 100%; }
-  .bz-hero__image { display: block; width: 100%; height: auto; }
-  .bz-hero__media--square { aspect-ratio: 1 / 1; }
-  .bz-hero__media--portrait { aspect-ratio: 4 / 5; }
-  .bz-hero__media--square .bz-hero__image,
-  .bz-hero__media--portrait .bz-hero__image { height: 100%; object-fit: cover; }
-  .bz-hero__placeholder { background: color-mix(in srgb, var(--bz-text) 6%, transparent); }
+  /* Testimonio */
+  .bz-hero__quote {
+    margin: 12px 0 0;
+    padding-top: 22px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    max-width: 420px;
+  }
+  .bz-hero__stars { display: inline-flex; gap: 3px; margin-bottom: 10px; }
+  .bz-hero__stars svg { width: 13px; height: 13px; fill: var(--bz-accent); }
+  .bz-hero__quote blockquote {
+    margin: 0;
+    font-family: var(--bz-display-font);
+    font-style: italic;
+    font-size: 20px;
+    line-height: 1.4;
+  }
+  .bz-hero__quote figcaption { margin-top: 8px; font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; opacity: 0.7; }
 
-  /* Mobile */
+  /* Indicador de scroll */
+  .bz-hero__scroll {
+    position: absolute;
+    left: 50%;
+    bottom: 26px;
+    width: 1px;
+    height: 56px;
+    background: rgba(255, 255, 255, 0.25);
+    overflow: hidden;
+  }
+  .bz-hero__scroll span {
+    position: absolute;
+    left: 0;
+    top: -50%;
+    width: 100%;
+    height: 50%;
+    background: var(--bz-text);
+    animation: bz-hero-scroll 2.2s ease-in-out infinite;
+  }
+
+  /* Animación de entrada */
+  .bz-hero--animate .bz-hero__asset { animation: bz-hero-zoom 9s ease-out both; }
+  .bz-hero--animate .bz-hero__content > * { animation: bz-hero-up 1.1s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+  .bz-hero--animate .bz-hero__content > *:nth-child(2) { animation-delay: 0.12s; }
+  .bz-hero--animate .bz-hero__content > *:nth-child(3) { animation-delay: 0.24s; }
+  .bz-hero--animate .bz-hero__content > *:nth-child(4) { animation-delay: 0.36s; }
+  .bz-hero--animate .bz-hero__content > *:nth-child(5) { animation-delay: 0.48s; }
+  .bz-hero--animate .bz-hero__content > *:nth-child(n+6) { animation-delay: 0.6s; }
+
+  @keyframes bz-hero-up { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+  @keyframes bz-hero-zoom { from { transform: scale(1.08); } to { transform: scale(1); } }
+  @keyframes bz-hero-scroll { 0% { top: -50%; } 100% { top: 100%; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bz-hero--animate .bz-hero__asset,
+    .bz-hero--animate .bz-hero__content > *,
+    .bz-hero__scroll span { animation: none; }
+  }
+
+  /* Celular */
   @media screen and (max-width: 749px) {
-    .bz-hero { padding: var(--bz-pt-mobile) 0 var(--bz-pb-mobile); }
-    .bz-hero__inner { grid-template-columns: 1fr; gap: 32px; }
-    .bz-hero--img-left .bz-hero__media { order: 0; }
-    .bz-hero--mobile-img-first .bz-hero__media { order: -1; }
-    .bz-hero__content { gap: 14px; }
+    .bz-hero__inner { padding: 96px 22px 72px; align-items: flex-end !important; }
+    .bz-hero__content { gap: 18px; }
+    .bz-hero--pos-bottom-left .bz-hero__overlay,
+    .bz-hero--pos-center-left .bz-hero__overlay {
+      background: linear-gradient(0deg, var(--bz-overlay) 0%, transparent 75%);
+    }
     .bz-hero__text { font-size: 16px; }
-    .bz-hero__button--full-mobile { width: 100%; }
-    .bz-hero__buttons:has(.bz-hero__button--full-mobile) { align-self: stretch; }
-    .bz-hero__media { border-radius: 18px; }
+    .bz-hero__benefits { font-size: 10px; letter-spacing: 0.14em; }
+    .bz-hero__benefits li + li::before { margin: 0 10px; }
+    .bz-hero__highlight-number { font-size: 44px; }
+    .bz-hero__buttons { width: 100%; flex-direction: column; }
+    .bz-hero__button { width: 100%; }
+    .bz-hero__scroll { display: none; }
   }
 {% endstylesheet %}
 
@@ -299,64 +415,92 @@
   "name": "Bronzer · Hero",
   "tag": "div",
   "class": "section-bronzer-hero",
-  "max_blocks": 16,
+  "max_blocks": 10,
   "settings": [
     {
       "type": "header",
-      "content": "Imagen"
+      "content": "Fondo"
     },
     {
       "type": "image_picker",
       "id": "image",
       "label": "Imagen (escritorio)",
-      "info": "Recomendado: 1500 x 1500 px o más."
+      "info": "Foto lifestyle horizontal. Recomendado: 2400 x 1400 px."
     },
     {
       "type": "image_picker",
       "id": "image_mobile",
       "label": "Imagen (celular)",
-      "info": "Opcional. Si la dejás vacía se usa la de escritorio."
+      "info": "Opcional. Foto vertical, recomendado 1100 x 1600 px."
     },
     {
-      "type": "select",
-      "id": "image_ratio",
-      "label": "Proporción de la imagen",
-      "options": [
-        { "value": "adapt", "label": "Adaptar a la imagen" },
-        { "value": "square", "label": "Cuadrada (1:1)" },
-        { "value": "portrait", "label": "Vertical (4:5)" }
-      ],
-      "default": "adapt"
+      "type": "video",
+      "id": "video",
+      "label": "Video de fondo",
+      "info": "Opcional. Si cargás un video, reemplaza a la imagen. Sin sonido y en loop."
     },
     {
-      "type": "select",
-      "id": "image_position",
-      "label": "Posición de la imagen (escritorio)",
-      "options": [
-        { "value": "right", "label": "Derecha" },
-        { "value": "left", "label": "Izquierda" }
-      ],
-      "default": "right"
+      "type": "color",
+      "id": "color_overlay",
+      "label": "Color de la capa sobre la imagen",
+      "default": "#1E140F"
     },
     {
-      "type": "checkbox",
-      "id": "mobile_image_first",
-      "label": "En celular, mostrar la imagen arriba del texto",
-      "default": true
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Intensidad de la capa",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "default": 35
     },
     {
       "type": "header",
-      "content": "Contenido"
+      "content": "Diseño"
     },
     {
       "type": "select",
-      "id": "content_align",
-      "label": "Alineación del texto",
+      "id": "height",
+      "label": "Altura",
       "options": [
-        { "value": "left", "label": "Izquierda" },
-        { "value": "center", "label": "Centrado" }
+        { "value": "medium", "label": "Mediana" },
+        { "value": "large", "label": "Grande" },
+        { "value": "full", "label": "Pantalla completa" }
       ],
-      "default": "left"
+      "default": "full"
+    },
+    {
+      "type": "select",
+      "id": "content_position",
+      "label": "Posición del contenido",
+      "options": [
+        { "value": "bottom-left", "label": "Abajo a la izquierda" },
+        { "value": "center-left", "label": "Centro a la izquierda" },
+        { "value": "center", "label": "Centrado" },
+        { "value": "bottom-center", "label": "Abajo al centro" }
+      ],
+      "default": "bottom-left"
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_font",
+      "label": "Tipografía del título",
+      "info": "Recomendado: una serif elegante (Playfair Display, Cormorant, Bodoni).",
+      "default": "playfair_display_n4"
+    },
+    {
+      "type": "checkbox",
+      "id": "animate",
+      "label": "Animación de entrada",
+      "info": "Zoom suave de la imagen y aparición del texto. Se ve en la tienda, no en el editor.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_scroll",
+      "label": "Mostrar indicador de scroll",
+      "default": true
     },
     {
       "type": "header",
@@ -364,100 +508,64 @@
     },
     {
       "type": "color",
-      "id": "color_bg",
-      "label": "Fondo",
+      "id": "color_text",
+      "label": "Texto",
       "default": "#FBF4EC"
     },
     {
       "type": "color",
-      "id": "color_text",
-      "label": "Texto",
-      "default": "#2B1A12"
-    },
-    {
-      "type": "color",
       "id": "color_accent",
-      "label": "Acento (beta-caroteno)",
-      "info": "Se usa en el subtítulo, palabras en cursiva del título, íconos y estrellas.",
-      "default": "#D9822B"
+      "label": "Acento dorado",
+      "info": "Subtítulo, palabras en cursiva del título, número destacado y estrellas.",
+      "default": "#E3B57A"
     },
     {
       "type": "color",
       "id": "color_button_bg",
       "label": "Fondo del botón",
-      "default": "#2B1A12"
+      "default": "#FBF4EC"
     },
     {
       "type": "color",
       "id": "color_button_text",
       "label": "Texto del botón",
-      "default": "#FFFFFF"
-    },
-    {
-      "type": "header",
-      "content": "Espaciado"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "label": "Margen superior",
-      "min": 0,
-      "max": 160,
-      "step": 4,
-      "unit": "px",
-      "default": 72
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "label": "Margen inferior",
-      "min": 0,
-      "max": 160,
-      "step": 4,
-      "unit": "px",
-      "default": 72
+      "default": "#1E140F"
     }
   ],
   "blocks": [
     {
       "type": "subtitulo",
       "name": "Subtítulo",
-      "limit": 2,
+      "limit": 1,
       "settings": [
         {
           "type": "text",
           "id": "text",
           "label": "Texto",
-          "default": "Fórmula con Beta-Caroteno"
-        },
-        {
-          "type": "checkbox",
-          "id": "uppercase",
-          "label": "Mayúsculas",
-          "default": true
+          "default": "Fórmula Beta-Caroteno"
         }
       ]
     },
     {
       "type": "titulo",
       "name": "Título",
-      "limit": 2,
+      "limit": 1,
       "settings": [
         {
           "type": "inline_richtext",
           "id": "heading",
           "label": "Título",
-          "info": "Poné una palabra en cursiva para resaltarla con el color de acento.",
-          "default": "Bronceado natural en <em>18 días</em>, sin tomar sol"
+          "info": "Poné una palabra en cursiva para resaltarla en dorado.",
+          "default": "El dorado que nace <em>de adentro.</em>"
         },
         {
           "type": "select",
           "id": "size",
           "label": "Tamaño",
           "options": [
-            { "value": "small", "label": "Chico" },
             { "value": "medium", "label": "Mediano" },
-            { "value": "large", "label": "Grande" }
+            { "value": "large", "label": "Grande" },
+            { "value": "xlarge", "label": "Extra grande" }
           ],
           "default": "large"
         },
@@ -477,47 +585,55 @@
     {
       "type": "texto",
       "name": "Texto",
+      "limit": 2,
       "settings": [
         {
           "type": "richtext",
           "id": "text",
           "label": "Texto",
-          "default": "<p>Olvidate de las camas solares, los autobronceantes que manchan y las quemaduras. Nuestra fórmula con beta-caroteno activa tu tono dorado desde adentro.</p>"
+          "default": "<p>Un bronceado luminoso en 18 días. Sin sol, sin camas solares, sin autobronceantes. Solo tu piel, en su versión más radiante.</p>"
         }
       ]
     },
     {
-      "type": "beneficio",
-      "name": "Beneficio",
+      "type": "beneficios",
+      "name": "Beneficios en línea",
+      "limit": 1,
       "settings": [
         {
-          "type": "select",
-          "id": "icon",
-          "label": "Ícono",
-          "options": [
-            { "value": "check", "label": "Check" },
-            { "value": "sun_off", "label": "Sol tachado" },
-            { "value": "clock", "label": "Reloj" },
-            { "value": "leaf", "label": "Hoja" },
-            { "value": "drop", "label": "Gota" },
-            { "value": "shield", "label": "Escudo" },
-            { "value": "sparkle", "label": "Brillo" },
-            { "value": "none", "label": "Sin ícono" }
-          ],
-          "default": "check"
+          "type": "paragraph",
+          "content": "Frases cortas, se muestran en una línea separadas por un punto dorado."
         },
         {
-          "type": "inline_richtext",
-          "id": "text",
-          "label": "Texto",
+          "type": "text",
+          "id": "item_1",
+          "label": "Beneficio 1",
+          "default": "Sin sol"
+        },
+        {
+          "type": "text",
+          "id": "item_2",
+          "label": "Beneficio 2",
           "default": "Sin camas solares"
+        },
+        {
+          "type": "text",
+          "id": "item_3",
+          "label": "Beneficio 3",
+          "default": "Sin manchas"
+        },
+        {
+          "type": "text",
+          "id": "item_4",
+          "label": "Beneficio 4",
+          "default": "Sin quemaduras"
         }
       ]
     },
     {
       "type": "destacado",
       "name": "Destacado (18 días)",
-      "limit": 2,
+      "limit": 1,
       "settings": [
         {
           "type": "text",
@@ -529,19 +645,56 @@
           "type": "text",
           "id": "label",
           "label": "Texto principal",
-          "default": "días para ver tu bronceado"
+          "default": "días para tu glow natural"
         },
         {
           "type": "text",
           "id": "caption",
           "label": "Texto secundario",
-          "default": "Sin sol · Sin manchas · Sin quemaduras"
+          "default": "Desde adentro, todo el año"
         }
       ]
     },
     {
-      "type": "resenas",
-      "name": "Reseñas",
+      "type": "botones",
+      "name": "Botones",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label_1",
+          "label": "Botón principal · Texto",
+          "default": "Descubrí tu glow"
+        },
+        {
+          "type": "url",
+          "id": "link_1",
+          "label": "Botón principal · Link"
+        },
+        {
+          "type": "text",
+          "id": "label_2",
+          "label": "Botón secundario · Texto",
+          "info": "Dejalo vacío para ocultarlo.",
+          "default": "Cómo funciona"
+        },
+        {
+          "type": "url",
+          "id": "link_2",
+          "label": "Botón secundario · Link",
+          "info": "Podés apuntar a una sección de la página, por ejemplo #como-funciona."
+        },
+        {
+          "type": "text",
+          "id": "note",
+          "label": "Texto debajo de los botones",
+          "default": "Envío gratis a todo el país"
+        }
+      ]
+    },
+    {
+      "type": "testimonio",
+      "name": "Testimonio",
       "limit": 1,
       "settings": [
         {
@@ -554,50 +707,16 @@
           "default": 5
         },
         {
-          "type": "inline_richtext",
-          "id": "text",
-          "label": "Texto",
-          "default": "<strong>Clientas reales</strong>, resultados reales"
-        }
-      ]
-    },
-    {
-      "type": "boton",
-      "name": "Botón",
-      "limit": 2,
-      "settings": [
-        {
           "type": "text",
-          "id": "label",
-          "label": "Texto del botón",
-          "default": "Quiero mi bronceado"
-        },
-        {
-          "type": "url",
-          "id": "link",
-          "label": "Link"
-        },
-        {
-          "type": "select",
-          "id": "style",
-          "label": "Estilo",
-          "options": [
-            { "value": "primary", "label": "Relleno" },
-            { "value": "secondary", "label": "Contorno" }
-          ],
-          "default": "primary"
-        },
-        {
-          "type": "checkbox",
-          "id": "full_width_mobile",
-          "label": "Ancho completo en celular",
-          "default": true
+          "id": "quote",
+          "label": "Frase",
+          "default": "Nunca me vi tan luminosa sin pisar el sol."
         },
         {
           "type": "text",
-          "id": "note",
-          "label": "Texto debajo del botón",
-          "default": "Envío gratis · Pagá en cuotas"
+          "id": "author",
+          "label": "Autora",
+          "default": "Nombre de la clienta"
         }
       ]
     }
@@ -609,21 +728,9 @@
         { "type": "subtitulo" },
         { "type": "titulo" },
         { "type": "texto" },
-        {
-          "type": "beneficio",
-          "settings": { "icon": "sun_off", "text": "Sin tomar sol ni camas solares" }
-        },
-        {
-          "type": "beneficio",
-          "settings": { "icon": "drop", "text": "Sin autobronceantes ni manchas naranjas" }
-        },
-        {
-          "type": "beneficio",
-          "settings": { "icon": "shield", "text": "Sin quemaduras ni piel dañada" }
-        },
+        { "type": "beneficios" },
         { "type": "destacado" },
-        { "type": "boton" },
-        { "type": "resenas" }
+        { "type": "botones" }
       ]
     }
   ]
