@@ -1,0 +1,785 @@
+{%- comment -%}
+  Bronzer · Cronología
+  Línea de tiempo de resultados con pestañas y gráfico.
+  Todo es editable desde Tienda online > Personalizar:
+  - Encabezado: bloques Subtítulo, Título y Texto.
+  - Etapas: un bloque por etapa (Día 1, Día 7...). Cada una define su punto en el gráfico.
+  - Aclaración: bloque con el texto legal chico (†).
+{%- endcomment -%}
+
+{%- liquid
+  assign s = section.settings
+  assign sid = '#bz-tl-' | append: section.id
+  assign header_types = 'subtitulo,titulo,texto' | split: ','
+  assign stage_count = 0
+  for block in section.blocks
+    if block.type == 'etapa'
+      assign stage_count = stage_count | plus: 1
+    endif
+  endfor
+  assign step = 0
+  if stage_count > 1
+    assign last = stage_count | minus: 1
+    assign step = 88.0 | divided_by: last
+  endif
+  assign animate = s.animate
+  if request.design_mode
+    assign animate = false
+  endif
+-%}
+
+<style>
+  {{ s.heading_font | font_face: font_display: 'swap' }}
+
+  {{ sid }} {
+    --bz-bg: {{ s.color_bg | default: '#2B1710' }};
+    --bz-panel: {{ s.color_panel | default: '#3D2318' }};
+    --bz-text: {{ s.color_text | default: '#FBF4EC' }};
+    --bz-text-soft: {{ s.color_text | default: '#FBF4EC' | color_modify: 'alpha', 0.72 }};
+    --bz-line: {{ s.color_text | default: '#FBF4EC' | color_modify: 'alpha', 0.14 }};
+    --bz-accent: {{ s.color_accent | default: '#B46F34' }};
+    --bz-chart: {{ s.color_chart | default: '#F2B544' }};
+    --bz-bubble: {{ s.color_bubble | default: '#FBEBD6' }};
+    --bz-bubble-text: {{ s.color_bubble_text | default: '#7A3E14' }};
+    --bz-display-font: {{ s.heading_font.family }}, {{ s.heading_font.fallback_families }};
+    --bz-display-weight: {{ s.heading_font.weight }};
+    --bz-radius: {{ s.radius }}px;
+    --bz-pt: {{ s.padding_top }}px;
+    --bz-pb: {{ s.padding_bottom }}px;
+  }
+
+  {{ sid }}, {{ sid }} *, {{ sid }} *::before, {{ sid }} *::after { box-sizing: border-box; }
+  {{ sid }} p, {{ sid }} li, {{ sid }} span { color: inherit; }
+
+  {{ sid }} {
+    display: block;
+    background: var(--bz-bg);
+    color: var(--bz-text);
+    padding: calc(var(--bz-pt) * 0.7) 20px calc(var(--bz-pb) * 0.7);
+  }
+  {{ sid }} .bz-tl__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    max-width: 1240px;
+    margin: 0 auto;
+  }
+
+  /* ---------- Texto ---------- */
+  {{ sid }} .bz-tl__content { display: contents; }
+  {{ sid }} .bz-tl__head,
+  {{ sid }} .bz-tl__ctrl { display: flex; flex-direction: column; gap: 16px; }
+  {{ sid }} .bz-tl__head > *,
+  {{ sid }} .bz-tl__ctrl > * { margin: 0; }
+  {{ sid }} .bz-tl__head { order: 1; }
+  {{ sid }} .bz-tl__chart { order: 2; }
+  {{ sid }} .bz-tl__ctrl { order: 3; }
+  {{ sid }} .bz-tl__note { order: 4; margin: 0; }
+  {{ sid }} .bz-tl__eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--bz-chart);
+  }
+  {{ sid }} .bz-tl__heading {
+    font-family: var(--bz-display-font);
+    font-weight: var(--bz-display-weight);
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+    color: var(--bz-text);
+    text-wrap: balance;
+  }
+  {{ sid }} .bz-tl__heading--medium { font-size: clamp(30px, 7.5vw, 38px); }
+  {{ sid }} .bz-tl__heading--large { font-size: clamp(36px, 9vw, 48px); }
+  {{ sid }} .bz-tl__heading em { color: var(--bz-chart); font-style: italic; }
+  {{ sid }} .bz-tl__sub { font-size: 16px; line-height: 1.6; color: var(--bz-text-soft); max-width: 52ch; }
+  {{ sid }} .bz-tl__sub p { margin: 0; }
+  {{ sid }} .bz-tl__sub p + p { margin-top: 0.6em; }
+
+  /* ---------- Pestañas ---------- */
+  {{ sid }} .bz-tl__tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  {{ sid }}.bz-tl--tabs-row .bz-tl__tabs { grid-template-columns: repeat({{ stage_count | at_least: 1 }}, minmax(0, 1fr)); }
+  {{ sid }} .bz-tl__tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    min-height: 54px;
+    padding: 8px 10px;
+    border: 1px solid transparent;
+    border-radius: var(--bz-radius);
+    background: var(--bz-panel);
+    color: var(--bz-text-soft);
+    font: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.2;
+    cursor: pointer;
+    transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
+  }
+  {{ sid }} .bz-tl__tab small { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.8; }
+  {{ sid }} .bz-tl__tab:hover { color: var(--bz-text); }
+  {{ sid }} .bz-tl__tab[aria-selected="true"] {
+    background: var(--bz-accent);
+    color: #fff;
+    box-shadow: 0 12px 26px -16px var(--bz-accent);
+  }
+  {{ sid }} .bz-tl__tab:focus-visible { outline: 2px solid var(--bz-chart); outline-offset: 2px; }
+
+  {{ sid }} .bz-tl__panel { display: flex; flex-direction: column; gap: 10px; margin-top: 10px !important; }
+  {{ sid }} .bz-tl__panel[hidden] { display: none; }
+  {{ sid }} .bz-tl__panel > * { margin: 0; }
+  {{ sid }} .bz-tl__panel-title {
+    font-family: var(--bz-display-font);
+    font-weight: var(--bz-display-weight);
+    font-size: 22px;
+    line-height: 1.25;
+    color: var(--bz-text);
+  }
+  {{ sid }} .bz-tl__panel-text { font-size: 16px; line-height: 1.6; color: var(--bz-text-soft); }
+  {{ sid }} .bz-tl__panel-text p { margin: 0; }
+  {{ sid }} .bz-tl__panel-text p + p { margin-top: 0.6em; }
+  {{ sid }} .bz-tl__panel:not([hidden]) { animation: bz-tl-in 0.45s ease both; }
+  @keyframes bz-tl-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  {{ sid }} .bz-tl__note { font-size: 12px; line-height: 1.5; color: var(--bz-text-soft); opacity: 0.85; }
+  {{ sid }} .bz-tl__note p { margin: 0; }
+
+  /* ---------- Gráfico ---------- */
+  {{ sid }} .bz-tl__chart {
+    position: relative;
+    padding: 22px 18px 16px 40px;
+    border-radius: calc(var(--bz-radius) * 2);
+    background: var(--bz-panel);
+  }
+  {{ sid }} .bz-tl__axis-y {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    margin: 0;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--bz-text-soft);
+    transform: translate(-30%, -50%) rotate(-90deg);
+    transform-origin: center;
+  }
+  {{ sid }} .bz-tl__plot {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    border-left: 1px solid var(--bz-line);
+    border-bottom: 1px solid var(--bz-line);
+  }
+  {{ sid }} .bz-tl__grid { position: absolute; left: 0; right: 0; height: 1px; background: var(--bz-line); }
+  {{ sid }} .bz-tl__svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  {{ sid }} .bz-tl__area { fill: url(#bz-tl-grad-{{ section.id }}); }
+  {{ sid }} .bz-tl__path {
+    fill: none;
+    stroke: var(--bz-chart);
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+  {{ sid }}.bz-tl--animate .bz-tl__svg { clip-path: inset(-10% 100% -10% -10%); transition: clip-path 1.6s cubic-bezier(0.45, 0, 0.2, 1); }
+  {{ sid }}.bz-tl--animate.is-visible .bz-tl__svg { clip-path: inset(-10% -10% -10% -10%); }
+  {{ sid }}.bz-tl--animate .bz-tl__dot { opacity: 0; transition: opacity 0.4s ease 1.2s, transform 0.3s ease, box-shadow 0.3s ease; }
+  {{ sid }}.bz-tl--animate.is-visible .bz-tl__dot { opacity: 1; }
+
+  {{ sid }} .bz-tl__dot {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    z-index: 1;
+    width: 12px;
+    height: 12px;
+    margin: -6px 0 0 -6px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--bz-chart);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  {{ sid }} .bz-tl__dot.is-active { transform: scale(1.4); box-shadow: 0 0 0 6px color-mix(in srgb, var(--bz-chart) 25%, transparent); }
+
+  {{ sid }} .bz-tl__bubble {
+    position: absolute;
+    z-index: 2;
+    left: clamp(46px, var(--bx), calc(100% - 46px));
+    top: clamp(46px, var(--by), calc(100% - 46px));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 92px;
+    height: 92px;
+    padding: 10px;
+    border-radius: 50%;
+    border: 2px dashed color-mix(in srgb, var(--bz-bubble-text) 35%, transparent);
+    background: var(--bz-bubble);
+    color: var(--bz-bubble-text);
+    text-align: center;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--bz-bubble) 18%, transparent), 0 18px 34px -18px rgba(0, 0, 0, 0.6);
+    transition: left 0.6s cubic-bezier(0.2, 0.7, 0.2, 1), top 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+    pointer-events: none;
+  }
+  {{ sid }} .bz-tl__bubble strong {
+    font-family: var(--bz-display-font);
+    font-weight: var(--bz-display-weight);
+    font-size: 18px;
+    line-height: 1.05;
+  }
+  {{ sid }} .bz-tl__bubble span { margin-top: 4px; font-size: 11px; line-height: 1.25; opacity: 0.85; }
+
+  {{ sid }} .bz-tl__axis-x { position: relative; height: 34px; margin-top: 4px; }
+  {{ sid }} .bz-tl__xlabel {
+    position: absolute;
+    top: 10px;
+    left: var(--x);
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    font-size: 12px;
+    white-space: nowrap;
+    color: var(--bz-text-soft);
+    transform: translateX(-50%);
+    cursor: pointer;
+  }
+  {{ sid }} .bz-tl__xlabel.is-active { color: var(--bz-text); font-weight: 700; }
+
+  /* ---------- Escritorio ---------- */
+  @media screen and (min-width: 750px) {
+    {{ sid }} { padding: var(--bz-pt) 32px var(--bz-pb); }
+    {{ sid }} .bz-tl__heading--medium { font-size: clamp(36px, 4.4vw, 50px); }
+    {{ sid }} .bz-tl__heading--large { font-size: clamp(42px, 5.2vw, 64px); }
+    {{ sid }} .bz-tl__sub { font-size: 18px; }
+    {{ sid }} .bz-tl__tab { min-height: 58px; font-size: 17px; }
+    {{ sid }} .bz-tl__panel-title { font-size: 24px; }
+    {{ sid }} .bz-tl__panel-text { font-size: 17px; }
+    {{ sid }} .bz-tl__chart { padding: 32px 32px 20px 56px; }
+    {{ sid }} .bz-tl__axis-y { left: 18px; font-size: 12px; }
+    {{ sid }} .bz-tl__plot { aspect-ratio: 16 / 10; }
+    {{ sid }} .bz-tl__bubble { width: 124px; height: 124px; left: clamp(62px, var(--bx), calc(100% - 62px)); top: clamp(62px, var(--by), calc(100% - 62px)); }
+    {{ sid }} .bz-tl__bubble strong { font-size: 24px; }
+    {{ sid }} .bz-tl__bubble span { font-size: 12px; }
+    {{ sid }} .bz-tl__xlabel { font-size: 13px; }
+  }
+
+  @media screen and (min-width: 990px) {
+    {{ sid }} .bz-tl__inner {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      align-items: center;
+      gap: 72px;
+    }
+    {{ sid }} .bz-tl__content { display: flex; flex-direction: column; gap: 28px; }
+    {{ sid }} .bz-tl__chart { order: 0; }
+    {{ sid }}.bz-tl--chart-left .bz-tl__chart { order: -1; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    {{ sid }} .bz-tl__bubble, {{ sid }} .bz-tl__panel { transition: none; animation: none; }
+    {{ sid }}.bz-tl--animate .bz-tl__svg { clip-path: none; transition: none; }
+    {{ sid }}.bz-tl--animate .bz-tl__dot { opacity: 1; transition: none; }
+  }
+</style>
+
+{%- capture points -%}
+  {%- assign i = 0 -%}
+  {%- for block in section.blocks -%}
+    {%- if block.type != 'etapa' -%}{%- continue -%}{%- endif -%}
+    {%- liquid
+      if stage_count > 1
+        assign x = step | times: i | plus: 6
+      else
+        assign x = 50
+      endif
+      assign y = block.settings.value | times: -0.8 | plus: 92
+      assign i = i | plus: 1
+    -%}
+    {{- x | round: 2 }},{{ y | round: 2 }} {% endfor -%}
+{%- endcapture -%}
+{%- assign points = points | strip -%}
+{%- assign first_x = points | split: ' ' | first | split: ',' | first -%}
+{%- assign last_x = points | split: ' ' | last | split: ',' | first -%}
+
+<bz-timeline
+  id="bz-tl-{{ section.id }}"
+  class="bz-tl bz-tl--tabs-{{ s.tabs_layout }} bz-tl--chart-{{ s.chart_position }}{% if animate %} bz-tl--animate{% endif %}"
+>
+  <div class="bz-tl__inner">
+    <div class="bz-tl__content">
+      <div class="bz-tl__head">
+      {%- for block in section.blocks -%}
+        {%- unless header_types contains block.type -%}{%- continue -%}{%- endunless -%}
+        {%- case block.type -%}
+          {%- when 'subtitulo' -%}
+            <p class="bz-tl__eyebrow" {{ block.shopify_attributes }}>{{ block.settings.text | escape }}</p>
+          {%- when 'titulo' -%}
+            <h2 class="bz-tl__heading bz-tl__heading--{{ block.settings.size }}" {{ block.shopify_attributes }}>
+              {{- block.settings.heading -}}
+            </h2>
+          {%- when 'texto' -%}
+            <div class="bz-tl__sub" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+        {%- endcase -%}
+      {%- endfor -%}
+      </div>
+
+      {%- if stage_count > 0 -%}
+        <div class="bz-tl__ctrl">
+        <div class="bz-tl__tabs" role="tablist" aria-label="Etapas">
+          {%- assign n = 0 -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type != 'etapa' -%}{%- continue -%}{%- endif -%}
+            <button
+              type="button"
+              class="bz-tl__tab"
+              role="tab"
+              id="bz-tl-tab-{{ block.id }}"
+              aria-controls="bz-tl-panel-{{ block.id }}"
+              aria-selected="{% if n == 0 %}true{% else %}false{% endif %}"
+              tabindex="{% if n == 0 %}0{% else %}-1{% endif %}"
+              data-index="{{ n }}"
+            >
+              {{- block.settings.tab_label | escape -}}
+              {%- if block.settings.tab_caption != blank -%}<small>{{ block.settings.tab_caption | escape }}</small>{%- endif -%}
+            </button>
+            {%- assign n = n | plus: 1 -%}
+          {%- endfor -%}
+        </div>
+
+        {%- assign n = 0 -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type != 'etapa' -%}{%- continue -%}{%- endif -%}
+          <div
+            class="bz-tl__panel"
+            role="tabpanel"
+            id="bz-tl-panel-{{ block.id }}"
+            aria-labelledby="bz-tl-tab-{{ block.id }}"
+            data-panel="{{ n }}"
+            {% if n != 0 %}hidden{% endif %}
+            {{ block.shopify_attributes }}
+          >
+            {%- if block.settings.title != blank -%}
+              <h3 class="bz-tl__panel-title">{{ block.settings.title | escape }}</h3>
+            {%- endif -%}
+            {%- if block.settings.text != blank -%}
+              <div class="bz-tl__panel-text">{{ block.settings.text }}</div>
+            {%- endif -%}
+          </div>
+          {%- assign n = n | plus: 1 -%}
+        {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'aclaracion' and block.settings.text != blank -%}
+          <div class="bz-tl__note" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    {%- if stage_count > 0 -%}
+      <div class="bz-tl__chart">
+        {%- if s.axis_label != blank -%}
+          <p class="bz-tl__axis-y">{{ s.axis_label | escape }}</p>
+        {%- endif -%}
+        <div class="bz-tl__plot">
+          <span class="bz-tl__grid" style="top: 25%;"></span>
+          <span class="bz-tl__grid" style="top: 50%;"></span>
+          <span class="bz-tl__grid" style="top: 75%;"></span>
+
+          <svg class="bz-tl__svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+            <defs>
+              <linearGradient id="bz-tl-grad-{{ section.id }}" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="{{ s.color_chart | default: '#F2B544' }}" stop-opacity="0.35"/>
+                <stop offset="100%" stop-color="{{ s.color_chart | default: '#F2B544' }}" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            {%- if s.show_area -%}
+              <polygon class="bz-tl__area" points="{{ first_x }},100 {{ points }} {{ last_x }},100"/>
+            {%- endif -%}
+            <polyline class="bz-tl__path" points="{{ points }}" pathLength="1"/>
+          </svg>
+
+          {%- assign n = 0 -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type != 'etapa' -%}{%- continue -%}{%- endif -%}
+            {%- liquid
+              if stage_count > 1
+                assign x = step | times: n | plus: 6
+              else
+                assign x = 50
+              endif
+              assign y = block.settings.value | times: -0.8 | plus: 92
+            -%}
+            <button
+              type="button"
+              class="bz-tl__dot{% if n == 0 %} is-active{% endif %}"
+              style="--x: {{ x | round: 2 }}%; --y: {{ y | round: 2 }}%;"
+              data-index="{{ n }}"
+              data-x="{{ x | round: 2 }}"
+              data-y="{{ y | round: 2 }}"
+              data-title="{{ block.settings.bubble_title | escape }}"
+              data-caption="{{ block.settings.bubble_caption | escape }}"
+              aria-label="{{ block.settings.tab_label | escape }}"
+              tabindex="-1"
+            ></button>
+            {%- if n == 0 -%}
+              {%- capture bubble -%}
+                <div class="bz-tl__bubble" style="--bx: {{ x | round: 2 }}%; --by: {{ y | round: 2 }}%;" data-bubble aria-live="polite">
+                  <strong data-bubble-title>{{ block.settings.bubble_title | escape }}</strong>
+                  <span data-bubble-caption>{{ block.settings.bubble_caption | escape }}</span>
+                </div>
+              {%- endcapture -%}
+            {%- endif -%}
+            {%- assign n = n | plus: 1 -%}
+          {%- endfor -%}
+
+          {%- if s.show_bubble -%}{{ bubble }}{%- endif -%}
+        </div>
+
+        <div class="bz-tl__axis-x">
+          {%- assign n = 0 -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type != 'etapa' -%}{%- continue -%}{%- endif -%}
+            {%- liquid
+              if stage_count > 1
+                assign x = step | times: n | plus: 6
+              else
+                assign x = 50
+              endif
+              assign axis_label = block.settings.axis_label | default: block.settings.tab_label
+            -%}
+            <button type="button" class="bz-tl__xlabel{% if n == 0 %} is-active{% endif %}" style="--x: {{ x | round: 2 }}%;" data-index="{{ n }}" tabindex="-1">
+              {{- axis_label | escape -}}
+            </button>
+            {%- assign n = n | plus: 1 -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</bz-timeline>
+
+<script>
+  if (!customElements.get('bz-timeline')) {
+    customElements.define('bz-timeline', class extends HTMLElement {
+      connectedCallback() {
+        this.tabs = Array.from(this.querySelectorAll('[role="tab"]'));
+        this.panels = Array.from(this.querySelectorAll('[data-panel]'));
+        this.dots = Array.from(this.querySelectorAll('.bz-tl__dot'));
+        this.labels = Array.from(this.querySelectorAll('.bz-tl__xlabel'));
+        this.bubble = this.querySelector('[data-bubble]');
+        if (!this.tabs.length) return;
+
+        const select = (e) => {
+          const i = parseInt(e.currentTarget.dataset.index, 10);
+          this.select(i, e.currentTarget.getAttribute('role') === 'tab');
+        };
+        [...this.tabs, ...this.dots, ...this.labels].forEach((el) => el.addEventListener('click', select));
+
+        this.querySelector('[role="tablist"]').addEventListener('keydown', (e) => {
+          const cur = this.tabs.findIndex((t) => t.getAttribute('aria-selected') === 'true');
+          let next = null;
+          if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = (cur + 1) % this.tabs.length;
+          if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = (cur - 1 + this.tabs.length) % this.tabs.length;
+          if (e.key === 'Home') next = 0;
+          if (e.key === 'End') next = this.tabs.length - 1;
+          if (next !== null) { e.preventDefault(); this.select(next, true); }
+        });
+
+        this.addEventListener('shopify:block:select', (e) => {
+          const i = this.panels.indexOf(e.target);
+          if (i > -1) this.select(i, false);
+        });
+
+        if (this.classList.contains('bz-tl--animate') && 'IntersectionObserver' in window) {
+          this.io = new IntersectionObserver((entries) => {
+            if (entries.some((en) => en.isIntersecting)) { this.classList.add('is-visible'); this.io.disconnect(); }
+          }, { threshold: 0.35 });
+          this.io.observe(this);
+        } else {
+          this.classList.add('is-visible');
+        }
+      }
+
+      disconnectedCallback() {
+        if (this.io) this.io.disconnect();
+      }
+
+      select(i, focus) {
+        this.tabs.forEach((t, n) => {
+          t.setAttribute('aria-selected', n === i ? 'true' : 'false');
+          t.tabIndex = n === i ? 0 : -1;
+        });
+        if (focus && this.tabs[i]) this.tabs[i].focus();
+        this.panels.forEach((p, n) => { p.hidden = n !== i; });
+        this.dots.forEach((d, n) => d.classList.toggle('is-active', n === i));
+        this.labels.forEach((l, n) => l.classList.toggle('is-active', n === i));
+        const dot = this.dots[i];
+        if (this.bubble && dot) {
+          this.bubble.style.setProperty('--bx', dot.dataset.x + '%');
+          this.bubble.style.setProperty('--by', dot.dataset.y + '%');
+          this.bubble.querySelector('[data-bubble-title]').textContent = dot.dataset.title;
+          this.bubble.querySelector('[data-bubble-caption]').textContent = dot.dataset.caption;
+        }
+      }
+    });
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Bronzer · Cronología",
+  "tag": "section",
+  "class": "section-bronzer-cronologia",
+  "max_blocks": 12,
+  "settings": [
+    { "type": "header", "content": "Diseño" },
+    {
+      "type": "select",
+      "id": "chart_position",
+      "label": "Gráfico en computadora",
+      "options": [
+        { "value": "right", "label": "A la derecha" },
+        { "value": "left", "label": "A la izquierda" }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "select",
+      "id": "tabs_layout",
+      "label": "Botones de etapas",
+      "options": [
+        { "value": "grid", "label": "En 2 columnas" },
+        { "value": "row", "label": "En una fila" }
+      ],
+      "default": "grid"
+    },
+    {
+      "type": "range",
+      "id": "radius",
+      "label": "Redondeo",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    { "type": "header", "content": "Gráfico" },
+    {
+      "type": "text",
+      "id": "axis_label",
+      "label": "Texto del eje vertical",
+      "default": "Tono dorado"
+    },
+    { "type": "checkbox", "id": "show_bubble", "label": "Mostrar burbuja", "default": true },
+    { "type": "checkbox", "id": "show_area", "label": "Relleno degradado bajo la curva", "default": true },
+    {
+      "type": "checkbox",
+      "id": "animate",
+      "label": "Animar la curva al aparecer",
+      "info": "Se ve en la tienda, no en el editor.",
+      "default": true
+    },
+    { "type": "header", "content": "Tipografía y colores" },
+    {
+      "type": "font_picker",
+      "id": "heading_font",
+      "label": "Tipografía de títulos",
+      "default": "playfair_display_n7"
+    },
+    { "type": "color", "id": "color_bg", "label": "Fondo", "default": "#2B1710" },
+    { "type": "color", "id": "color_panel", "label": "Fondo del gráfico y botones", "default": "#3D2318" },
+    { "type": "color", "id": "color_text", "label": "Texto", "default": "#FBF4EC" },
+    { "type": "color", "id": "color_accent", "label": "Botón activo", "default": "#B46F34" },
+    { "type": "color", "id": "color_chart", "label": "Curva y acento", "default": "#F2B544" },
+    { "type": "color", "id": "color_bubble", "label": "Fondo de la burbuja", "default": "#FBEBD6" },
+    { "type": "color", "id": "color_bubble_text", "label": "Texto de la burbuja", "default": "#7A3E14" },
+    { "type": "header", "content": "Espaciado" },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Margen superior",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "default": 96
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Margen inferior",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "default": 96
+    }
+  ],
+  "blocks": [
+    {
+      "type": "subtitulo",
+      "name": "Subtítulo",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "text", "label": "Texto", "default": "Cronología" }
+      ]
+    },
+    {
+      "type": "titulo",
+      "name": "Título",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Título",
+          "info": "La palabra en cursiva se pinta con el color de acento.",
+          "default": "Tu glow, <em>día a día</em>"
+        },
+        {
+          "type": "select",
+          "id": "size",
+          "label": "Tamaño",
+          "options": [
+            { "value": "medium", "label": "Mediano" },
+            { "value": "large", "label": "Grande" }
+          ],
+          "default": "large"
+        }
+      ]
+    },
+    {
+      "type": "texto",
+      "name": "Texto",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Texto",
+          "default": "<p>El betacaroteno no actúa de un día para el otro: se acumula en tu piel con la toma diaria. Así evoluciona tu bronceado natural.†</p>"
+        }
+      ]
+    },
+    {
+      "type": "etapa",
+      "name": "Etapa",
+      "limit": 6,
+      "settings": [
+        { "type": "header", "content": "Botón" },
+        { "type": "text", "id": "tab_label", "label": "Nombre de la etapa", "default": "Día 1" },
+        { "type": "text", "id": "tab_caption", "label": "Texto chico del botón (opcional)", "info": "Ej: Inicio" },
+        { "type": "header", "content": "Gráfico" },
+        {
+          "type": "range",
+          "id": "value",
+          "label": "Altura del punto en el gráfico",
+          "min": 0,
+          "max": 100,
+          "step": 2,
+          "unit": "%",
+          "default": 10
+        },
+        {
+          "type": "text",
+          "id": "axis_label",
+          "label": "Texto en el eje (opcional)",
+          "info": "Si lo dejás vacío usa el nombre de la etapa."
+        },
+        { "type": "text", "id": "bubble_title", "label": "Título de la burbuja", "default": "Inicio" },
+        { "type": "text", "id": "bubble_caption", "label": "Texto de la burbuja", "default": "Primera cápsula" },
+        { "type": "header", "content": "Detalle" },
+        { "type": "text", "id": "title", "label": "Título", "default": "Empieza la acumulación." },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Texto",
+          "default": "<p>Describí qué pasa en esta etapa.</p>"
+        }
+      ]
+    },
+    {
+      "type": "aclaracion",
+      "name": "Aclaración (†)",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Texto",
+          "default": "<p>† Resultados estimados con la toma diaria de 1 cápsula. Pueden variar según cada persona y su tono de piel. Este producto es un suplemento dietario y no reemplaza una alimentación variada ni el uso de protector solar.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bronzer · Cronología",
+      "blocks": [
+        { "type": "subtitulo" },
+        { "type": "titulo" },
+        { "type": "texto" },
+        {
+          "type": "etapa",
+          "settings": {
+            "tab_label": "Día 1",
+            "value": 8,
+            "bubble_title": "Inicio",
+            "bubble_caption": "Primera cápsula",
+            "title": "Empieza la acumulación.",
+            "text": "<p>El betacaroteno comienza a absorberse y a depositarse de forma natural en las capas de tu piel. Todavía no se ve, pero ya está trabajando desde adentro.</p>"
+          }
+        },
+        {
+          "type": "etapa",
+          "settings": {
+            "tab_label": "Día 7",
+            "value": 34,
+            "bubble_title": "Calidez",
+            "bubble_caption": "Primer matiz",
+            "title": "Aparece un tono más cálido.",
+            "text": "<p>Con la toma diaria el pigmento se acumula y tu piel empieza a verse más luminosa, con un matiz dorado sutil.</p>"
+          }
+        },
+        {
+          "type": "etapa",
+          "settings": {
+            "tab_label": "Día 12",
+            "value": 62,
+            "bubble_title": "Glow",
+            "bubble_caption": "Tono parejo",
+            "title": "Tu dorado se intensifica.",
+            "text": "<p>El color se vuelve más uniforme y natural. Sin manchas ni vetas naranjas como con los autobronceantes.</p>"
+          }
+        },
+        {
+          "type": "etapa",
+          "settings": {
+            "tab_label": "Día 18",
+            "value": 90,
+            "bubble_title": "Dorada",
+            "bubble_caption": "Resultado visible",
+            "title": "Tu bronceado natural, sin sol.",
+            "text": "<p>A los 18 días el tono dorado se nota. Seguí con 1 cápsula diaria para mantenerlo todo el año, sin camas solares ni quemaduras.</p>"
+          }
+        },
+        { "type": "aclaracion" }
+      ]
+    }
+  ]
+}
+{% endschema %}
