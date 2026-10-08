@@ -453,7 +453,7 @@
             <div class="bz-hero__cta" {{ block.shopify_attributes }}>
               {%- if block.settings.label != blank -%}
                 <a
-                  {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% else %}role="link" aria-disabled="true"{% endif %}
+                  href="{% if block.settings.link != blank %}{{ block.settings.link }}{% else %}#oferta{% endif %}"
                   class="bz-hero__button"
                 >
                   {{- block.settings.label | escape -}}
@@ -481,7 +481,10 @@
   "class": "section-bronzer-hero",
   "max_blocks": 8,
   "settings": [
-    { "type": "header", "content": "Imagen" },
+    {
+      "type": "header",
+      "content": "Imagen"
+    },
     {
       "type": "image_picker",
       "id": "image",
@@ -509,9 +512,18 @@
       "id": "mobile_ratio",
       "label": "Formato de la imagen en celular",
       "options": [
-        { "value": "portrait", "label": "Vertical 4:5" },
-        { "value": "tall", "label": "Vertical 3:4" },
-        { "value": "square", "label": "Cuadrada 1:1" }
+        {
+          "value": "portrait",
+          "label": "Vertical 4:5"
+        },
+        {
+          "value": "tall",
+          "label": "Vertical 3:4"
+        },
+        {
+          "value": "square",
+          "label": "Cuadrada 1:1"
+        }
       ],
       "default": "portrait"
     },
@@ -526,14 +538,23 @@
       "unit": "px",
       "default": 60
     },
-    { "type": "header", "content": "Escritorio" },
+    {
+      "type": "header",
+      "content": "Escritorio"
+    },
     {
       "type": "select",
       "id": "image_position",
       "label": "Posición de la imagen",
       "options": [
-        { "value": "right", "label": "Derecha" },
-        { "value": "left", "label": "Izquierda" }
+        {
+          "value": "right",
+          "label": "Derecha"
+        },
+        {
+          "value": "left",
+          "label": "Izquierda"
+        }
       ],
       "default": "right"
     },
@@ -542,9 +563,18 @@
       "id": "height",
       "label": "Altura",
       "options": [
-        { "value": "medium", "label": "Mediana" },
-        { "value": "large", "label": "Grande" },
-        { "value": "full", "label": "Pantalla completa" }
+        {
+          "value": "medium",
+          "label": "Mediana"
+        },
+        {
+          "value": "large",
+          "label": "Grande"
+        },
+        {
+          "value": "full",
+          "label": "Pantalla completa"
+        }
       ],
       "default": "large"
     },
@@ -553,19 +583,34 @@
       "id": "content_align",
       "label": "Alineación del texto",
       "options": [
-        { "value": "left", "label": "Izquierda" },
-        { "value": "center", "label": "Centrado" }
+        {
+          "value": "left",
+          "label": "Izquierda"
+        },
+        {
+          "value": "center",
+          "label": "Centrado"
+        }
       ],
       "default": "left"
     },
-    { "type": "header", "content": "Estilo" },
+    {
+      "type": "header",
+      "content": "Estilo"
+    },
     {
       "type": "select",
       "id": "proof_position",
       "label": "Prueba social",
       "options": [
-        { "value": "top", "label": "Flotando sobre la imagen" },
-        { "value": "inline", "label": "Junto al texto" }
+        {
+          "value": "top",
+          "label": "Flotando sobre la imagen"
+        },
+        {
+          "value": "inline",
+          "label": "Junto al texto"
+        }
       ],
       "default": "top"
     },
@@ -581,8 +626,14 @@
       "label": "Palabra resaltada",
       "info": "Para resaltar, poné la palabra en cursiva en el título.",
       "options": [
-        { "value": "color", "label": "Solo color" },
-        { "value": "italic", "label": "Color + cursiva" }
+        {
+          "value": "color",
+          "label": "Solo color"
+        },
+        {
+          "value": "italic",
+          "label": "Color + cursiva"
+        }
       ],
       "default": "color"
     },
@@ -593,7 +644,10 @@
       "info": "Se ve en la tienda, no en el editor.",
       "default": true
     },
-    { "type": "header", "content": "Colores" },
+    {
+      "type": "header",
+      "content": "Colores"
+    },
     {
       "type": "color",
       "id": "color_bg",
@@ -601,7 +655,12 @@
       "info": "La foto se funde con este color.",
       "default": "#140D09"
     },
-    { "type": "color", "id": "color_text", "label": "Texto", "default": "#FFFFFF" },
+    {
+      "type": "color",
+      "id": "color_text",
+      "label": "Texto",
+      "default": "#FFFFFF"
+    },
     {
       "type": "color",
       "id": "color_accent",
@@ -609,8 +668,18 @@
       "info": "Palabra resaltada, estrellas e íconos.",
       "default": "#F2B544"
     },
-    { "type": "color", "id": "color_button_bg", "label": "Fondo del botón", "default": "#B46F34" },
-    { "type": "color", "id": "color_button_text", "label": "Texto del botón", "default": "#FFFFFF" },
+    {
+      "type": "color",
+      "id": "color_button_bg",
+      "label": "Fondo del botón",
+      "default": "#B46F34"
+    },
+    {
+      "type": "color",
+      "id": "color_button_text",
+      "label": "Texto del botón",
+      "default": "#FFFFFF"
+    },
     {
       "type": "range",
       "id": "button_radius",
@@ -628,11 +697,36 @@
       "name": "Prueba social",
       "limit": 1,
       "settings": [
-        { "type": "image_picker", "id": "avatar_1", "label": "Foto clienta 1" },
-        { "type": "image_picker", "id": "avatar_2", "label": "Foto clienta 2" },
-        { "type": "image_picker", "id": "avatar_3", "label": "Foto clienta 3" },
-        { "type": "range", "id": "stars", "label": "Estrellas", "min": 1, "max": 5, "step": 1, "default": 5 },
-        { "type": "inline_richtext", "id": "text", "label": "Texto", "default": "+3mil reseñas · +10mil vendidos" }
+        {
+          "type": "image_picker",
+          "id": "avatar_1",
+          "label": "Foto clienta 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar_2",
+          "label": "Foto clienta 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar_3",
+          "label": "Foto clienta 3"
+        },
+        {
+          "type": "range",
+          "id": "stars",
+          "label": "Estrellas",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "label": "Texto",
+          "default": "+3mil reseñas · +10mil vendidos"
+        }
       ]
     },
     {
@@ -640,7 +734,12 @@
       "name": "Subtítulo",
       "limit": 1,
       "settings": [
-        { "type": "text", "id": "text", "label": "Texto", "default": "Fórmula Beta-Caroteno" }
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texto",
+          "default": "Fórmula Beta-Caroteno"
+        }
       ]
     },
     {
@@ -661,8 +760,14 @@
           "label": "Etiqueta SEO",
           "info": "Usá H1 solo una vez por página.",
           "options": [
-            { "value": "h1", "label": "H1" },
-            { "value": "h2", "label": "H2" }
+            {
+              "value": "h1",
+              "label": "H1"
+            },
+            {
+              "value": "h2",
+              "label": "H2"
+            }
           ],
           "default": "h1"
         }
@@ -686,11 +791,33 @@
       "name": "Beneficios en línea",
       "limit": 1,
       "settings": [
-        { "type": "paragraph", "content": "Frases cortas, se muestran en una línea separadas por un punto dorado." },
-        { "type": "text", "id": "item_1", "label": "Beneficio 1", "default": "Sin sol" },
-        { "type": "text", "id": "item_2", "label": "Beneficio 2", "default": "Sin camas solares" },
-        { "type": "text", "id": "item_3", "label": "Beneficio 3", "default": "Sin manchas" },
-        { "type": "text", "id": "item_4", "label": "Beneficio 4" }
+        {
+          "type": "paragraph",
+          "content": "Frases cortas, se muestran en una línea separadas por un punto dorado."
+        },
+        {
+          "type": "text",
+          "id": "item_1",
+          "label": "Beneficio 1",
+          "default": "Sin sol"
+        },
+        {
+          "type": "text",
+          "id": "item_2",
+          "label": "Beneficio 2",
+          "default": "Sin camas solares"
+        },
+        {
+          "type": "text",
+          "id": "item_3",
+          "label": "Beneficio 3",
+          "default": "Sin manchas"
+        },
+        {
+          "type": "text",
+          "id": "item_4",
+          "label": "Beneficio 4"
+        }
       ]
     },
     {
@@ -698,12 +825,17 @@
       "name": "Botón + garantía",
       "limit": 1,
       "settings": [
-        { "type": "text", "id": "label", "label": "Texto del botón", "default": "Ver packs · Ahorrá hasta 30%" },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Texto del botón",
+          "default": "Ver packs · Ahorrá hasta 30%"
+        },
         {
           "type": "url",
           "id": "link",
           "label": "Link del botón",
-          "info": "Producto, colección o una sección de la página (ej: #packs)."
+          "info": "Vacío = baja hasta la oferta (#oferta). También podés elegir un producto o colección."
         },
         {
           "type": "text",
@@ -711,7 +843,12 @@
           "label": "Garantía debajo del botón",
           "default": "Bronceado en 18 días o te devolvemos el dinero"
         },
-        { "type": "checkbox", "id": "show_icon", "label": "Mostrar ícono de escudo", "default": false }
+        {
+          "type": "checkbox",
+          "id": "show_icon",
+          "label": "Mostrar ícono de escudo",
+          "default": false
+        }
       ]
     }
   ],
@@ -719,10 +856,18 @@
     {
       "name": "Bronzer · Hero",
       "blocks": [
-        { "type": "prueba_social" },
-        { "type": "titulo" },
-        { "type": "texto" },
-        { "type": "boton" }
+        {
+          "type": "prueba_social"
+        },
+        {
+          "type": "titulo"
+        },
+        {
+          "type": "texto"
+        },
+        {
+          "type": "boton"
+        }
       ]
     }
   ]

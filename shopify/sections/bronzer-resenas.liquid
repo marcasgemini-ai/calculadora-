@@ -517,7 +517,7 @@
     {%- if block.type == 'boton' and block.settings.label != blank -%}
       <div class="bz-rev__footer" {{ block.shopify_attributes }}>
         <a
-          {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% else %}role="link" aria-disabled="true"{% endif %}
+          href="{% if block.settings.link != blank %}{{ block.settings.link }}{% else %}#oferta{% endif %}"
           class="bz-rev__button bz-rev__button--{{ block.settings.style }}"
         >
           {{- block.settings.label | escape -}}
@@ -616,15 +616,27 @@
   "class": "section-bronzer-resenas",
   "max_blocks": 24,
   "settings": [
-    { "type": "header", "content": "Tarjetas" },
+    {
+      "type": "header",
+      "content": "Tarjetas"
+    },
     {
       "type": "select",
       "id": "cards_desktop",
       "label": "Tarjetas visibles en computadora",
       "options": [
-        { "value": "2", "label": "2" },
-        { "value": "3", "label": "3" },
-        { "value": "4", "label": "4" }
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        }
       ],
       "default": "3"
     },
@@ -633,8 +645,14 @@
       "id": "mobile_layout",
       "label": "Tarjetas en celular",
       "options": [
-        { "value": "peek", "label": "Una, asomando la siguiente" },
-        { "value": "full", "label": "Una a lo ancho" }
+        {
+          "value": "peek",
+          "label": "Una, asomando la siguiente"
+        },
+        {
+          "value": "full",
+          "label": "Una a lo ancho"
+        }
       ],
       "default": "peek"
     },
@@ -643,9 +661,18 @@
       "id": "image_ratio",
       "label": "Forma de las fotos",
       "options": [
-        { "value": "landscape", "label": "Horizontal" },
-        { "value": "square", "label": "Cuadrada" },
-        { "value": "portrait", "label": "Vertical" }
+        {
+          "value": "landscape",
+          "label": "Horizontal"
+        },
+        {
+          "value": "square",
+          "label": "Cuadrada"
+        },
+        {
+          "value": "portrait",
+          "label": "Vertical"
+        }
       ],
       "default": "landscape"
     },
@@ -654,8 +681,14 @@
       "id": "text_align",
       "label": "Alineación del texto",
       "options": [
-        { "value": "center", "label": "Centrado" },
-        { "value": "left", "label": "Izquierda" }
+        {
+          "value": "center",
+          "label": "Centrado"
+        },
+        {
+          "value": "left",
+          "label": "Izquierda"
+        }
       ],
       "default": "center"
     },
@@ -669,8 +702,16 @@
       "unit": "px",
       "default": 22
     },
-    { "type": "checkbox", "id": "card_shadow", "label": "Sombra en las tarjetas", "default": true },
-    { "type": "header", "content": "Antes y después" },
+    {
+      "type": "checkbox",
+      "id": "card_shadow",
+      "label": "Sombra en las tarjetas",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Antes y después"
+    },
     {
       "type": "text",
       "id": "label_before",
@@ -684,7 +725,12 @@
       "label": "Etiqueta de después",
       "default": "Día 18"
     },
-    { "type": "checkbox", "id": "show_ba_arrow", "label": "Mostrar flecha entre las fotos", "default": true },
+    {
+      "type": "checkbox",
+      "id": "show_ba_arrow",
+      "label": "Mostrar flecha entre las fotos",
+      "default": true
+    },
     {
       "type": "text",
       "id": "verified_text",
@@ -692,9 +738,22 @@
       "info": "Dejalo vacío para ocultarlo en todas.",
       "default": "Compra verificada"
     },
-    { "type": "header", "content": "Carrusel" },
-    { "type": "checkbox", "id": "show_arrows", "label": "Mostrar flechas", "default": true },
-    { "type": "checkbox", "id": "show_dots", "label": "Mostrar puntos", "default": true },
+    {
+      "type": "header",
+      "content": "Carrusel"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Mostrar flechas",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dots",
+      "label": "Mostrar puntos",
+      "default": true
+    },
     {
       "type": "checkbox",
       "id": "autoplay",
@@ -712,16 +771,34 @@
       "unit": "s",
       "default": 5
     },
-    { "type": "header", "content": "Tipografía y colores" },
+    {
+      "type": "header",
+      "content": "Tipografía y colores"
+    },
     {
       "type": "font_picker",
       "id": "heading_font",
       "label": "Tipografía de títulos",
       "default": "playfair_display_n4"
     },
-    { "type": "color", "id": "color_bg", "label": "Fondo", "default": "#F7EFE6" },
-    { "type": "color", "id": "color_card", "label": "Fondo de las tarjetas", "default": "#FFFCF8" },
-    { "type": "color", "id": "color_text", "label": "Texto", "default": "#1E140F" },
+    {
+      "type": "color",
+      "id": "color_bg",
+      "label": "Fondo",
+      "default": "#F7EFE6"
+    },
+    {
+      "type": "color",
+      "id": "color_card",
+      "label": "Fondo de las tarjetas",
+      "default": "#FFFCF8"
+    },
+    {
+      "type": "color",
+      "id": "color_text",
+      "label": "Texto",
+      "default": "#1E140F"
+    },
     {
       "type": "color",
       "id": "color_accent",
@@ -729,10 +806,28 @@
       "info": "Palabra resaltada, etiqueta de después, sello y puntos.",
       "default": "#B46F34"
     },
-    { "type": "color", "id": "color_stars", "label": "Estrellas", "default": "#E0A33A" },
-    { "type": "color", "id": "color_button_bg", "label": "Botón", "default": "#B46F34" },
-    { "type": "color", "id": "color_button_text", "label": "Texto del botón", "default": "#FFFFFF" },
-    { "type": "header", "content": "Espaciado" },
+    {
+      "type": "color",
+      "id": "color_stars",
+      "label": "Estrellas",
+      "default": "#E0A33A"
+    },
+    {
+      "type": "color",
+      "id": "color_button_bg",
+      "label": "Botón",
+      "default": "#B46F34"
+    },
+    {
+      "type": "color",
+      "id": "color_button_text",
+      "label": "Texto del botón",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Espaciado"
+    },
     {
       "type": "range",
       "id": "padding_top",
@@ -760,8 +855,21 @@
       "name": "Calificación",
       "limit": 1,
       "settings": [
-        { "type": "checkbox", "id": "show_stars", "label": "Mostrar estrellas", "default": true },
-        { "type": "range", "id": "stars", "label": "Estrellas", "min": 1, "max": 5, "step": 1, "default": 5 },
+        {
+          "type": "checkbox",
+          "id": "show_stars",
+          "label": "Mostrar estrellas",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "stars",
+          "label": "Estrellas",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
         {
           "type": "inline_richtext",
           "id": "text",
@@ -775,7 +883,12 @@
       "name": "Subtítulo",
       "limit": 1,
       "settings": [
-        { "type": "text", "id": "text", "label": "Texto", "default": "Resultados reales" }
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texto",
+          "default": "Resultados reales"
+        }
       ]
     },
     {
@@ -795,8 +908,14 @@
           "id": "size",
           "label": "Tamaño",
           "options": [
-            { "value": "medium", "label": "Mediano" },
-            { "value": "large", "label": "Grande" }
+            {
+              "value": "medium",
+              "label": "Mediano"
+            },
+            {
+              "value": "large",
+              "label": "Grande"
+            }
           ],
           "default": "large"
         }
@@ -896,19 +1015,39 @@
       "name": "Botón",
       "limit": 1,
       "settings": [
-        { "type": "text", "id": "label", "label": "Texto", "default": "Quiero mi glow" },
-        { "type": "url", "id": "link", "label": "Link" },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Texto",
+          "default": "Quiero mi glow"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link",
+          "info": "Vacío = baja hasta la oferta (#oferta). También podés elegir un producto o colección."
+        },
         {
           "type": "select",
           "id": "style",
           "label": "Estilo",
           "options": [
-            { "value": "solid", "label": "Relleno" },
-            { "value": "outline", "label": "Contorno" }
+            {
+              "value": "solid",
+              "label": "Relleno"
+            },
+            {
+              "value": "outline",
+              "label": "Contorno"
+            }
           ],
           "default": "solid"
         },
-        { "type": "text", "id": "note", "label": "Texto debajo del botón" }
+        {
+          "type": "text",
+          "id": "note",
+          "label": "Texto debajo del botón"
+        }
       ]
     }
   ],
@@ -916,14 +1055,42 @@
     {
       "name": "Bronzer · Reseñas",
       "blocks": [
-        { "type": "calificacion" },
-        { "type": "titulo" },
-        { "type": "texto" },
-        { "type": "resena", "settings": { "title": "Por fin un bronceado que no mancha" } },
-        { "type": "resena", "settings": { "title": "Dorada todo el año, sin cama solar" } },
-        { "type": "resena", "settings": { "title": "Mi piel se ve luminosa y pareja" } },
-        { "type": "resena", "settings": { "title": "Chau autobronceante naranja" } },
-        { "type": "boton" }
+        {
+          "type": "calificacion"
+        },
+        {
+          "type": "titulo"
+        },
+        {
+          "type": "texto"
+        },
+        {
+          "type": "resena",
+          "settings": {
+            "title": "Por fin un bronceado que no mancha"
+          }
+        },
+        {
+          "type": "resena",
+          "settings": {
+            "title": "Dorada todo el año, sin cama solar"
+          }
+        },
+        {
+          "type": "resena",
+          "settings": {
+            "title": "Mi piel se ve luminosa y pareja"
+          }
+        },
+        {
+          "type": "resena",
+          "settings": {
+            "title": "Chau autobronceante naranja"
+          }
+        },
+        {
+          "type": "boton"
+        }
       ]
     }
   ]

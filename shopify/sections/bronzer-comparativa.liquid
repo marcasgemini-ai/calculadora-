@@ -336,7 +336,7 @@
     {%- if s.button_label != blank or s.footnote != blank -%}
       <div class="cmp__footer">
         {%- if s.button_label != blank -%}
-          <a {% if s.button_link != blank %}href="{{ s.button_link }}"{% else %}role="link" aria-disabled="true"{% endif %} class="cmp__button">
+          <a href="{% if s.button_link != blank %}{{ s.button_link }}{% else %}#oferta{% endif %}" class="cmp__button">
             <span>{{ s.button_label | escape }}</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </a>
@@ -370,8 +370,16 @@
   "class": "section-bronzer-comparativa",
   "max_blocks": 12,
   "settings": [
-    { "type": "header", "content": "Encabezado" },
-    { "type": "text", "id": "eyebrow", "label": "Subtítulo", "default": "La diferencia" },
+    {
+      "type": "header",
+      "content": "Encabezado"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Subtítulo",
+      "default": "La diferencia"
+    },
     {
       "type": "inline_richtext",
       "id": "heading",
@@ -385,9 +393,22 @@
       "label": "Texto",
       "default": "<p>El betacaroteno dora tu piel desde adentro. Mirá por qué es la forma más inteligente de lograr tu tono.</p>"
     },
-    { "type": "header", "content": "Columnas" },
-    { "type": "text", "id": "brand_name", "label": "Nombre de tu marca", "default": "Bronzer" },
-    { "type": "image_picker", "id": "brand_logo", "label": "Logo (opcional)", "info": "PNG blanco sin fondo. Reemplaza al nombre." },
+    {
+      "type": "header",
+      "content": "Columnas"
+    },
+    {
+      "type": "text",
+      "id": "brand_name",
+      "label": "Nombre de tu marca",
+      "default": "Bronzer"
+    },
+    {
+      "type": "image_picker",
+      "id": "brand_logo",
+      "label": "Logo (opcional)",
+      "info": "PNG blanco sin fondo. Reemplaza al nombre."
+    },
     {
       "type": "range",
       "id": "logo_height",
@@ -398,36 +419,151 @@
       "unit": "px",
       "default": 30
     },
-    { "type": "text", "id": "pill", "label": "Etiqueta sobre tu marca", "default": "Recomendado" },
-    { "type": "text", "id": "col_1", "label": "Columna 2", "info": "Dejala vacía para ocultarla.", "default": "Camas solares" },
-    { "type": "text", "id": "col_2", "label": "Columna 3", "default": "Autobron\u00adceantes" },
-    { "type": "text", "id": "col_3", "label": "Columna 4", "default": "Tomar sol" },
-    { "type": "header", "content": "Textos de los íconos" },
-    { "type": "text", "id": "text_yes", "label": "Sí", "default": "Sí" },
-    { "type": "text", "id": "text_partial", "label": "A medias", "default": "A medias" },
-    { "type": "text", "id": "text_no", "label": "No", "default": "No" },
-    { "type": "checkbox", "id": "show_legend", "label": "Mostrar referencias debajo", "default": true },
-    { "type": "text", "id": "label_header", "label": "Título accesible de la primera columna", "default": "Característica" },
-    { "type": "text", "id": "caption", "label": "Descripción accesible de la tabla", "default": "Comparación de Bronzer con otras formas de broncearse" },
-    { "type": "header", "content": "Botón y nota" },
-    { "type": "text", "id": "button_label", "label": "Texto del botón", "default": "Quiero mi bronceado sin sol" },
-    { "type": "url", "id": "button_link", "label": "Link del botón" },
+    {
+      "type": "text",
+      "id": "pill",
+      "label": "Etiqueta sobre tu marca",
+      "default": "Recomendado"
+    },
+    {
+      "type": "text",
+      "id": "col_1",
+      "label": "Columna 2",
+      "info": "Dejala vacía para ocultarla.",
+      "default": "Camas solares"
+    },
+    {
+      "type": "text",
+      "id": "col_2",
+      "label": "Columna 3",
+      "default": "Autobron­ceantes"
+    },
+    {
+      "type": "text",
+      "id": "col_3",
+      "label": "Columna 4",
+      "default": "Tomar sol"
+    },
+    {
+      "type": "header",
+      "content": "Textos de los íconos"
+    },
+    {
+      "type": "text",
+      "id": "text_yes",
+      "label": "Sí",
+      "default": "Sí"
+    },
+    {
+      "type": "text",
+      "id": "text_partial",
+      "label": "A medias",
+      "default": "A medias"
+    },
+    {
+      "type": "text",
+      "id": "text_no",
+      "label": "No",
+      "default": "No"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_legend",
+      "label": "Mostrar referencias debajo",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "label_header",
+      "label": "Título accesible de la primera columna",
+      "default": "Característica"
+    },
+    {
+      "type": "text",
+      "id": "caption",
+      "label": "Descripción accesible de la tabla",
+      "default": "Comparación de Bronzer con otras formas de broncearse"
+    },
+    {
+      "type": "header",
+      "content": "Botón y nota"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Texto del botón",
+      "default": "Quiero mi bronceado sin sol"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Link del botón",
+      "info": "Vacío = baja hasta la oferta (#oferta). También podés elegir un producto o colección."
+    },
     {
       "type": "richtext",
       "id": "footnote",
       "label": "Nota al pie",
       "default": "<p>Comparación orientativa basada en el uso habitual de cada método. Bronzer es un suplemento dietario: no reemplaza el uso de protector solar.</p>"
     },
-    { "type": "header", "content": "Estilo" },
-    { "type": "checkbox", "id": "animate", "label": "Animar filas al aparecer", "default": true },
-    { "type": "font_picker", "id": "heading_font", "label": "Tipografía de títulos", "default": "playfair_display_n7" },
-    { "type": "color", "id": "color_bg", "label": "Fondo", "default": "#FBF6EF" },
-    { "type": "color", "id": "color_text", "label": "Texto", "default": "#1E140F" },
-    { "type": "color", "id": "color_brand", "label": "Columna de la marca", "default": "#C9773A" },
-    { "type": "color", "id": "color_brand_2", "label": "Columna de la marca (sombra)", "default": "#8E4A22" },
-    { "type": "color", "id": "color_brand_text", "label": "Texto de la columna de la marca", "default": "#FFFFFF" },
-    { "type": "color", "id": "color_button", "label": "Botón", "default": "#B46F34" },
-    { "type": "color", "id": "color_button_text", "label": "Texto del botón", "default": "#FFFFFF" },
+    {
+      "type": "header",
+      "content": "Estilo"
+    },
+    {
+      "type": "checkbox",
+      "id": "animate",
+      "label": "Animar filas al aparecer",
+      "default": true
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_font",
+      "label": "Tipografía de títulos",
+      "default": "playfair_display_n7"
+    },
+    {
+      "type": "color",
+      "id": "color_bg",
+      "label": "Fondo",
+      "default": "#FBF6EF"
+    },
+    {
+      "type": "color",
+      "id": "color_text",
+      "label": "Texto",
+      "default": "#1E140F"
+    },
+    {
+      "type": "color",
+      "id": "color_brand",
+      "label": "Columna de la marca",
+      "default": "#C9773A"
+    },
+    {
+      "type": "color",
+      "id": "color_brand_2",
+      "label": "Columna de la marca (sombra)",
+      "default": "#8E4A22"
+    },
+    {
+      "type": "color",
+      "id": "color_brand_text",
+      "label": "Texto de la columna de la marca",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "color_button",
+      "label": "Botón",
+      "default": "#B46F34"
+    },
+    {
+      "type": "color",
+      "id": "color_button_text",
+      "label": "Texto del botón",
+      "default": "#FFFFFF"
+    },
     {
       "type": "range",
       "id": "button_radius",
@@ -464,16 +600,34 @@
       "type": "fila",
       "name": "Fila",
       "settings": [
-        { "type": "text", "id": "label", "label": "Característica", "default": "Bronceado sin exponerte al sol" },
-        { "type": "text", "id": "note", "label": "Aclaración chica (opcional)" },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Característica",
+          "default": "Bronceado sin exponerte al sol"
+        },
+        {
+          "type": "text",
+          "id": "note",
+          "label": "Aclaración chica (opcional)"
+        },
         {
           "type": "select",
           "id": "brand",
           "label": "Tu marca",
           "options": [
-            { "value": "yes", "label": "Sí" },
-            { "value": "partial", "label": "A medias" },
-            { "value": "no", "label": "No" }
+            {
+              "value": "yes",
+              "label": "Sí"
+            },
+            {
+              "value": "partial",
+              "label": "A medias"
+            },
+            {
+              "value": "no",
+              "label": "No"
+            }
           ],
           "default": "yes"
         },
@@ -482,9 +636,18 @@
           "id": "col_1",
           "label": "Columna 2",
           "options": [
-            { "value": "yes", "label": "Sí" },
-            { "value": "partial", "label": "A medias" },
-            { "value": "no", "label": "No" }
+            {
+              "value": "yes",
+              "label": "Sí"
+            },
+            {
+              "value": "partial",
+              "label": "A medias"
+            },
+            {
+              "value": "no",
+              "label": "No"
+            }
           ],
           "default": "no"
         },
@@ -493,9 +656,18 @@
           "id": "col_2",
           "label": "Columna 3",
           "options": [
-            { "value": "yes", "label": "Sí" },
-            { "value": "partial", "label": "A medias" },
-            { "value": "no", "label": "No" }
+            {
+              "value": "yes",
+              "label": "Sí"
+            },
+            {
+              "value": "partial",
+              "label": "A medias"
+            },
+            {
+              "value": "no",
+              "label": "No"
+            }
           ],
           "default": "no"
         },
@@ -504,9 +676,18 @@
           "id": "col_3",
           "label": "Columna 4",
           "options": [
-            { "value": "yes", "label": "Sí" },
-            { "value": "partial", "label": "A medias" },
-            { "value": "no", "label": "No" }
+            {
+              "value": "yes",
+              "label": "Sí"
+            },
+            {
+              "value": "partial",
+              "label": "A medias"
+            },
+            {
+              "value": "no",
+              "label": "No"
+            }
           ],
           "default": "no"
         }
@@ -517,14 +698,88 @@
     {
       "name": "Bronzer · Comparativa",
       "blocks": [
-        { "type": "fila", "settings": { "label": "Bronceado sin exponerte al sol", "brand": "yes", "col_1": "no", "col_2": "yes", "col_3": "no" } },
-        { "type": "fila", "settings": { "label": "Sin rayos UV ni quemaduras", "brand": "yes", "col_1": "no", "col_2": "yes", "col_3": "no" } },
-        { "type": "fila", "settings": { "label": "Tono parejo, sin manchas naranjas", "brand": "yes", "col_1": "partial", "col_2": "no", "col_3": "partial" } },
-        { "type": "fila", "settings": { "label": "No mancha la ropa ni las sábanas", "brand": "yes", "col_1": "yes", "col_2": "no", "col_3": "yes" } },
-        { "type": "fila", "settings": { "label": "Cuida tu piel desde adentro", "note": "Betacaroteno, licopeno, cúrcuma y vitaminas", "brand": "yes", "col_1": "no", "col_2": "no", "col_3": "no" } },
-        { "type": "fila", "settings": { "label": "No acelera el envejecimiento de la piel", "brand": "yes", "col_1": "no", "col_2": "yes", "col_3": "no" } },
-        { "type": "fila", "settings": { "label": "Sin olor ni retoques", "brand": "yes", "col_1": "yes", "col_2": "no", "col_3": "yes" } },
-        { "type": "fila", "settings": { "label": "Tu tono dorado todo el año", "note": "Con 1 cápsula diaria", "brand": "yes", "col_1": "partial", "col_2": "partial", "col_3": "no" } }
+        {
+          "type": "fila",
+          "settings": {
+            "label": "Bronceado sin exponerte al sol",
+            "brand": "yes",
+            "col_1": "no",
+            "col_2": "yes",
+            "col_3": "no"
+          }
+        },
+        {
+          "type": "fila",
+          "settings": {
+            "label": "Sin rayos UV ni quemaduras",
+            "brand": "yes",
+            "col_1": "no",
+            "col_2": "yes",
+            "col_3": "no"
+          }
+        },
+        {
+          "type": "fila",
+          "settings": {
+            "label": "Tono parejo, sin manchas naranjas",
+            "brand": "yes",
+            "col_1": "partial",
+            "col_2": "no",
+            "col_3": "partial"
+          }
+        },
+        {
+          "type": "fila",
+          "settings": {
+            "label": "No mancha la ropa ni las sábanas",
+            "brand": "yes",
+            "col_1": "yes",
+            "col_2": "no",
+            "col_3": "yes"
+          }
+        },
+        {
+          "type": "fila",
+          "settings": {
+            "label": "Cuida tu piel desde adentro",
+            "note": "Betacaroteno, licopeno, cúrcuma y vitaminas",
+            "brand": "yes",
+            "col_1": "no",
+            "col_2": "no",
+            "col_3": "no"
+          }
+        },
+        {
+          "type": "fila",
+          "settings": {
+            "label": "No acelera el envejecimiento de la piel",
+            "brand": "yes",
+            "col_1": "no",
+            "col_2": "yes",
+            "col_3": "no"
+          }
+        },
+        {
+          "type": "fila",
+          "settings": {
+            "label": "Sin olor ni retoques",
+            "brand": "yes",
+            "col_1": "yes",
+            "col_2": "no",
+            "col_3": "yes"
+          }
+        },
+        {
+          "type": "fila",
+          "settings": {
+            "label": "Tu tono dorado todo el año",
+            "note": "Con 1 cápsula diaria",
+            "brand": "yes",
+            "col_1": "partial",
+            "col_2": "partial",
+            "col_3": "no"
+          }
+        }
       ]
     }
   ]

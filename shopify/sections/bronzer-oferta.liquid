@@ -141,6 +141,9 @@
     --of-pb: {{ s.padding_bottom }}px;
   }
   {{ sid }}, {{ sid }} *, {{ sid }} *::before, {{ sid }} *::after { box-sizing: border-box; }
+  html:has({{ sid }}) { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html:has({{ sid }}) { scroll-behavior: auto; } }
+  {{ sid }} .of__anchor { display: block; height: 0; scroll-margin-top: {{ s.anchor_offset }}px; }
   {{ sid }} p, {{ sid }} li, {{ sid }} span { color: inherit; }
   {{ sid }} {
     display: block;
@@ -468,6 +471,7 @@
   data-timer="{% if timer_block != blank %}{{ timer_block.settings.timer_minutes }}{% else %}0{% endif %}"
   data-key="{{ section.id }}"
 >
+  <span id="{{ s.anchor | default: 'oferta' | handleize }}" class="of__anchor" aria-hidden="true"></span>
   <div class="of__wrap">
     {%- if top_block != blank -%}
       {%- assign ts = top_block.settings -%}
@@ -1061,6 +1065,24 @@
         }
       ],
       "default": "cover"
+    },
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Ancla de la sección",
+      "info": "Los botones de la página con link vacío o #oferta bajan hasta acá.",
+      "default": "oferta"
+    },
+    {
+      "type": "range",
+      "id": "anchor_offset",
+      "label": "Espacio para el menú fijo",
+      "info": "Distancia que deja arriba al bajar, para que el menú no tape la oferta.",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "default": 90
     },
     {
       "type": "header",
