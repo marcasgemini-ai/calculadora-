@@ -1,14 +1,15 @@
 {%- comment -%}
   Bronzer · Hero
-  Foto a pantalla completa, prueba social con efecto vidrio, título display con palabra resaltada,
-  botón de compra y garantía. Todo se edita desde Tienda online > Personalizar:
-  los bloques se agregan, quitan y reordenan arrastrando.
+  Celular: foto arriba (se ve completa) que se funde con el fondo y el texto debajo.
+  Escritorio: dos columnas, texto de un lado y foto a toda altura del otro.
+  Todo se edita desde Tienda online > Personalizar: los bloques se agregan, quitan y reordenan arrastrando.
 {%- endcomment -%}
 
 {%- liquid
   assign s = section.settings
-  assign main_image = s.image | default: s.image_mobile
-  assign overlay_opacity = s.overlay_opacity | divided_by: 100.0
+  assign sid = '#bz-hero-' | append: section.id
+  assign desktop_image = s.image | default: s.image_mobile
+  assign mobile_image = s.image_mobile | default: s.image
   assign animate = s.animate
   if request.design_mode
     assign animate = false
@@ -17,260 +18,318 @@
 
 <style>
   {{ s.heading_font | font_face: font_display: 'swap' }}
-  #bz-hero-{{ section.id }} {
+
+  {{ sid }} {
+    --bz-bg: {{ s.color_bg | default: '#140D09' }};
     --bz-text: {{ s.color_text | default: '#FFFFFF' }};
-    --bz-text-soft: {{ s.color_text | default: '#FFFFFF' | color_modify: 'alpha', 0.82 }};
+    --bz-text-soft: {{ s.color_text | default: '#FFFFFF' | color_modify: 'alpha', 0.8 }};
     --bz-accent: {{ s.color_accent | default: '#F2B544' }};
-    --bz-overlay: {{ s.color_overlay | default: '#140D09' }};
-    --bz-overlay-opacity: {{ overlay_opacity }};
     --bz-btn-bg: {{ s.color_button_bg | default: '#B46F34' }};
     --bz-btn-text: {{ s.color_button_text | default: '#FFFFFF' }};
     --bz-btn-radius: {{ s.button_radius }}px;
+    --bz-overlap: {{ s.mobile_overlap }}px;
     --bz-display-font: {{ s.heading_font.family }}, {{ s.heading_font.fallback_families }};
     --bz-display-weight: {{ s.heading_font.weight }};
   }
-  #bz-hero-{{ section.id }},
-  #bz-hero-{{ section.id }} *,
-  #bz-hero-{{ section.id }} *::before,
-  #bz-hero-{{ section.id }} *::after { box-sizing: border-box; }
-  #bz-hero-{{ section.id }} p,
-  #bz-hero-{{ section.id }} li,
-  #bz-hero-{{ section.id }} span { color: inherit; }
 
-  #bz-hero-{{ section.id }} {
+  {{ sid }}, {{ sid }} *, {{ sid }} *::before, {{ sid }} *::after { box-sizing: border-box; }
+  {{ sid }} p, {{ sid }} li, {{ sid }} span { color: inherit; }
+
+  {{ sid }} {
     position: relative;
     display: flex;
+    flex-direction: column;
     overflow: hidden;
+    background: var(--bz-bg);
     color: var(--bz-text);
-    background: #140d09;
-    isolation: isolate;
   }
-  #bz-hero-{{ section.id }}.bz-hero--h-medium { min-height: 75vh; }
-  #bz-hero-{{ section.id }}.bz-hero--h-large { min-height: 90vh; }
-  #bz-hero-{{ section.id }}.bz-hero--h-full { min-height: 100vh; min-height: 100svh; }
 
-  /* Fondo */
-  #bz-hero-{{ section.id }} .bz-hero__media { position: absolute; inset: 0; z-index: -1; }
-  #bz-hero-{{ section.id }} .bz-hero__media picture { display: block; width: 100%; height: 100%; }
-  #bz-hero-{{ section.id }} .bz-hero__asset { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center top; }
-  #bz-hero-{{ section.id }} .bz-hero__placeholder { background: #6b4f3c; fill: rgba(255, 255, 255, 0.2); }
-  #bz-hero-{{ section.id }} .bz-hero__overlay {
+  /* ---------- Imagen (celular primero) ---------- */
+  {{ sid }} .bz-hero__media {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+  }
+  {{ sid }}.bz-hero--m-tall .bz-hero__media { aspect-ratio: 3 / 4; }
+  {{ sid }}.bz-hero--m-square .bz-hero__media { aspect-ratio: 1 / 1; }
+  {{ sid }} .bz-hero__asset {
     position: absolute;
     inset: 0;
-    background: linear-gradient(0deg, var(--bz-overlay) 0%, var(--bz-overlay) 18%, transparent 68%);
-    opacity: var(--bz-overlay-opacity);
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+    object-position: center 20%;
   }
-  #bz-hero-{{ section.id }}.bz-hero--pos-center-left .bz-hero__overlay {
-    background: linear-gradient(95deg, var(--bz-overlay) 0%, var(--bz-overlay) 20%, transparent 70%);
-  }
-  #bz-hero-{{ section.id }}.bz-hero--pos-center .bz-hero__overlay { background: var(--bz-overlay); opacity: calc(var(--bz-overlay-opacity) * 0.6); }
-
-  /* Prueba social (vidrio) */
-  #bz-hero-{{ section.id }} .bz-hero__top {
+  {{ sid }} .bz-hero__asset--desktop { display: none; }
+  {{ sid }} .bz-hero__placeholder { background: #5a4334; fill: rgba(255, 255, 255, 0.18); }
+  {{ sid }} .bz-hero__fade {
     position: absolute;
-    top: 28px;
     left: 0;
     right: 0;
-    max-width: 1320px;
-    margin: 0 auto;
-    padding: 0 40px;
+    bottom: -1px;
+    height: 48%;
+    background: linear-gradient(180deg, transparent 0%, var(--bz-bg) 92%);
+    pointer-events: none;
+  }
+
+  /* Prueba social con efecto vidrio */
+  {{ sid }} .bz-hero__top {
+    position: absolute;
+    top: 16px;
+    left: 14px;
+    right: 14px;
     z-index: 2;
   }
-  #bz-hero-{{ section.id }} .bz-hero__proof {
+  {{ sid }} .bz-hero__proof {
     display: inline-flex;
     align-items: center;
-    gap: 14px;
-    padding: 10px 26px 10px 12px;
+    gap: 10px;
+    max-width: 100%;
+    padding: 8px 18px 8px 8px;
     border-radius: 999px;
     border: 1px solid rgba(255, 255, 255, 0.28);
-    background: rgba(30, 20, 14, 0.38);
-    -webkit-backdrop-filter: blur(14px) saturate(140%);
-    backdrop-filter: blur(14px) saturate(140%);
+    background: rgba(20, 13, 9, 0.35);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    backdrop-filter: blur(12px) saturate(140%);
     color: #fff;
     text-align: left;
   }
-  #bz-hero-{{ section.id }} .bz-hero__avatars { display: inline-flex; }
-  #bz-hero-{{ section.id }} .bz-hero__avatar {
-    width: 44px;
-    height: 44px;
+  {{ sid }} .bz-hero__avatars { display: inline-flex; flex: 0 0 auto; }
+  {{ sid }} .bz-hero__avatar {
+    width: 38px;
+    height: 38px;
+    max-width: none;
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid #fff;
   }
-  #bz-hero-{{ section.id }} .bz-hero__avatar + .bz-hero__avatar { margin-left: -12px; }
-  #bz-hero-{{ section.id }} .bz-hero__proof-copy { display: flex; flex-direction: column; gap: 3px; }
-  #bz-hero-{{ section.id }} .bz-hero__stars { display: inline-flex; gap: 2px; }
-  #bz-hero-{{ section.id }} .bz-hero__stars svg { width: 17px; height: 17px; fill: var(--bz-accent); }
-  #bz-hero-{{ section.id }} .bz-hero__proof-text { font-size: 15px; font-weight: 600; letter-spacing: 0.01em; white-space: nowrap; }
-  #bz-hero-{{ section.id }} .bz-hero__proof-text p { margin: 0; }
+  {{ sid }} .bz-hero__avatar + .bz-hero__avatar { margin-left: -10px; }
+  {{ sid }} .bz-hero__proof-copy { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  {{ sid }} .bz-hero__stars { display: inline-flex; gap: 2px; }
+  {{ sid }} .bz-hero__stars svg { width: 15px; height: 15px; fill: var(--bz-accent); }
+  {{ sid }} .bz-hero__proof-text { font-size: 13px; font-weight: 600; line-height: 1.3; }
 
-  /* Layout del contenido */
-  #bz-hero-{{ section.id }} .bz-hero__inner {
-    width: 100%;
-    max-width: 1320px;
-    margin: 0 auto;
-    padding: 140px 40px 64px;
-    display: flex;
+  /* ---------- Contenido ---------- */
+  {{ sid }} .bz-hero__body {
+    position: relative;
+    z-index: 2;
+    margin-top: calc(var(--bz-overlap) * -1);
+    padding: 0 20px 44px;
   }
-  #bz-hero-{{ section.id }} .bz-hero__content {
+  {{ sid }} .bz-hero__content {
     display: flex;
     flex-direction: column;
-    gap: 18px;
-    width: 100%;
-    max-width: 640px;
+    align-items: center;
+    gap: 14px;
+    max-width: 560px;
+    margin: 0 auto;
+    text-align: center;
   }
-  #bz-hero-{{ section.id }} .bz-hero__content > * { margin: 0; }
-  #bz-hero-{{ section.id }}.bz-hero--pos-bottom-center .bz-hero__inner { align-items: flex-end; justify-content: center; text-align: center; }
-  #bz-hero-{{ section.id }}.bz-hero--pos-center .bz-hero__inner { align-items: center; justify-content: center; text-align: center; }
-  #bz-hero-{{ section.id }}.bz-hero--pos-center-left .bz-hero__inner { align-items: center; }
-  #bz-hero-{{ section.id }}.bz-hero--pos-bottom-center .bz-hero__content,
-  #bz-hero-{{ section.id }}.bz-hero--pos-center .bz-hero__content { align-items: center; max-width: 820px; }
+  {{ sid }} .bz-hero__content > * { margin: 0; }
 
-  #bz-hero-{{ section.id }} .bz-hero__eyebrow {
-    font-size: 12px;
+  {{ sid }} .bz-hero__eyebrow {
+    font-size: 11px;
     font-weight: 600;
-    letter-spacing: 0.3em;
+    letter-spacing: 0.28em;
     text-transform: uppercase;
     color: var(--bz-accent);
   }
-
-  /* Título */
-  #bz-hero-{{ section.id }} .bz-hero__title {
+  {{ sid }} .bz-hero__title {
+    margin: 0;
     font-family: var(--bz-display-font);
     font-weight: var(--bz-display-weight);
-    line-height: 1.05;
+    font-size: clamp(34px, 9.5vw, 46px);
+    line-height: 1.06;
     letter-spacing: -0.015em;
     color: var(--bz-text);
     text-wrap: balance;
-    text-shadow: 0 2px 30px rgba(0, 0, 0, 0.25);
   }
-  #bz-hero-{{ section.id }} .bz-hero__title em { color: var(--bz-accent); font-style: normal; }
-  #bz-hero-{{ section.id }}.bz-hero--hl-italic .bz-hero__title em { font-style: italic; }
-  #bz-hero-{{ section.id }} .bz-hero__title--medium { font-size: clamp(36px, 5vw, 64px); }
-  #bz-hero-{{ section.id }} .bz-hero__title--large { font-size: clamp(40px, 6vw, 80px); }
-  #bz-hero-{{ section.id }} .bz-hero__title--xlarge { font-size: clamp(46px, 7.5vw, 104px); }
-
-  #bz-hero-{{ section.id }} .bz-hero__text {
-    font-size: 19px;
-    line-height: 1.5;
+  {{ sid }} .bz-hero__title em { color: var(--bz-accent); font-style: normal; }
+  {{ sid }}.bz-hero--hl-italic .bz-hero__title em { font-style: italic; }
+  {{ sid }} .bz-hero__text {
+    font-size: 16px;
+    line-height: 1.55;
     color: var(--bz-text-soft);
-    max-width: 48ch;
+    text-wrap: pretty;
   }
-  #bz-hero-{{ section.id }} .bz-hero__text p { margin: 0; }
-  #bz-hero-{{ section.id }} .bz-hero__text p + p { margin-top: 0.6em; }
+  {{ sid }} .bz-hero__text p { margin: 0; }
+  {{ sid }} .bz-hero__text p + p { margin-top: 0.6em; }
 
-  /* Beneficios */
-  #bz-hero-{{ section.id }} .bz-hero__benefits {
+  {{ sid }} .bz-hero__benefits {
     list-style: none;
     margin: 0;
     padding: 0;
     display: flex;
     flex-wrap: wrap;
-    gap: 8px 0;
-    font-size: 12px;
+    justify-content: center;
+    gap: 6px 0;
+    font-size: 10px;
     font-weight: 600;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--bz-text-soft);
   }
-  #bz-hero-{{ section.id }}.bz-hero--pos-bottom-center .bz-hero__benefits,
-  #bz-hero-{{ section.id }}.bz-hero--pos-center .bz-hero__benefits { justify-content: center; }
-  #bz-hero-{{ section.id }} .bz-hero__benefits li { display: inline-flex; align-items: center; }
-  #bz-hero-{{ section.id }} .bz-hero__benefits li + li::before {
+  {{ sid }} .bz-hero__benefits li { display: inline-flex; align-items: center; }
+  {{ sid }} .bz-hero__benefits li + li::before {
     content: "";
     width: 4px;
     height: 4px;
-    margin: 0 14px;
+    margin: 0 10px;
     border-radius: 50%;
     background: var(--bz-accent);
   }
 
-  /* Botón + garantía */
-  #bz-hero-{{ section.id }} .bz-hero__cta {
+  {{ sid }} .bz-hero__cta {
     display: flex;
     flex-direction: column;
-    align-items: inherit;
-    gap: 22px;
+    align-items: center;
+    gap: 16px;
     width: 100%;
-    max-width: 560px;
-    margin-top: 14px;
+    margin-top: 8px;
   }
-  #bz-hero-{{ section.id }} .bz-hero__button {
+  {{ sid }} .bz-hero__button {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
-    min-height: 68px;
-    padding: 0 28px;
+    min-height: 60px;
+    padding: 0 18px;
     border-radius: var(--bz-btn-radius);
     background: var(--bz-btn-bg);
     color: var(--bz-btn-text);
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 700;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.05em;
+    line-height: 1.2;
     text-transform: uppercase;
     text-decoration: none;
     text-align: center;
-    box-shadow: 0 14px 34px -14px var(--bz-btn-bg);
+    box-shadow: 0 16px 32px -16px var(--bz-btn-bg);
     transition: transform 0.25s ease, filter 0.25s ease;
   }
-  #bz-hero-{{ section.id }} .bz-hero__button:hover { transform: translateY(-2px); filter: brightness(1.07); }
-  #bz-hero-{{ section.id }} .bz-hero__button[aria-disabled="true"] { cursor: default; }
-  #bz-hero-{{ section.id }} .bz-hero__guarantee {
+  {{ sid }} .bz-hero__button:hover { transform: translateY(-2px); filter: brightness(1.08); color: var(--bz-btn-text); }
+  {{ sid }} .bz-hero__button[aria-disabled="true"] { cursor: default; }
+  {{ sid }} .bz-hero__guarantee {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
     margin: 0;
-    font-size: 14px;
+    font-size: 11px;
     font-weight: 700;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
+    line-height: 1.4;
     text-transform: uppercase;
     color: var(--bz-text-soft);
   }
-  #bz-hero-{{ section.id }} .bz-hero__guarantee svg { flex: 0 0 18px; width: 18px; height: 18px; color: var(--bz-accent); }
+  {{ sid }} .bz-hero__guarantee svg { flex: 0 0 16px; width: 16px; height: 16px; color: var(--bz-accent); }
 
-  /* Animación de entrada */
-  #bz-hero-{{ section.id }}.bz-hero--animate .bz-hero__asset { animation: bz-hero-zoom 9s ease-out both; }
-  #bz-hero-{{ section.id }}.bz-hero--animate .bz-hero__top { animation: bz-hero-down 1s 0.3s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
-  #bz-hero-{{ section.id }}.bz-hero--animate .bz-hero__content > * { animation: bz-hero-up 1s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
-  #bz-hero-{{ section.id }}.bz-hero--animate .bz-hero__content > *:nth-child(2) { animation-delay: 0.1s; }
-  #bz-hero-{{ section.id }}.bz-hero--animate .bz-hero__content > *:nth-child(3) { animation-delay: 0.2s; }
-  #bz-hero-{{ section.id }}.bz-hero--animate .bz-hero__content > *:nth-child(4) { animation-delay: 0.3s; }
-  #bz-hero-{{ section.id }}.bz-hero--animate .bz-hero__content > *:nth-child(n+5) { animation-delay: 0.4s; }
-
-  @keyframes bz-hero-up   { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
-  @keyframes bz-hero-down { from { opacity: 0; transform: translateY(-14px); } to { opacity: 1; transform: none; } }
-  @keyframes bz-hero-zoom { from { transform: scale(1.07); } to { transform: scale(1); } }
-
-  @media (prefers-reduced-motion: reduce) {
-    #bz-hero-{{ section.id }}.bz-hero--animate .bz-hero__asset,
-  #bz-hero-{{ section.id }}.bz-hero--animate .bz-hero__top,
-  #bz-hero-{{ section.id }}.bz-hero--animate .bz-hero__content > * { animation: none; }
+  /* ---------- Tablet: foto más apaisada ---------- */
+  @media screen and (min-width: 600px) and (max-width: 989px) {
+    {{ sid }} .bz-hero__media,
+    {{ sid }}.bz-hero--m-tall .bz-hero__media,
+    {{ sid }}.bz-hero--m-square .bz-hero__media { aspect-ratio: 5 / 4; }
+    {{ sid }} .bz-hero__title { font-size: 52px; }
+    {{ sid }} .bz-hero__text { font-size: 18px; }
+    {{ sid }} .bz-hero__body { padding-bottom: 64px; }
   }
 
-  /* Celular */
-  @media screen and (max-width: 749px) {
-    #bz-hero-{{ section.id }} .bz-hero__top { top: 16px; padding: 0 14px; }
-    #bz-hero-{{ section.id }} .bz-hero__proof { gap: 10px; padding: 8px 18px 8px 8px; }
-    #bz-hero-{{ section.id }} .bz-hero__avatar { width: 38px; height: 38px; }
-    #bz-hero-{{ section.id }} .bz-hero__avatar + .bz-hero__avatar { margin-left: -10px; }
-    #bz-hero-{{ section.id }} .bz-hero__stars svg { width: 15px; height: 15px; }
-    #bz-hero-{{ section.id }} .bz-hero__proof-text { font-size: 13px; }
-
-    #bz-hero-{{ section.id }} .bz-hero__inner { padding: 120px 18px 36px; align-items: flex-end !important; justify-content: center; text-align: center; }
-    #bz-hero-{{ section.id }} .bz-hero__content { align-items: center; gap: 14px; }
-    #bz-hero-{{ section.id }}.bz-hero--pos-center-left .bz-hero__overlay,
-  #bz-hero-{{ section.id }}.bz-hero--pos-center .bz-hero__overlay {
-      background: linear-gradient(0deg, var(--bz-overlay) 0%, var(--bz-overlay) 18%, transparent 68%);
-      opacity: var(--bz-overlay-opacity);
+  /* ---------- Escritorio: dos columnas ---------- */
+  @media screen and (min-width: 990px) {
+    {{ sid }} {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+      min-height: 640px;
     }
-    #bz-hero-{{ section.id }} .bz-hero__text { font-size: 17px; }
-    #bz-hero-{{ section.id }} .bz-hero__benefits { justify-content: center; font-size: 10px; letter-spacing: 0.12em; }
-    #bz-hero-{{ section.id }} .bz-hero__benefits li + li::before { margin: 0 9px; }
-    #bz-hero-{{ section.id }} .bz-hero__cta { gap: 18px; margin-top: 10px; }
-    #bz-hero-{{ section.id }} .bz-hero__button { min-height: 62px; font-size: 16px; padding: 0 18px; }
-    #bz-hero-{{ section.id }} .bz-hero__guarantee { font-size: 11px; letter-spacing: 0.06em; }
+    {{ sid }}.bz-hero--h-large { min-height: 85vh; }
+    {{ sid }}.bz-hero--h-full { min-height: 100vh; min-height: 100svh; }
+
+    {{ sid }} .bz-hero__media {
+      grid-column: 2;
+      grid-row: 1;
+      aspect-ratio: auto;
+      height: 100%;
+      min-height: 100%;
+    }
+    {{ sid }} .bz-hero__asset--mobile { display: none; }
+    {{ sid }} .bz-hero__asset--desktop { display: block; object-position: center 25%; }
+    {{ sid }} .bz-hero__fade {
+      top: 0;
+      bottom: 0;
+      left: -1px;
+      right: auto;
+      width: 30%;
+      height: auto;
+      background: linear-gradient(90deg, var(--bz-bg) 0%, transparent 100%);
+    }
+
+    {{ sid }}.bz-hero--img-left { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); }
+    {{ sid }}.bz-hero--img-left .bz-hero__media { grid-column: 1; }
+    {{ sid }}.bz-hero--img-left .bz-hero__body { grid-column: 2; }
+    {{ sid }}.bz-hero--img-left .bz-hero__fade {
+      left: auto;
+      right: -1px;
+      background: linear-gradient(270deg, var(--bz-bg) 0%, transparent 100%);
+    }
+
+    {{ sid }} .bz-hero__top { top: 28px; left: auto; right: 28px; text-align: right; }
+    {{ sid }}.bz-hero--img-left .bz-hero__top { right: auto; left: 28px; text-align: left; }
+    {{ sid }} .bz-hero__proof { gap: 14px; padding: 10px 24px 10px 10px; }
+    {{ sid }} .bz-hero__avatar { width: 44px; height: 44px; }
+    {{ sid }} .bz-hero__avatar + .bz-hero__avatar { margin-left: -12px; }
+    {{ sid }} .bz-hero__stars svg { width: 17px; height: 17px; }
+    {{ sid }} .bz-hero__proof-text { font-size: 15px; white-space: nowrap; }
+
+    {{ sid }} .bz-hero__body {
+      grid-column: 1;
+      grid-row: 1;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      margin: 0;
+      padding: 72px 56px 72px 40px;
+    }
+    {{ sid }}.bz-hero--img-left .bz-hero__body { justify-content: flex-start; padding: 72px 40px 72px 56px; }
+    {{ sid }} .bz-hero__content { gap: 20px; max-width: 580px; margin: 0; width: 100%; }
+    {{ sid }}.bz-hero--align-left .bz-hero__content { align-items: flex-start; text-align: left; }
+    {{ sid }}.bz-hero--align-left .bz-hero__benefits { justify-content: flex-start; }
+    {{ sid }}.bz-hero--align-left .bz-hero__cta { align-items: flex-start; }
+
+    {{ sid }} .bz-hero__eyebrow { font-size: 12px; }
+    {{ sid }} .bz-hero__title { font-size: clamp(40px, 4.6vw, 72px); }
+    {{ sid }} .bz-hero__text { font-size: 18px; max-width: 46ch; }
+    {{ sid }} .bz-hero__benefits { font-size: 12px; }
+    {{ sid }} .bz-hero__benefits li + li::before { margin: 0 14px; }
+    {{ sid }} .bz-hero__cta { margin-top: 12px; gap: 18px; }
+    {{ sid }} .bz-hero__button { max-width: 480px; min-height: 64px; font-size: 16px; padding: 0 32px; }
+    {{ sid }} .bz-hero__guarantee { font-size: 12px; }
+  }
+
+  @media screen and (min-width: 1400px) {
+    {{ sid }} .bz-hero__body { padding-left: calc((100vw - 1320px) / 2 + 40px); }
+    {{ sid }}.bz-hero--img-left .bz-hero__body { padding-left: 56px; padding-right: calc((100vw - 1320px) / 2 + 40px); }
+  }
+
+  /* ---------- Animación de entrada ---------- */
+  {{ sid }}.bz-hero--animate .bz-hero__asset { animation: bz-hero-zoom 8s ease-out both; }
+  {{ sid }}.bz-hero--animate .bz-hero__top { animation: bz-hero-fade 0.9s 0.3s ease both; }
+  {{ sid }}.bz-hero--animate .bz-hero__content > * { animation: bz-hero-up 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+  {{ sid }}.bz-hero--animate .bz-hero__content > *:nth-child(2) { animation-delay: 0.1s; }
+  {{ sid }}.bz-hero--animate .bz-hero__content > *:nth-child(3) { animation-delay: 0.2s; }
+  {{ sid }}.bz-hero--animate .bz-hero__content > *:nth-child(4) { animation-delay: 0.3s; }
+  {{ sid }}.bz-hero--animate .bz-hero__content > *:nth-child(n+5) { animation-delay: 0.4s; }
+
+  @keyframes bz-hero-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+  @keyframes bz-hero-fade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes bz-hero-zoom { from { transform: scale(1.06); } to { transform: scale(1); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    {{ sid }}.bz-hero--animate .bz-hero__asset,
+    {{ sid }}.bz-hero--animate .bz-hero__top,
+    {{ sid }}.bz-hero--animate .bz-hero__content > * { animation: none; }
   }
 </style>
 
@@ -309,9 +368,9 @@
 
 <section
   id="bz-hero-{{ section.id }}"
-  class="bz-hero bz-hero--h-{{ s.height }} bz-hero--pos-{{ s.content_position }} bz-hero--hl-{{ s.highlight_style }}{% if animate %} bz-hero--animate{% endif %}"
+  class="bz-hero bz-hero--img-{{ s.image_position }} bz-hero--h-{{ s.height }} bz-hero--m-{{ s.mobile_ratio }} bz-hero--align-{{ s.content_align }} bz-hero--hl-{{ s.highlight_style }}{% if animate %} bz-hero--animate{% endif %}"
 >
-  <div class="bz-hero__media" aria-hidden="true">
+  <div class="bz-hero__media">
     {%- if s.video != blank -%}
       {{
         s.video
@@ -324,44 +383,39 @@
           image_size: '1500x',
           class: 'bz-hero__asset'
       }}
-    {%- elsif main_image != blank -%}
-      <picture>
-        {%- if s.image_mobile != blank and s.image != blank -%}
-          <source
-            media="(max-width: 749px)"
-            srcset="
-              {{ s.image_mobile | image_url: width: 500 }} 500w,
-              {{ s.image_mobile | image_url: width: 750 }} 750w,
-              {{ s.image_mobile | image_url: width: 1100 }} 1100w
-            "
-            sizes="100vw"
-            width="{{ s.image_mobile.width }}"
-            height="{{ s.image_mobile.height }}"
-          >
-        {%- endif -%}
-        {{
-          main_image
-          | image_url: width: 2400
-          | image_tag:
-            loading: 'eager',
-            fetchpriority: 'high',
-            sizes: '100vw',
-            widths: '750, 1100, 1500, 1920, 2400',
-            class: 'bz-hero__asset',
-            alt: ''
-        }}
-      </picture>
+    {%- elsif desktop_image != blank -%}
+      {{
+        mobile_image
+        | image_url: width: 1200
+        | image_tag:
+          loading: 'eager',
+          fetchpriority: 'high',
+          sizes: '100vw',
+          widths: '500, 750, 1000, 1200',
+          class: 'bz-hero__asset bz-hero__asset--mobile',
+          alt: mobile_image.alt
+      }}
+      {{
+        desktop_image
+        | image_url: width: 2000
+        | image_tag:
+          loading: 'eager',
+          sizes: '(min-width: 990px) 55vw, 1px',
+          widths: '750, 1000, 1400, 2000',
+          class: 'bz-hero__asset bz-hero__asset--desktop',
+          alt: desktop_image.alt
+      }}
     {%- else -%}
       {{ 'lifestyle-2' | placeholder_svg_tag: 'bz-hero__asset bz-hero__placeholder' }}
     {%- endif -%}
-    <span class="bz-hero__overlay"></span>
+    <span class="bz-hero__fade" aria-hidden="true"></span>
+
+    {%- if social_proof != blank and s.proof_position == 'top' -%}
+      <div class="bz-hero__top">{{ social_proof }}</div>
+    {%- endif -%}
   </div>
 
-  {%- if social_proof != blank and s.proof_position == 'top' -%}
-    <div class="bz-hero__top">{{ social_proof }}</div>
-  {%- endif -%}
-
-  <div class="bz-hero__inner">
+  <div class="bz-hero__body">
     <div class="bz-hero__content">
       {%- for block in section.blocks -%}
         {%- case block.type -%}
@@ -376,7 +430,7 @@
             </p>
 
           {%- when 'titulo' -%}
-            <{{ block.settings.tag }} class="bz-hero__title bz-hero__title--{{ block.settings.size }}" {{ block.shopify_attributes }}>
+            <{{ block.settings.tag }} class="bz-hero__title" {{ block.shopify_attributes }}>
               {{- block.settings.heading -}}
             </{{ block.settings.tag }}>
 
@@ -420,7 +474,6 @@
   </div>
 </section>
 
-
 {% schema %}
 {
   "name": "Bronzer · Hero",
@@ -428,48 +481,61 @@
   "class": "section-bronzer-hero",
   "max_blocks": 8,
   "settings": [
-    {
-      "type": "header",
-      "content": "Fondo"
-    },
+    { "type": "header", "content": "Imagen" },
     {
       "type": "image_picker",
       "id": "image",
       "label": "Imagen (escritorio)",
-      "info": "Foto horizontal. Recomendado: 2400 x 1400 px."
+      "info": "Foto vertical o cuadrada de la modelo. Recomendado: 1600 x 1800 px."
     },
     {
       "type": "image_picker",
       "id": "image_mobile",
       "label": "Imagen (celular)",
-      "info": "Foto vertical, con la cara en la mitad de arriba. Recomendado: 1100 x 1900 px."
+      "info": "Opcional. Foto vertical 4:5 (1200 x 1500 px). Si la dejás vacía se usa la de escritorio."
+    },
+    {
+      "type": "paragraph",
+      "content": "Para que la cara nunca se corte: en Contenido > Archivos, abrí la imagen y marcá el punto focal sobre la cara."
     },
     {
       "type": "video",
       "id": "video",
-      "label": "Video de fondo",
-      "info": "Opcional. Reemplaza a la imagen. Se reproduce sin sonido y en loop."
+      "label": "Video (opcional)",
+      "info": "Reemplaza a la imagen. Sin sonido y en loop."
     },
     {
-      "type": "color",
-      "id": "color_overlay",
-      "label": "Color del degradado",
-      "info": "Oscurece la parte de abajo para que se lea el texto.",
-      "default": "#140D09"
+      "type": "select",
+      "id": "mobile_ratio",
+      "label": "Formato de la imagen en celular",
+      "options": [
+        { "value": "portrait", "label": "Vertical 4:5" },
+        { "value": "tall", "label": "Vertical 3:4" },
+        { "value": "square", "label": "Cuadrada 1:1" }
+      ],
+      "default": "portrait"
     },
     {
       "type": "range",
-      "id": "overlay_opacity",
-      "label": "Intensidad del degradado",
+      "id": "mobile_overlap",
+      "label": "Texto sobre la imagen (celular)",
+      "info": "Cuánto sube el título sobre el fundido de la foto.",
       "min": 0,
-      "max": 100,
-      "step": 5,
-      "unit": "%",
-      "default": 85
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "default": 60
     },
+    { "type": "header", "content": "Escritorio" },
     {
-      "type": "header",
-      "content": "Diseño"
+      "type": "select",
+      "id": "image_position",
+      "label": "Posición de la imagen",
+      "options": [
+        { "value": "right", "label": "Derecha" },
+        { "value": "left", "label": "Izquierda" }
+      ],
+      "default": "right"
     },
     {
       "type": "select",
@@ -480,26 +546,25 @@
         { "value": "large", "label": "Grande" },
         { "value": "full", "label": "Pantalla completa" }
       ],
-      "default": "full"
+      "default": "large"
     },
     {
       "type": "select",
-      "id": "content_position",
-      "label": "Posición del contenido (escritorio)",
-      "info": "En celular siempre va abajo y centrado.",
+      "id": "content_align",
+      "label": "Alineación del texto",
       "options": [
-        { "value": "bottom-center", "label": "Abajo al centro" },
-        { "value": "center", "label": "Centrado" },
-        { "value": "center-left", "label": "Centro a la izquierda" }
+        { "value": "left", "label": "Izquierda" },
+        { "value": "center", "label": "Centrado" }
       ],
-      "default": "bottom-center"
+      "default": "left"
     },
+    { "type": "header", "content": "Estilo" },
     {
       "type": "select",
       "id": "proof_position",
-      "label": "Posición de la prueba social",
+      "label": "Prueba social",
       "options": [
-        { "value": "top", "label": "Flotando arriba de la imagen" },
+        { "value": "top", "label": "Flotando sobre la imagen" },
         { "value": "inline", "label": "Junto al texto" }
       ],
       "default": "top"
@@ -513,7 +578,7 @@
     {
       "type": "select",
       "id": "highlight_style",
-      "label": "Estilo de la palabra resaltada",
+      "label": "Palabra resaltada",
       "info": "Para resaltar, poné la palabra en cursiva en el título.",
       "options": [
         { "value": "color", "label": "Solo color" },
@@ -528,35 +593,24 @@
       "info": "Se ve en la tienda, no en el editor.",
       "default": true
     },
-    {
-      "type": "header",
-      "content": "Colores"
-    },
+    { "type": "header", "content": "Colores" },
     {
       "type": "color",
-      "id": "color_text",
-      "label": "Texto",
-      "default": "#FFFFFF"
+      "id": "color_bg",
+      "label": "Fondo",
+      "info": "La foto se funde con este color.",
+      "default": "#140D09"
     },
+    { "type": "color", "id": "color_text", "label": "Texto", "default": "#FFFFFF" },
     {
       "type": "color",
       "id": "color_accent",
       "label": "Acento dorado",
-      "info": "Palabra resaltada, estrellas e ícono de garantía.",
+      "info": "Palabra resaltada, estrellas e íconos.",
       "default": "#F2B544"
     },
-    {
-      "type": "color",
-      "id": "color_button_bg",
-      "label": "Fondo del botón",
-      "default": "#B46F34"
-    },
-    {
-      "type": "color",
-      "id": "color_button_text",
-      "label": "Texto del botón",
-      "default": "#FFFFFF"
-    },
+    { "type": "color", "id": "color_button_bg", "label": "Fondo del botón", "default": "#B46F34" },
+    { "type": "color", "id": "color_button_text", "label": "Texto del botón", "default": "#FFFFFF" },
     {
       "type": "range",
       "id": "button_radius",
@@ -574,36 +628,11 @@
       "name": "Prueba social",
       "limit": 1,
       "settings": [
-        {
-          "type": "image_picker",
-          "id": "avatar_1",
-          "label": "Foto clienta 1"
-        },
-        {
-          "type": "image_picker",
-          "id": "avatar_2",
-          "label": "Foto clienta 2"
-        },
-        {
-          "type": "image_picker",
-          "id": "avatar_3",
-          "label": "Foto clienta 3"
-        },
-        {
-          "type": "range",
-          "id": "stars",
-          "label": "Estrellas",
-          "min": 1,
-          "max": 5,
-          "step": 1,
-          "default": 5
-        },
-        {
-          "type": "inline_richtext",
-          "id": "text",
-          "label": "Texto",
-          "default": "+3mil reseñas · +10mil vendidos"
-        }
+        { "type": "image_picker", "id": "avatar_1", "label": "Foto clienta 1" },
+        { "type": "image_picker", "id": "avatar_2", "label": "Foto clienta 2" },
+        { "type": "image_picker", "id": "avatar_3", "label": "Foto clienta 3" },
+        { "type": "range", "id": "stars", "label": "Estrellas", "min": 1, "max": 5, "step": 1, "default": 5 },
+        { "type": "inline_richtext", "id": "text", "label": "Texto", "default": "+3mil reseñas · +10mil vendidos" }
       ]
     },
     {
@@ -611,12 +640,7 @@
       "name": "Subtítulo",
       "limit": 1,
       "settings": [
-        {
-          "type": "text",
-          "id": "text",
-          "label": "Texto",
-          "default": "Fórmula Beta-Caroteno"
-        }
+        { "type": "text", "id": "text", "label": "Texto", "default": "Fórmula Beta-Caroteno" }
       ]
     },
     {
@@ -630,17 +654,6 @@
           "label": "Título",
           "info": "La palabra en cursiva se pinta con el color de acento.",
           "default": "Bronceado dorado en 18 días, <em>sin tomar sol</em>"
-        },
-        {
-          "type": "select",
-          "id": "size",
-          "label": "Tamaño",
-          "options": [
-            { "value": "medium", "label": "Mediano" },
-            { "value": "large", "label": "Grande" },
-            { "value": "xlarge", "label": "Extra grande" }
-          ],
-          "default": "large"
         },
         {
           "type": "select",
@@ -673,33 +686,11 @@
       "name": "Beneficios en línea",
       "limit": 1,
       "settings": [
-        {
-          "type": "paragraph",
-          "content": "Frases cortas, se muestran en una línea separadas por un punto dorado."
-        },
-        {
-          "type": "text",
-          "id": "item_1",
-          "label": "Beneficio 1",
-          "default": "Sin sol"
-        },
-        {
-          "type": "text",
-          "id": "item_2",
-          "label": "Beneficio 2",
-          "default": "Sin camas solares"
-        },
-        {
-          "type": "text",
-          "id": "item_3",
-          "label": "Beneficio 3",
-          "default": "Sin manchas"
-        },
-        {
-          "type": "text",
-          "id": "item_4",
-          "label": "Beneficio 4"
-        }
+        { "type": "paragraph", "content": "Frases cortas, se muestran en una línea separadas por un punto dorado." },
+        { "type": "text", "id": "item_1", "label": "Beneficio 1", "default": "Sin sol" },
+        { "type": "text", "id": "item_2", "label": "Beneficio 2", "default": "Sin camas solares" },
+        { "type": "text", "id": "item_3", "label": "Beneficio 3", "default": "Sin manchas" },
+        { "type": "text", "id": "item_4", "label": "Beneficio 4" }
       ]
     },
     {
@@ -707,12 +698,7 @@
       "name": "Botón + garantía",
       "limit": 1,
       "settings": [
-        {
-          "type": "text",
-          "id": "label",
-          "label": "Texto del botón",
-          "default": "Ver packs · Ahorrá hasta 30%"
-        },
+        { "type": "text", "id": "label", "label": "Texto del botón", "default": "Ver packs · Ahorrá hasta 30%" },
         {
           "type": "url",
           "id": "link",
@@ -725,12 +711,7 @@
           "label": "Garantía debajo del botón",
           "default": "Bronceado en 18 días o te devolvemos el dinero"
         },
-        {
-          "type": "checkbox",
-          "id": "show_icon",
-          "label": "Mostrar ícono de escudo",
-          "default": false
-        }
+        { "type": "checkbox", "id": "show_icon", "label": "Mostrar ícono de escudo", "default": false }
       ]
     }
   ],
