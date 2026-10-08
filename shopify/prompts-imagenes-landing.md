@@ -17,7 +17,7 @@ Un prompt por imagen, en inglés, listo para copiar y pegar.
 | 1 | Hero | Playa al atardecer (escritorio, columna derecha) | 1:1 · 2000×2000 | 1 |
 | 2 | Hero | Playa al atardecer (celular) + variante 2B | 4:5 · 1200×1500 | 1 (+1) |
 | 3 | Hero | Avatares de la prueba social | 1:1 · 400×400 | 3 |
-| 4 | Beneficios | Frasco sin fondo (packshot) | 1:1 · 1600×1600 PNG | 1 |
+| 4 | Beneficios | 3 cápsulas flotando (o frasco, alternativa) | 1:1 · 2000×2000 PNG | 1 |
 | 5–9 | Oferta | Galería del producto | 1:1 · 2000×2000 | 5 |
 | 10 | Preguntas | Lifestyle con el producto | 4:5 · 1600×2000 | 1 |
 | 11–16 | Reseñas | Antes / después **ilustrativos** | 8:5 · 1600×1000 | 6 |
@@ -66,7 +66,23 @@ A candid, hyper-realistic square 1:1 photo taken on a Samsung Galaxy S24 Ultra (
 Ultra-realistic close-up headshot portrait, square 1:1, of a friendly Argentine woman (variant A: late 20s, light olive skin, dark straight hair · variant B: late 30s, fair skin with freckles, wavy light-brown hair · variant C: mid 40s, medium warm skin, curly dark hair), smiling naturally with a soft, genuine expression, looking at the camera. Her skin has a healthy, warm, even golden glow. Framed from shoulders up, centered, with a softly blurred warm cream interior background. Lighting: soft window light, warm and flattering, natural skin texture, casual everyday style like a real customer photo taken with a good phone camera, approachable and authentic rather than model-like. Color palette: warm neutrals, cream and soft bronze. No heavy makeup, no text, no logos, no watermark.
 ```
 
-## 4. Beneficios · Frasco sin fondo (packshot)
+## 4A. Beneficios · 3 cápsulas flotando (recomendada)
+
+> Formato **cuadrado 1:1, 2000×2000, PNG sin fondo**. La sección ya le agrega el brillo dorado detrás, la sombra suave debajo y la animación de flotar: por eso la imagen va **sin fondo y sin sombra**. Adjuntá una foto de la **cápsula real** como referencia para que copie el color exacto.
+
+```
+Hyper-realistic premium 3D product photograph of exactly three supplement capsules floating weightlessly in mid-air, isolated on a fully transparent background (PNG with alpha channel, no backdrop, no floor, no cast shadow), square 1:1 composition centered with generous empty margin around them. The capsules are two-piece hard gelatin capsules with a glossy, semi-translucent warm amber-orange shell, the same color as the reference capsule, through which a fine golden-orange beta-carotene powder is subtly visible inside, with a slightly lighter cap section and a clean seam where both halves join. Arrangement: one large hero capsule in the front center, tilted at about 35 degrees and perfectly sharp; a second capsule behind it to the upper right, rotated at a different angle and slightly smaller to create depth; a third capsule to the lower left, partially rotated toward the viewer, very slightly softer in focus — together forming an elegant dynamic diagonal, as if suspended in a slow-motion moment. Around them, a delicate halo of tiny glowing golden powder particles and a few micro specks of light drifting in the air, very subtle and refined, never messy. Lighting: luxury studio setup with a large warm softbox key light from the upper left creating long soft specular highlights along each capsule, a warm golden backlight that makes the shells glow translucent from within like liquid sunset, gentle rim light separating the edges, soft internal caustics and light refraction through the gelatin. Ultra-detailed surface: smooth glossy gelatin with tiny realistic micro-reflections, crisp clean edges ideal for cutout. Color palette: amber, sunset orange, honey gold and warm cream highlights, harmonizing with a bronze and cream luxury brand palette. Shot with a 100mm macro lens at f/11, focus-stacked so the hero capsule is tack sharp. Style: top-tier global beauty and wellness brand campaign, the kind of floating product hero shot used by premium skincare and supplement brands, minimal, sensorial and aspirational. No bottle, no hands, no surface, no shadow, no smoke, no splashes, no text, no logos, no watermark, no plastic CGI look, no cartoon style.
+```
+
+**Variaciones (agregalas al final si querés):**
+- Si la cápsula real es **blanda (softgel) y redonda u ovalada**, cambiá la parte del tipo de cápsula por: `seamless oval softgel capsules with a glossy translucent amber-orange shell filled with golden beta-carotene oil`.
+- Más lujo: `a thin swirl of liquid golden-orange beta-carotene oil curling elegantly between the capsules, glossy and glowing`.
+- Con ingrediente: `a single fresh carrot slice and a tiny turmeric root piece floating in the background, slightly out of focus`.
+- Si tu herramienta no genera fondo transparente: reemplazá la primera parte por `on a pure seamless white background` y después quitá el fondo con remove.bg, Photoroom o Canva.
+
+**Ajustes en la sección Beneficios:** "Ajuste de la foto" = **Completa (PNG sin fondo)** · **Brillo dorado** activado · **Sombra** activada · **Producto flotando** activado.
+
+## 4B. Beneficios · Frasco sin fondo (alternativa)
 
 ```
 Ultra-realistic premium studio packshot of the Bronzer supplement bottle from the reference image, isolated on a fully transparent background (PNG with alpha channel, no backdrop, no surface). The bottle stands upright, three-quarter view rotated slightly to the left, label facing the camera, sharp, perfectly legible and identical to the reference: same colors, typography, layout and logo. Two or three warm amber-orange softgel capsules rest in front of the bottle at an elegant angle, glowing translucent as if filled with golden beta-carotene oil. Lighting: large soft key light from the upper left, gentle fill from the right, a soft vertical highlight along the bottle edge, subtle realistic reflections, clean and premium. Shot with a 100mm macro lens at f/11, everything tack sharp, crisp clean edges ideal for cutout. Style: luxury wellness brand e-commerce hero shot, minimal and elegant. No cast shadow on any surface, no background, no props other than the capsules, no extra text, no watermark.
