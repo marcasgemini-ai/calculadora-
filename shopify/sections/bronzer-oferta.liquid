@@ -1,0 +1,2091 @@
+{%- comment -%}
+  Bronzer · Oferta
+  Sección de compra completa: encabezado de oferta, galería del producto con contador,
+  selector de packs con upsell y regalos, botón al carrito, confianza, garantía y desplegables.
+  Todo se edita desde Tienda online > Personalizar.
+
+  Packs (bloque "Pack"):
+  - Modo "Descuento": agrega N unidades de la primera variante. El precio del pack lo cobra
+    un descuento automático de Shopify (cargá en "Precio del pack" el mismo valor que el descuento).
+  - Modo "Variantes": cada pack es una variante del producto (indicá su posición: 1, 2, 3...).
+  Upsell: elegí el producto. Si además elegís un "Producto de oferta" con 2 variantes
+  (1ª = precio promo, 2ª = regalo $0), el upsell se cobra con ese producto sin descuentos.
+{%- endcomment -%}
+
+{%- liquid
+  assign s = section.settings
+  assign sid = '#bz-of-' | append: section.id
+  assign p = s.product | default: product
+  assign base_variant = p.selected_or_first_available_variant
+  assign days_per_bottle = s.days_per_bottle | default: 60 | at_least: 1
+
+  assign pack_count = 0
+  assign preselected = 0
+  assign max_off = 0
+  assign max_bottles = 1
+  for block in section.blocks
+    if block.type != 'pack'
+      continue
+    endif
+    if block.settings.preselected and preselected == 0
+      assign preselected = pack_count | plus: 1
+    endif
+    assign pack_count = pack_count | plus: 1
+    assign bottles = block.settings.bottles | default: 1
+    if bottles > max_bottles
+      assign max_bottles = bottles
+    endif
+    if s.pack_mode == 'discount'
+      assign tp = block.settings.price | default: 0 | times: 100
+      if tp == 0
+        assign tp = base_variant.price | times: bottles
+      endif
+      assign cp = base_variant.price | times: bottles
+    else
+      assign vi = block.settings.variant_position | default: 1 | minus: 1
+      assign vv = p.variants[vi]
+      assign tp = vv.price
+      assign cp = vv.compare_at_price | default: vv.price
+    endif
+    if cp > tp and cp > 0
+      assign off = cp | minus: tp | times: 100 | divided_by: cp | floor
+      if off > max_off
+        assign max_off = off
+      endif
+    endif
+  endfor
+  if preselected == 0
+    assign preselected = 1
+  endif
+  assign max_off_str = max_off | append: '%'
+
+  for block in section.blocks
+    case block.type
+      when 'encabezado'
+        assign top_block = block
+      when 'contador'
+        assign timer_block = block
+      when 'upsell'
+        assign bump_block = block
+      when 'garantia'
+        assign guarantee_block = block
+      when 'cupon'
+        assign coupon_block = block
+    endcase
+  endfor
+  assign bs = bump_block.settings
+  assign bump_product = bs.bump_product
+  assign bump_variant = bump_product.selected_or_first_available_variant
+  assign bump_mode = 'discount'
+  assign bump_cents = bs.bump_price | default: 0 | times: 100
+  assign bump_free_id = ''
+  assign bump_promo_id = ''
+  if bs.bump_offer_product != blank and bs.bump_offer_product.variants.size >= 2
+    assign bump_mode = 'product'
+    assign bump_promo = bs.bump_offer_product.variants[0]
+    assign bump_cents = bump_promo.price
+    assign bump_promo_id = bump_promo.id
+    assign bump_free_id = bs.bump_offer_product.variants[1].id
+  endif
+  assign bump_orig = bump_variant.price
+  if bump_mode == 'product' and bump_variant == blank
+    assign bump_product = bs.bump_offer_product
+    assign bump_variant = bump_promo
+    assign bump_orig = bump_promo.compare_at_price
+  endif
+  if bump_orig == blank or bump_orig <= bump_cents
+    assign bump_orig = bump_cents | times: 2
+  endif
+  assign bump_title = bs.bump_title | default: bump_product.title
+  assign bump_id = bump_variant.id
+  if bump_mode == 'product'
+    assign bump_id = bump_promo_id
+  endif
+  assign show_bump = false
+  if bump_block != blank and bump_variant != blank
+    assign show_bump = true
+  endif
+
+  assign gift_count = 0
+  assign first_gift_min = 0
+  for block in section.blocks
+    if block.type == 'regalo'
+      assign gift_count = gift_count | plus: 1
+      if first_gift_min == 0
+        assign first_gift_min = block.settings.min_bottles
+      endif
+    endif
+  endfor
+
+  assign title = s.title | default: p.title
+-%}
+
+<style>
+  {{ s.heading_font | font_face: font_display: 'swap' }}
+
+  {{ sid }} {
+    --of-bg: {{ s.color_bg | default: '#FFFFFF' }};
+    --of-accent: {{ s.color_accent | default: '#F2B47F' }};
+    --of-soft: {{ s.color_soft | default: '#FEF5EC' }};
+    --of-brand: {{ s.color_brand | default: '#9A4F1C' }};
+    --of-ink: {{ s.color_ink | default: '#3B1F14' }};
+    --of-muted: {{ s.color_ink | default: '#3B1F14' | color_modify: 'alpha', 0.65 }};
+    --of-line: {{ s.color_ink | default: '#3B1F14' | color_modify: 'alpha', 0.14 }};
+    --of-cta: {{ s.color_cta | default: '#3B1F14' }};
+    --of-cta-text: {{ s.color_cta_text | default: '#FFFFFF' }};
+    --of-stars: {{ s.color_stars | default: '#E0A33A' }};
+    --of-display: {{ s.heading_font.family }}, {{ s.heading_font.fallback_families }};
+    --of-display-w: {{ s.heading_font.weight }};
+    --of-pt: {{ s.padding_top }}px;
+    --of-pb: {{ s.padding_bottom }}px;
+  }
+  {{ sid }}, {{ sid }} *, {{ sid }} *::before, {{ sid }} *::after { box-sizing: border-box; }
+  {{ sid }} p, {{ sid }} li, {{ sid }} span { color: inherit; }
+  {{ sid }} {
+    display: block;
+    background: var(--of-bg);
+    color: var(--of-ink);
+    font-size: 16px;
+    line-height: 1.4;
+    padding: calc(var(--of-pt) * 0.6) 16px calc(var(--of-pb) * 0.6);
+  }
+  {{ sid }} p { margin: 0; }
+  {{ sid }} s { color: var(--of-muted); font-weight: 500; }
+  {{ sid }} .of-i { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+  {{ sid }} .of-stars { display: inline-flex; gap: 2px; color: var(--of-stars); }
+  {{ sid }} .of-stars svg { width: 16px; height: 16px; fill: currentColor; }
+  {{ sid }} .of__wrap { max-width: 1240px; margin: 0 auto; }
+
+  /* ---------- Encabezado de oferta ---------- */
+  {{ sid }} .of__top { display: flex; flex-direction: column; align-items: center; gap: 10px; max-width: 820px; margin: 0 auto 28px; text-align: center; }
+  {{ sid }} .of__eyebrow { font-family: var(--of-display); font-weight: var(--of-display-w); font-size: clamp(20px, 5vw, 28px); line-height: 1.1; color: var(--of-ink); }
+  {{ sid }} .of__headline { margin: 0; font-family: var(--of-display); font-weight: var(--of-display-w); font-size: clamp(30px, 7.5vw, 52px); line-height: 1.05; letter-spacing: -0.015em; color: var(--of-brand); text-wrap: balance; }
+  {{ sid }} .of__headline em { font-style: italic; }
+  {{ sid }} .of__lead { max-width: 60ch; font-size: 15px; line-height: 1.55; color: var(--of-muted); }
+  {{ sid }} .of__lead p + p { margin-top: 0.5em; }
+  {{ sid }} .of__proof { display: inline-flex; align-items: center; flex-wrap: wrap; justify-content: center; gap: 10px; font-size: 13px; }
+  {{ sid }} .of__proof b { font-weight: 800; }
+  {{ sid }} .of__proof i { width: 1px; height: 16px; background: var(--of-line); }
+
+  /* ---------- Layout ---------- */
+  {{ sid }} .of__grid { display: flex; flex-direction: column; gap: 24px; }
+  {{ sid }} .of__left, {{ sid }} .of__right { min-width: 0; display: flex; flex-direction: column; gap: 14px; }
+
+  /* ---------- Contador ---------- */
+  {{ sid }} .of__timer { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 14px; background: var(--of-soft); }
+  {{ sid }} .of__timer-ico { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--of-accent); color: var(--of-ink); flex: none; }
+  {{ sid }} .of__timer-label { flex: 1; font-size: 13px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; }
+  {{ sid }} .of__timer-clock { display: flex; align-items: center; gap: 4px; font-size: 12px; }
+  {{ sid }} .of__timer-clock em { font-style: normal; font-weight: 700; margin-right: 4px; }
+  {{ sid }} .of__timer-clock b { min-width: 30px; padding: 4px 0; border: 1.5px solid var(--of-ink); border-radius: 6px; background: #fff; text-align: center; font-size: 14px; font-variant-numeric: tabular-nums; }
+
+  /* ---------- Galería ---------- */
+  {{ sid }} .of__gallery { position: relative; overflow: hidden; border-radius: 22px; border: 1.5px solid var(--of-line); background: var(--of-soft); }
+  {{ sid }} .of__ribbon { position: relative; z-index: 2; padding: 12px 16px; background: linear-gradient(90deg, var(--of-brand), var(--of-accent)); color: #fff; text-align: center; font-size: 14px; font-weight: 800; font-style: italic; letter-spacing: 0.02em; text-transform: uppercase; }
+  {{ sid }} .of__ribbon b { color: var(--of-ink); background: #fff; padding: 0 6px; border-radius: 4px; font-style: normal; }
+  {{ sid }} .of__track { display: flex; margin: 0; padding: 0; list-style: none; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; scrollbar-width: none; }
+  {{ sid }} .of__track::-webkit-scrollbar { display: none; }
+  {{ sid }} .of__slide { flex: 0 0 100%; aspect-ratio: 1 / 1; scroll-snap-align: start; position: relative; }
+  {{ sid }} .of__slide img, {{ sid }} .of__slide svg { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: {{ s.gallery_fit }}; }
+  {{ sid }} .of__slide svg { fill: var(--of-line); }
+  {{ sid }} .of__nav { position: absolute; top: 55%; z-index: 3; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; padding: 0; border: 0; border-radius: 50%; background: rgba(255, 255, 255, 0.9); color: var(--of-ink); cursor: pointer; box-shadow: 0 4px 14px -6px rgba(0, 0, 0, 0.35); }
+  {{ sid }} .of__nav--prev { left: 10px; }
+  {{ sid }} .of__nav--next { right: 10px; background: var(--of-ink); color: #fff; }
+  {{ sid }} .of__nav[disabled] { opacity: 0.35; cursor: default; }
+  {{ sid }} .of__nav .of-i { width: 18px; height: 18px; stroke-width: 2.2; }
+  {{ sid }} .of__features { position: absolute; z-index: 2; right: 12px; top: calc(50% + 22px); transform: translateY(-50%); display: flex; flex-direction: column; gap: 10px; width: 112px; margin: 0; padding: 12px 8px; list-style: none; border-radius: 14px; border: 1.5px solid var(--of-ink); background: rgba(255, 255, 255, 0.94); text-align: center; }
+  {{ sid }} .of__features li { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; font-weight: 700; line-height: 1.2; }
+  {{ sid }} .of__features .of-i { width: 26px; height: 26px; color: var(--of-brand); }
+  {{ sid }}.of--features-desktop .of__features { display: none; }
+  {{ sid }} .of__thumbs { display: flex; gap: 8px; margin: 0; padding: 2px; list-style: none; overflow-x: auto; scrollbar-width: none; }
+  {{ sid }} .of__thumbs::-webkit-scrollbar { display: none; }
+  {{ sid }} .of__thumb { flex: 0 0 64px; width: 64px; height: 64px; padding: 0; border: 2px solid transparent; border-radius: 10px; overflow: hidden; background: var(--of-soft); cursor: pointer; }
+  {{ sid }} .of__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  {{ sid }} .of__thumb[aria-current="true"] { border-color: var(--of-brand); }
+
+  {{ sid }} .of__tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 0; padding: 0; list-style: none; }
+  {{ sid }} .of__tiles li { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 16px 8px; border-radius: 14px; background: #fff; border: 1px solid var(--of-line); box-shadow: 0 8px 20px -16px rgba(0, 0, 0, 0.4); text-align: center; font-size: 11.5px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: var(--of-brand); }
+  {{ sid }} .of__tiles .of-i { width: 28px; height: 28px; }
+
+  /* ---------- Info del producto ---------- */
+  {{ sid }} .of__meta { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  {{ sid }} .of__rating { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; }
+  {{ sid }} .of__hot { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 999px; background: var(--of-ink); color: #fff; font-size: 11px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
+  {{ sid }} .of__hot .of-i { width: 14px; height: 14px; stroke-width: 2.4; }
+  {{ sid }} .of__title { margin: 0; font-family: var(--of-display); font-weight: var(--of-display-w); font-size: clamp(28px, 7vw, 40px); line-height: 1.08; letter-spacing: -0.015em; color: var(--of-ink); }
+  {{ sid }} .of__promo { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--of-muted); }
+  {{ sid }} .of__promo b { color: var(--of-brand); }
+  {{ sid }} .of__promo .of-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--of-accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--of-accent) 30%, transparent); animation: of-pulse 1.6s ease-in-out infinite; flex: none; }
+  @keyframes of-pulse { 50% { box-shadow: 0 0 0 7px color-mix(in srgb, var(--of-accent) 0%, transparent); } }
+
+  /* ---------- Selector ---------- */
+  {{ sid }} .of__box { padding: 16px 14px 18px; border-radius: 18px; border: 1.5px solid var(--of-line); background: #fff; }
+  {{ sid }} .of__heading { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  {{ sid }} .of__heading span { flex: 1; height: 1.5px; background: var(--of-line); }
+  {{ sid }} .of__heading p { font-size: 13px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; }
+  {{ sid }} .of__tip { display: flex; align-items: center; justify-content: center; gap: 7px; margin: 2px 0 8px; padding: 6px 12px; border-radius: 999px; background: var(--of-soft); border: 1px solid color-mix(in srgb, var(--of-accent) 60%, transparent); font-size: 13px; color: var(--of-muted); text-align: center; }
+  {{ sid }} .of__tip b, {{ sid }} .of__tip strong { color: var(--of-ink); font-weight: 800; }
+  {{ sid }} .of__tip .of-i { width: 17px; height: 17px; color: var(--of-brand); }
+  {{ sid }} .of__tiers { display: grid; gap: 22px; padding-top: 12px; }
+
+  {{ sid }} .gt { position: relative; border: 2px solid var(--of-line); border-radius: 12px; background: #fff; cursor: pointer; transition: border-color 0.15s, box-shadow 0.15s; }
+  {{ sid }} .gt:hover { border-color: var(--of-accent); }
+  {{ sid }} .gt.is-active { border: 2.5px solid var(--of-brand); box-shadow: 0 14px 30px -16px color-mix(in srgb, var(--of-brand) 70%, transparent); }
+  {{ sid }} .gt__badges { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 4px; margin: -11px 0 0 12px; }
+  {{ sid }} .gt__badges span { padding: 3px 10px; border-radius: 999px; background: var(--of-accent); color: var(--of-ink); font-size: 11px; font-weight: 800; line-height: 1.3; white-space: nowrap; }
+  {{ sid }} .gt__badges span.is-dark { background: var(--of-ink); color: #fff; }
+  {{ sid }} .gt__main { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; gap: 12px; align-items: center; margin: 0; padding: 12px 14px 14px; border-radius: 10px; cursor: pointer; }
+  {{ sid }} .gt.is-active .gt__main { background: var(--of-soft); }
+  {{ sid }} .gt__radio { position: absolute; opacity: 0; pointer-events: none; }
+  {{ sid }} .gt__radio:focus-visible + .gt__dot { outline: 2px solid var(--of-ink); outline-offset: 2px; }
+  {{ sid }} .gt__dot { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--of-muted); background: #fff; display: flex; align-items: center; justify-content: center; }
+  {{ sid }} .gt.is-active .gt__dot { border-color: var(--of-brand); }
+  {{ sid }} .gt.is-active .gt__dot::after { content: ""; width: 11px; height: 11px; border-radius: 50%; background: var(--of-brand); }
+  {{ sid }} .gt__name { display: flex; flex-direction: column; min-width: 0; }
+  {{ sid }} .gt__name strong { font-size: 17px; line-height: 1.2; }
+  {{ sid }} .gt__meta { margin-top: 1px; font-size: 13px; color: var(--of-muted); }
+  {{ sid }} .gt__sub { display: none; margin-top: 6px; font-size: 13.5px; line-height: 1.4; color: var(--of-muted); }
+  {{ sid }} .gt.is-active .gt__sub { display: block; }
+  {{ sid }} .gt__price { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; white-space: nowrap; }
+  {{ sid }} .gt__row { display: flex; align-items: center; gap: 6px; }
+  {{ sid }} .gt__price s { font-size: 13px; }
+  {{ sid }} .gt__price strong { font-size: 20px; line-height: 1.15; }
+  {{ sid }} .gt.is-active .gt__price strong { color: var(--of-brand); }
+  {{ sid }} .gt__off { padding: 2px 7px; border-radius: 6px; background: var(--of-ink); color: #fff; font-size: 11px; font-weight: 800; }
+  {{ sid }} .gt__save { font-size: 11.5px; font-weight: 700; color: var(--of-brand); }
+
+  {{ sid }} .gb { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 9px 14px; border-top: 1px solid var(--of-line); background: var(--of-soft); cursor: pointer; outline: none; }
+  {{ sid }} .gb__box { display: none; width: 20px; height: 20px; border-radius: 4px; border: 2px solid var(--of-ink); background: #fff; align-items: center; justify-content: center; }
+  {{ sid }} .gt.is-active .gb { grid-template-columns: 20px 44px minmax(0, 1fr) auto; background: var(--of-accent); }
+  {{ sid }} .gt.is-active .gb__box { display: flex; }
+  {{ sid }} .gt.is-active .gb:focus-visible { box-shadow: inset 0 0 0 2px var(--of-ink); }
+  {{ sid }}.bump-on .gt.is-active .gb__box { background: var(--of-ink); }
+  {{ sid }}.bump-on .gt.is-active .gb__box::after { content: ""; width: 5px; height: 10px; margin-top: -2px; border: solid #fff; border-width: 0 2.5px 2.5px 0; transform: rotate(45deg); }
+  {{ sid }} .gb__img { width: 44px; height: 44px; border-radius: 6px; overflow: hidden; background: #fff; }
+  {{ sid }} .gb__img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  {{ sid }} .gb__text { font-size: 13.5px; line-height: 1.3; color: var(--of-brand); }
+  {{ sid }} .gt.is-active .gb__text { color: var(--of-ink); }
+  {{ sid }} .gb__text b, {{ sid }} .gb__text strong { font-weight: 800; }
+  {{ sid }} .gb__price { display: flex; flex-direction: column; align-items: flex-end; white-space: nowrap; }
+  {{ sid }} .gb__price strong { font-size: 15px; }
+  {{ sid }} .gb__price s { font-size: 12px; }
+
+  {{ sid }} .gg { border-top: 1px solid var(--of-line); }
+  {{ sid }} .gg__sum { display: flex; align-items: center; gap: 8px; padding: 9px 14px; }
+  {{ sid }} .gg__count { flex: 1; font-size: 13.5px; font-weight: 800; }
+  {{ sid }} .gg__count .of-i { width: 18px; height: 18px; color: var(--of-brand); vertical-align: -4px; margin-right: 4px; }
+  {{ sid }} .gg__thumbs { display: flex; gap: 4px; }
+  {{ sid }} .gg__thumb { width: 30px; height: 30px; flex: none; border-radius: 6px; overflow: hidden; background: #fff; border: 1px solid var(--of-line); display: flex; align-items: center; justify-content: center; color: var(--of-brand); }
+  {{ sid }} .gg__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  {{ sid }} .gg__thumb .of-i { width: 60%; height: 60%; }
+  {{ sid }} .is-locked .gg__thumb, {{ sid }} .gg__thumb.is-locked { filter: grayscale(1); opacity: 0.7; }
+  {{ sid }} .gg__list { display: none; margin: 0; padding: 4px 14px 8px; list-style: none; background: var(--of-soft); border-radius: 0 0 10px 10px; }
+  {{ sid }} .gt.is-active .gg__sum { display: none; }
+  {{ sid }} .gt.is-active .gg__list { display: block; }
+  {{ sid }} .gg__list li { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--of-line); }
+  {{ sid }} .gg__list li:last-child { border-bottom: 0; }
+  {{ sid }} .gg__list .gg__thumb { width: 34px; height: 34px; }
+  {{ sid }} .gg__name { font-size: 14px; font-weight: 700; line-height: 1.25; }
+  {{ sid }} .gg__list li.is-locked .gg__name { color: var(--of-muted); }
+  {{ sid }} .gg__val { display: flex; align-items: center; gap: 6px; white-space: nowrap; font-size: 13.5px; }
+  {{ sid }} .gg__val em { padding: 2px 7px; border-radius: 999px; background: var(--of-brand); color: #fff; font-style: normal; font-size: 10.5px; font-weight: 800; letter-spacing: 0.04em; }
+  {{ sid }} .gg__val em.is-dark { background: var(--of-ink); }
+  {{ sid }} .gg__val b { color: var(--of-brand); font-weight: 800; }
+  {{ sid }} .gg__val s { font-size: 12px; }
+  {{ sid }} .gg__need { display: inline-flex; align-items: center; gap: 4px; color: var(--of-muted); font-size: 12px; font-weight: 700; }
+  {{ sid }} .gg__need .of-i { width: 14px; height: 14px; }
+
+  {{ sid }} .of__cta { position: relative; display: grid; place-items: center; width: 100%; min-height: 60px; margin-top: 18px; padding: 10px 16px; border: 0; border-radius: 12px; background: var(--of-cta); color: var(--of-cta-text); cursor: pointer; box-shadow: 0 12px 24px -14px var(--of-cta); transition: transform 0.15s, filter 0.2s; }
+  {{ sid }} .of__cta:hover { transform: translateY(-1px); filter: brightness(1.1); }
+  {{ sid }} .of__cta-idle, {{ sid }} .of__cta-busy { grid-area: 1 / 1; display: flex; flex-direction: column; align-items: center; gap: 2px; transition: opacity 0.2s; }
+  {{ sid }} .of__cta-main { font-size: 17px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; }
+  {{ sid }} .of__cta-sub { font-size: 13px; font-weight: 500; color: var(--of-accent); }
+  {{ sid }} .of__cta-busy { flex-direction: row; gap: 10px; opacity: 0; font-size: 16px; font-weight: 700; }
+  {{ sid }} .of__cta.is-loading, {{ sid }} .of__cta.is-done { pointer-events: none; }
+  {{ sid }} .of__cta.is-loading .of__cta-idle, {{ sid }} .of__cta.is-done .of__cta-idle { opacity: 0; }
+  {{ sid }} .of__cta.is-loading .of__cta-busy, {{ sid }} .of__cta.is-done .of__cta-busy { opacity: 1; }
+  {{ sid }} .of__cta.is-done .of__spin { display: none; }
+  {{ sid }} .of__spin { width: 20px; height: 20px; border-radius: 50%; border: 3px solid rgba(255, 255, 255, 0.3); border-top-color: var(--of-accent); animation: of-spin 0.7s linear infinite; }
+  @keyframes of-spin { to { transform: rotate(360deg); } }
+  {{ sid }} .of__error { margin-top: 8px; color: #b42318; font-size: 14px; text-align: center; }
+
+  {{ sid }} .of__checks { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; margin: 16px 0 0; padding: 0; list-style: none; font-size: 13px; }
+  {{ sid }} .of__checks li { display: flex; align-items: center; gap: 8px; }
+  {{ sid }} .of__checks .of-check { width: 20px; height: 20px; flex: none; border-radius: 50%; background: var(--of-ink); color: #fff; display: flex; align-items: center; justify-content: center; }
+  {{ sid }} .of__checks .of-check .of-i { width: 12px; height: 12px; stroke-width: 3; }
+  {{ sid }} .of__coupon { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 14px; padding: 10px 12px; border: 1.5px dashed var(--of-accent); border-radius: 12px; background: var(--of-soft); font-size: 13px; font-weight: 700; color: var(--of-brand); text-align: center; }
+  {{ sid }} .of__coupon code { padding: 4px 10px; border-radius: 6px; background: var(--of-brand); color: #fff; font-family: inherit; font-size: 12px; font-weight: 800; letter-spacing: 0.06em; }
+
+  {{ sid }} .of__trust { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 6px 0 0; padding: 0; list-style: none; }
+  {{ sid }} .of__trust li { display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; font-size: 12px; font-weight: 700; line-height: 1.25; }
+  {{ sid }} .of__trust .of-i { width: 30px; height: 30px; color: var(--of-ink); }
+
+  {{ sid }} .of__guarantee { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px; border: 1.5px solid var(--of-accent); background: #fff; }
+  {{ sid }} .of__guarantee .of-i { width: 36px; height: 36px; color: var(--of-brand); }
+  {{ sid }} .of__guarantee p { font-size: 13.5px; line-height: 1.4; }
+  {{ sid }} .of__guarantee strong { font-weight: 800; }
+
+  {{ sid }} .of__acc { border-top: 1px solid var(--of-line); }
+  {{ sid }} .of__acc details { border-bottom: 1px solid var(--of-line); }
+  {{ sid }} .of__acc summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 2px; font-size: 16px; font-weight: 700; cursor: pointer; list-style: none; }
+  {{ sid }} .of__acc summary::-webkit-details-marker { display: none; }
+  {{ sid }} .of__acc summary .of-i { width: 20px; height: 20px; transition: transform 0.25s; }
+  {{ sid }} .of__acc details[open] summary .of-i { transform: rotate(45deg); }
+  {{ sid }} .of__acc-body { padding: 0 2px 18px; font-size: 15px; line-height: 1.6; color: var(--of-muted); }
+  {{ sid }} .of__acc-body p + p, {{ sid }} .of__acc-body ul { margin-top: 0.6em; }
+
+  /* ---------- Celular ---------- */
+  @media screen and (max-width: 749px) {
+    {{ sid }} .of__timer { gap: 10px; padding: 10px 12px; }
+    {{ sid }} .of__timer-ico { width: 32px; height: 32px; }
+    {{ sid }} .of__timer-ico .of-i { width: 18px; height: 18px; }
+    {{ sid }} .of__timer-label { font-size: 11px; letter-spacing: 0.03em; line-height: 1.25; }
+    {{ sid }} .of__timer-clock em { display: none; }
+    {{ sid }} .of__tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+    {{ sid }} .of__tiles li { padding: 12px 4px; gap: 6px; font-size: 9.5px; letter-spacing: 0.03em; }
+    {{ sid }} .of__tiles .of-i { width: 22px; height: 22px; }
+    {{ sid }} .of__box { padding: 14px 10px 16px; }
+    {{ sid }} .gt__main { gap: 10px; padding: 12px 10px 13px; }
+    {{ sid }} .gt__name strong { font-size: 16px; }
+    {{ sid }} .gt__meta { font-size: 12.5px; }
+    {{ sid }} .gt__price .gt__row:first-child { flex-direction: column; align-items: flex-end; gap: 0; }
+    {{ sid }} .gt__price strong { font-size: 18px; }
+    {{ sid }} .gt__badges { margin-left: 8px; gap: 3px; }
+    {{ sid }} .gt__badges span { padding: 2px 7px; font-size: 10.5px; }
+    {{ sid }} .gb, {{ sid }} .gt.is-active .gb { padding: 9px 10px; gap: 8px; }
+    {{ sid }} .gt.is-active .gb { grid-template-columns: 20px 40px minmax(0, 1fr) auto; }
+    {{ sid }} .gb { grid-template-columns: 40px minmax(0, 1fr) auto; }
+    {{ sid }} .gb__img { width: 40px; height: 40px; }
+    {{ sid }} .gb__text { font-size: 13px; }
+    {{ sid }} .gg__sum, {{ sid }} .gg__list { padding-left: 10px; padding-right: 10px; }
+    {{ sid }} .gg__name { font-size: 13.5px; }
+    {{ sid }} .of__checks { font-size: 12.5px; gap: 10px; }
+  }
+
+  /* ---------- Escritorio ---------- */
+  @media screen and (min-width: 750px) {
+    {{ sid }} { padding: var(--of-pt) 32px var(--of-pb); }
+    {{ sid }} .of__top { margin-bottom: 40px; }
+    {{ sid }} .of__lead { font-size: 16px; }
+    {{ sid }} .of__tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    {{ sid }}.of--features-desktop .of__features { display: flex; }
+    {{ sid }} .of__features { width: 128px; right: 16px; }
+    {{ sid }} .of__features li { font-size: 12px; }
+    {{ sid }} .of__box { padding: 20px 20px 22px; }
+    {{ sid }} .of__thumb { flex-basis: 76px; width: 76px; height: 76px; }
+  }
+  @media screen and (min-width: 990px) {
+    {{ sid }} .of__grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); align-items: start; gap: 48px; }
+    {{ sid }} .of__left { position: sticky; top: 24px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    {{ sid }} .of__track { scroll-behavior: auto; }
+    {{ sid }} .of__promo .of-dot { animation: none; }
+  }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="ofi-sun-{{ section.id }}" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></symbol>
+    <symbol id="ofi-sun_off-{{ section.id }}" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8M3 3l18 18"/></symbol>
+    <symbol id="ofi-drop-{{ section.id }}" viewBox="0 0 24 24"><path d="M12 3s6.5 7 6.5 11.5a6.5 6.5 0 01-13 0C5.5 10 12 3 12 3z"/><path d="M9 14.5a3 3 0 003 3"/></symbol>
+    <symbol id="ofi-shield-{{ section.id }}" viewBox="0 0 24 24"><path d="M12 3l7.5 3v5.5c0 4.5-3.2 8-7.5 9.5-4.3-1.5-7.5-5-7.5-9.5V6z"/><path d="M8.5 12l2.5 2.5 4.5-4.5"/></symbol>
+    <symbol id="ofi-sparkle-{{ section.id }}" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 15.5l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/></symbol>
+    <symbol id="ofi-leaf-{{ section.id }}" viewBox="0 0 24 24"><path d="M5 19C5 10.5 10.5 5 19.5 4.5 19.5 13.5 14 19 5 19z"/><path d="M5 19l8.5-8.5"/></symbol>
+    <symbol id="ofi-heart-{{ section.id }}" viewBox="0 0 24 24"><path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0112 7.3 4.3 4.3 0 0119.5 10c0 5.4-7.5 10-7.5 10z"/></symbol>
+    <symbol id="ofi-clock-{{ section.id }}" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V12l3 2"/></symbol>
+    <symbol id="ofi-capsule-{{ section.id }}" viewBox="0 0 24 24"><path d="M8.5 20.5a4 4 0 01-5.66-5.66l7-7a4 4 0 015.66 5.66z"/><path d="M8.3 9.8l5.9 5.9"/><path d="M16 4.5l1-1M19.5 8l1-1M18.5 4.5h2v2"/></symbol>
+    <symbol id="ofi-truck-{{ section.id }}" viewBox="0 0 24 24"><path d="M2.5 6.5h11v9h-11z"/><path d="M13.5 9.5h4l3 3.2v2.8h-7"/><circle cx="7" cy="17" r="1.8"/><circle cx="17" cy="17" r="1.8"/></symbol>
+    <symbol id="ofi-gift-{{ section.id }}" viewBox="0 0 24 24"><path d="M3.5 9.5h17v4h-17z"/><path d="M5 13.5v7h14v-7"/><path d="M12 9.5v11"/><path d="M12 9.5C10 9.5 7.5 8.5 8 6.5s3.5-.5 4 3c.5-3.5 3.5-5 4-3s-2 3-4 3z"/></symbol>
+    <symbol id="ofi-card-{{ section.id }}" viewBox="0 0 24 24"><rect x="2.5" y="5.5" width="19" height="13" rx="2"/><path d="M2.5 10h19M6 15h4"/></symbol>
+    <symbol id="ofi-lock-{{ section.id }}" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V8a4 4 0 018 0v2.5"/></symbol>
+    <symbol id="ofi-star-{{ section.id }}" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z"/></symbol>
+    <symbol id="ofi-check-{{ section.id }}" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+    <symbol id="ofi-badge-{{ section.id }}" viewBox="0 0 24 24"><path d="M12 2.5l2.4 1.8 3-.2.9 2.9 2.5 1.7-1 2.8 1 2.8-2.5 1.7-.9 2.9-3-.2L12 21.5l-2.4-1.8-3 .2-.9-2.9-2.5-1.7 1-2.8-1-2.8 2.5-1.7.9-2.9 3 .2z"/><path d="M8.5 12l2.5 2.5 4.5-4.5"/></symbol>
+    <symbol id="ofi-box-{{ section.id }}" viewBox="0 0 24 24"><path d="M3.5 7.5L12 3l8.5 4.5v9L12 21l-8.5-4.5z"/><path d="M3.5 7.5L12 12l8.5-4.5M12 12v9"/></symbol>
+    <symbol id="ofi-refresh-{{ section.id }}" viewBox="0 0 24 24"><path d="M20 11a8 8 0 10-2.3 5.7"/><path d="M20 4v7h-7"/></symbol>
+    <symbol id="ofi-bolt-{{ section.id }}" viewBox="0 0 24 24"><path d="M13 2.5L5 13.5h6l-1 8 8-11h-6z"/></symbol>
+    <symbol id="ofi-book-{{ section.id }}" viewBox="0 0 24 24"><path d="M12 6.5C10 5 7 4.5 3.5 5v13c3.5-.5 6.5 0 8.5 1.5 2-1.5 5-2 8.5-1.5V5C17 4.5 14 5 12 6.5z"/><path d="M12 6.5v13"/></symbol>
+    <symbol id="ofi-users-{{ section.id }}" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.6 2.7-6 6-6s6 2.4 6 6"/><path d="M15.5 4.9a3.2 3.2 0 010 6.2M17.5 14.4c2.1.8 3.5 2.8 3.5 5.6"/></symbol>
+    <symbol id="ofi-fire-{{ section.id }}" viewBox="0 0 24 24"><path d="M12 21c-4 0-6.5-2.7-6.5-6.2 0-3.6 2.7-5.7 4-9.3 2.6 1.6 3.4 4 3.3 6 1-.6 1.7-1.7 2-3 1.9 1.6 3.7 3.8 3.7 6.5C18.5 18.3 16 21 12 21z"/></symbol>
+    <symbol id="ofi-plus-{{ section.id }}" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="ofi-left-{{ section.id }}" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></symbol>
+    <symbol id="ofi-right-{{ section.id }}" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+    <symbol id="ofi-starfill-{{ section.id }}" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.2 6.6.7-5 4.5 1.4 6.6L12 17.2l-5.9 3.3 1.4-6.6-5-4.5 6.6-.7z"/></symbol>
+  </defs>
+</svg>
+
+{%- capture stars -%}
+  <span class="of-stars" aria-hidden="true">
+    {%- for i in (1..5) -%}<svg viewBox="0 0 24 24"><use href="#ofi-starfill-{{ section.id }}"/></svg>{%- endfor -%}
+  </span>
+{%- endcapture -%}
+
+{%- if request.design_mode -%}
+  {%- if p == blank -%}
+    <p style="margin:0 auto 8px;max-width:1240px;padding:8px 10px;border-radius:6px;background:#fff4e5;color:#8a4b00;font-size:13px;">⚠️ Solo el editor ve esto: elegí el producto en los ajustes de la sección (o usá la sección en la plantilla de producto).</p>
+  {%- endif -%}
+  {%- if s.pack_mode == 'variant' and p.variants.size < pack_count -%}
+    <p style="margin:0 auto 8px;max-width:1240px;padding:8px 10px;border-radius:6px;background:#fff4e5;color:#8a4b00;font-size:13px;">⚠️ Solo el editor ve esto: el modo "Variantes" necesita {{ pack_count }} variantes y el producto tiene {{ p.variants.size }}.</p>
+  {%- endif -%}
+  {%- if bump_block != blank and bump_variant == blank -%}
+    <p style="margin:0 auto 8px;max-width:1240px;padding:8px 10px;border-radius:6px;background:#fff4e5;color:#8a4b00;font-size:13px;">⚠️ Solo el editor ve esto: elegí el producto del upsell en "Upsell".</p>
+  {%- endif -%}
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'regalo' and block.settings.gift_product != blank -%}
+      {%- unless block.settings.gift_product.selected_or_first_available_variant.available -%}
+        <p style="margin:0 auto 8px;max-width:1240px;padding:8px 10px;border-radius:6px;background:#fff4e5;color:#8a4b00;font-size:13px;">⚠️ Solo el editor ve esto: el regalo "{{ block.settings.title }}" no se puede agregar al carrito (sin stock, en borrador o fuera de Tienda online).</p>
+      {%- endunless -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+
+{%- capture gift_media -%}
+  {%- for block in section.blocks -%}
+    {%- if block.type != 'regalo' -%}{%- continue -%}{%- endif -%}
+    {%- if block.settings.image != blank -%}
+      {{ block.settings.image | image_url: width: 160 | image_tag: loading: 'lazy', alt: '' }}
+    {%- elsif block.settings.gift_product.featured_image != blank -%}
+      {{ block.settings.gift_product.featured_image | image_url: width: 160 | image_tag: loading: 'lazy', alt: '' }}
+    {%- else -%}
+      <svg class="of-i" aria-hidden="true"><use href="#ofi-{{ block.settings.icon }}-{{ section.id }}"/></svg>
+    {%- endif -%}
+    @@@
+  {%- endfor -%}
+{%- endcapture -%}
+{%- assign gift_media = gift_media | split: '@@@' -%}
+
+<bz-offer
+  id="bz-of-{{ section.id }}"
+  class="of{% if s.features_mobile == false %} of--features-desktop{% endif %}"
+  data-redirect="{{ s.redirect }}"
+  data-bump-id="{{ bump_id }}"
+  data-bump-free-id="{{ bump_free_id }}"
+  data-bump-free-min="{{ bs.bump_free_min }}"
+  data-cart-add="{{ routes.cart_add_url }}.js"
+  data-cart-url="{{ routes.cart_url }}"
+  data-timer="{% if timer_block != blank %}{{ timer_block.settings.timer_minutes }}{% else %}0{% endif %}"
+  data-key="{{ section.id }}"
+>
+  <div class="of__wrap">
+    {%- if top_block != blank -%}
+      {%- assign ts = top_block.settings -%}
+      <div class="of__top" {{ top_block.shopify_attributes }}>
+        {%- if ts.top_eyebrow != blank -%}<p class="of__eyebrow">{{ ts.top_eyebrow | escape }}</p>{%- endif -%}
+        {%- if ts.top_heading != blank -%}<h2 class="of__headline">{{ ts.top_heading | replace: '[max_off]', max_off_str }}</h2>{%- endif -%}
+        {%- if ts.top_text != blank -%}<div class="of__lead">{{ ts.top_text | replace: '[max_off]', max_off_str }}</div>{%- endif -%}
+        {%- if ts.top_rating != blank or ts.top_reviews != blank -%}
+          <div class="of__proof">
+            {{ stars }}
+            {%- if ts.top_rating != blank -%}<span>{{ ts.top_rating }}</span>{%- endif -%}
+            {%- if ts.top_rating != blank and ts.top_reviews != blank -%}<i></i>{%- endif -%}
+            {%- if ts.top_reviews != blank -%}<span>{{ ts.top_reviews }}</span>{%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="of__grid">
+      {%- comment -%} ===================== Columna izquierda ===================== {%- endcomment -%}
+      <div class="of__left">
+        {%- if timer_block != blank -%}
+          {%- assign cs = timer_block.settings -%}
+          <div class="of__timer" {{ timer_block.shopify_attributes }}>
+            <span class="of__timer-ico"><svg class="of-i" aria-hidden="true"><use href="#ofi-fire-{{ section.id }}"/></svg></span>
+            <p class="of__timer-label">{{ cs.timer_label | escape }}</p>
+            <div class="of__timer-clock" role="timer" aria-live="off">
+              {%- if cs.timer_prefix != blank -%}<em>{{ cs.timer_prefix | escape }}</em>{%- endif -%}
+              <b data-h>00</b>:<b data-m>{{ cs.timer_minutes | at_most: 59 | prepend: '0' | slice: -2, 2 }}</b>:<b data-s>00</b>
+            </div>
+          </div>
+        {%- endif -%}
+
+        <div class="of__gallery">
+          {%- if s.ribbon != blank -%}
+            <div class="of__ribbon">{{ s.ribbon | replace: '[max_off]', max_off_str }}</div>
+          {%- endif -%}
+          <ul class="of__track" data-track role="list">
+            {%- assign media_count = 0 -%}
+            {%- for media in p.media -%}
+              {%- if media.preview_image == blank -%}{%- continue -%}{%- endif -%}
+              {%- assign media_count = media_count | plus: 1 -%}
+              <li class="of__slide" data-slide>
+                {{
+                  media.preview_image
+                  | image_url: width: 1400
+                  | image_tag:
+                    loading: 'eager',
+                    widths: '500, 750, 1000, 1400',
+                    sizes: '(min-width: 990px) 50vw, 100vw',
+                    alt: media.alt | default: p.title
+                }}
+              </li>
+            {%- endfor -%}
+            {%- if media_count == 0 -%}
+              {%- assign media_count = 1 -%}
+              <li class="of__slide" data-slide>{{ 'product-1' | placeholder_svg_tag }}</li>
+            {%- endif -%}
+          </ul>
+          {%- if media_count > 1 -%}
+            <button type="button" class="of__nav of__nav--prev" data-prev aria-label="Foto anterior"><svg class="of-i"><use href="#ofi-left-{{ section.id }}"/></svg></button>
+            <button type="button" class="of__nav of__nav--next" data-next aria-label="Foto siguiente"><svg class="of-i"><use href="#ofi-right-{{ section.id }}"/></svg></button>
+          {%- endif -%}
+          {%- capture features -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'destacado' -%}
+                <li {{ block.shopify_attributes }}><svg class="of-i" aria-hidden="true"><use href="#ofi-{{ block.settings.icon }}-{{ section.id }}"/></svg>{{ block.settings.text | escape }}</li>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endcapture -%}
+          {%- if features != blank -%}<ul class="of__features" role="list">{{ features }}</ul>{%- endif -%}
+        </div>
+
+        {%- if media_count > 1 -%}
+          <ul class="of__thumbs" role="list">
+            {%- assign n = 0 -%}
+            {%- for media in p.media -%}
+              {%- if media.preview_image == blank -%}{%- continue -%}{%- endif -%}
+              <li>
+                <button type="button" class="of__thumb" data-thumb="{{ n }}" aria-label="Ver foto {{ n | plus: 1 }}"{% if n == 0 %} aria-current="true"{% endif %}>
+                  {{ media.preview_image | image_url: width: 160, height: 160, crop: 'center' | image_tag: loading: 'lazy', alt: '' }}
+                </button>
+              </li>
+              {%- assign n = n | plus: 1 -%}
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        {%- capture tiles -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'beneficio' -%}
+              <li {{ block.shopify_attributes }}><svg class="of-i" aria-hidden="true"><use href="#ofi-{{ block.settings.icon }}-{{ section.id }}"/></svg>{{ block.settings.text | escape }}</li>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endcapture -%}
+        {%- if tiles != blank -%}<ul class="of__tiles" role="list">{{ tiles }}</ul>{%- endif -%}
+      </div>
+
+      {%- comment -%} ===================== Columna derecha ===================== {%- endcomment -%}
+      <div class="of__right">
+        {%- if s.rating_text != blank or s.hot_badge != blank -%}
+          <div class="of__meta">
+            {%- if s.rating_text != blank -%}<span class="of__rating">{{ stars }}<span>{{ s.rating_text }}</span></span>{%- endif -%}
+            {%- if s.hot_badge != blank -%}<span class="of__hot"><svg class="of-i" aria-hidden="true"><use href="#ofi-check-{{ section.id }}"/></svg>{{ s.hot_badge | escape }}</span>{%- endif -%}
+          </div>
+        {%- endif -%}
+        <h1 class="of__title">{{ title | escape }}</h1>
+        {%- if s.promo_line != blank -%}
+          <p class="of__promo"><span class="of-dot" aria-hidden="true"></span><span>{{ s.promo_line | replace: '[max_off]', max_off_str }}</span></p>
+        {%- endif -%}
+
+        <div class="of__box">
+          {%- if s.selector_heading != blank -%}
+            <div class="of__heading"><span></span><p>{{ s.selector_heading | escape }}</p><span></span></div>
+          {%- endif -%}
+          {%- if s.tip != blank -%}
+            <div class="of__tip"><svg class="of-i" aria-hidden="true"><use href="#ofi-sparkle-{{ section.id }}"/></svg><span>{{ s.tip }}</span></div>
+          {%- endif -%}
+
+          <div class="of__tiers" role="radiogroup" aria-label="{{ s.selector_heading | default: 'Elegí tu pack' | escape }}">
+            {%- assign pi = 0 -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type != 'pack' -%}{%- continue -%}{%- endif -%}
+              {%- liquid
+                assign b = block.settings
+                assign pi = pi | plus: 1
+                assign bottles = b.bottles | default: 1
+                if s.pack_mode == 'discount'
+                  assign variant = base_variant
+                  assign qty = bottles
+                  assign tier_price = b.price | default: 0 | times: 100
+                  if tier_price == 0
+                    assign tier_price = variant.price | times: bottles
+                  endif
+                  assign compare = variant.price | times: bottles
+                else
+                  assign vi = b.variant_position | default: 1 | minus: 1
+                  assign variant = p.variants[vi]
+                  assign qty = 1
+                  assign tier_price = variant.price
+                  assign compare = variant.compare_at_price | default: variant.price
+                endif
+                if compare < tier_price
+                  assign compare = tier_price
+                endif
+                assign savings = compare | minus: tier_price
+                assign off = 0
+                if savings > 0 and compare > 0
+                  assign off = savings | times: 100 | divided_by: compare | floor
+                endif
+                assign days = bottles | times: days_per_bottle
+                assign per_day = tier_price | divided_by: days | floor
+                assign bump_free = false
+                if bottles >= bs.bump_free_min
+                  assign bump_free = true
+                endif
+                assign unlocked = 0
+                for gb in section.blocks
+                  if gb.type == 'regalo' and bottles >= gb.settings.min_bottles
+                    assign unlocked = unlocked | plus: 1
+                  endif
+                endfor
+                assign is_active = false
+                if pi == preselected
+                  assign is_active = true
+                endif
+              -%}
+              {%- if variant != blank -%}
+                <div
+                  class="gt{% if is_active %} is-active{% endif %}"
+                  data-variant-id="{{ variant.id }}"
+                  data-qty="{{ qty }}"
+                  data-bottles="{{ bottles }}"
+                  data-name="{{ b.title | escape }}"
+                  {{ block.shopify_attributes }}
+                >
+                  {%- if b.badges != blank -%}
+                    <div class="gt__badges">
+                      {%- assign badges = b.badges | split: ',' -%}
+                      {%- for badge in badges -%}
+                        {%- assign bt = badge | strip -%}
+                        {%- if bt != blank -%}<span{% if forloop.first %} class="is-dark"{% endif %}>{{ bt | escape }}</span>{%- endif -%}
+                      {%- endfor -%}
+                    </div>
+                  {%- endif -%}
+                  <label class="gt__main">
+                    <input type="radio" class="gt__radio" name="bz-tier-{{ section.id }}" value="{{ variant.id }}"{% if is_active %} checked{% endif %}{% unless variant.available %} disabled{% endunless %}>
+                    <span class="gt__dot" aria-hidden="true"></span>
+                    <span class="gt__name">
+                      <strong>{{ b.title | escape }}</strong>
+                      <span class="gt__meta">
+                        {{- b.meta | escape -}}
+                        {%- if s.show_per_day and per_day > 0 -%}{% if b.meta != blank %} · {% endif %}{{ per_day | money_without_trailing_zeros }} {{ s.per_day_label | escape }}{%- endif -%}
+                      </span>
+                      {%- if b.subtitle != blank -%}<span class="gt__sub">{{ b.subtitle | escape }}</span>{%- endif -%}
+                    </span>
+                    <span class="gt__price">
+                      <span class="gt__row">
+                        {%- if savings > 0 -%}<s>{{ compare | money_without_trailing_zeros }}</s>{%- endif -%}
+                        <strong>{{ tier_price | money_without_trailing_zeros }}</strong>
+                      </span>
+                      {%- if off > 0 and s.show_off -%}
+                        <span class="gt__row"><span class="gt__off">{{ off }}% OFF</span></span>
+                      {%- endif -%}
+                      {%- if savings > 0 and s.show_savings -%}
+                        <span class="gt__save">{{ s.savings_label | escape }} {{ savings | money_without_trailing_zeros }}</span>
+                      {%- endif -%}
+                    </span>
+                  </label>
+
+                  {%- if show_bump -%}
+                    <div class="gb" role="checkbox" tabindex="-1" aria-checked="false" data-bump-row>
+                      <span class="gb__box" aria-hidden="true"></span>
+                      <span class="gb__img">
+                        {%- if bump_product.featured_image -%}
+                          {{ bump_product.featured_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: bump_title }}
+                        {%- endif -%}
+                      </span>
+                      <span class="gb__text">{% if bump_free %}{{ bs.bump_text_free }}{% else %}{{ bs.bump_text }}{% endif %}</span>
+                      <span class="gb__price">
+                        <strong>{% if bump_free %}{{ bs.free_label | escape }}{% else %}{{ bump_cents | money_without_trailing_zeros }}{% endif %}</strong>
+                        <s>{{ bump_orig | money_without_trailing_zeros }}</s>
+                      </span>
+                    </div>
+                  {%- endif -%}
+
+                  {%- if gift_count > 0 -%}
+                    <div class="gg">
+                      <div class="gg__sum">
+                        <span class="gg__count">
+                          <svg class="of-i" aria-hidden="true"><use href="#ofi-gift-{{ section.id }}"/></svg>
+                          {%- if unlocked > 0 -%}{{ unlocked }}/{{ gift_count }} {{ s.gifts_label | escape }}{%- else -%}{{ s.gifts_from_label | escape }} {{ first_gift_min }} {{ s.unit_plural | escape }}{%- endif -%}
+                        </span>
+                        <span class="gg__thumbs">
+                          {%- assign gi = 0 -%}
+                          {%- for gb in section.blocks -%}
+                            {%- if gb.type != 'regalo' -%}{%- continue -%}{%- endif -%}
+                            <span class="gg__thumb{% if bottles < gb.settings.min_bottles %} is-locked{% endif %}">{{ gift_media[gi] }}</span>
+                            {%- assign gi = gi | plus: 1 -%}
+                          {%- endfor -%}
+                        </span>
+                      </div>
+                      <ul class="gg__list" role="list">
+                        {%- assign gi = 0 -%}
+                        {%- for gb in section.blocks -%}
+                          {%- if gb.type != 'regalo' -%}{%- continue -%}{%- endif -%}
+                          {%- assign g = gb.settings -%}
+                          <li class="{% if bottles < g.min_bottles %}is-locked{% endif %}">
+                            <span class="gg__thumb">{{ gift_media[gi] }}</span>
+                            <span class="gg__name">+ {{ g.title | escape }}</span>
+                            {%- if bottles >= g.min_bottles -%}
+                              <span class="gg__val">
+                                {%- if g.tag != blank -%}<em{% if g.is_raffle %} class="is-dark"{% endif %}>{{ g.tag | escape }}</em>{%- endif -%}
+                                {%- unless g.is_raffle -%}<b>$0</b>{%- endunless -%}
+                                {%- if g.value != blank -%}<s>{{ g.value | escape }}</s>{%- endif -%}
+                              </span>
+                            {%- else -%}
+                              <span class="gg__val gg__need"><svg class="of-i" aria-hidden="true"><use href="#ofi-lock-{{ section.id }}"/></svg>{{ s.gift_need_label | escape }} {{ g.min_bottles }} {{ s.unit_plural | escape }}</span>
+                            {%- endif -%}
+                          </li>
+                          {%- assign gi = gi | plus: 1 -%}
+                        {%- endfor -%}
+                      </ul>
+                    </div>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+
+          <button type="button" class="of__cta" data-cta{% if p == blank %} disabled{% endif %}>
+            <span class="of__cta-idle">
+              <span class="of__cta-main">{{ s.cta_label | escape }}</span>
+              {%- if s.cta_sub != blank -%}<span class="of__cta-sub">{{ s.cta_sub | escape }}</span>{%- endif -%}
+            </span>
+            <span class="of__cta-busy" aria-hidden="true"><span class="of__spin"></span><span data-busy-text>{{ s.adding_label | escape }}</span></span>
+          </button>
+          <p class="of__error" data-error hidden></p>
+
+          {%- capture checks -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'check' -%}
+                <li {{ block.shopify_attributes }}><span class="of-check"><svg class="of-i" aria-hidden="true"><use href="#ofi-check-{{ section.id }}"/></svg></span>{{ block.settings.text | escape }}</li>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endcapture -%}
+          {%- if checks != blank -%}<ul class="of__checks" role="list">{{ checks }}</ul>{%- endif -%}
+
+          {%- if coupon_block != blank and coupon_block.settings.coupon_text != blank -%}
+            <div class="of__coupon" {{ coupon_block.shopify_attributes }}>
+              {%- if coupon_block.settings.coupon_code != blank -%}<code>{{ coupon_block.settings.coupon_code | escape }}</code>{%- endif -%}
+              <span>{{ coupon_block.settings.coupon_text | escape }}</span>
+            </div>
+          {%- endif -%}
+        </div>
+
+        {%- capture trust -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'confianza' -%}
+              <li {{ block.shopify_attributes }}><svg class="of-i" aria-hidden="true"><use href="#ofi-{{ block.settings.icon }}-{{ section.id }}"/></svg>{{ block.settings.text | escape }}</li>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endcapture -%}
+        {%- if trust != blank -%}<ul class="of__trust" role="list">{{ trust }}</ul>{%- endif -%}
+
+        {%- if guarantee_block != blank -%}
+          <div class="of__guarantee" {{ guarantee_block.shopify_attributes }}>
+            <svg class="of-i" aria-hidden="true"><use href="#ofi-shield-{{ section.id }}"/></svg>
+            <p><strong>{{ guarantee_block.settings.guarantee_title | escape }}</strong> {{ guarantee_block.settings.guarantee_text | escape }}</p>
+          </div>
+        {%- endif -%}
+
+        {%- capture acc -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'acordeon' -%}
+              <details {{ block.shopify_attributes }}{% if block.settings.open %} open{% endif %}>
+                <summary>{{ block.settings.title | escape }}<svg class="of-i" aria-hidden="true"><use href="#ofi-plus-{{ section.id }}"/></svg></summary>
+                <div class="of__acc-body">{{ block.settings.content }}</div>
+              </details>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endcapture -%}
+        {%- if acc != blank -%}<div class="of__acc">{{ acc }}</div>{%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  <script type="application/json" data-gifts>
+    [
+      {%- assign first = true -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type != 'regalo' -%}{%- continue -%}{%- endif -%}
+        {%- assign gid = 'null' -%}
+        {%- assign gv = block.settings.gift_product.selected_or_first_available_variant -%}
+        {%- if gv != blank and gv.available -%}{%- assign gid = gv.id -%}{%- endif -%}
+        {%- unless first -%},{%- endunless -%}
+        { "min": {{ block.settings.min_bottles | default: 0 }}, "variantId": {{ gid }} }
+        {%- assign first = false -%}
+      {%- endfor -%}
+    ]
+  </script>
+</bz-offer>
+
+<script>
+  if (!customElements.get('bz-offer')) {
+    customElements.define('bz-offer', class extends HTMLElement {
+      connectedCallback() {
+        if (this._ready) return;
+        this._ready = true;
+        this.initGallery();
+        this.initTimer();
+        this.initTiers();
+      }
+
+      disconnectedCallback() {
+        clearInterval(this.timerId);
+      }
+
+      /* ---------- Galería ---------- */
+      initGallery() {
+        const track = this.querySelector('[data-track]');
+        if (!track) return;
+        const slides = Array.from(track.querySelectorAll('[data-slide]'));
+        const thumbs = Array.from(this.querySelectorAll('[data-thumb]'));
+        const prev = this.querySelector('[data-prev]');
+        const next = this.querySelector('[data-next]');
+        const index = () => Math.round(track.scrollLeft / Math.max(track.clientWidth, 1));
+        const go = (i) => {
+          const n = Math.max(0, Math.min(i, slides.length - 1));
+          track.scrollTo({ left: n * track.clientWidth });
+        };
+        const update = () => {
+          const i = index();
+          thumbs.forEach((t, n) => t.setAttribute('aria-current', n === i ? 'true' : 'false'));
+          if (prev) prev.disabled = i <= 0;
+          if (next) next.disabled = i >= slides.length - 1;
+        };
+        let raf;
+        track.addEventListener('scroll', () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(update); }, { passive: true });
+        if (prev) prev.addEventListener('click', () => go(index() - 1));
+        if (next) next.addEventListener('click', () => go(index() + 1));
+        thumbs.forEach((t) => t.addEventListener('click', () => go(Number(t.dataset.thumb))));
+        update();
+      }
+
+      /* ---------- Contador (se reinicia solo al terminar) ---------- */
+      initTimer() {
+        const h = this.querySelector('[data-h]');
+        const m = this.querySelector('[data-m]');
+        const sEl = this.querySelector('[data-s]');
+        const minutes = Number(this.dataset.timer) || 0;
+        if (!h || !minutes) return;
+        const key = 'bz-offer-end-' + this.dataset.key;
+        const read = () => { try { return Number(localStorage.getItem(key)) || 0; } catch (e) { return 0; } };
+        const write = (v) => { try { localStorage.setItem(key, String(v)); } catch (e) {} };
+        let end = read();
+        const pad = (v) => String(v).padStart(2, '0');
+        const tick = () => {
+          let left = end - Date.now();
+          if (left <= 0) { end = Date.now() + minutes * 60000; write(end); left = end - Date.now(); }
+          const t = Math.floor(left / 1000);
+          h.textContent = pad(Math.floor(t / 3600));
+          m.textContent = pad(Math.floor((t % 3600) / 60));
+          sEl.textContent = pad(t % 60);
+        };
+        tick();
+        this.timerId = setInterval(tick, 1000);
+      }
+
+      /* ---------- Packs, upsell, regalos y carrito ---------- */
+      initTiers() {
+        const root = this;
+        const tiers = Array.from(this.querySelectorAll('.gt'));
+        const cta = this.querySelector('[data-cta]');
+        const errorEl = this.querySelector('[data-error]');
+        if (!tiers.length || !cta) return;
+        let gifts = [];
+        try { gifts = JSON.parse(this.querySelector('[data-gifts]').textContent); } catch (e) {}
+        const bumpId = Number(this.dataset.bumpId) || null;
+        const bumpFreeId = Number(this.dataset.bumpFreeId) || null;
+        const bumpFreeMin = Number(this.dataset.bumpFreeMin) || Infinity;
+        let bumpOn = false;
+        let wasFree = false;
+
+        const active = () => root.querySelector('.gt.is-active') || tiers[0];
+        const bottlesOf = (t) => Number(t.dataset.bottles);
+        const render = () => {
+          const tier = active();
+          const free = bottlesOf(tier) >= bumpFreeMin;
+          if (free && !wasFree) bumpOn = true;
+          wasFree = free;
+          root.classList.toggle('bump-on', bumpOn && !!bumpId);
+          tiers.forEach((t) => {
+            const row = t.querySelector('[data-bump-row]');
+            if (!row) return;
+            const on = t === tier;
+            row.setAttribute('tabindex', on ? '0' : '-1');
+            row.setAttribute('aria-checked', on && bumpOn ? 'true' : 'false');
+          });
+        };
+        const select = (tier) => {
+          tiers.forEach((t) => {
+            const on = t === tier;
+            t.classList.toggle('is-active', on);
+            t.querySelector('.gt__radio').checked = on;
+          });
+          render();
+        };
+
+        tiers.forEach((tier) => {
+          const radio = tier.querySelector('.gt__radio');
+          radio.addEventListener('change', () => select(tier));
+          tier.addEventListener('click', (e) => {
+            const row = e.target.closest('[data-bump-row]');
+            if (row && tier.classList.contains('is-active')) { bumpOn = !bumpOn; render(); return; }
+            if (!radio.disabled && !tier.classList.contains('is-active')) select(tier);
+          });
+          const row = tier.querySelector('[data-bump-row]');
+          if (row) row.addEventListener('keydown', (e) => {
+            if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); row.click(); }
+          });
+        });
+
+        this.addEventListener('shopify:block:select', (e) => {
+          if (e.target.classList && e.target.classList.contains('gt')) select(e.target);
+        });
+
+        const post = (body) => fetch(root.dataset.cartAdd, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(body)
+        });
+        const resetCta = () => setTimeout(() => { cta.classList.remove('is-done'); cta.removeAttribute('aria-busy'); }, 600);
+        const openThemeCart = () => {
+          ['cart:refresh', 'cart:updated', 'cart:build'].forEach((n) => document.dispatchEvent(new CustomEvent(n, { bubbles: true })));
+          const toggle = document.querySelector('[data-cart-drawer-toggle], [data-drawer-toggle="cart"], .js-drawer-open-cart, [aria-controls="CartDrawer"], [aria-controls="cart-drawer"]');
+          if (toggle) { toggle.click(); return true; }
+          return false;
+        };
+
+        cta.addEventListener('click', () => {
+          const tier = active();
+          const bottles = bottlesOf(tier);
+          const offer = tier.dataset.name;
+          const items = [{ id: Number(tier.dataset.variantId), quantity: Number(tier.dataset.qty) || 1, properties: { _oferta: offer } }];
+          if (bumpOn && bumpId) items.push({ id: (bottles >= bumpFreeMin && bumpFreeId) ? bumpFreeId : bumpId, quantity: 1, properties: { _oferta: offer + ' · upsell' } });
+          const giftItems = gifts
+            .filter((g) => g.variantId && bottles >= g.min)
+            .map((g) => ({ id: g.variantId, quantity: 1, properties: { _regalo: offer } }));
+
+          const busyText = cta.querySelector('[data-busy-text]');
+          const busyDefault = busyText.dataset.default || busyText.textContent;
+          busyText.dataset.default = busyDefault;
+          busyText.textContent = busyDefault;
+          cta.classList.add('is-loading');
+          cta.setAttribute('aria-busy', 'true');
+          errorEl.hidden = true;
+
+          const drawer = document.querySelector('cart-drawer');
+          const useDrawer = root.dataset.redirect === 'drawer' && drawer && typeof drawer.renderContents === 'function';
+          const payload = { items };
+          if (useDrawer) {
+            payload.sections = ['cart-drawer', 'cart-icon-bubble'];
+            payload.sections_url = window.location.pathname;
+          }
+          let cartData;
+          const giftReq = giftItems.length ? post({ items: giftItems }).catch(() => {}) : Promise.resolve();
+          giftReq
+            .then(() => post(payload))
+            .then((res) => res.json().then((d) => { if (!res.ok) throw d; return d; }))
+            .then((d) => {
+              cartData = d;
+              cta.classList.remove('is-loading');
+              cta.classList.add('is-done');
+              busyText.textContent = '✓';
+              return new Promise((r) => setTimeout(r, useDrawer ? 350 : 450));
+            })
+            .then(() => {
+              const mode = root.dataset.redirect;
+              if (mode === 'checkout') { window.location.href = '/checkout'; return; }
+              if (mode === 'drawer') {
+                if (useDrawer && cartData && cartData.sections) {
+                  try {
+                    const inner = drawer.querySelector('.drawer__inner');
+                    if (inner) inner.classList.remove('is-empty');
+                    drawer.classList.remove('is-empty');
+                    drawer.renderContents(cartData);
+                    resetCta();
+                    return;
+                  } catch (e) { /* el tema no responde: vamos al carrito */ }
+                }
+                if (openThemeCart()) { resetCta(); return; }
+              }
+              window.location.href = root.dataset.cartUrl;
+            })
+            .catch((err) => {
+              cta.classList.remove('is-loading');
+              cta.removeAttribute('aria-busy');
+              errorEl.textContent = (err && (err.description || err.message)) || 'No pudimos agregar el pack. Probá de nuevo.';
+              errorEl.hidden = false;
+            });
+        });
+
+        select(active());
+      }
+    });
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Bronzer · Oferta",
+  "tag": "section",
+  "class": "section-bronzer-oferta",
+  "max_blocks": 40,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Producto"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Producto",
+      "info": "En la plantilla de producto podés dejarlo vacío: usa el producto de la página."
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título (opcional)",
+      "info": "Si lo dejás vacío usa el nombre del producto."
+    },
+    {
+      "type": "select",
+      "id": "gallery_fit",
+      "label": "Fotos de la galería",
+      "options": [
+        {
+          "value": "contain",
+          "label": "Completas"
+        },
+        {
+          "value": "cover",
+          "label": "Rellenar (recorta)"
+        }
+      ],
+      "default": "cover"
+    },
+    {
+      "type": "header",
+      "content": "Galería"
+    },
+    {
+      "type": "paragraph",
+      "content": "En la cinta podés usar [max_off] para mostrar el mayor % de descuento."
+    },
+    {
+      "type": "inline_richtext",
+      "id": "ribbon",
+      "label": "Cinta sobre la foto",
+      "default": "Oferta: hasta <b>[max_off]</b> off + envío gratis"
+    },
+    {
+      "type": "checkbox",
+      "id": "features_mobile",
+      "label": "Mostrar íconos sobre la foto en celular",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Información del producto"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "rating_text",
+      "label": "Calificación",
+      "default": "<b>4.9</b> · +3mil reseñas"
+    },
+    {
+      "type": "text",
+      "id": "hot_badge",
+      "label": "Etiqueta",
+      "default": "Se agota rápido"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "promo_line",
+      "label": "Línea de promoción",
+      "default": "Pedí hoy y ahorrá hasta <b>[max_off]</b>"
+    },
+    {
+      "type": "header",
+      "content": "Selector de packs"
+    },
+    {
+      "type": "select",
+      "id": "pack_mode",
+      "label": "Cómo se cobra cada pack",
+      "options": [
+        {
+          "value": "discount",
+          "label": "Descuento automático (N frascos de la misma variante)"
+        },
+        {
+          "value": "variant",
+          "label": "Cada pack es una variante"
+        }
+      ],
+      "default": "discount"
+    },
+    {
+      "type": "text",
+      "id": "selector_heading",
+      "label": "Título del selector",
+      "default": "Elegí tu pack"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "tip",
+      "label": "Recomendación",
+      "default": "<b>Recomendado:</b> 3 meses para un tono duradero"
+    },
+    {
+      "type": "number",
+      "id": "days_per_bottle",
+      "label": "Días que dura un frasco",
+      "info": "Se usa para el precio por día. 60 cápsulas, 1 por día = 60.",
+      "default": 60
+    },
+    {
+      "type": "checkbox",
+      "id": "show_per_day",
+      "label": "Mostrar precio por día",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "per_day_label",
+      "label": "Texto del precio por día",
+      "default": "por día"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_off",
+      "label": "Mostrar % OFF",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_savings",
+      "label": "Mostrar \"Ahorrás $\"",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "savings_label",
+      "label": "Texto de ahorro",
+      "default": "Ahorrás"
+    },
+    {
+      "type": "text",
+      "id": "unit_plural",
+      "label": "Unidad (plural)",
+      "default": "frascos"
+    },
+    {
+      "type": "header",
+      "content": "Regalos"
+    },
+    {
+      "type": "text",
+      "id": "gifts_label",
+      "label": "Texto de regalos incluidos",
+      "default": "regalos incluidos"
+    },
+    {
+      "type": "text",
+      "id": "gifts_from_label",
+      "label": "Texto de regalos bloqueados",
+      "default": "Regalos desde"
+    },
+    {
+      "type": "text",
+      "id": "gift_need_label",
+      "label": "Texto de regalo bloqueado",
+      "default": "Con"
+    },
+    {
+      "type": "header",
+      "content": "Botón y carrito"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Texto del botón",
+      "default": "Agregar al carrito"
+    },
+    {
+      "type": "text",
+      "id": "cta_sub",
+      "label": "Texto chico del botón",
+      "default": "Envío gratis · 3 cuotas sin interés"
+    },
+    {
+      "type": "text",
+      "id": "adding_label",
+      "label": "Texto mientras agrega",
+      "default": "Agregando…"
+    },
+    {
+      "type": "select",
+      "id": "redirect",
+      "label": "Después de agregar",
+      "options": [
+        {
+          "value": "drawer",
+          "label": "Abrir carrito lateral"
+        },
+        {
+          "value": "cart",
+          "label": "Ir a la página del carrito"
+        },
+        {
+          "value": "checkout",
+          "label": "Ir directo al checkout"
+        }
+      ],
+      "default": "drawer"
+    },
+    {
+      "type": "header",
+      "content": "Tipografía y colores"
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_font",
+      "label": "Tipografía de títulos",
+      "default": "playfair_display_n7"
+    },
+    {
+      "type": "color",
+      "id": "color_bg",
+      "label": "Fondo",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "color_accent",
+      "label": "Acento",
+      "default": "#F2B47F"
+    },
+    {
+      "type": "color",
+      "id": "color_soft",
+      "label": "Fondo suave",
+      "default": "#FEF5EC"
+    },
+    {
+      "type": "color",
+      "id": "color_brand",
+      "label": "Color de marca",
+      "default": "#9A4F1C"
+    },
+    {
+      "type": "color",
+      "id": "color_ink",
+      "label": "Texto",
+      "default": "#3B1F14"
+    },
+    {
+      "type": "color",
+      "id": "color_cta",
+      "label": "Botón",
+      "default": "#3B1F14"
+    },
+    {
+      "type": "color",
+      "id": "color_cta_text",
+      "label": "Texto del botón",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "color_stars",
+      "label": "Estrellas",
+      "default": "#E0A33A"
+    },
+    {
+      "type": "header",
+      "content": "Espaciado"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Margen superior",
+      "min": 0,
+      "max": 120,
+      "step": 8,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Margen inferior",
+      "min": 0,
+      "max": 120,
+      "step": 8,
+      "unit": "px",
+      "default": 56
+    }
+  ],
+  "blocks": [
+    {
+      "type": "encabezado",
+      "name": "Encabezado de oferta",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Escribí [max_off] y se reemplaza solo por el mayor % de descuento de tus packs."
+        },
+        {
+          "type": "text",
+          "id": "top_eyebrow",
+          "label": "Texto superior",
+          "default": "¡Oferta por tiempo limitado!"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "top_heading",
+          "label": "Título",
+          "default": "Ahorrá hasta [max_off] en tu primer pedido"
+        },
+        {
+          "type": "richtext",
+          "id": "top_text",
+          "label": "Texto",
+          "default": "<p>Tu bronceado natural en 18 días, sin sol ni camas solares. Elegí tu protocolo y llevate regalos exclusivos. Envío gratis a todo el país.</p>"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "top_rating",
+          "label": "Calificación",
+          "default": "<b>4.9/5</b> estrellas"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "top_reviews",
+          "label": "Reseñas",
+          "default": "<b>+3mil</b> clientas"
+        }
+      ]
+    },
+    {
+      "type": "contador",
+      "name": "Contador regresivo",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "timer_label",
+          "label": "Texto del contador",
+          "default": "Oferta por tiempo limitado"
+        },
+        {
+          "type": "text",
+          "id": "timer_prefix",
+          "label": "Texto antes del reloj",
+          "default": "Termina en"
+        },
+        {
+          "type": "range",
+          "id": "timer_minutes",
+          "label": "Duración",
+          "info": "Cuenta regresiva por visitante. Al llegar a cero vuelve a empezar.",
+          "min": 5,
+          "max": 120,
+          "step": 5,
+          "unit": "min",
+          "default": 15
+        }
+      ]
+    },
+    {
+      "type": "upsell",
+      "name": "Upsell",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "product",
+          "id": "bump_product",
+          "label": "Producto del upsell"
+        },
+        {
+          "type": "product",
+          "id": "bump_offer_product",
+          "label": "Producto de oferta del upsell (opcional)",
+          "info": "Con 2 variantes: 1ª precio promo, 2ª regalo $0. Si lo elegís, no necesitás descuentos."
+        },
+        {
+          "type": "text",
+          "id": "bump_title",
+          "label": "Nombre del upsell",
+          "default": "CELUFIT"
+        },
+        {
+          "type": "number",
+          "id": "bump_price",
+          "label": "Precio promo del upsell",
+          "info": "Sin puntos ni signo. Solo se usa si no elegís producto de oferta.",
+          "default": 23990
+        },
+        {
+          "type": "number",
+          "id": "bump_free_min",
+          "label": "Upsell de regalo desde (frascos)",
+          "default": 6
+        },
+        {
+          "type": "inline_richtext",
+          "id": "bump_text",
+          "label": "Texto del upsell",
+          "default": "Tenés <b>50% OFF</b> en CELUFIT para lucir tus piernas este verano"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "bump_text_free",
+          "label": "Texto del upsell de regalo",
+          "default": "🎁 <b>CELUFIT de regalo</b> para lucir tus piernas este verano"
+        },
+        {
+          "type": "text",
+          "id": "free_label",
+          "label": "Texto de precio gratis",
+          "default": "GRATIS"
+        }
+      ]
+    },
+    {
+      "type": "garantia",
+      "name": "Garantía",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "guarantee_title",
+          "label": "Título",
+          "default": "Garantía de 30 días."
+        },
+        {
+          "type": "text",
+          "id": "guarantee_text",
+          "label": "Texto",
+          "default": "Si no ves tu tono dorado, te devolvemos el dinero."
+        }
+      ]
+    },
+    {
+      "type": "cupon",
+      "name": "Descuento aplicado",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "coupon_code",
+          "label": "Código (opcional)",
+          "info": "Solo se muestra; aplicalo con un descuento automático."
+        },
+        {
+          "type": "text",
+          "id": "coupon_text",
+          "label": "Texto del descuento",
+          "default": "Descuento por tiempo limitado aplicado automáticamente"
+        }
+      ]
+    },
+    {
+      "type": "pack",
+      "name": "Pack",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Nombre",
+          "default": "Protocolo 60 días"
+        },
+        {
+          "type": "text",
+          "id": "meta",
+          "label": "Detalle",
+          "default": "1 frasco"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Texto al seleccionarlo (opcional)"
+        },
+        {
+          "type": "text",
+          "id": "badges",
+          "label": "Etiquetas",
+          "info": "Separadas por coma. La primera sale en oscuro.",
+          "default": "Envío gratis, 3 cuotas sin interés"
+        },
+        {
+          "type": "number",
+          "id": "bottles",
+          "label": "Cantidad de frascos",
+          "default": 1
+        },
+        {
+          "type": "number",
+          "id": "price",
+          "label": "Precio del pack (modo descuento)",
+          "info": "Sin puntos ni signo. Ej: 53990. Tiene que coincidir con tu descuento automático."
+        },
+        {
+          "type": "number",
+          "id": "variant_position",
+          "label": "Posición de la variante (modo variantes)",
+          "info": "1 = primera variante del producto.",
+          "default": 1
+        },
+        {
+          "type": "checkbox",
+          "id": "preselected",
+          "label": "Seleccionado al entrar",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "regalo",
+      "name": "Regalo",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Nombre",
+          "default": "Guía Rutina Glow"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Valor tachado",
+          "default": "$25.000"
+        },
+        {
+          "type": "text",
+          "id": "tag",
+          "label": "Etiqueta",
+          "default": "GRATIS"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_raffle",
+          "label": "Es un sorteo (no muestra $0)",
+          "default": false
+        },
+        {
+          "type": "number",
+          "id": "min_bottles",
+          "label": "Se desbloquea desde (frascos)",
+          "default": 2
+        },
+        {
+          "type": "product",
+          "id": "gift_product",
+          "label": "Producto regalo (opcional)",
+          "info": "Si lo elegís, se agrega al carrito. Tiene que tener precio $0 y estar activo en Tienda online."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Imagen (opcional)"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Ícono si no hay imagen",
+          "options": [
+            {
+              "value": "gift",
+              "label": "Regalo"
+            },
+            {
+              "value": "book",
+              "label": "Libro / guía"
+            },
+            {
+              "value": "leaf",
+              "label": "Hoja"
+            },
+            {
+              "value": "sun",
+              "label": "Sol"
+            },
+            {
+              "value": "truck",
+              "label": "Envío"
+            },
+            {
+              "value": "sparkle",
+              "label": "Brillo"
+            },
+            {
+              "value": "heart",
+              "label": "Corazón"
+            }
+          ],
+          "default": "gift"
+        }
+      ]
+    },
+    {
+      "type": "destacado",
+      "name": "Ícono sobre la foto",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Ícono",
+          "options": [
+            {
+              "value": "sun",
+              "label": "Sol"
+            },
+            {
+              "value": "sun_off",
+              "label": "Sol tachado"
+            },
+            {
+              "value": "drop",
+              "label": "Gota"
+            },
+            {
+              "value": "shield",
+              "label": "Escudo"
+            },
+            {
+              "value": "sparkle",
+              "label": "Brillo"
+            },
+            {
+              "value": "leaf",
+              "label": "Hoja"
+            },
+            {
+              "value": "heart",
+              "label": "Corazón"
+            },
+            {
+              "value": "clock",
+              "label": "Reloj"
+            },
+            {
+              "value": "capsule",
+              "label": "Cápsula"
+            },
+            {
+              "value": "badge",
+              "label": "Sello"
+            },
+            {
+              "value": "bolt",
+              "label": "Rayo"
+            },
+            {
+              "value": "check",
+              "label": "Check"
+            }
+          ],
+          "default": "sun"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texto",
+          "default": "Tono dorado natural"
+        }
+      ]
+    },
+    {
+      "type": "beneficio",
+      "name": "Beneficio (bajo la foto)",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Ícono",
+          "options": [
+            {
+              "value": "sun",
+              "label": "Sol"
+            },
+            {
+              "value": "sun_off",
+              "label": "Sol tachado"
+            },
+            {
+              "value": "drop",
+              "label": "Gota"
+            },
+            {
+              "value": "shield",
+              "label": "Escudo"
+            },
+            {
+              "value": "sparkle",
+              "label": "Brillo"
+            },
+            {
+              "value": "leaf",
+              "label": "Hoja"
+            },
+            {
+              "value": "heart",
+              "label": "Corazón"
+            },
+            {
+              "value": "clock",
+              "label": "Reloj"
+            },
+            {
+              "value": "capsule",
+              "label": "Cápsula"
+            },
+            {
+              "value": "badge",
+              "label": "Sello"
+            },
+            {
+              "value": "bolt",
+              "label": "Rayo"
+            },
+            {
+              "value": "check",
+              "label": "Check"
+            }
+          ],
+          "default": "sun"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texto",
+          "default": "Tono dorado"
+        }
+      ]
+    },
+    {
+      "type": "check",
+      "name": "Check bajo el botón",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texto",
+          "default": "Envío gratis a todo el país"
+        }
+      ]
+    },
+    {
+      "type": "confianza",
+      "name": "Ícono de confianza",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Ícono",
+          "options": [
+            {
+              "value": "badge",
+              "label": "Sello"
+            },
+            {
+              "value": "truck",
+              "label": "Envío"
+            },
+            {
+              "value": "users",
+              "label": "Clientas"
+            },
+            {
+              "value": "card",
+              "label": "Tarjeta / cuotas"
+            },
+            {
+              "value": "lock",
+              "label": "Pago seguro"
+            },
+            {
+              "value": "box",
+              "label": "Caja"
+            },
+            {
+              "value": "refresh",
+              "label": "Devolución"
+            },
+            {
+              "value": "shield",
+              "label": "Escudo"
+            },
+            {
+              "value": "heart",
+              "label": "Corazón"
+            }
+          ],
+          "default": "badge"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texto",
+          "default": "Garantía de 30 días"
+        }
+      ]
+    },
+    {
+      "type": "acordeon",
+      "name": "Desplegable",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Título",
+          "default": "Modo de uso"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Contenido",
+          "default": "<p>Tomá 1 cápsula diaria con un vaso de agua.</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "open",
+          "label": "Abierto al cargar",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bronzer · Oferta",
+      "blocks": [
+        {
+          "type": "encabezado"
+        },
+        {
+          "type": "contador"
+        },
+        {
+          "type": "upsell"
+        },
+        {
+          "type": "pack",
+          "settings": {
+            "title": "Glow 12 meses",
+            "meta": "6 frascos",
+            "subtitle": "Un año entero con tu tono dorado: llegás al verano y lo mantenés todo el año.",
+            "badges": "Envío gratis, ⭐ Mejor precio, Pagás 3 llevás 6",
+            "bottles": 6,
+            "price": 113700,
+            "variant_position": 4
+          }
+        },
+        {
+          "type": "pack",
+          "settings": {
+            "title": "Protocolo Verano Completo",
+            "meta": "3 frascos · 180 días",
+            "subtitle": "Empezás ahora y llegás con el tono desde octubre hasta el último día de marzo.",
+            "badges": "🔥 Más comprado, Recomendado, Pagás 2 llevás 3",
+            "bottles": 3,
+            "price": 93300,
+            "variant_position": 3,
+            "preselected": true
+          }
+        },
+        {
+          "type": "pack",
+          "settings": {
+            "title": "Protocolo 120 días",
+            "meta": "2 frascos",
+            "badges": "Envío gratis, 3 cuotas sin interés, 60% OFF 2da unidad",
+            "bottles": 2,
+            "price": 75800,
+            "variant_position": 2
+          }
+        },
+        {
+          "type": "pack",
+          "settings": {
+            "title": "Protocolo 60 días",
+            "meta": "1 frasco",
+            "badges": "Envío gratis, 3 cuotas sin interés",
+            "bottles": 1,
+            "price": 53990,
+            "variant_position": 1
+          }
+        },
+        {
+          "type": "regalo",
+          "settings": {
+            "title": "Guía Rutina Glow",
+            "value": "$25.000",
+            "tag": "GRATIS",
+            "min_bottles": 2,
+            "icon": "book"
+          }
+        },
+        {
+          "type": "regalo",
+          "settings": {
+            "title": "Guía Alimentación para un tono dorado",
+            "value": "$20.000",
+            "tag": "GRATIS",
+            "min_bottles": 3,
+            "icon": "leaf"
+          }
+        },
+        {
+          "type": "regalo",
+          "settings": {
+            "title": "Viaje al Caribe para Enero",
+            "value": "",
+            "tag": "SORTEO",
+            "is_raffle": true,
+            "min_bottles": 3,
+            "icon": "sun"
+          }
+        },
+        {
+          "type": "destacado",
+          "settings": {
+            "icon": "sun",
+            "text": "Tono dorado natural"
+          }
+        },
+        {
+          "type": "destacado",
+          "settings": {
+            "icon": "sun_off",
+            "text": "Sin sol ni camas solares"
+          }
+        },
+        {
+          "type": "destacado",
+          "settings": {
+            "icon": "clock",
+            "text": "Resultados en 18 días"
+          }
+        },
+        {
+          "type": "destacado",
+          "settings": {
+            "icon": "capsule",
+            "text": "1 cápsula diaria"
+          }
+        },
+        {
+          "type": "beneficio",
+          "settings": {
+            "icon": "sun",
+            "text": "Tono dorado"
+          }
+        },
+        {
+          "type": "beneficio",
+          "settings": {
+            "icon": "shield",
+            "text": "Antioxidante"
+          }
+        },
+        {
+          "type": "beneficio",
+          "settings": {
+            "icon": "sparkle",
+            "text": "Piel sana"
+          }
+        },
+        {
+          "type": "beneficio",
+          "settings": {
+            "icon": "leaf",
+            "text": "Sin gluten"
+          }
+        },
+        {
+          "type": "check",
+          "settings": {
+            "text": "Envío gratis a todo el país"
+          }
+        },
+        {
+          "type": "check",
+          "settings": {
+            "text": "3 cuotas sin interés"
+          }
+        },
+        {
+          "type": "check",
+          "settings": {
+            "text": "Regalos exclusivos"
+          }
+        },
+        {
+          "type": "check",
+          "settings": {
+            "text": "Garantía de 30 días"
+          }
+        },
+        {
+          "type": "confianza",
+          "settings": {
+            "icon": "badge",
+            "text": "Garantía de 30 días"
+          }
+        },
+        {
+          "type": "confianza",
+          "settings": {
+            "icon": "truck",
+            "text": "Envío gratis a todo el país"
+          }
+        },
+        {
+          "type": "confianza",
+          "settings": {
+            "icon": "users",
+            "text": "+3mil clientas felices"
+          }
+        },
+        {
+          "type": "acordeon",
+          "settings": {
+            "title": "Modo de uso",
+            "content": "<p>Tomá 1 cápsula diaria con un vaso de agua. Para mejores resultados, tomala todos los días a la misma hora.</p>"
+          }
+        },
+        {
+          "type": "acordeon",
+          "settings": {
+            "title": "¿Es para mí?",
+            "content": "<p>Es para vos si querés un tono dorado y parejo sin exponerte al sol, sin camas solares y sin autobronceantes que manchan. Si estás embarazada, en período de lactancia o con alguna condición médica, consultá a tu médico.</p>"
+          }
+        },
+        {
+          "type": "acordeon",
+          "settings": {
+            "title": "Ingredientes",
+            "content": "<p>Vitamina C, vitamina B3 (nicotinamida), vitamina E, vitamina B5, vitamina B6, ácido fólico, vitamina B12, extracto seco de cúrcuma, betacaroteno y licopeno. Cápsula de gelatina. Libre de gluten.</p>"
+          }
+        },
+        {
+          "type": "acordeon",
+          "settings": {
+            "title": "Envíos y garantía",
+            "content": "<p>Envío gratis a todo el país. Si no ves tu tono dorado en 30 días, te devolvemos el dinero.</p>"
+          }
+        },
+        {
+          "type": "garantia"
+        },
+        {
+          "type": "cupon"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
