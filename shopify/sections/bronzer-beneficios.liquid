@@ -1,0 +1,768 @@
+{%- comment -%}
+  Bronzer · Beneficios
+  Foto grande del producto + grilla de beneficios con ícono.
+  Todo es editable desde Tienda online > Personalizar:
+  - Encabezado: bloques Subtítulo, Título y Texto.
+  - Beneficios: un bloque por beneficio (ícono de la lista o ícono propio).
+  - Sellos y Botón: van debajo de los beneficios.
+{%- endcomment -%}
+
+{%- liquid
+  assign s = section.settings
+  assign sid = '#bz-ben-' | append: section.id
+  assign header_types = 'subtitulo,titulo,texto' | split: ','
+  assign animate = s.float
+  if request.design_mode
+    assign animate = false
+  endif
+-%}
+
+<style>
+  {{ s.heading_font | font_face: font_display: 'swap' }}
+
+  {{ sid }} {
+    --bz-bg: {{ s.color_bg | default: '#FFFFFF' }};
+    --bz-text: {{ s.color_text | default: '#1E140F' }};
+    --bz-text-soft: {{ s.color_text | default: '#1E140F' | color_modify: 'alpha', 0.75 }};
+    --bz-line: {{ s.color_text | default: '#1E140F' | color_modify: 'alpha', 0.12 }};
+    --bz-accent: {{ s.color_accent | default: '#D9822B' }};
+    --bz-glow: {{ s.color_glow | default: '#F6D3A8' }};
+    --bz-btn-bg: {{ s.color_button_bg | default: '#B46F34' }};
+    --bz-btn-text: {{ s.color_button_text | default: '#FFFFFF' }};
+    --bz-display-font: {{ s.heading_font.family }}, {{ s.heading_font.fallback_families }};
+    --bz-display-weight: {{ s.heading_font.weight }};
+    --bz-icon: {{ s.icon_size }}px;
+    --bz-media-w: {{ s.image_width }}%;
+    --bz-pt: {{ s.padding_top }}px;
+    --bz-pb: {{ s.padding_bottom }}px;
+  }
+
+  {{ sid }}, {{ sid }} *, {{ sid }} *::before, {{ sid }} *::after { box-sizing: border-box; }
+  {{ sid }} p, {{ sid }} li, {{ sid }} span { color: inherit; }
+
+  {{ sid }} {
+    display: block;
+    overflow: hidden;
+    background: var(--bz-bg);
+    color: var(--bz-text);
+    padding: calc(var(--bz-pt) * 0.7) 20px calc(var(--bz-pb) * 0.7);
+  }
+  {{ sid }} .bz-ben__inner { max-width: 1240px; margin: 0 auto; }
+
+  /* ---------- Encabezado ---------- */
+  {{ sid }} .bz-ben__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    max-width: 760px;
+    margin: 0 auto 32px;
+    text-align: center;
+  }
+  {{ sid }} .bz-ben__header > * { margin: 0; }
+  {{ sid }} .bz-ben__eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--bz-accent);
+  }
+  {{ sid }} .bz-ben__heading {
+    font-family: var(--bz-display-font);
+    font-weight: var(--bz-display-weight);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--bz-text);
+    text-wrap: balance;
+  }
+  {{ sid }} .bz-ben__heading--medium { font-size: clamp(30px, 7.5vw, 38px); }
+  {{ sid }} .bz-ben__heading--large { font-size: clamp(34px, 9vw, 46px); }
+  {{ sid }} .bz-ben__heading em { font-style: italic; color: var(--bz-accent); }
+  {{ sid }} .bz-ben__sub {
+    max-width: 56ch;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--bz-text-soft);
+  }
+  {{ sid }} .bz-ben__sub p { margin: 0; }
+  {{ sid }} .bz-ben__sub p + p { margin-top: 0.6em; }
+
+  /* ---------- Layout ---------- */
+  {{ sid }} .bz-ben__layout { display: flex; flex-direction: column; gap: 32px; }
+  {{ sid }}.bz-ben--mobile-text-first .bz-ben__media { order: 2; }
+
+  /* ---------- Producto ---------- */
+  {{ sid }} .bz-ben__media {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+    aspect-ratio: 1 / 1;
+  }
+  {{ sid }} .bz-ben__glow {
+    position: absolute;
+    inset: 6%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 50%, var(--bz-glow) 0%, transparent 68%);
+    opacity: 0.9;
+  }
+  {{ sid }} .bz-ben__product {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+  }
+  {{ sid }} .bz-ben__product img,
+  {{ sid }} .bz-ben__product svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: contain;
+  }
+  {{ sid }} .bz-ben__product svg { fill: var(--bz-line); }
+  {{ sid }}.bz-ben--fit-cover .bz-ben__product img { object-fit: cover; border-radius: {{ s.image_radius }}px; }
+  {{ sid }} .bz-ben__shadow {
+    position: absolute;
+    left: 22%;
+    right: 22%;
+    bottom: 6%;
+    height: 7%;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(30, 20, 15, 0.28) 0%, transparent 70%);
+    filter: blur(2px);
+  }
+  {{ sid }}.bz-ben--animate .bz-ben__product { animation: bz-ben-float 6s ease-in-out infinite; }
+  {{ sid }}.bz-ben--animate .bz-ben__shadow { animation: bz-ben-shadow 6s ease-in-out infinite; }
+  @keyframes bz-ben-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+  @keyframes bz-ben-shadow { 0%, 100% { transform: scaleX(1); opacity: 1; } 50% { transform: scaleX(0.86); opacity: 0.7; } }
+
+  /* ---------- Beneficios ---------- */
+  {{ sid }} .bz-ben__content { display: flex; flex-direction: column; gap: 28px; }
+  {{ sid }} .bz-ben__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 28px 20px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  {{ sid }}.bz-ben--mobile-2 .bz-ben__grid { grid-template-columns: 1fr 1fr; }
+  {{ sid }} .bz-ben__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+  }
+  {{ sid }}.bz-ben--align-left .bz-ben__item { align-items: flex-start; text-align: left; }
+  {{ sid }}.bz-ben--layout-row .bz-ben__item { flex-direction: row; align-items: flex-start; text-align: left; gap: 16px; }
+  {{ sid }} .bz-ben__item > * { margin: 0; }
+  {{ sid }} .bz-ben__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: var(--bz-icon);
+    height: var(--bz-icon);
+    color: var(--bz-accent);
+  }
+  {{ sid }}.bz-ben--icon-circle .bz-ben__icon {
+    width: calc(var(--bz-icon) * 1.6);
+    height: calc(var(--bz-icon) * 1.6);
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--bz-accent) 12%, transparent);
+  }
+  {{ sid }} .bz-ben__icon svg,
+  {{ sid }} .bz-ben__icon img {
+    display: block;
+    width: var(--bz-icon);
+    height: var(--bz-icon);
+    max-width: none;
+    object-fit: contain;
+  }
+  {{ sid }} .bz-ben__copy { display: flex; flex-direction: column; gap: 8px; }
+  {{ sid }} .bz-ben__copy > * { margin: 0; }
+  {{ sid }} .bz-ben__title {
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--bz-text);
+  }
+  {{ sid }} .bz-ben__text {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--bz-text-soft);
+  }
+  {{ sid }} .bz-ben__text p { margin: 0; }
+
+  /* ---------- Sellos ---------- */
+  {{ sid }} .bz-ben__badges {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  {{ sid }}.bz-ben--align-left .bz-ben__badges { justify-content: flex-start; }
+  {{ sid }} .bz-ben__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--bz-line);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  {{ sid }} .bz-ben__badge svg { width: 14px; height: 14px; flex: 0 0 14px; color: var(--bz-accent); }
+
+  /* ---------- Botón ---------- */
+  {{ sid }} .bz-ben__cta { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  {{ sid }}.bz-ben--align-left .bz-ben__cta { align-items: flex-start; }
+  {{ sid }} .bz-ben__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    max-width: 380px;
+    min-height: 58px;
+    padding: 0 28px;
+    border-radius: {{ s.button_radius }}px;
+    background: var(--bz-btn-bg);
+    color: var(--bz-btn-text);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: transform 0.25s ease, filter 0.25s ease;
+  }
+  {{ sid }} .bz-ben__button:hover { transform: translateY(-2px); filter: brightness(1.07); color: var(--bz-btn-text); }
+  {{ sid }} .bz-ben__button svg { width: 18px; height: 18px; flex: 0 0 18px; }
+  {{ sid }} .bz-ben__note { margin: 0; font-size: 13px; color: var(--bz-text-soft); }
+
+  /* ---------- Tablet ---------- */
+  @media screen and (min-width: 750px) {
+    {{ sid }} { padding: var(--bz-pt) 32px var(--bz-pb); }
+    {{ sid }} .bz-ben__header { margin-bottom: 48px; gap: 16px; }
+    {{ sid }} .bz-ben__heading--medium { font-size: clamp(36px, 4.4vw, 50px); }
+    {{ sid }} .bz-ben__heading--large { font-size: clamp(42px, 5.4vw, 66px); }
+    {{ sid }} .bz-ben__sub { font-size: 18px; }
+    {{ sid }} .bz-ben__grid,
+    {{ sid }}.bz-ben--mobile-2 .bz-ben__grid { grid-template-columns: repeat({{ s.columns_desktop }}, minmax(0, 1fr)); gap: 44px 40px; }
+    {{ sid }} .bz-ben__title { font-size: 16px; }
+    {{ sid }} .bz-ben__text { font-size: 16px; }
+  }
+
+  /* ---------- Escritorio ---------- */
+  @media screen and (min-width: 990px) {
+    {{ sid }} .bz-ben__layout {
+      display: grid;
+      grid-template-columns: var(--bz-media-w) minmax(0, 1fr);
+      align-items: center;
+      gap: 64px;
+    }
+    {{ sid }} .bz-ben__media,
+    {{ sid }}.bz-ben--mobile-text-first .bz-ben__media { order: 0; max-width: none; }
+    {{ sid }}.bz-ben--img-right .bz-ben__layout { grid-template-columns: minmax(0, 1fr) var(--bz-media-w); }
+    {{ sid }}.bz-ben--img-right .bz-ben__media { order: 2; }
+    {{ sid }} .bz-ben__content { gap: 40px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    {{ sid }}.bz-ben--animate .bz-ben__product,
+    {{ sid }}.bz-ben--animate .bz-ben__shadow { animation: none; }
+  }
+</style>
+
+<div
+  id="bz-ben-{{ section.id }}"
+  class="bz-ben bz-ben--img-{{ s.image_position }} bz-ben--fit-{{ s.image_fit }} bz-ben--align-{{ s.text_align }} bz-ben--layout-{{ s.item_layout }} bz-ben--icon-{{ s.icon_style }}{% if s.mobile_columns == '2' %} bz-ben--mobile-2{% endif %}{% if s.mobile_order == 'text' %} bz-ben--mobile-text-first{% endif %}{% if animate %} bz-ben--animate{% endif %}"
+>
+  <div class="bz-ben__inner">
+    {%- capture header -%}
+      {%- for block in section.blocks -%}
+        {%- unless header_types contains block.type -%}{%- continue -%}{%- endunless -%}
+        {%- case block.type -%}
+          {%- when 'subtitulo' -%}
+            <p class="bz-ben__eyebrow" {{ block.shopify_attributes }}>{{ block.settings.text | escape }}</p>
+          {%- when 'titulo' -%}
+            <h2 class="bz-ben__heading bz-ben__heading--{{ block.settings.size }}" {{ block.shopify_attributes }}>
+              {{- block.settings.heading -}}
+            </h2>
+          {%- when 'texto' -%}
+            <div class="bz-ben__sub" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+        {%- endcase -%}
+      {%- endfor -%}
+    {%- endcapture -%}
+
+    {%- if header != blank -%}
+      <div class="bz-ben__header">{{ header }}</div>
+    {%- endif -%}
+
+    <div class="bz-ben__layout">
+      {%- if s.image != blank or s.show_placeholder -%}
+        <div class="bz-ben__media">
+          {%- if s.show_glow -%}<span class="bz-ben__glow" aria-hidden="true"></span>{%- endif -%}
+          <div class="bz-ben__product">
+            {%- if s.image != blank -%}
+              {{
+                s.image
+                | image_url: width: 1200
+                | image_tag:
+                  loading: 'lazy',
+                  widths: '400, 600, 800, 1000, 1200',
+                  sizes: '(min-width: 990px) 45vw, 90vw',
+                  alt: s.image.alt
+              }}
+            {%- else -%}
+              {{ 'product-1' | placeholder_svg_tag }}
+            {%- endif -%}
+          </div>
+          {%- if s.show_shadow -%}<span class="bz-ben__shadow" aria-hidden="true"></span>{%- endif -%}
+        </div>
+      {%- endif -%}
+
+      <div class="bz-ben__content">
+        <ul class="bz-ben__grid" role="list">
+          {%- for block in section.blocks -%}
+            {%- if block.type != 'beneficio' -%}{%- continue -%}{%- endif -%}
+            {%- assign b = block.settings -%}
+            <li class="bz-ben__item" {{ block.shopify_attributes }}>
+              {%- if b.icon_image != blank or b.icon != 'none' -%}
+                <span class="bz-ben__icon" aria-hidden="true">
+                  {%- if b.icon_image != blank -%}
+                    {{ b.icon_image | image_url: width: 160 | image_tag: loading: 'lazy', alt: '' }}
+                  {%- else -%}
+                    {%- case b.icon -%}
+                      {%- when 'sun' -%}
+                        <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="5"/><path d="M12 1.5a1 1 0 011 1v2a1 1 0 11-2 0v-2a1 1 0 011-1zm0 17a1 1 0 011 1v2a1 1 0 11-2 0v-2a1 1 0 011-1zM4.22 4.22a1 1 0 011.42 0l1.41 1.41a1 1 0 01-1.41 1.42L4.22 5.64a1 1 0 010-1.42zm12.73 12.73a1 1 0 011.41 0l1.42 1.41a1 1 0 01-1.42 1.42l-1.41-1.42a1 1 0 010-1.41zM1.5 12a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1zm17 0a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1zM4.22 19.78a1 1 0 010-1.42l1.41-1.41a1 1 0 011.42 1.41l-1.42 1.42a1 1 0 01-1.41 0zM16.95 7.05a1 1 0 010-1.42l1.41-1.41a1 1 0 111.42 1.42l-1.42 1.41a1 1 0 01-1.41 0z"/></svg>
+                      {%- when 'sun_off' -%}
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5" fill="currentColor" stroke="none"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/><path d="M3 3l18 18" stroke-width="2.6"/></svg>
+                      {%- when 'shield' -%}
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.8l8.5 3.2v6.4c0 5.4-3.6 9.4-8.5 10.8-4.9-1.4-8.5-5.4-8.5-10.8V5L12 1.8zm-1.3 13.7l5.6-5.6-1.4-1.4-4.2 4.2-2-2-1.4 1.4 3.4 3.4z"/></svg>
+                      {%- when 'drop' -%}
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2c.3 0 .6.1.8.4C14.6 5 19 10.4 19 14.8a7 7 0 01-14 0C5 10.4 9.4 5 11.2 2.6c.2-.3.5-.4.8-.4zM9 14.5a1 1 0 00-1 1 4 4 0 004 4 1 1 0 000-2 2 2 0 01-2-2 1 1 0 00-1-1z"/></svg>
+                      {%- when 'sparkle' -%}
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 2l1.9 5.6L17.5 9.5l-5.6 1.9L10 17l-1.9-5.6L2.5 9.5l5.6-1.9L10 2zm8 10l1 2.9 3 1.1-3 1.1-1 2.9-1-2.9-3-1.1 3-1.1 1-2.9z"/></svg>
+                      {%- when 'leaf' -%}
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3.5c.4 6.3-1.6 11-5.2 13.4-2.9 2-6.4 2.2-8.6 1.3l-2.5 2.6-1.4-1.4 2.4-2.5c-1.2-2.5-.8-6.2 1.5-9C9.6 4.4 14.4 3 20.5 3.5zm-4.3 4.3l-1.4-1.4-6.5 6.5 1.4 1.4 6.5-6.5z"/></svg>
+                      {%- when 'heart' -%}
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.2l-1.3-1.2C5.6 15.4 2.2 12.3 2.2 8.4 2.2 5.3 4.6 2.9 7.7 2.9c1.7 0 3.4.8 4.3 2.1.9-1.3 2.6-2.1 4.3-2.1 3.1 0 5.5 2.4 5.5 5.5 0 3.9-3.4 7-8.5 11.6L12 21.2z"/></svg>
+                      {%- when 'clock' -%}
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 110 20 10 10 0 010-20zm1 5h-2v6l5 3 1-1.7-4-2.4V7z"/></svg>
+                      {%- when 'capsule' -%}
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.6 2.9a5.2 5.2 0 017.4 7.4l-4.6 4.6-7.4-7.4 4.6-4.6zM9.6 8.9l7.4 7.4-4.6 4.6a5.2 5.2 0 01-7.4-7.4l4.6-4.6z"/></svg>
+                      {%- when 'woman' -%}
+                        <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="3"/><path d="M8.6 9.2c.4-.7 1.1-1.2 2-1.2h2.8c.9 0 1.6.5 2 1.2l3 5.8-1.8.9-2.1-3.9 2 7h-2.8V22h-3v-3h-2.8l2-7-2.1 3.9-1.8-.9 3-5.8z"/></svg>
+                      {%- when 'check' -%}
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 110 20 10 10 0 010-20zm4.3 6.3L10.5 14l-2.8-2.8-1.4 1.4 4.2 4.2 7.2-7.1-1.4-1.4z"/></svg>
+                      {%- when 'gluten_free' -%}
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V9"/><path d="M12 9c-2.5 0-4-1.6-4-4 2.5 0 4 1.6 4 4zM12 9c2.5 0 4-1.6 4-4-2.5 0-4 1.6-4 4zM12 14c-2.5 0-4-1.6-4-4 2.5 0 4 1.6 4 4zM12 14c2.5 0 4-1.6 4-4-2.5 0-4 1.6-4 4z"/><circle cx="12" cy="12" r="10"/><path d="M5 5l14 14"/></svg>
+                    {%- endcase -%}
+                  {%- endif -%}
+                </span>
+              {%- endif -%}
+              <div class="bz-ben__copy">
+                {%- if b.title != blank -%}
+                  <h3 class="bz-ben__title">{{ b.title | escape }}</h3>
+                {%- endif -%}
+                {%- if b.text != blank -%}
+                  <div class="bz-ben__text">{{ b.text }}</div>
+                {%- endif -%}
+              </div>
+            </li>
+          {%- endfor -%}
+        </ul>
+
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'sellos' -%}
+              <ul class="bz-ben__badges" role="list" {{ block.shopify_attributes }}>
+                {%- for i in (1..4) -%}
+                  {%- capture key -%}item_{{ i }}{%- endcapture -%}
+                  {%- if block.settings[key] != blank -%}
+                    <li class="bz-ben__badge">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+                      {{ block.settings[key] | escape }}
+                    </li>
+                  {%- endif -%}
+                {%- endfor -%}
+              </ul>
+            {%- when 'boton' -%}
+              {%- if block.settings.label != blank -%}
+                <div class="bz-ben__cta" {{ block.shopify_attributes }}>
+                  <a
+                    {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% else %}role="link" aria-disabled="true"{% endif %}
+                    class="bz-ben__button"
+                  >
+                    <span>{{ block.settings.label | escape }}</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                  </a>
+                  {%- if block.settings.note != blank -%}
+                    <p class="bz-ben__note">{{ block.settings.note | escape }}</p>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Bronzer · Beneficios",
+  "tag": "section",
+  "class": "section-bronzer-beneficios",
+  "max_blocks": 16,
+  "settings": [
+    { "type": "header", "content": "Producto" },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Foto del producto",
+      "info": "Ideal: PNG con fondo transparente, 1200 x 1200 px (frasco o cápsulas)."
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Ajuste de la foto",
+      "options": [
+        { "value": "contain", "label": "Completa (PNG sin fondo)" },
+        { "value": "cover", "label": "Rellenar (foto con fondo)" }
+      ],
+      "default": "contain"
+    },
+    {
+      "type": "range",
+      "id": "image_radius",
+      "label": "Redondeo de la foto (rellenar)",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Posición en computadora",
+      "options": [
+        { "value": "left", "label": "Izquierda" },
+        { "value": "right", "label": "Derecha" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "image_width",
+      "label": "Ancho de la foto en computadora",
+      "min": 30,
+      "max": 60,
+      "step": 5,
+      "unit": "%",
+      "default": 45
+    },
+    {
+      "type": "select",
+      "id": "mobile_order",
+      "label": "En celular, mostrar primero",
+      "options": [
+        { "value": "image", "label": "La foto" },
+        { "value": "text", "label": "Los beneficios" }
+      ],
+      "default": "image"
+    },
+    { "type": "checkbox", "id": "show_glow", "label": "Brillo dorado detrás del producto", "default": true },
+    { "type": "checkbox", "id": "show_shadow", "label": "Sombra debajo del producto", "default": true },
+    {
+      "type": "checkbox",
+      "id": "float",
+      "label": "Animación: producto flotando",
+      "info": "Se ve en la tienda, no en el editor.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_placeholder",
+      "label": "Mostrar espacio de la foto aunque esté vacía",
+      "default": true
+    },
+    { "type": "header", "content": "Beneficios" },
+    {
+      "type": "select",
+      "id": "columns_desktop",
+      "label": "Columnas en computadora",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "select",
+      "id": "mobile_columns",
+      "label": "Columnas en celular",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "select",
+      "id": "item_layout",
+      "label": "Diseño de cada beneficio",
+      "options": [
+        { "value": "stack", "label": "Ícono arriba" },
+        { "value": "row", "label": "Ícono al costado" }
+      ],
+      "default": "stack"
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Alineación",
+      "options": [
+        { "value": "center", "label": "Centrado" },
+        { "value": "left", "label": "Izquierda" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "icon_style",
+      "label": "Estilo del ícono",
+      "options": [
+        { "value": "plain", "label": "Solo ícono" },
+        { "value": "circle", "label": "Ícono en círculo" }
+      ],
+      "default": "plain"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Tamaño del ícono",
+      "min": 24,
+      "max": 72,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    { "type": "header", "content": "Tipografía y colores" },
+    {
+      "type": "font_picker",
+      "id": "heading_font",
+      "label": "Tipografía del título",
+      "default": "playfair_display_n4"
+    },
+    { "type": "color", "id": "color_bg", "label": "Fondo", "default": "#FFFFFF" },
+    { "type": "color", "id": "color_text", "label": "Texto", "default": "#1E140F" },
+    {
+      "type": "color",
+      "id": "color_accent",
+      "label": "Íconos y acento",
+      "default": "#D9822B"
+    },
+    { "type": "color", "id": "color_glow", "label": "Brillo detrás del producto", "default": "#F6D3A8" },
+    { "type": "color", "id": "color_button_bg", "label": "Botón", "default": "#B46F34" },
+    { "type": "color", "id": "color_button_text", "label": "Texto del botón", "default": "#FFFFFF" },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "label": "Redondeo del botón",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    { "type": "header", "content": "Espaciado" },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Margen superior",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "default": 88
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Margen inferior",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "default": 88
+    }
+  ],
+  "blocks": [
+    {
+      "type": "subtitulo",
+      "name": "Subtítulo",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "text", "label": "Texto", "default": "Bronceado natural" }
+      ]
+    },
+    {
+      "type": "titulo",
+      "name": "Título",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Título",
+          "info": "La palabra en cursiva se pinta con el color de acento.",
+          "default": "Tu mejor versión, <em>todos los días.</em>"
+        },
+        {
+          "type": "select",
+          "id": "size",
+          "label": "Tamaño",
+          "options": [
+            { "value": "medium", "label": "Mediano" },
+            { "value": "large", "label": "Grande" }
+          ],
+          "default": "large"
+        }
+      ]
+    },
+    {
+      "type": "texto",
+      "name": "Texto",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Texto",
+          "default": "<p>Una cápsula diaria con betacaroteno para un bronceado natural, sin sol. Un hábito simple que tu piel nota en 18 días.</p>"
+        }
+      ]
+    },
+    {
+      "type": "beneficio",
+      "name": "Beneficio",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Ícono",
+          "options": [
+            { "value": "sun", "label": "Sol" },
+            { "value": "sun_off", "label": "Sol tachado" },
+            { "value": "shield", "label": "Escudo" },
+            { "value": "drop", "label": "Gota" },
+            { "value": "sparkle", "label": "Brillo" },
+            { "value": "leaf", "label": "Hoja" },
+            { "value": "heart", "label": "Corazón" },
+            { "value": "clock", "label": "Reloj" },
+            { "value": "capsule", "label": "Cápsula" },
+            { "value": "woman", "label": "Mujer" },
+            { "value": "check", "label": "Check" },
+            { "value": "gluten_free", "label": "Sin gluten" },
+            { "value": "none", "label": "Sin ícono" }
+          ],
+          "default": "sun"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Ícono propio (opcional)",
+          "info": "Si subís una imagen (PNG o SVG), reemplaza al ícono de la lista."
+        },
+        { "type": "text", "id": "title", "label": "Título", "default": "Tono dorado natural" },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Texto",
+          "default": "<p>Describí el beneficio en una o dos líneas.</p>"
+        }
+      ]
+    },
+    {
+      "type": "sellos",
+      "name": "Sellos",
+      "limit": 1,
+      "settings": [
+        { "type": "paragraph", "content": "Etiquetas cortas con un check. Dejá vacías las que no uses." },
+        { "type": "text", "id": "item_1", "label": "Sello 1", "default": "Sin gluten" },
+        { "type": "text", "id": "item_2", "label": "Sello 2", "default": "60 cápsulas" },
+        { "type": "text", "id": "item_3", "label": "Sello 3", "default": "1 por día" },
+        { "type": "text", "id": "item_4", "label": "Sello 4" }
+      ]
+    },
+    {
+      "type": "boton",
+      "name": "Botón",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "label", "label": "Texto del botón", "default": "Quiero mi glow" },
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "text", "id": "note", "label": "Texto debajo del botón" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bronzer · Beneficios",
+      "blocks": [
+        { "type": "titulo" },
+        { "type": "texto" },
+        {
+          "type": "beneficio",
+          "settings": {
+            "icon": "sun",
+            "title": "Tono dorado natural",
+            "text": "<p>El betacaroteno le da a tu piel un dorado cálido y parejo, sin exponerte al sol.</p>"
+          }
+        },
+        {
+          "type": "beneficio",
+          "settings": {
+            "icon": "shield",
+            "title": "Poder antioxidante",
+            "text": "<p>Licopeno, cúrcuma y vitaminas C y E ayudan a proteger tus células del daño oxidativo.</p>"
+          }
+        },
+        {
+          "type": "beneficio",
+          "settings": {
+            "icon": "sparkle",
+            "title": "Piel sana y luminosa",
+            "text": "<p>Vitaminas del complejo B y vitamina C para una piel que se ve vital y radiante.</p>"
+          }
+        },
+        {
+          "type": "beneficio",
+          "settings": {
+            "icon": "clock",
+            "title": "Resultados en 18 días",
+            "text": "<p>Una cápsula por día. Sin camas solares, sin autobronceantes, sin manchas.</p>"
+          }
+        },
+        { "type": "sellos" }
+      ]
+    }
+  ]
+}
+{% endschema %}
