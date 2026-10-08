@@ -74,6 +74,7 @@
     endcase
   endfor
   assign bs = bump_block.settings
+  assign bump_free_min = bs.bump_free_min | default: 9999
   assign bump_product = bs.bump_product
   assign bump_variant = bump_product.selected_or_first_available_variant
   assign bump_mode = 'discount'
@@ -112,7 +113,7 @@
     if block.type == 'regalo'
       assign gift_count = gift_count | plus: 1
       if first_gift_min == 0
-        assign first_gift_min = block.settings.min_bottles
+        assign first_gift_min = block.settings.min_bottles | default: 0
       endif
     endif
   endfor
@@ -164,7 +165,7 @@
   {{ sid }} .of__lead { max-width: 60ch; font-size: 15px; line-height: 1.55; color: var(--of-muted); }
   {{ sid }} .of__lead p + p { margin-top: 0.5em; }
   {{ sid }} .of__proof { display: inline-flex; align-items: center; flex-wrap: wrap; justify-content: center; gap: 10px; font-size: 13px; }
-  {{ sid }} .of__proof b { font-weight: 800; }
+  {{ sid }} .of__proof b, {{ sid }} .of__proof strong { font-weight: 800; }
   {{ sid }} .of__proof i { width: 1px; height: 16px; background: var(--of-line); }
 
   /* ---------- Layout ---------- */
@@ -182,7 +183,7 @@
   /* ---------- Galería ---------- */
   {{ sid }} .of__gallery { position: relative; overflow: hidden; border-radius: 22px; border: 1.5px solid var(--of-line); background: var(--of-soft); }
   {{ sid }} .of__ribbon { position: relative; z-index: 2; padding: 12px 16px; background: linear-gradient(90deg, var(--of-brand), var(--of-accent)); color: #fff; text-align: center; font-size: 14px; font-weight: 800; font-style: italic; letter-spacing: 0.02em; text-transform: uppercase; }
-  {{ sid }} .of__ribbon b { color: var(--of-ink); background: #fff; padding: 0 6px; border-radius: 4px; font-style: normal; }
+  {{ sid }} .of__ribbon b, {{ sid }} .of__ribbon strong { color: var(--of-ink); background: #fff; padding: 0 6px; border-radius: 4px; font-style: normal; }
   {{ sid }} .of__track { display: flex; margin: 0; padding: 0; list-style: none; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; scrollbar-width: none; }
   {{ sid }} .of__track::-webkit-scrollbar { display: none; }
   {{ sid }} .of__slide { flex: 0 0 100%; aspect-ratio: 1 / 1; scroll-snap-align: start; position: relative; }
@@ -214,7 +215,7 @@
   {{ sid }} .of__hot .of-i { width: 14px; height: 14px; stroke-width: 2.4; }
   {{ sid }} .of__title { margin: 0; font-family: var(--of-display); font-weight: var(--of-display-w); font-size: clamp(28px, 7vw, 40px); line-height: 1.08; letter-spacing: -0.015em; color: var(--of-ink); }
   {{ sid }} .of__promo { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--of-muted); }
-  {{ sid }} .of__promo b { color: var(--of-brand); }
+  {{ sid }} .of__promo b, {{ sid }} .of__promo strong { color: var(--of-brand); }
   {{ sid }} .of__promo .of-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--of-accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--of-accent) 30%, transparent); animation: of-pulse 1.6s ease-in-out infinite; flex: none; }
   @keyframes of-pulse { 50% { box-shadow: 0 0 0 7px color-mix(in srgb, var(--of-accent) 0%, transparent); } }
 
@@ -461,7 +462,7 @@
   data-redirect="{{ s.redirect }}"
   data-bump-id="{{ bump_id }}"
   data-bump-free-id="{{ bump_free_id }}"
-  data-bump-free-min="{{ bs.bump_free_min }}"
+  data-bump-free-min="{{ bump_free_min }}"
   data-cart-add="{{ routes.cart_add_url }}.js"
   data-cart-url="{{ routes.cart_url }}"
   data-timer="{% if timer_block != blank %}{{ timer_block.settings.timer_minutes }}{% else %}0{% endif %}"
@@ -509,6 +510,7 @@
             {%- for media in p.media -%}
               {%- if media.preview_image == blank -%}{%- continue -%}{%- endif -%}
               {%- assign media_count = media_count | plus: 1 -%}
+              {%- assign media_alt = media.alt | default: p.title -%}
               <li class="of__slide" data-slide>
                 {{
                   media.preview_image
@@ -517,7 +519,7 @@
                     loading: 'eager',
                     widths: '500, 750, 1000, 1400',
                     sizes: '(min-width: 990px) 50vw, 100vw',
-                    alt: media.alt | default: p.title
+                    alt: media_alt
                 }}
               </li>
             {%- endfor -%}
@@ -620,13 +622,16 @@
                 assign days = bottles | times: days_per_bottle
                 assign per_day = tier_price | divided_by: days | floor
                 assign bump_free = false
-                if bottles >= bs.bump_free_min
+                if bottles >= bump_free_min
                   assign bump_free = true
                 endif
                 assign unlocked = 0
                 for gb in section.blocks
-                  if gb.type == 'regalo' and bottles >= gb.settings.min_bottles
-                    assign unlocked = unlocked | plus: 1
+                  if gb.type == 'regalo'
+                    assign gmin = gb.settings.min_bottles | default: 0
+                    if bottles >= gmin
+                      assign unlocked = unlocked | plus: 1
+                    endif
                   endif
                 endfor
                 assign is_active = false
@@ -704,7 +709,8 @@
                           {%- assign gi = 0 -%}
                           {%- for gb in section.blocks -%}
                             {%- if gb.type != 'regalo' -%}{%- continue -%}{%- endif -%}
-                            <span class="gg__thumb{% if bottles < gb.settings.min_bottles %} is-locked{% endif %}">{{ gift_media[gi] }}</span>
+                            {%- assign gmin = gb.settings.min_bottles | default: 0 -%}
+                            <span class="gg__thumb{% if bottles < gmin %} is-locked{% endif %}">{{ gift_media[gi] }}</span>
                             {%- assign gi = gi | plus: 1 -%}
                           {%- endfor -%}
                         </span>
@@ -714,17 +720,18 @@
                         {%- for gb in section.blocks -%}
                           {%- if gb.type != 'regalo' -%}{%- continue -%}{%- endif -%}
                           {%- assign g = gb.settings -%}
-                          <li class="{% if bottles < g.min_bottles %}is-locked{% endif %}">
+                          {%- assign gmin = g.min_bottles | default: 0 -%}
+                          <li class="{% if bottles < gmin %}is-locked{% endif %}">
                             <span class="gg__thumb">{{ gift_media[gi] }}</span>
                             <span class="gg__name">+ {{ g.title | escape }}</span>
-                            {%- if bottles >= g.min_bottles -%}
+                            {%- if bottles >= gmin -%}
                               <span class="gg__val">
                                 {%- if g.tag != blank -%}<em{% if g.is_raffle %} class="is-dark"{% endif %}>{{ g.tag | escape }}</em>{%- endif -%}
                                 {%- unless g.is_raffle -%}<b>$0</b>{%- endunless -%}
                                 {%- if g.value != blank -%}<s>{{ g.value | escape }}</s>{%- endif -%}
                               </span>
                             {%- else -%}
-                              <span class="gg__val gg__need"><svg class="of-i" aria-hidden="true"><use href="#ofi-lock-{{ section.id }}"/></svg>{{ s.gift_need_label | escape }} {{ g.min_bottles }} {{ s.unit_plural | escape }}</span>
+                              <span class="gg__val gg__need"><svg class="of-i" aria-hidden="true"><use href="#ofi-lock-{{ section.id }}"/></svg>{{ s.gift_need_label | escape }} {{ gmin }} {{ s.unit_plural | escape }}</span>
                             {%- endif -%}
                           </li>
                           {%- assign gi = gi | plus: 1 -%}
@@ -1067,7 +1074,7 @@
       "type": "inline_richtext",
       "id": "ribbon",
       "label": "Cinta sobre la foto",
-      "default": "Oferta: hasta <b>[max_off]</b> off + envío gratis"
+      "default": "Oferta: hasta <strong>[max_off]</strong> off + envío gratis"
     },
     {
       "type": "checkbox",
@@ -1083,7 +1090,7 @@
       "type": "inline_richtext",
       "id": "rating_text",
       "label": "Calificación",
-      "default": "<b>4.9</b> · +3mil reseñas"
+      "default": "<strong>4.9</strong> · +3mil reseñas"
     },
     {
       "type": "text",
@@ -1095,7 +1102,7 @@
       "type": "inline_richtext",
       "id": "promo_line",
       "label": "Línea de promoción",
-      "default": "Pedí hoy y ahorrá hasta <b>[max_off]</b>"
+      "default": "Pedí hoy y ahorrá hasta <strong>[max_off]</strong>"
     },
     {
       "type": "header",
@@ -1127,7 +1134,7 @@
       "type": "inline_richtext",
       "id": "tip",
       "label": "Recomendación",
-      "default": "<b>Recomendado:</b> 3 meses para un tono duradero"
+      "default": "<strong>Recomendado:</strong> 3 meses para un tono duradero"
     },
     {
       "type": "number",
@@ -1351,13 +1358,13 @@
           "type": "inline_richtext",
           "id": "top_rating",
           "label": "Calificación",
-          "default": "<b>4.9/5</b> estrellas"
+          "default": "<strong>4.9/5</strong> estrellas"
         },
         {
           "type": "inline_richtext",
           "id": "top_reviews",
           "label": "Reseñas",
-          "default": "<b>+3mil</b> clientas"
+          "default": "<strong>+3mil</strong> clientas"
         }
       ]
     },
@@ -1430,13 +1437,13 @@
           "type": "inline_richtext",
           "id": "bump_text",
           "label": "Texto del upsell",
-          "default": "Tenés <b>50% OFF</b> en CELUFIT para lucir tus piernas este verano"
+          "default": "Tenés <strong>50% OFF</strong> en CELUFIT para lucir tus piernas este verano"
         },
         {
           "type": "inline_richtext",
           "id": "bump_text_free",
           "label": "Texto del upsell de regalo",
-          "default": "🎁 <b>CELUFIT de regalo</b> para lucir tus piernas este verano"
+          "default": "🎁 <strong>CELUFIT de regalo</strong> para lucir tus piernas este verano"
         },
         {
           "type": "text",
@@ -1942,7 +1949,6 @@
           "type": "regalo",
           "settings": {
             "title": "Viaje al Caribe para Enero",
-            "value": "",
             "tag": "SORTEO",
             "is_raffle": true,
             "min_bottles": 3,
