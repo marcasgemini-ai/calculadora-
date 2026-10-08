@@ -1,0 +1,532 @@
+{%- comment -%}
+  Bronzer · Comparativa
+  Tabla "nosotros vs. ellos". La columna de la marca va destacada.
+  Todo es editable desde Tienda online > Personalizar:
+  - Columnas: nombres en los ajustes de la sección (vacío = la columna no se muestra).
+  - Filas: un bloque por fila, con el valor de cada columna (Sí / No / A medias).
+  - Encabezado y botón: ajustes de la sección.
+{%- endcomment -%}
+
+{%- liquid
+  assign s = section.settings
+  assign sid = '#bz-cmp-' | append: section.id
+  assign cols = 1
+  if s.col_1 != blank
+    assign cols = cols | plus: 1
+  endif
+  if s.col_2 != blank
+    assign cols = cols | plus: 1
+  endif
+  if s.col_3 != blank
+    assign cols = cols | plus: 1
+  endif
+  case cols
+    when 1
+      assign w_m = 34
+      assign w_d = 32
+    when 2
+      assign w_m = 24
+      assign w_d = 24
+    when 3
+      assign w_m = 19
+      assign w_d = 20
+    else
+      assign w_m = 16
+      assign w_d = 18
+  endcase
+-%}
+
+<style>
+  {{ s.heading_font | font_face: font_display: 'swap' }}
+
+  {{ sid }} {
+    --cmp-bg: {{ s.color_bg | default: '#FBF6EF' }};
+    --cmp-ink: {{ s.color_text | default: '#1E140F' }};
+    --cmp-muted: {{ s.color_text | default: '#1E140F' | color_modify: 'alpha', 0.62 }};
+    --cmp-line: {{ s.color_text | default: '#1E140F' | color_modify: 'alpha', 0.14 }};
+    --cmp-brand-1: {{ s.color_brand | default: '#C9773A' }};
+    --cmp-brand-2: {{ s.color_brand_2 | default: '#8E4A22' }};
+    --cmp-brand-text: {{ s.color_brand_text | default: '#FFFFFF' }};
+    --cmp-gold: {{ s.color_gold | default: '#F2B544' }};
+    --cmp-btn: {{ s.color_button | default: '#B46F34' }};
+    --cmp-btn-text: {{ s.color_button_text | default: '#FFFFFF' }};
+    --cmp-display: {{ s.heading_font.family }}, {{ s.heading_font.fallback_families }};
+    --cmp-display-w: {{ s.heading_font.weight }};
+    --cmp-cols: {{ cols }};
+    --cmp-val-w: {{ w_m }}%;
+    --cmp-val-w-d: {{ w_d }}%;
+    --cmp-pt: {{ s.padding_top }}px;
+    --cmp-pb: {{ s.padding_bottom }}px;
+  }
+  {{ sid }}, {{ sid }} *, {{ sid }} *::before, {{ sid }} *::after { box-sizing: border-box; }
+  {{ sid }} p, {{ sid }} span, {{ sid }} th, {{ sid }} td { color: inherit; }
+  {{ sid }} {
+    display: block;
+    background: var(--cmp-bg);
+    color: var(--cmp-ink);
+    padding: calc(var(--cmp-pt) * 0.7) 14px calc(var(--cmp-pb) * 0.7);
+  }
+  {{ sid }} .cmp__inner { max-width: 940px; margin: 0 auto; }
+
+  /* ---------- Encabezado ---------- */
+  {{ sid }} .cmp__header { display: flex; flex-direction: column; align-items: center; gap: 12px; max-width: 720px; margin: 0 auto 30px; text-align: center; }
+  {{ sid }} .cmp__header > * { margin: 0; }
+  {{ sid }} .cmp__eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.26em; text-transform: uppercase; color: var(--cmp-brand-1); }
+  {{ sid }} .cmp__heading { font-family: var(--cmp-display); font-weight: var(--cmp-display-w); font-size: clamp(34px, 9vw, 46px); line-height: 1.04; letter-spacing: -0.02em; color: var(--cmp-ink); text-wrap: balance; }
+  {{ sid }} .cmp__heading em { font-style: italic; color: var(--cmp-brand-1); }
+  {{ sid }} .cmp__sub { max-width: 54ch; font-size: 15px; line-height: 1.6; color: var(--cmp-muted); }
+  {{ sid }} .cmp__sub p { margin: 0; }
+
+  /* ---------- Tabla ---------- */
+  {{ sid }} .cmp__table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+  }
+  {{ sid }} .cmp__table col.cmp__col-label { width: calc(100% - var(--cmp-cols) * var(--cmp-val-w)); }
+  {{ sid }} .cmp__table col.cmp__col-val { width: var(--cmp-val-w); }
+  {{ sid }} .cmp__table th,
+  {{ sid }} .cmp__table td { padding: 0; border: 0; text-align: center; vertical-align: middle; font-weight: inherit; }
+
+  {{ sid }} .cmp__head th { overflow-wrap: break-word; hyphens: manual; padding: 0 2px 12px; vertical-align: bottom; font-size: 10.5px; font-weight: 700; line-height: 1.25; color: var(--cmp-ink); }
+  {{ sid }} .cmp__head th.cmp__brand {
+    position: relative;
+    padding: 30px 2px 14px;
+    border-radius: 18px 18px 0 0;
+    background: linear-gradient(180deg, var(--cmp-brand-1), color-mix(in srgb, var(--cmp-brand-1) 70%, var(--cmp-brand-2)));
+    color: var(--cmp-brand-text);
+    box-shadow: 0 -10px 30px -18px var(--cmp-brand-2);
+  }
+  {{ sid }} .cmp__pill {
+    position: absolute;
+    top: -11px;
+    left: 50%;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--cmp-ink);
+    color: #fff;
+    font-size: 9.5px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transform: translateX(-50%);
+  }
+  {{ sid }} .cmp__logo { display: block; width: auto; max-width: 100%; height: {{ s.logo_height | times: 0.7 | round }}px; margin: 0 auto; object-fit: contain; }
+  {{ sid }} .cmp__brand-name { display: inline-flex; align-items: center; gap: 5px; font-family: var(--cmp-display); font-weight: var(--cmp-display-w); font-size: 13px; line-height: 1.1; }
+  {{ sid }} .cmp__brand-name svg { display: none; width: 16px; height: 16px; flex: none; }
+
+  {{ sid }} .cmp__row th,
+  {{ sid }} .cmp__row td { border-top: 1px solid var(--cmp-line); }
+  {{ sid }} .cmp__row:first-child th,
+  {{ sid }} .cmp__row:first-child td { border-top-color: transparent; }
+  {{ sid }} .cmp__row th { padding: 13px 8px 13px 2px; text-align: left; overflow-wrap: break-word; hyphens: auto; }
+  {{ sid }} .cmp__label { display: block; font-size: 12.5px; font-weight: 700; line-height: 1.3; }
+  {{ sid }} .cmp__note { display: block; margin-top: 3px; font-size: 11px; font-weight: 400; line-height: 1.35; color: var(--cmp-muted); }
+  {{ sid }} .cmp__row td { padding: 12px 2px; }
+  {{ sid }} .cmp__row td.cmp__brand {
+    background: color-mix(in srgb, var(--cmp-brand-1) 72%, var(--cmp-brand-2));
+    border-top-color: color-mix(in srgb, #fff 22%, transparent);
+  }
+  {{ sid }} .cmp__row:last-child td.cmp__brand { border-radius: 0 0 18px 18px; box-shadow: 0 18px 30px -20px var(--cmp-brand-2); }
+  {{ sid }} .cmp__row:hover th,
+  {{ sid }} .cmp__row:hover td:not(.cmp__brand) { background: color-mix(in srgb, var(--cmp-brand-1) 6%, transparent); }
+
+  /* ---------- Íconos ---------- */
+  {{ sid }} .cmp__mark { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%; vertical-align: middle; }
+  {{ sid }} .cmp__mark svg { width: 100%; height: 100%; }
+  {{ sid }} .cmp__mark--yes { background: var(--cmp-ink); color: #fff; }
+  {{ sid }} .cmp__mark--yes svg { width: 58%; height: 58%; }
+  {{ sid }} .cmp__mark--no { color: var(--cmp-muted); }
+  {{ sid }} .cmp__mark--partial { border: 1.6px solid var(--cmp-muted); color: var(--cmp-muted); font-size: 15px; font-weight: 800; line-height: 1; }
+  {{ sid }} .cmp__brand .cmp__mark { width: 32px; height: 32px; }
+  {{ sid }} .cmp__brand .cmp__mark--yes { background: none; color: var(--cmp-brand-text); }
+  {{ sid }} .cmp__brand .cmp__mark--yes svg { width: 100%; height: 100%; }
+  {{ sid }} .cmp__brand .cmp__mark--no,
+  {{ sid }} .cmp__brand .cmp__mark--partial { color: var(--cmp-brand-text); border-color: var(--cmp-brand-text); }
+  {{ sid }} .cmp__sr { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* ---------- Pie ---------- */
+  {{ sid }} .cmp__legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 18px; margin: 18px 0 0; padding: 0; list-style: none; font-size: 12px; color: var(--cmp-muted); }
+  {{ sid }} .cmp__legend li { display: inline-flex; align-items: center; gap: 6px; }
+  {{ sid }} .cmp__legend .cmp__mark { width: 18px; height: 18px; font-size: 10px; }
+  {{ sid }} .cmp__footer { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 30px; }
+  {{ sid }} .cmp__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    max-width: 380px;
+    min-height: 58px;
+    padding: 0 28px;
+    border-radius: {{ s.button_radius }}px;
+    background: var(--cmp-btn);
+    color: var(--cmp-btn-text);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    box-shadow: 0 14px 30px -16px var(--cmp-btn);
+    transition: transform 0.25s ease, filter 0.25s ease;
+  }
+  {{ sid }} .cmp__button:hover { transform: translateY(-2px); filter: brightness(1.07); color: var(--cmp-btn-text); }
+  {{ sid }} .cmp__button svg { width: 18px; height: 18px; }
+  {{ sid }} .cmp__footnote { max-width: 60ch; font-size: 11.5px; line-height: 1.5; color: var(--cmp-muted); text-align: center; }
+  {{ sid }} .cmp__footnote p { margin: 0; }
+
+  /* ---------- Animación ---------- */
+  {{ sid }}.cmp--animate .cmp__row { opacity: 0; transform: translateY(10px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  {{ sid }}.cmp--animate.is-visible .cmp__row { opacity: 1; transform: none; }
+  {%- for i in (1..12) -%}
+    {{ sid }}.cmp--animate.is-visible .cmp__row:nth-child({{ i }}) { transition-delay: {{ i | times: 0.07 }}s; }
+  {%- endfor %}
+  @media (prefers-reduced-motion: reduce) {
+    {{ sid }}.cmp--animate .cmp__row { opacity: 1; transform: none; transition: none; }
+  }
+
+  /* ---------- Tablet y escritorio ---------- */
+  @media screen and (min-width: 750px) {
+    {{ sid }} { padding: var(--cmp-pt) 32px var(--cmp-pb); }
+    {{ sid }} .cmp__header { margin-bottom: 44px; }
+    {{ sid }} .cmp__heading { font-size: clamp(44px, 6vw, 72px); }
+    {{ sid }} .cmp__sub { font-size: 17px; }
+    {{ sid }} .cmp__table col.cmp__col-val { width: var(--cmp-val-w-d); }
+    {{ sid }} .cmp__table col.cmp__col-label { width: calc(100% - var(--cmp-cols) * var(--cmp-val-w-d)); }
+    {{ sid }} .cmp__head th { padding: 0 8px 18px; font-size: 15px; }
+    {{ sid }} .cmp__head th.cmp__brand { padding: 40px 10px 20px; border-radius: 22px 22px 0 0; }
+    {{ sid }} .cmp__pill { font-size: 10.5px; padding: 5px 12px; }
+    {{ sid }} .cmp__logo { height: {{ s.logo_height }}px; }
+    {{ sid }} .cmp__brand-name { font-size: 24px; gap: 8px; }
+    {{ sid }} .cmp__brand-name svg { display: block; width: 22px; height: 22px; }
+    {{ sid }} .cmp__row th { padding: 20px 16px 20px 20px; }
+    {{ sid }} .cmp__label { font-size: 17px; }
+    {{ sid }} .cmp__note { font-size: 13px; }
+    {{ sid }} .cmp__row td { padding: 18px 6px; }
+    {{ sid }} .cmp__row:last-child td.cmp__brand { border-radius: 0 0 22px 22px; }
+    {{ sid }} .cmp__mark { width: 34px; height: 34px; }
+    {{ sid }} .cmp__brand .cmp__mark { width: 42px; height: 42px; }
+    {{ sid }} .cmp__legend { font-size: 13px; }
+  }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="cmp-yes-{{ section.id }}" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="cmp-no-{{ section.id }}" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="cmp-sun-{{ section.id }}" viewBox="0 0 40 40">
+      <path fill="currentColor" d="M20 1.5l3.1 4.6 5.3-1.8.8 5.5 5.5.8-1.8 5.3 4.6 3.1-4.6 3.1 1.8 5.3-5.5.8-.8 5.5-5.3-1.8L20 38.5l-3.1-4.6-5.3 1.8-.8-5.5-5.5-.8 1.8-5.3L1.5 20l4.6-3.1-1.8-5.3 5.5-.8.8-5.5 5.3 1.8z"/>
+      <path d="M13 20.5l4.6 4.6L27.5 15" fill="none" stroke="var(--cmp-brand-2)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="cmp-glyph-{{ section.id }}" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" fill="currentColor"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  </defs>
+</svg>
+
+{%- capture col_names -%}{{ s.brand_name | escape }}|{{ s.col_1 | escape }}|{{ s.col_2 | escape }}|{{ s.col_3 | escape }}{%- endcapture -%}
+{%- assign col_names = col_names | split: '|' -%}
+
+<bz-compare id="bz-cmp-{{ section.id }}" lang="es" class="cmp{% if s.animate and request.design_mode == false %} cmp--animate{% endif %}">
+  <div class="cmp__inner">
+    {%- if s.eyebrow != blank or s.heading != blank or s.subheading != blank -%}
+      <div class="cmp__header">
+        {%- if s.eyebrow != blank -%}<p class="cmp__eyebrow">{{ s.eyebrow | escape }}</p>{%- endif -%}
+        {%- if s.heading != blank -%}<h2 class="cmp__heading">{{ s.heading }}</h2>{%- endif -%}
+        {%- if s.subheading != blank -%}<div class="cmp__sub">{{ s.subheading }}</div>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <table class="cmp__table">
+      {%- if s.caption != blank -%}<caption class="cmp__sr">{{ s.caption | escape }}</caption>{%- endif -%}
+      <colgroup>
+        <col class="cmp__col-label">
+        <col class="cmp__col-val">
+        {%- if s.col_1 != blank -%}<col class="cmp__col-val">{%- endif -%}
+        {%- if s.col_2 != blank -%}<col class="cmp__col-val">{%- endif -%}
+        {%- if s.col_3 != blank -%}<col class="cmp__col-val">{%- endif -%}
+      </colgroup>
+      <thead class="cmp__head">
+        <tr>
+          <th scope="col"><span class="cmp__sr">{{ s.label_header | escape }}</span></th>
+          <th scope="col" class="cmp__brand">
+            {%- if s.pill != blank -%}<span class="cmp__pill">{{ s.pill | escape }}</span>{%- endif -%}
+            {%- if s.brand_logo != blank -%}
+              {{ s.brand_logo | image_url: width: 400 | image_tag: class: 'cmp__logo', alt: s.brand_name, loading: 'lazy' }}
+            {%- else -%}
+              <span class="cmp__brand-name"><svg aria-hidden="true"><use href="#cmp-glyph-{{ section.id }}"/></svg>{{ s.brand_name | escape }}</span>
+            {%- endif -%}
+          </th>
+          {%- if s.col_1 != blank -%}<th scope="col">{{ s.col_1 | escape }}</th>{%- endif -%}
+          {%- if s.col_2 != blank -%}<th scope="col">{{ s.col_2 | escape }}</th>{%- endif -%}
+          {%- if s.col_3 != blank -%}<th scope="col">{{ s.col_3 | escape }}</th>{%- endif -%}
+        </tr>
+      </thead>
+      <tbody>
+        {%- for block in section.blocks -%}
+          {%- assign b = block.settings -%}
+          <tr class="cmp__row" {{ block.shopify_attributes }}>
+            <th scope="row">
+              <span class="cmp__label">{{ b.label | escape }}</span>
+              {%- if b.note != blank -%}<span class="cmp__note">{{ b.note | escape }}</span>{%- endif -%}
+            </th>
+            {%- for c in (0..3) -%}
+              {%- liquid
+                case c
+                  when 0
+                    assign show = true
+                    assign val = b.brand
+                  when 1
+                    assign show = false
+                    if s.col_1 != blank
+                      assign show = true
+                    endif
+                    assign val = b.col_1
+                  when 2
+                    assign show = false
+                    if s.col_2 != blank
+                      assign show = true
+                    endif
+                    assign val = b.col_2
+                  when 3
+                    assign show = false
+                    if s.col_3 != blank
+                      assign show = true
+                    endif
+                    assign val = b.col_3
+                endcase
+                case val
+                  when 'yes'
+                    assign val_text = s.text_yes
+                  when 'partial'
+                    assign val_text = s.text_partial
+                  else
+                    assign val_text = s.text_no
+                endcase
+              -%}
+              {%- if show -%}
+                <td{% if c == 0 %} class="cmp__brand"{% endif %}>
+                  {%- case val -%}
+                    {%- when 'yes' -%}
+                      <span class="cmp__mark cmp__mark--yes" aria-hidden="true">
+                        {%- if c == 0 -%}<svg><use href="#cmp-sun-{{ section.id }}"/></svg>{%- else -%}<svg><use href="#cmp-yes-{{ section.id }}"/></svg>{%- endif -%}
+                      </span>
+                    {%- when 'partial' -%}
+                      <span class="cmp__mark cmp__mark--partial" aria-hidden="true">~</span>
+                    {%- else -%}
+                      <span class="cmp__mark cmp__mark--no" aria-hidden="true"><svg><use href="#cmp-no-{{ section.id }}"/></svg></span>
+                  {%- endcase -%}
+                  <span class="cmp__sr">{{ col_names[c] }}: {{ val_text | escape }}</span>
+                </td>
+              {%- endif -%}
+            {%- endfor -%}
+          </tr>
+        {%- endfor -%}
+      </tbody>
+    </table>
+
+    {%- if s.show_legend -%}
+      <ul class="cmp__legend" role="list" aria-hidden="true">
+        <li><span class="cmp__mark cmp__mark--yes"><svg><use href="#cmp-yes-{{ section.id }}"/></svg></span>{{ s.text_yes | escape }}</li>
+        <li><span class="cmp__mark cmp__mark--partial">~</span>{{ s.text_partial | escape }}</li>
+        <li><span class="cmp__mark cmp__mark--no"><svg><use href="#cmp-no-{{ section.id }}"/></svg></span>{{ s.text_no | escape }}</li>
+      </ul>
+    {%- endif -%}
+
+    {%- if s.button_label != blank or s.footnote != blank -%}
+      <div class="cmp__footer">
+        {%- if s.button_label != blank -%}
+          <a {% if s.button_link != blank %}href="{{ s.button_link }}"{% else %}role="link" aria-disabled="true"{% endif %} class="cmp__button">
+            <span>{{ s.button_label | escape }}</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        {%- endif -%}
+        {%- if s.footnote != blank -%}<div class="cmp__footnote">{{ s.footnote }}</div>{%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</bz-compare>
+
+<script>
+  if (!customElements.get('bz-compare')) {
+    customElements.define('bz-compare', class extends HTMLElement {
+      connectedCallback() {
+        if (!this.classList.contains('cmp--animate')) return;
+        if (!('IntersectionObserver' in window)) { this.classList.add('is-visible'); return; }
+        this.io = new IntersectionObserver((entries) => {
+          if (entries.some((e) => e.isIntersecting)) { this.classList.add('is-visible'); this.io.disconnect(); }
+        }, { threshold: 0.2 });
+        this.io.observe(this);
+      }
+      disconnectedCallback() { if (this.io) this.io.disconnect(); }
+    });
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Bronzer · Comparativa",
+  "tag": "section",
+  "class": "section-bronzer-comparativa",
+  "max_blocks": 12,
+  "settings": [
+    { "type": "header", "content": "Encabezado" },
+    { "type": "text", "id": "eyebrow", "label": "Subtítulo", "default": "La diferencia" },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Título",
+      "info": "La palabra en cursiva se pinta con el color de la marca.",
+      "default": "Bronceado sin sol, <em>sin vueltas</em>"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Texto",
+      "default": "<p>El betacaroteno dora tu piel desde adentro. Mirá por qué es la forma más inteligente de lograr tu tono.</p>"
+    },
+    { "type": "header", "content": "Columnas" },
+    { "type": "text", "id": "brand_name", "label": "Nombre de tu marca", "default": "Bronzer" },
+    { "type": "image_picker", "id": "brand_logo", "label": "Logo (opcional)", "info": "PNG blanco sin fondo. Reemplaza al nombre." },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "label": "Alto del logo",
+      "min": 16,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 30
+    },
+    { "type": "text", "id": "pill", "label": "Etiqueta sobre tu marca", "default": "Recomendado" },
+    { "type": "text", "id": "col_1", "label": "Columna 2", "info": "Dejala vacía para ocultarla.", "default": "Camas solares" },
+    { "type": "text", "id": "col_2", "label": "Columna 3", "default": "Autobron\u00adceantes" },
+    { "type": "text", "id": "col_3", "label": "Columna 4", "default": "Tomar sol" },
+    { "type": "header", "content": "Textos de los íconos" },
+    { "type": "text", "id": "text_yes", "label": "Sí", "default": "Sí" },
+    { "type": "text", "id": "text_partial", "label": "A medias", "default": "A medias" },
+    { "type": "text", "id": "text_no", "label": "No", "default": "No" },
+    { "type": "checkbox", "id": "show_legend", "label": "Mostrar referencias debajo", "default": true },
+    { "type": "text", "id": "label_header", "label": "Título accesible de la primera columna", "default": "Característica" },
+    { "type": "text", "id": "caption", "label": "Descripción accesible de la tabla", "default": "Comparación de Bronzer con otras formas de broncearse" },
+    { "type": "header", "content": "Botón y nota" },
+    { "type": "text", "id": "button_label", "label": "Texto del botón", "default": "Quiero mi bronceado sin sol" },
+    { "type": "url", "id": "button_link", "label": "Link del botón" },
+    {
+      "type": "richtext",
+      "id": "footnote",
+      "label": "Nota al pie",
+      "default": "<p>Comparación orientativa basada en el uso habitual de cada método. Bronzer es un suplemento dietario: no reemplaza el uso de protector solar.</p>"
+    },
+    { "type": "header", "content": "Estilo" },
+    { "type": "checkbox", "id": "animate", "label": "Animar filas al aparecer", "default": true },
+    { "type": "font_picker", "id": "heading_font", "label": "Tipografía de títulos", "default": "playfair_display_n7" },
+    { "type": "color", "id": "color_bg", "label": "Fondo", "default": "#FBF6EF" },
+    { "type": "color", "id": "color_text", "label": "Texto", "default": "#1E140F" },
+    { "type": "color", "id": "color_brand", "label": "Columna de la marca", "default": "#C9773A" },
+    { "type": "color", "id": "color_brand_2", "label": "Columna de la marca (sombra)", "default": "#8E4A22" },
+    { "type": "color", "id": "color_brand_text", "label": "Texto de la columna de la marca", "default": "#FFFFFF" },
+    { "type": "color", "id": "color_button", "label": "Botón", "default": "#B46F34" },
+    { "type": "color", "id": "color_button_text", "label": "Texto del botón", "default": "#FFFFFF" },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "label": "Redondeo del botón",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Margen superior",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "default": 96
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Margen inferior",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "default": 96
+    }
+  ],
+  "blocks": [
+    {
+      "type": "fila",
+      "name": "Fila",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Característica", "default": "Bronceado sin exponerte al sol" },
+        { "type": "text", "id": "note", "label": "Aclaración chica (opcional)" },
+        {
+          "type": "select",
+          "id": "brand",
+          "label": "Tu marca",
+          "options": [
+            { "value": "yes", "label": "Sí" },
+            { "value": "partial", "label": "A medias" },
+            { "value": "no", "label": "No" }
+          ],
+          "default": "yes"
+        },
+        {
+          "type": "select",
+          "id": "col_1",
+          "label": "Columna 2",
+          "options": [
+            { "value": "yes", "label": "Sí" },
+            { "value": "partial", "label": "A medias" },
+            { "value": "no", "label": "No" }
+          ],
+          "default": "no"
+        },
+        {
+          "type": "select",
+          "id": "col_2",
+          "label": "Columna 3",
+          "options": [
+            { "value": "yes", "label": "Sí" },
+            { "value": "partial", "label": "A medias" },
+            { "value": "no", "label": "No" }
+          ],
+          "default": "no"
+        },
+        {
+          "type": "select",
+          "id": "col_3",
+          "label": "Columna 4",
+          "options": [
+            { "value": "yes", "label": "Sí" },
+            { "value": "partial", "label": "A medias" },
+            { "value": "no", "label": "No" }
+          ],
+          "default": "no"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bronzer · Comparativa",
+      "blocks": [
+        { "type": "fila", "settings": { "label": "Bronceado sin exponerte al sol", "brand": "yes", "col_1": "no", "col_2": "yes", "col_3": "no" } },
+        { "type": "fila", "settings": { "label": "Sin rayos UV ni quemaduras", "brand": "yes", "col_1": "no", "col_2": "yes", "col_3": "no" } },
+        { "type": "fila", "settings": { "label": "Tono parejo, sin manchas naranjas", "brand": "yes", "col_1": "partial", "col_2": "no", "col_3": "partial" } },
+        { "type": "fila", "settings": { "label": "No mancha la ropa ni las sábanas", "brand": "yes", "col_1": "yes", "col_2": "no", "col_3": "yes" } },
+        { "type": "fila", "settings": { "label": "Cuida tu piel desde adentro", "note": "Betacaroteno, licopeno, cúrcuma y vitaminas", "brand": "yes", "col_1": "no", "col_2": "no", "col_3": "no" } },
+        { "type": "fila", "settings": { "label": "No acelera el envejecimiento de la piel", "brand": "yes", "col_1": "no", "col_2": "yes", "col_3": "no" } },
+        { "type": "fila", "settings": { "label": "Sin olor ni retoques", "brand": "yes", "col_1": "yes", "col_2": "no", "col_3": "yes" } },
+        { "type": "fila", "settings": { "label": "Tu tono dorado todo el año", "note": "Con 1 cápsula diaria", "brand": "yes", "col_1": "partial", "col_2": "partial", "col_3": "no" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
