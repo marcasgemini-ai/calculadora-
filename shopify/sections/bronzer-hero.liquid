@@ -1,0 +1,631 @@
+{%- comment -%}
+  Bronzer · Hero
+  Sección 100% editable desde el personalizador de temas (Tienda online > Personalizar).
+  Todo el contenido vive en bloques: se pueden agregar, quitar y reordenar arrastrando.
+{%- endcomment -%}
+
+{%- liquid
+  assign s = section.settings
+  assign main_image = s.image | default: s.image_mobile
+-%}
+
+<section
+  class="bz-hero bz-hero--img-{{ s.image_position }}{% if s.mobile_image_first %} bz-hero--mobile-img-first{% endif %}"
+  style="
+    --bz-bg: {{ s.color_bg }};
+    --bz-text: {{ s.color_text }};
+    --bz-accent: {{ s.color_accent }};
+    --bz-btn-bg: {{ s.color_button_bg }};
+    --bz-btn-text: {{ s.color_button_text }};
+    --bz-pt: {{ s.padding_top }}px;
+    --bz-pb: {{ s.padding_bottom }}px;
+    --bz-pt-mobile: {{ s.padding_top | times: 0.6 | round }}px;
+    --bz-pb-mobile: {{ s.padding_bottom | times: 0.6 | round }}px;
+  "
+>
+  <div class="bz-hero__inner">
+    <div class="bz-hero__content bz-hero__content--{{ s.content_align }}">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'subtitulo' -%}
+            <p class="bz-hero__eyebrow{% if block.settings.uppercase %} bz-hero__eyebrow--upper{% endif %}" {{ block.shopify_attributes }}>
+              {{- block.settings.text | escape -}}
+            </p>
+
+          {%- when 'titulo' -%}
+            <{{ block.settings.tag }} class="bz-hero__title bz-hero__title--{{ block.settings.size }}" {{ block.shopify_attributes }}>
+              {{- block.settings.heading -}}
+            </{{ block.settings.tag }}>
+
+          {%- when 'texto' -%}
+            <div class="bz-hero__text rte" {{ block.shopify_attributes }}>
+              {{- block.settings.text -}}
+            </div>
+
+          {%- when 'beneficio' -%}
+            <div class="bz-hero__benefit" {{ block.shopify_attributes }}>
+              {%- unless block.settings.icon == 'none' -%}
+                <span class="bz-hero__benefit-icon" aria-hidden="true">
+                  {%- case block.settings.icon -%}
+                    {%- when 'check' -%}
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+                    {%- when 'sun_off' -%}
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/><path d="M3 3l18 18" stroke-width="2.4"/></svg>
+                    {%- when 'clock' -%}
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                    {%- when 'leaf' -%}
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19c0-8 5-14 15-14 0 10-6 15-14 15"/><path d="M5 19c3-4 6-7 10-9"/></svg>
+                    {%- when 'drop' -%}
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s7 7.5 7 12a7 7 0 01-14 0c0-4.5 7-12 7-12z"/></svg>
+                    {%- when 'shield' -%}
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>
+                    {%- when 'sparkle' -%}
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l2 6.5L20.5 12 14 14l-2 7-2-7-6.5-2L10 9.5 12 3z"/></svg>
+                  {%- endcase -%}
+                </span>
+              {%- endunless -%}
+              <span class="bz-hero__benefit-text">{{ block.settings.text }}</span>
+            </div>
+
+          {%- when 'destacado' -%}
+            <div class="bz-hero__highlight" {{ block.shopify_attributes }}>
+              <span class="bz-hero__highlight-number">{{ block.settings.number | escape }}</span>
+              <span class="bz-hero__highlight-copy">
+                <strong>{{ block.settings.label | escape }}</strong>
+                {%- if block.settings.caption != blank -%}
+                  <span>{{ block.settings.caption | escape }}</span>
+                {%- endif -%}
+              </span>
+            </div>
+
+          {%- when 'resenas' -%}
+            <div class="bz-hero__rating" {{ block.shopify_attributes }}>
+              <span class="bz-hero__stars" aria-label="{{ block.settings.stars }} de 5 estrellas">
+                {%- for i in (1..5) -%}
+                  <svg viewBox="0 0 24 24" class="{% if i > block.settings.stars %}is-empty{% endif %}" aria-hidden="true"><path d="M12 2.5l2.9 6.2 6.6.7-5 4.5 1.4 6.6L12 17.2l-5.9 3.3 1.4-6.6-5-4.5 6.6-.7z"/></svg>
+                {%- endfor -%}
+              </span>
+              {%- if block.settings.text != blank -%}
+                <span class="bz-hero__rating-text">{{ block.settings.text }}</span>
+              {%- endif -%}
+            </div>
+
+          {%- when 'boton' -%}
+            {%- if block.settings.label != blank -%}
+              <div class="bz-hero__buttons" {{ block.shopify_attributes }}>
+                <a
+                  {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% else %}role="link" aria-disabled="true"{% endif %}
+                  class="bz-hero__button bz-hero__button--{{ block.settings.style }}{% if block.settings.full_width_mobile %} bz-hero__button--full-mobile{% endif %}"
+                >
+                  {{- block.settings.label | escape -}}
+                </a>
+                {%- if block.settings.note != blank -%}
+                  <p class="bz-hero__button-note">{{ block.settings.note | escape }}</p>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+
+    <div class="bz-hero__media bz-hero__media--{{ s.image_ratio }}">
+      {%- if main_image != blank -%}
+        <picture>
+          {%- if s.image_mobile != blank and s.image != blank -%}
+            <source
+              media="(max-width: 749px)"
+              srcset="
+                {{ s.image_mobile | image_url: width: 375 }} 375w,
+                {{ s.image_mobile | image_url: width: 750 }} 750w,
+                {{ s.image_mobile | image_url: width: 1100 }} 1100w
+              "
+              sizes="100vw"
+              width="{{ s.image_mobile.width }}"
+              height="{{ s.image_mobile.height }}"
+            >
+          {%- endif -%}
+          {{
+            main_image
+            | image_url: width: 1500
+            | image_tag:
+              loading: 'eager',
+              fetchpriority: 'high',
+              sizes: '(min-width: 990px) 50vw, 100vw',
+              widths: '375, 550, 750, 1100, 1500',
+              class: 'bz-hero__image',
+              alt: main_image.alt
+          }}
+        </picture>
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'bz-hero__image bz-hero__placeholder' }}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .bz-hero {
+    background: var(--bz-bg);
+    color: var(--bz-text);
+    padding: var(--bz-pt) 0 var(--bz-pb);
+  }
+  .bz-hero__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;
+  }
+  .bz-hero--img-left .bz-hero__media { order: -1; }
+
+  /* Contenido */
+  .bz-hero__content { display: flex; flex-direction: column; gap: 18px; }
+  .bz-hero__content--center { align-items: center; text-align: center; }
+  .bz-hero__content--left { align-items: flex-start; text-align: left; }
+  .bz-hero__content > * { margin: 0; }
+
+  .bz-hero__eyebrow {
+    color: var(--bz-accent);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+  }
+  .bz-hero__eyebrow--upper { text-transform: uppercase; }
+
+  .bz-hero__title {
+    color: var(--bz-text);
+    font-family: var(--font-heading-family, inherit);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+  }
+  .bz-hero__title em { color: var(--bz-accent); font-style: normal; }
+  .bz-hero__title--small  { font-size: clamp(28px, 4vw, 40px); }
+  .bz-hero__title--medium { font-size: clamp(34px, 5vw, 54px); }
+  .bz-hero__title--large  { font-size: clamp(40px, 6vw, 68px); }
+
+  .bz-hero__text { font-size: 17px; line-height: 1.6; opacity: 0.88; max-width: 52ch; }
+  .bz-hero__text p { margin: 0 0 0.6em; }
+  .bz-hero__text p:last-child { margin-bottom: 0; }
+
+  /* Beneficios */
+  .bz-hero__benefit { display: flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 500; text-align: left; }
+  .bz-hero__content > .bz-hero__benefit + .bz-hero__benefit { margin-top: -8px; }
+  .bz-hero__benefit-icon {
+    flex: 0 0 30px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: color-mix(in srgb, var(--bz-accent) 15%, transparent);
+    color: var(--bz-accent);
+  }
+  .bz-hero__benefit-icon svg { width: 17px; height: 17px; }
+  .bz-hero__benefit-text p { margin: 0; }
+
+  /* Destacado 18 días */
+  .bz-hero__highlight {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 20px 12px 12px;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--bz-accent) 35%, transparent);
+    background: color-mix(in srgb, var(--bz-accent) 8%, transparent);
+    text-align: left;
+  }
+  .bz-hero__highlight-number {
+    min-width: 56px;
+    height: 56px;
+    padding: 0 8px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bz-accent);
+    color: var(--bz-btn-text);
+    font-size: 24px;
+    font-weight: 700;
+  }
+  .bz-hero__highlight-copy { display: flex; flex-direction: column; line-height: 1.3; font-size: 15px; }
+  .bz-hero__highlight-copy span { opacity: 0.75; font-size: 13px; }
+
+  /* Reseñas */
+  .bz-hero__rating { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 14px; }
+  .bz-hero__stars { display: inline-flex; gap: 2px; }
+  .bz-hero__stars svg { width: 18px; height: 18px; fill: var(--bz-accent); }
+  .bz-hero__stars svg.is-empty { fill: color-mix(in srgb, var(--bz-text) 20%, transparent); }
+  .bz-hero__rating-text p { margin: 0; }
+
+  /* Botones */
+  .bz-hero__buttons { display: flex; flex-direction: column; gap: 10px; align-items: inherit; margin-top: 6px; }
+  .bz-hero__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 54px;
+    padding: 0 36px;
+    border-radius: 999px;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+    cursor: pointer;
+  }
+  .bz-hero__button--primary {
+    background: var(--bz-btn-bg);
+    color: var(--bz-btn-text);
+    box-shadow: 0 10px 24px -10px var(--bz-btn-bg);
+  }
+  .bz-hero__button--secondary {
+    background: transparent;
+    color: var(--bz-text);
+    border: 1.5px solid currentColor;
+  }
+  .bz-hero__button:hover { transform: translateY(-2px); }
+  .bz-hero__button[aria-disabled="true"] { opacity: 0.6; cursor: default; }
+  .bz-hero__button-note { margin: 0; font-size: 13px; opacity: 0.75; }
+
+  /* Imagen */
+  .bz-hero__media { position: relative; border-radius: 24px; overflow: hidden; }
+  .bz-hero__media picture { display: block; height: 100%; }
+  .bz-hero__image { display: block; width: 100%; height: auto; }
+  .bz-hero__media--square { aspect-ratio: 1 / 1; }
+  .bz-hero__media--portrait { aspect-ratio: 4 / 5; }
+  .bz-hero__media--square .bz-hero__image,
+  .bz-hero__media--portrait .bz-hero__image { height: 100%; object-fit: cover; }
+  .bz-hero__placeholder { background: color-mix(in srgb, var(--bz-text) 6%, transparent); }
+
+  /* Mobile */
+  @media screen and (max-width: 749px) {
+    .bz-hero { padding: var(--bz-pt-mobile) 0 var(--bz-pb-mobile); }
+    .bz-hero__inner { grid-template-columns: 1fr; gap: 32px; }
+    .bz-hero--img-left .bz-hero__media { order: 0; }
+    .bz-hero--mobile-img-first .bz-hero__media { order: -1; }
+    .bz-hero__content { gap: 14px; }
+    .bz-hero__text { font-size: 16px; }
+    .bz-hero__button--full-mobile { width: 100%; }
+    .bz-hero__buttons:has(.bz-hero__button--full-mobile) { align-self: stretch; }
+    .bz-hero__media { border-radius: 18px; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Bronzer · Hero",
+  "tag": "div",
+  "class": "section-bronzer-hero",
+  "max_blocks": 16,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Imagen"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Imagen (escritorio)",
+      "info": "Recomendado: 1500 x 1500 px o más."
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Imagen (celular)",
+      "info": "Opcional. Si la dejás vacía se usa la de escritorio."
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Proporción de la imagen",
+      "options": [
+        { "value": "adapt", "label": "Adaptar a la imagen" },
+        { "value": "square", "label": "Cuadrada (1:1)" },
+        { "value": "portrait", "label": "Vertical (4:5)" }
+      ],
+      "default": "adapt"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Posición de la imagen (escritorio)",
+      "options": [
+        { "value": "right", "label": "Derecha" },
+        { "value": "left", "label": "Izquierda" }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_image_first",
+      "label": "En celular, mostrar la imagen arriba del texto",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Contenido"
+    },
+    {
+      "type": "select",
+      "id": "content_align",
+      "label": "Alineación del texto",
+      "options": [
+        { "value": "left", "label": "Izquierda" },
+        { "value": "center", "label": "Centrado" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Colores"
+    },
+    {
+      "type": "color",
+      "id": "color_bg",
+      "label": "Fondo",
+      "default": "#FBF4EC"
+    },
+    {
+      "type": "color",
+      "id": "color_text",
+      "label": "Texto",
+      "default": "#2B1A12"
+    },
+    {
+      "type": "color",
+      "id": "color_accent",
+      "label": "Acento (beta-caroteno)",
+      "info": "Se usa en el subtítulo, palabras en cursiva del título, íconos y estrellas.",
+      "default": "#D9822B"
+    },
+    {
+      "type": "color",
+      "id": "color_button_bg",
+      "label": "Fondo del botón",
+      "default": "#2B1A12"
+    },
+    {
+      "type": "color",
+      "id": "color_button_text",
+      "label": "Texto del botón",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Espaciado"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Margen superior",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 72
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Margen inferior",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 72
+    }
+  ],
+  "blocks": [
+    {
+      "type": "subtitulo",
+      "name": "Subtítulo",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texto",
+          "default": "Fórmula con Beta-Caroteno"
+        },
+        {
+          "type": "checkbox",
+          "id": "uppercase",
+          "label": "Mayúsculas",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "titulo",
+      "name": "Título",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Título",
+          "info": "Poné una palabra en cursiva para resaltarla con el color de acento.",
+          "default": "Bronceado natural en <em>18 días</em>, sin tomar sol"
+        },
+        {
+          "type": "select",
+          "id": "size",
+          "label": "Tamaño",
+          "options": [
+            { "value": "small", "label": "Chico" },
+            { "value": "medium", "label": "Mediano" },
+            { "value": "large", "label": "Grande" }
+          ],
+          "default": "large"
+        },
+        {
+          "type": "select",
+          "id": "tag",
+          "label": "Etiqueta SEO",
+          "info": "Usá H1 solo una vez por página.",
+          "options": [
+            { "value": "h1", "label": "H1" },
+            { "value": "h2", "label": "H2" }
+          ],
+          "default": "h1"
+        }
+      ]
+    },
+    {
+      "type": "texto",
+      "name": "Texto",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Texto",
+          "default": "<p>Olvidate de las camas solares, los autobronceantes que manchan y las quemaduras. Nuestra fórmula con beta-caroteno activa tu tono dorado desde adentro.</p>"
+        }
+      ]
+    },
+    {
+      "type": "beneficio",
+      "name": "Beneficio",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Ícono",
+          "options": [
+            { "value": "check", "label": "Check" },
+            { "value": "sun_off", "label": "Sol tachado" },
+            { "value": "clock", "label": "Reloj" },
+            { "value": "leaf", "label": "Hoja" },
+            { "value": "drop", "label": "Gota" },
+            { "value": "shield", "label": "Escudo" },
+            { "value": "sparkle", "label": "Brillo" },
+            { "value": "none", "label": "Sin ícono" }
+          ],
+          "default": "check"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "label": "Texto",
+          "default": "Sin camas solares"
+        }
+      ]
+    },
+    {
+      "type": "destacado",
+      "name": "Destacado (18 días)",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Número",
+          "default": "18"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Texto principal",
+          "default": "días para ver tu bronceado"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Texto secundario",
+          "default": "Sin sol · Sin manchas · Sin quemaduras"
+        }
+      ]
+    },
+    {
+      "type": "resenas",
+      "name": "Reseñas",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "range",
+          "id": "stars",
+          "label": "Estrellas",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "label": "Texto",
+          "default": "<strong>Clientas reales</strong>, resultados reales"
+        }
+      ]
+    },
+    {
+      "type": "boton",
+      "name": "Botón",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Texto del botón",
+          "default": "Quiero mi bronceado"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Estilo",
+          "options": [
+            { "value": "primary", "label": "Relleno" },
+            { "value": "secondary", "label": "Contorno" }
+          ],
+          "default": "primary"
+        },
+        {
+          "type": "checkbox",
+          "id": "full_width_mobile",
+          "label": "Ancho completo en celular",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "note",
+          "label": "Texto debajo del botón",
+          "default": "Envío gratis · Pagá en cuotas"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bronzer · Hero",
+      "blocks": [
+        { "type": "subtitulo" },
+        { "type": "titulo" },
+        { "type": "texto" },
+        {
+          "type": "beneficio",
+          "settings": { "icon": "sun_off", "text": "Sin tomar sol ni camas solares" }
+        },
+        {
+          "type": "beneficio",
+          "settings": { "icon": "drop", "text": "Sin autobronceantes ni manchas naranjas" }
+        },
+        {
+          "type": "beneficio",
+          "settings": { "icon": "shield", "text": "Sin quemaduras ni piel dañada" }
+        },
+        { "type": "destacado" },
+        { "type": "boton" },
+        { "type": "resenas" }
+      ]
+    }
+  ]
+}
+{% endschema %}
