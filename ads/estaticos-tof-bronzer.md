@@ -6,6 +6,24 @@
 
 ---
 
+## Posicionamiento: somos "la marca del betacaroteno"
+
+La idea es que la gente no nos vea como "otro suplemento para broncearse" sino como **la marca que trae el bronceado con betacaroteno**. Por eso, en los 14 estáticos:
+
+1. **La palabra "BETACAROTENO" está siempre en la imagen**: en el titular, en la etiqueta superior o en el texto clave, y además en el **sello de marca**.
+2. **Sello de marca fijo** (definido en el bloque de marca): una placa dorada con *BETACAROTENO / FÓRMULA EXCLUSIVA*, igual en todos los anuncios. Con la repetición, la gente asocia "betacaroteno = DR WOMAN".
+3. **Frases propias** para repetir en anuncios, landing y redes:
+   - *"El bronceado con betacaroteno."*
+   - *"Tu dorado nace de adentro."*
+   - *"Sin sol. Con betacaroteno."*
+   - *"Una cápsula de betacaroteno por día."*
+   - *"Betacaroteno: el dorado que nace de adentro."*
+4. **Contra quién competimos:** no contra otros suplementos, sino contra la **cama solar, el autobronceante y el sol**. Así quedamos solos en nuestra categoría.
+
+> ⚠️ "Única fórmula" / "la única con betacaroteno": usalo **solo si la marca puede comprobarlo**, porque Meta y Defensa del Consumidor pueden pedirlo. "Fórmula exclusiva DR WOMAN" transmite lo mismo sin riesgo.
+
+---
+
 ## Cómo usar estos prompts en ChatGPT (para que salgan nivel diseñadora)
 
 1. **Abrí un chat nuevo por creativo** y adjuntá siempre: (a) la **foto real del frasco** y (b) el **logo DR WOMAN** en PNG. Si ya tenés la foto de la modelo del Hero, adjuntala también para mantener la misma protagonista.
@@ -24,6 +42,7 @@ Typography: headlines in a high-contrast elegant display serif similar to Playfa
 Design quality: it must look like it was designed by a senior art director for a premium global beauty brand: clean grid, generous margins, perfect alignment and kerning, clear visual hierarchy, maximum 3 text sizes, lots of breathing room, no clutter, no clip-art, no cheap gradients, no stock-photo look.
 Spanish text: render ALL text exactly as written between quotes, in Argentine Spanish, with correct accents and punctuation (á é í ó ú ñ ¿ ¡), no extra words, no typos, no English text anywhere in the image.
 People: real-looking Argentine women with natural features and real skin texture (pores, freckles, tiny imperfections), warm even golden-tanned skin that looks healthy and natural — never orange, never plastic, no beauty filter.
+SIGNATURE ELEMENT (mandatory in every design): the word "BETACAROTENO" is the hero of the brand and must always be clearly visible, perfectly spelled and legible at phone size. In addition to any text requested below, include the brand seal: a small rounded-rectangle badge in honey gold #E3B57A with a thin bronze #B46F34 outline and a tiny sun-drop icon on the left, containing two lines in uppercase sans-serif, deep cocoa #1E140F: "BETACAROTENO" (bold, larger) / "FÓRMULA EXCLUSIVA" (small, wide spacing). If the prompt does not give it a position, place it in the top-right or bottom-right corner, in a clean area that does not overlap faces, the bottle label or other text. The seal must look like a consistent brand stamp, identical in every ad.
 Never show sunbathing at midday, sunburned skin, tanning beds in a positive way, or tanning oil. Keep a safe area free of text: 8% margin on all sides for feed, and the top 14% and bottom 20% empty for Stories.
 ```
 
@@ -59,9 +78,9 @@ Never show sunbathing at midday, sunburned skin, tanning beds in a positive way,
 ```
 Design a premium Instagram feed ad, vertical 4:5 (1080x1350), for Bronzer by DR WOMAN. Full-bleed photograph as the background: a candid, hyper-realistic photo that looks shot on a Samsung Galaxy S24 Ultra at golden hour on a wide Argentine Atlantic beach with soft dunes (Cariló / Pinamar style). A real-looking Argentine woman around 30, light olive skin with an even, luminous warm golden tan, freckles, honey-brown wind-tousled hair, wearing an open oversized white linen shirt over a terracotta bikini, walking barefoot along the wet sand toward the camera, laughing naturally, holding her sandals in one hand. She is positioned in the right two-thirds of the frame, face in the upper half. Warm low sunset backlight, golden rim light on her hair and shoulders, real skin texture, slight wind in the hair, natural phone-camera look, not over-saturated, not orange. A soft cream-to-transparent gradient covers the top 35% of the image so the text is perfectly readable.
 Text layout (top-left aligned, 8% margins):
-1) Small uppercase label, sans-serif, wide letter spacing, bronze #B46F34: "BRONCEADO SIN SOL"
+1) Small uppercase label, sans-serif, wide letter spacing, bronze #B46F34: "BRONCEADO CON BETACAROTENO"
 2) Headline, elegant display serif, deep cocoa #1E140F, two lines, very large: "Llegá al verano" / "ya dorada." — the word "dorada." in italic, bronze #B46F34.
-3) Subheadline, sans-serif, cocoa, medium size, max two lines: "Tu tono dorado empieza adentro, con betacaroteno."
+3) Subheadline, sans-serif, cocoa, medium size, max two lines: "Sin sol. Con betacaroteno." — the word "betacaroteno" in bold.
 Bottom-right corner: the Bronzer bottle from the reference photo, small (about 18% of the image height), standing on the sand with a soft natural shadow, label facing camera and identical to the reference. Bottom-left: a rounded pill button, bronze #B46F34 fill, white uppercase sans-serif text: "DESCUBRÍ TU GLOW". Top-right corner: the DR WOMAN logo, small, in cocoa.
 Overall: aspirational, warm, editorial luxury beauty campaign, clean hierarchy, generous negative space, no other text, no emojis, no stickers.
 ```
@@ -81,7 +100,7 @@ Overall: aspirational, warm, editorial luxury beauty campaign, clean hierarchy, 
 >
 > *Los resultados pueden variar. No reemplaza el protector solar.*
 
-**Título:** Llegá al verano ya dorada · **Descripción:** Bronceado sin sol · Envío gratis
+**Título:** Llegá al verano ya dorada · **Descripción:** Bronceado con betacaroteno · Envío gratis
 
 ---
 
@@ -93,7 +112,7 @@ Overall: aspirational, warm, editorial luxury beauty campaign, clean hierarchy, 
 Design a premium Instagram feed ad, vertical 4:5 (1080x1350), for Bronzer by DR WOMAN, in an elegant still-life editorial style. Background: seamless warm cream #FBF6EF with a soft circular golden glow behind the product, like a sunset halo. Center-bottom: the Bronzer bottle from the reference photo standing on a round travertine stone pedestal, label facing camera, sharp and identical to the reference. Leaning against the pedestal: two fresh organic carrots with feathery green tops, one sliced in half showing the luminous orange core rings, plus three translucent warm amber capsules glowing like liquid sunlight. Lighting: soft warm key light from the upper left, gentle fill, soft contact shadows, hyper-realistic textures, 100mm lens look, luxury skincare campaign quality.
 Text layout (centered, top area, 8% margins):
 1) Small uppercase label, sans-serif, wide letter spacing, bronze #B46F34: "FÓRMULA EXCLUSIVA DR WOMAN"
-2) Headline, elegant display serif, deep cocoa #1E140F, two lines: "El dorado que" / "nace de adentro." — "de adentro." in italic, bronze.
+2) Headline, elegant display serif, deep cocoa #1E140F, two lines: "Betacaroteno:" / "el dorado que nace de adentro." — "Betacaroteno:" very large on its own line, "de adentro." in italic bronze.
 3) Three short benefit lines with tiny thin gold line icons on the left, sans-serif, cocoa, aligned in a neat column on the right side of the bottle: "Betacaroteno" / "Licopeno + cúrcuma" / "Vitaminas C, E y B".
 Bottom center: rounded pill button, deep cocoa fill, cream uppercase text: "CONOCÉ LA FÓRMULA". Top-left: DR WOMAN logo small.
 Clean, airy, perfectly aligned, no clutter, no extra text, no emojis.
@@ -130,7 +149,7 @@ Then a checklist, each item with a gray strikethrough line through the text and 
 "Autobronceante naranja"
 "Manchas en las sábanas"
 "Quemarme el primer día de playa"
-Then one item without strikethrough, in bold, with an unchecked box and a small gold sparkle emoji: "1 cápsula de Bronzer por día ✨"
+Then one item without strikethrough, in bold, with an unchecked box and a small gold sparkle emoji: "1 cápsula de betacaroteno por día ✨"
 Outside the phone, at the bottom of the ad on a soft cream band (bottom 16%): left, the Bronzer bottle from the reference photo small with label identical; right, sans-serif cocoa #1E140F text in two lines: "Bronceado sin sol." / "Con betacaroteno." and a small rounded bronze pill: "PROBALO".
 Realistic, native, relatable, but with premium design finish. No other text.
 ```
@@ -157,8 +176,8 @@ Realistic, native, relatable, but with premium design finish. No other text.
 ```
 Design a premium comparison ad for Instagram feed, vertical 4:5 (1080x1350), for Bronzer by DR WOMAN, in a refined editorial table style. Background: warm cream #FBF6EF with a subtle paper grain.
 Top (centered, 8% margins): headline in elegant display serif, deep cocoa #1E140F: "¿Cómo te bronceás" / "este verano?" — "este verano?" in italic bronze #B46F34.
-Middle: an elegant three-column comparison table with thin cocoa hairlines. Column headers in small uppercase sans-serif: "CAMA SOLAR", "AUTOBRONCEANTE", and the third column highlighted as a tall rounded vertical card with a warm bronze-to-honey gradient (#B46F34 to #E3B57A) with white text: "BRONZER". Above the Bronzer column, a tiny cocoa pill label: "RECOMENDADO".
-Rows (row labels on the far left in sans-serif cocoa): "Sin rayos UV" / "Tono parejo" / "No mancha la ropa" / "Cuida tu piel desde adentro". Use thin outline cross icons in muted grey for "no" and solid cocoa circle check icons for "yes"; in the Bronzer column use white sun-shaped seal check icons for every row. Values: Cama solar = no, no, yes, no. Autobronceante = yes, no, no, no. Bronzer = yes in all rows.
+Middle: an elegant three-column comparison table with thin cocoa hairlines. Column headers in small uppercase sans-serif: "CAMA SOLAR", "AUTOBRONCEANTE", and the third column highlighted as a tall rounded vertical card with a warm bronze-to-honey gradient (#B46F34 to #E3B57A) with white text: "BRONZER" and, under it, a smaller white line: "con betacaroteno". Above the Bronzer column, a tiny cocoa pill label: "RECOMENDADO".
+Rows (row labels on the far left in sans-serif cocoa; the first row label in bold): "Con betacaroteno" / "Sin rayos UV" / "Tono parejo" / "No mancha la ropa" / "Cuida tu piel desde adentro". Use thin outline cross icons in muted grey for "no" and solid cocoa circle check icons for "yes"; in the Bronzer column use white sun-shaped seal check icons for every row. Values: Cama solar = no, no, no, yes, no. Autobronceante = no, yes, no, no, no. Bronzer = yes in all rows.
 Bottom: the Bronzer bottle from the reference photo small at the bottom-right, label identical; bottom-left a rounded bronze pill button with white uppercase text: "ELEGÍ BRONZER". Tiny footnote in grey sans-serif at the very bottom: "Comparación orientativa."
 Perfect alignment, luxury editorial look, no clutter, no extra text.
 ```
@@ -195,7 +214,7 @@ Sent (light green bubble): "Jajaja no, ni pisé la playa 🙈"
 Sent (light green bubble): a photo message showing the Bronzer bottle from the reference photo on a cream bathroom counter, label identical to the reference
 Sent (light green bubble): "Es betacaroteno. 1 cápsula por día y listo ✨"
 Received (white bubble): "Pasame el link YA 🙏"
-Lower area (above the bottom 20% safe zone): a floating premium cream card with rounded corners and soft shadow containing: small DR WOMAN logo, headline in elegant serif cocoa: "Bronceado sin sol." and a bronze rounded pill: "QUIERO EL LINK".
+Lower area (above the bottom 20% safe zone): a floating premium cream card with rounded corners and soft shadow containing: small DR WOMAN logo, headline in elegant serif cocoa: "Bronceado con betacaroteno." and a bronze rounded pill: "QUIERO EL LINK".
 Realistic UI details, perfectly legible text, no typos, everything else clean.
 ```
 
@@ -206,7 +225,7 @@ Realistic UI details, perfectly legible text, no typos, everything else clean.
 >
 > 👉 Deslizá y descubrí tu glow
 
-**Título:** Todas te van a preguntar · **Descripción:** Bronceado sin sol
+**Título:** Todas te van a preguntar · **Descripción:** Bronceado con betacaroteno
 
 ---
 
@@ -244,7 +263,7 @@ Authentic magazine cover composition, high-end, perfect typography, no extra tex
 
 **Prompt:**
 ```
-Design a premium Instagram feed ad, vertical 4:5 (1080x1350), for Bronzer by DR WOMAN, showing a minimalist editorial calendar. Background: warm cream #FBF6EF. Top area (centered, 8% margins): headline in elegant display serif, deep cocoa #1E140F: "Tu ritual de" / "18 días." with "18 días." in italic bronze #B46F34. Below, small sans-serif cocoa: "1 cápsula por día. Tu dorado, de a poco."
+Design a premium Instagram feed ad, vertical 4:5 (1080x1350), for Bronzer by DR WOMAN, showing a minimalist editorial calendar. Background: warm cream #FBF6EF. Top area (centered, 8% margins): headline in elegant display serif, deep cocoa #1E140F: "Tu ritual de" / "18 días." with "18 días." in italic bronze #B46F34. Below, small sans-serif cocoa: "1 cápsula de betacaroteno por día. Tu dorado, de a poco." — "betacaroteno" in bold bronze.
 Center: a clean 3-row calendar grid of 18 rounded squares (6 per row) with thin sand-colored outlines. Each square is filled with a color gradient that progresses smoothly from pale cream (day 1) to warm honey gold (day 9) to rich bronze (day 18), like a skin tone progression. Small sans-serif numbers 1 to 18 in the corner of each square. Square 18 is slightly bigger, with a gold sun-seal icon and the label "Día 18" in white.
 Bottom: the Bronzer bottle from the reference photo at the bottom-left, standing on a small travertine block, label identical, with three amber capsules beside it. Bottom-right: rounded pill button in bronze with white uppercase text: "EMPEZÁ HOY". Tiny grey footnote at the very bottom: "*Los resultados pueden variar."
 Clean grid, perfect spacing, high-end design, no other text.
@@ -277,7 +296,7 @@ Center-left, a huge elegant display serif headline in cream #FBF6EF, three lines
 "No mancha."
 "No huele."
 "No quema."
-Below, in italic display serif honey gold #F2B544, one line: "Solo dorado."
+Below, in italic display serif honey gold #F2B544, one line: "Es betacaroteno."
 Right side: the Bronzer bottle from the reference photo, large (about 55% of the canvas height), slightly rotated, label identical to the reference, with a soft realistic shadow and a warm rim light, three glowing amber capsules floating next to it.
 Bottom-left: small uppercase sans-serif cream text with wide spacing: "BRONCEADO SIN SOL · CON BETACAROTENO". Top-left: DR WOMAN logo small in cream.
 Strong contrast, confident, premium, very clean, no other text.
@@ -305,7 +324,7 @@ Design an Instagram Story ad, vertical 9:16 (1080x1920), for Bronzer by DR WOMAN
 Overlay text styled like native Instagram Story text (keep the top 14% and bottom 20% clear):
 Upper third: a white rounded text-highlight box with black sans-serif text: "POV: llegás a la playa y ya estás dorada"
 Middle-right: a small native-style sticker in cream with cocoa text: "sin pisar el sol ☀️🚫"
-Lower area (above the bottom safe zone): a premium cream rounded card with soft shadow: left, the Bronzer bottle from the reference photo small with label identical; right, elegant serif cocoa text "Bronzer" and sans-serif text "Bronceado desde adentro", plus a small bronze pill: "VER MÁS".
+Lower area (above the bottom safe zone): a premium cream rounded card with soft shadow: left, the Bronzer bottle from the reference photo small with label identical; right, elegant serif cocoa text "Bronzer" and sans-serif text "Bronceado con betacaroteno" with "betacaroteno" in bold, plus a small bronze pill: "VER MÁS".
 Authentic, fun, aspirational, perfectly legible, no other text.
 ```
 
@@ -316,7 +335,7 @@ Authentic, fun, aspirational, perfectly legible, no other text.
 >
 > 👉 Deslizá para conocer Bronzer
 
-**Título:** Llegá dorada a la playa · **Descripción:** Bronceado sin sol
+**Título:** Llegá dorada a la playa · **Descripción:** Bronceado con betacaroteno
 
 ---
 
@@ -358,7 +377,7 @@ Elegant icon style (thin line, consistent stroke), perfect grid, generous spacin
 ```
 Design a premium split-screen comparison ad for Instagram feed, vertical 4:5 (1080x1350), for Bronzer by DR WOMAN. The canvas is divided vertically into two halves with a thin cream divider line and a small round cream badge in the center with the cocoa text "VS".
 LEFT half (muted, cooler tones, slightly desaturated): hyper-realistic close-up photo of a woman's knees and ankles with a patchy, streaky, orange self-tanner result, darker orange marks on the knees and around the ankles, next to a white bedsheet with visible orange stains. Label at the top of the left half in sans-serif uppercase, muted grey: "AUTOBRONCEANTE". Three short lines below with small grey cross icons, sans-serif: "Manchas" / "Olor" / "Tono naranja".
-RIGHT half (warm, glowing, golden): hyper-realistic close-up photo of the same type of framing, a woman's legs with an even, natural, warm golden tan, sitting on a cream linen sofa, with the Bronzer bottle from the reference photo standing next to her, label identical. Label at the top of the right half in sans-serif uppercase, bronze #B46F34: "BRONZER". Three short lines below with small solid bronze check icons, sans-serif cocoa: "Parejo" / "Sin olor" / "Dorado natural".
+RIGHT half (warm, glowing, golden): hyper-realistic close-up photo of the same type of framing, a woman's legs with an even, natural, warm golden tan, sitting on a cream linen sofa, with the Bronzer bottle from the reference photo standing next to her, label identical. Label at the top of the right half in sans-serif uppercase, bronze #B46F34: "BRONZER · BETACAROTENO". Three short lines below with small solid bronze check icons, sans-serif cocoa, the first one in bold: "Betacaroteno" / "Parejo" / "Sin olor".
 Bottom band across both halves, warm cream: headline in elegant display serif cocoa: "El dorado que no se nota que es de mentira." with "no se nota" in italic bronze, and a small bronze pill button at the right: "PROBÁ BRONZER".
 Realistic photos, refined design, perfect symmetry, no other text.
 ```
@@ -384,7 +403,7 @@ Realistic photos, refined design, perfect symmetry, no other text.
 **Prompt:**
 ```
 Design a premium Instagram feed ad, vertical 4:5 (1080x1350), for Bronzer by DR WOMAN, in a calm luxury morning-ritual still-life style. Photograph: a hyper-realistic cream travertine bathroom counter in soft warm morning light coming from a frosted window on the left, casting a gentle diagonal shadow. On the counter: the Bronzer bottle from the reference photo (label identical, facing camera), a clear glass of water, a small ceramic dish holding one glowing amber capsule, a folded linen towel and a small sprig of dried pampas grass. Woman's hand with warm golden-tanned skin and a thin gold ring reaching for the capsule from the right edge of the frame. Hyper-realistic textures, 85mm lens look, shallow depth of field focused on the capsule.
-Text (top-left, generous margins): headline in elegant display serif, deep cocoa #1E140F, two lines: "Una cápsula." / "Cero sol." with "Cero sol." in italic bronze #B46F34. Below, sans-serif cocoa small: "Tu bronceado empieza en tu rutina."
+Text (top-left, generous margins): headline in elegant display serif, deep cocoa #1E140F, two lines: "Una cápsula." / "Cero sol." with "Cero sol." in italic bronze #B46F34. Below, sans-serif cocoa small: "Tu dosis diaria de betacaroteno." — "betacaroteno" in bold bronze.
 Bottom-left: a small rounded cream pill with a thin bronze outline and bronze uppercase text: "BRONCEADO SIN SOL". Top-right: DR WOMAN logo small.
 Serene, minimal, aspirational, lots of negative space, no other text.
 ```
@@ -416,7 +435,7 @@ Photo 3: the Bronzer bottle from the reference photo on a straw beach bag next t
 Photo 4: a macro of glowing amber capsules on travertine.
 Photo 5: sliced fresh carrots and a cut orange on a linen napkin.
 Photo 6: an ocean horizon with a peach and gold sunset sky.
-Text: a cream rounded label over the center of the collage with elegant display serif cocoa text: "Mood: verano dorado" with "dorado" in italic bronze. At the bottom, small uppercase sans-serif bronze text with wide spacing: "BRONCEADO SIN SOL · BETACAROTENO". Bottom-right: DR WOMAN logo small.
+Text: a cream rounded label over the center of the collage with elegant display serif cocoa text: "Mood: verano dorado" with "dorado" in italic bronze. At the bottom, medium-size bold uppercase sans-serif bronze text with wide spacing: "BRONCEADO SIN SOL · BETACAROTENO". Bottom-right: DR WOMAN logo small.
 Cohesive warm color grading across all photos (cream, honey, terracotta, bronze), aspirational, curated, premium, no other text.
 ```
 
@@ -429,7 +448,7 @@ Cohesive warm color grading across all photos (cream, honey, terracotta, bronze)
 >
 > 👉 drwoman.ar
 
-**Título:** Tu verano dorado empieza acá · **Descripción:** Bronceado sin sol
+**Título:** Tu verano dorado empieza acá · **Descripción:** Bronceado con betacaroteno
 
 ---
 
@@ -440,7 +459,7 @@ Cohesive warm color grading across all photos (cream, honey, terracotta, bronze)
 
 **Placa 1 (hook):**
 ```
-Design slide 1 of a 5-slide premium Instagram carousel, square 1:1 (1080x1080), for Bronzer by DR WOMAN. Background: warm cream #FBF6EF with a large soft golden sun-glow circle in the lower right. Top-left small uppercase sans-serif bronze #B46F34 label: "BRONCEADO SIN SOL". Center-left huge elegant display serif headline in deep cocoa #1E140F, three lines: "3 mitos del" / "bronceado que" / "te hicieron creer." with "te hicieron creer." in italic bronze. Bottom-right, small sans-serif cocoa text with a thin arrow: "Deslizá →". Top-right: DR WOMAN logo small. Minimal, editorial, no other text.
+Design slide 1 of a 5-slide premium Instagram carousel, square 1:1 (1080x1080), for Bronzer by DR WOMAN. Background: warm cream #FBF6EF with a large soft golden sun-glow circle in the lower right. Top-left small uppercase sans-serif bronze #B46F34 label: "BRONCEADO CON BETACAROTENO". Center-left huge elegant display serif headline in deep cocoa #1E140F, three lines: "3 mitos del" / "bronceado que" / "te hicieron creer." with "te hicieron creer." in italic bronze. Bottom-right, small sans-serif cocoa text with a thin arrow: "Deslizá →". Top-right: DR WOMAN logo small. Minimal, editorial, no other text.
 ```
 **Placa 2:**
 ```
@@ -448,11 +467,11 @@ Design slide 2 of the same carousel with the identical design system (same cream
 ```
 **Placa 3:**
 ```
-Design slide 3 of the same carousel with the identical design system. Top-left label: "MITO 2". Headline: "El autobronceante es la única opción sin sol." Body text: "Hay otra: un tono parejo que no mancha" / "ni la ropa ni las sábanas." Right side: rounded arch photo of a woman's hand with warm, even golden-tanned skin resting on clean white linen sheets. Bottom-right "→". No other text.
+Design slide 3 of the same carousel with the identical design system. Top-left label: "MITO 2". Headline: "El autobronceante es la única opción sin sol." Body text: "Hay otra: el betacaroteno." / "Un tono parejo que no mancha nada." — "betacaroteno" in bold bronze. Right side: rounded arch photo of a woman's hand with warm, even golden-tanned skin resting on clean white linen sheets. Bottom-right "→". No other text.
 ```
 **Placa 4:**
 ```
-Design slide 4 of the same carousel with the identical design system. Top-left label: "MITO 3". Headline: "Unos minutos de cama solar no hacen nada." Body text: "Los rayos UV de la cama solar" / "también impactan en tu piel." Right side: rounded arch photo of a warm empty white tiled room with soft light, minimal and calm, with a single linen towel folded on a stool (no tanning bed shown). Bottom-right "→". No other text.
+Design slide 4 of the same carousel with the identical design system. Top-left label: "MITO 3". Headline: "Unos minutos de cama solar no hacen nada." Body text: "Los rayos UV de la cama solar" / "también impactan en tu piel." / "El betacaroteno te da color sin UV." — "betacaroteno" in bold bronze. Right side: rounded arch photo of a warm empty white tiled room with soft light, minimal and calm, with a single linen towel folded on a stool (no tanning bed shown). Bottom-right "→". No other text.
 ```
 **Placa 5 (CTA):**
 ```
