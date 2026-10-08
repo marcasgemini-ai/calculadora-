@@ -1,0 +1,502 @@
+{%- comment -%}
+  Bronzer · Preguntas frecuentes
+  Desplegables nativos (details/summary) + foto. Genera los datos estructurados
+  FAQPage para Google a partir de las preguntas.
+  Todo es editable desde Tienda online > Personalizar: cada pregunta es un bloque.
+{%- endcomment -%}
+
+{%- liquid
+  assign s = section.settings
+  assign sid = '#bz-faq-' | append: section.id
+  assign has_image = false
+  if s.image != blank or request.design_mode
+    assign has_image = true
+  endif
+-%}
+
+<style>
+  {{ s.heading_font | font_face: font_display: 'swap' }}
+
+  {{ sid }} {
+    --faq-bg: {{ s.color_bg | default: '#FBF6EF' }};
+    --faq-card: {{ s.color_card | default: '#FFFFFF' }};
+    --faq-ink: {{ s.color_text | default: '#1E140F' }};
+    --faq-muted: {{ s.color_text | default: '#1E140F' | color_modify: 'alpha', 0.7 }};
+    --faq-line: {{ s.color_text | default: '#1E140F' | color_modify: 'alpha', 0.1 }};
+    --faq-accent: {{ s.color_accent | default: '#B46F34' }};
+    --faq-display: {{ s.heading_font.family }}, {{ s.heading_font.fallback_families }};
+    --faq-display-w: {{ s.heading_font.weight }};
+    --faq-radius: {{ s.card_radius }}px;
+    --faq-pt: {{ s.padding_top }}px;
+    --faq-pb: {{ s.padding_bottom }}px;
+  }
+  {{ sid }}, {{ sid }} *, {{ sid }} *::before, {{ sid }} *::after { box-sizing: border-box; }
+  {{ sid }} p, {{ sid }} li, {{ sid }} span { color: inherit; }
+  {{ sid }} p { margin: 0; }
+  {{ sid }} {
+    display: block;
+    background: var(--faq-bg);
+    color: var(--faq-ink);
+    padding: calc(var(--faq-pt) * 0.7) 16px calc(var(--faq-pb) * 0.7);
+  }
+  {{ sid }} .faq__inner { display: flex; flex-direction: column; gap: 28px; max-width: 1240px; margin: 0 auto; }
+  {{ sid }}.faq--mobile-image-bottom .faq__media { order: 2; }
+  {{ sid }}.faq--mobile-image-hide .faq__media { display: none; }
+
+  /* ---------- Encabezado ---------- */
+  {{ sid }} .faq__content { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+  {{ sid }} .faq__content > * { margin: 0; }
+  {{ sid }} .faq__eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.26em; text-transform: uppercase; color: var(--faq-accent); }
+  {{ sid }} .faq__heading { font-family: var(--faq-display); font-weight: var(--faq-display-w); font-size: clamp(34px, 9vw, 46px); line-height: 1.05; letter-spacing: -0.02em; color: var(--faq-ink); text-wrap: balance; }
+  {{ sid }} .faq__heading em { font-style: italic; color: var(--faq-accent); }
+  {{ sid }} .faq__sub { font-size: 15px; line-height: 1.6; color: var(--faq-muted); max-width: 52ch; }
+  {{ sid }} .faq__sub p { margin: 0; }
+
+  /* ---------- Desplegables ---------- */
+  {{ sid }} .faq__list { display: flex; flex-direction: column; gap: 12px; margin-top: 10px !important; }
+  {{ sid }} .faq__item {
+    border-radius: var(--faq-radius);
+    background: var(--faq-card);
+    border: 1px solid var(--faq-line);
+    box-shadow: 0 10px 26px -20px rgba(30, 20, 15, 0.45);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+  {{ sid }} .faq__item[open] { border-color: color-mix(in srgb, var(--faq-accent) 45%, transparent); box-shadow: 0 16px 34px -22px color-mix(in srgb, var(--faq-accent) 80%, transparent); }
+  {{ sid }} .faq__q {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 18px;
+    cursor: pointer;
+    list-style: none;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--faq-ink);
+  }
+  {{ sid }} .faq__q::-webkit-details-marker { display: none; }
+  {{ sid }} .faq__q::marker { content: ""; }
+  {{ sid }} .faq__q:focus-visible { outline: 2px solid var(--faq-accent); outline-offset: 2px; border-radius: var(--faq-radius); }
+  {{ sid }} .faq__icon {
+    position: relative;
+    flex: 0 0 28px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--faq-accent) 12%, transparent);
+    color: var(--faq-accent);
+    transition: background-color 0.25s ease, transform 0.35s ease;
+  }
+  {{ sid }} .faq__icon::before,
+  {{ sid }} .faq__icon::after { content: ""; position: absolute; left: 50%; top: 50%; width: 12px; height: 2px; margin: -1px 0 0 -6px; border-radius: 2px; background: currentColor; transition: transform 0.35s ease; }
+  {{ sid }} .faq__icon::after { transform: rotate(90deg); }
+  {{ sid }} .faq__item[open] .faq__icon { background: var(--faq-accent); color: #fff; transform: rotate(180deg); }
+  {{ sid }} .faq__item[open] .faq__icon::after { transform: rotate(0deg); }
+  {{ sid }} .faq__a { padding: 0 18px 20px; font-size: 15px; line-height: 1.65; color: var(--faq-muted); }
+  {{ sid }} .faq__a > * { margin: 0; }
+  {{ sid }} .faq__a > * + * { margin-top: 0.7em; }
+  {{ sid }} .faq__a a { color: var(--faq-accent); }
+  {{ sid }} .faq__a ul, {{ sid }} .faq__a ol { padding-left: 1.2em; }
+  {{ sid }} .faq__item[open] .faq__a { animation: faq-in 0.35s ease both; }
+  @keyframes faq-in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+
+  /* ---------- Contacto ---------- */
+  {{ sid }} .faq__contact { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 14px; margin-top: 8px !important; padding: 16px 18px; border-radius: var(--faq-radius); border: 1.5px dashed color-mix(in srgb, var(--faq-accent) 50%, transparent); }
+  {{ sid }} .faq__contact p { flex: 1 1 200px; font-size: 14.5px; line-height: 1.45; color: var(--faq-muted); }
+  {{ sid }} .faq__contact strong { color: var(--faq-ink); }
+  {{ sid }} .faq__contact-btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; border-radius: 999px; background: var(--faq-accent); color: #fff; font-size: 14px; font-weight: 700; text-decoration: none; white-space: nowrap; transition: transform 0.2s ease, filter 0.2s ease; }
+  {{ sid }} .faq__contact-btn:hover { transform: translateY(-1px); filter: brightness(1.07); color: #fff; }
+  {{ sid }} .faq__contact-btn svg { width: 18px; height: 18px; flex: none; }
+
+  /* ---------- Foto ---------- */
+  {{ sid }} .faq__media { position: relative; min-width: 0; }
+  {{ sid }} .faq__frame { position: relative; overflow: hidden; border-radius: calc(var(--faq-radius) * 1.6); aspect-ratio: 4 / 3; background: color-mix(in srgb, var(--faq-accent) 10%, var(--faq-bg)); }
+  {{ sid }} .faq__frame > img,
+  {{ sid }} .faq__frame > svg { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; }
+  {{ sid }} .faq__frame > svg { fill: var(--faq-line); }
+  {{ sid }} .faq__badge {
+    position: absolute;
+    left: 14px;
+    bottom: 14px;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    max-width: calc(100% - 28px);
+    padding: 10px 16px 10px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.9);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 12px 26px -16px rgba(0, 0, 0, 0.5);
+    font-size: 13px;
+    line-height: 1.3;
+    color: var(--faq-ink);
+  }
+  {{ sid }} .faq__badge-ico { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; flex: none; border-radius: 50%; background: var(--faq-accent); color: #fff; }
+  {{ sid }} .faq__badge-ico svg { width: 18px; height: 18px; }
+  {{ sid }} .faq__badge strong { font-weight: 800; }
+
+  /* ---------- Escritorio ---------- */
+  @media screen and (min-width: 750px) {
+    {{ sid }} { padding: var(--faq-pt) 32px var(--faq-pb); }
+    {{ sid }} .faq__heading { font-size: clamp(42px, 5vw, 64px); }
+    {{ sid }} .faq__sub { font-size: 17px; }
+    {{ sid }} .faq__q { padding: 22px 24px; font-size: 18px; }
+    {{ sid }} .faq__a { padding: 0 24px 24px; font-size: 16px; }
+    {{ sid }} .faq__frame { aspect-ratio: 16 / 10; }
+    {{ sid }} .faq__badge { left: 20px; bottom: 20px; font-size: 14px; }
+  }
+  @media screen and (min-width: 990px) {
+    {{ sid }} .faq__inner { display: grid; grid-template-columns: minmax(0, {{ 100 | minus: s.image_width }}fr) minmax(0, {{ s.image_width }}fr); align-items: start; gap: 64px; }
+    {{ sid }}.faq--image-left .faq__inner { grid-template-columns: minmax(0, {{ s.image_width }}fr) minmax(0, {{ 100 | minus: s.image_width }}fr); }
+    {{ sid }}.faq--no-image .faq__inner { grid-template-columns: minmax(0, 1fr); max-width: 860px; }
+    {{ sid }} .faq__media,
+    {{ sid }}.faq--mobile-image-hide .faq__media { display: block; order: 0; position: sticky; top: 24px; }
+    {{ sid }}.faq--image-left .faq__media { order: -1; }
+    {{ sid }} .faq__frame { aspect-ratio: {% if s.image_ratio == 'square' %}1 / 1{% elsif s.image_ratio == 'landscape' %}4 / 3{% else %}4 / 5{% endif %}; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    {{ sid }} .faq__item[open] .faq__a { animation: none; }
+    {{ sid }} .faq__icon, {{ sid }} .faq__icon::before, {{ sid }} .faq__icon::after { transition: none; }
+  }
+</style>
+
+<div
+  id="bz-faq-{{ section.id }}"
+  class="faq faq--image-{{ s.image_position }} faq--mobile-image-{{ s.mobile_image }}{% unless has_image %} faq--no-image{% endunless %}"
+>
+  <div class="faq__inner">
+    <div class="faq__content">
+      {%- if s.eyebrow != blank -%}<p class="faq__eyebrow">{{ s.eyebrow | escape }}</p>{%- endif -%}
+      {%- if s.heading != blank -%}<h2 class="faq__heading">{{ s.heading }}</h2>{%- endif -%}
+      {%- if s.subheading != blank -%}<div class="faq__sub">{{ s.subheading }}</div>{%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <div class="faq__list">
+          {%- for block in section.blocks -%}
+            <details
+              class="faq__item"
+              {% if s.one_at_a_time %}name="faq-{{ section.id }}"{% endif %}
+              {% if block.settings.open %}open{% endif %}
+              {{ block.shopify_attributes }}
+            >
+              <summary class="faq__q">
+                <span>{{ block.settings.question | escape }}</span>
+                <span class="faq__icon" aria-hidden="true"></span>
+              </summary>
+              <div class="faq__a">{{ block.settings.answer }}</div>
+            </details>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- if s.contact_text != blank or s.contact_label != blank -%}
+        <div class="faq__contact">
+          {%- if s.contact_text != blank -%}<p>{{ s.contact_text }}</p>{%- endif -%}
+          {%- if s.contact_label != blank -%}
+            <a
+              {% if s.contact_link != blank %}href="{{ s.contact_link }}"{% else %}role="link" aria-disabled="true"{% endif %}
+              class="faq__contact-btn"
+              {% if s.contact_link contains 'http' %}target="_blank" rel="noopener"{% endif %}
+            >
+              {%- if s.contact_icon == 'whatsapp' -%}
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 00-8.6 15.1L2 22l5-1.3A10 10 0 1012 2zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1112 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 01-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s1 2.6 1.1 2.7c.1.2 1.9 2.9 4.6 4 1.7.7 2.4.8 3.2.7.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.6-.3z"/></svg>
+              {%- elsif s.contact_icon == 'mail' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5L12 13l8.5-6.5"/></svg>
+              {%- else -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 01-12.3 7.6L3 21l1.9-5.7A8.5 8.5 0 1121 11.5z"/></svg>
+              {%- endif -%}
+              {{ s.contact_label | escape }}
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- if has_image -%}
+      <div class="faq__media">
+        <div class="faq__frame">
+          {%- if s.image != blank -%}
+            {{
+              s.image
+              | image_url: width: 1600
+              | image_tag:
+                loading: 'lazy',
+                widths: '600, 900, 1200, 1600',
+                sizes: '(min-width: 990px) 50vw, 100vw',
+                alt: s.image.alt
+            }}
+          {%- else -%}
+            {{ 'lifestyle-1' | placeholder_svg_tag }}
+          {%- endif -%}
+          {%- if s.badge_text != blank -%}
+            <div class="faq__badge">
+              <span class="faq__badge-ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+              </span>
+              <span>{{ s.badge_text }}</span>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{%- if s.seo_schema and section.blocks.size > 0 -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {%- for block in section.blocks -%}
+          {
+            "@type": "Question",
+            "name": {{ block.settings.question | strip | json }},
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": {{ block.settings.answer | strip_html | strip | json }}
+            }
+          }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Bronzer · Preguntas",
+  "tag": "section",
+  "class": "section-bronzer-faq",
+  "max_blocks": 20,
+  "settings": [
+    { "type": "header", "content": "Encabezado" },
+    { "type": "text", "id": "eyebrow", "label": "Subtítulo", "default": "Tus dudas" },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Título",
+      "info": "La palabra en cursiva se pinta con el color de acento.",
+      "default": "Preguntas <em>frecuentes</em>"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Texto",
+      "default": "<p>Todo lo que necesitás saber sobre tu bronceado natural con betacaroteno.</p>"
+    },
+    { "type": "checkbox", "id": "one_at_a_time", "label": "Abrir de a una pregunta", "default": true },
+    { "type": "header", "content": "Foto" },
+    { "type": "image_picker", "id": "image", "label": "Foto", "info": "Lifestyle con el producto. Vertical 4:5, 1600 x 2000 px." },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Formato en computadora",
+      "options": [
+        { "value": "portrait", "label": "Vertical 4:5" },
+        { "value": "square", "label": "Cuadrada" },
+        { "value": "landscape", "label": "Horizontal 4:3" }
+      ],
+      "default": "portrait"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Posición en computadora",
+      "options": [
+        { "value": "right", "label": "Derecha" },
+        { "value": "left", "label": "Izquierda" }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "range",
+      "id": "image_width",
+      "label": "Ancho de la foto",
+      "min": 30,
+      "max": 60,
+      "step": 5,
+      "unit": "%",
+      "default": 50
+    },
+    {
+      "type": "select",
+      "id": "mobile_image",
+      "label": "Foto en celular",
+      "options": [
+        { "value": "top", "label": "Arriba de las preguntas" },
+        { "value": "bottom", "label": "Debajo de las preguntas" },
+        { "value": "hide", "label": "No mostrar" }
+      ],
+      "default": "bottom"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "badge_text",
+      "label": "Etiqueta sobre la foto",
+      "info": "Dejala vacía para ocultarla.",
+      "default": "<strong>+3mil clientas</strong> ya tienen su glow"
+    },
+    { "type": "header", "content": "Contacto" },
+    {
+      "type": "inline_richtext",
+      "id": "contact_text",
+      "label": "Texto",
+      "default": "<strong>¿Te quedó alguna duda?</strong> Te respondemos en minutos."
+    },
+    { "type": "text", "id": "contact_label", "label": "Texto del botón", "default": "Escribinos" },
+    { "type": "url", "id": "contact_link", "label": "Link del botón", "info": "Ej: https://wa.me/549351XXXXXXX" },
+    {
+      "type": "select",
+      "id": "contact_icon",
+      "label": "Ícono del botón",
+      "options": [
+        { "value": "whatsapp", "label": "WhatsApp" },
+        { "value": "mail", "label": "Mail" },
+        { "value": "chat", "label": "Chat" }
+      ],
+      "default": "whatsapp"
+    },
+    { "type": "header", "content": "SEO" },
+    {
+      "type": "checkbox",
+      "id": "seo_schema",
+      "label": "Datos estructurados para Google",
+      "info": "Envía las preguntas a Google en formato FAQPage. Usalo en una sola sección de la página.",
+      "default": true
+    },
+    { "type": "header", "content": "Estilo" },
+    { "type": "font_picker", "id": "heading_font", "label": "Tipografía del título", "default": "playfair_display_n7" },
+    { "type": "color", "id": "color_bg", "label": "Fondo", "default": "#FBF6EF" },
+    { "type": "color", "id": "color_card", "label": "Fondo de las preguntas", "default": "#FFFFFF" },
+    { "type": "color", "id": "color_text", "label": "Texto", "default": "#1E140F" },
+    { "type": "color", "id": "color_accent", "label": "Acento", "default": "#B46F34" },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Redondeo",
+      "min": 0,
+      "max": 28,
+      "step": 2,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Margen superior",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "default": 96
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Margen inferior",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "default": 96
+    }
+  ],
+  "blocks": [
+    {
+      "type": "pregunta",
+      "name": "Pregunta",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Pregunta", "default": "¿Qué es Bronzer y cómo funciona?" },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Respuesta",
+          "default": "<p>Escribí la respuesta.</p>"
+        },
+        { "type": "checkbox", "id": "open", "label": "Abierta al cargar", "default": false }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bronzer · Preguntas",
+      "blocks": [
+        {
+          "type": "pregunta",
+          "settings": {
+            "question": "¿Qué es Bronzer y cómo funciona?",
+            "answer": "<p>Es un suplemento dietario con <strong>betacaroteno</strong>, licopeno, extracto de cúrcuma y vitaminas. El betacaroteno es un pigmento natural que, con la toma diaria, se acumula en la piel y le da un tono dorado y parejo desde adentro, sin necesidad de exponerte al sol.</p>"
+          }
+        },
+        {
+          "type": "pregunta",
+          "settings": {
+            "question": "¿En cuánto tiempo veo resultados?",
+            "answer": "<p>Con 1 cápsula por día, la mayoría nota un tono más cálido a partir de los <strong>18 días</strong>. El resultado puede variar según tu tipo y tono de piel.</p>"
+          }
+        },
+        {
+          "type": "pregunta",
+          "settings": {
+            "question": "¿Reemplaza al protector solar?",
+            "answer": "<p><strong>No.</strong> Bronzer te da color sin sol, pero no protege de la radiación UV. Si te exponés al sol, seguí usando protector solar.</p>"
+          }
+        },
+        {
+          "type": "pregunta",
+          "settings": {
+            "question": "¿Puedo quedar naranja?",
+            "answer": "<p>La fórmula está pensada para un tono natural con la dosis indicada: 1 cápsula diaria. No superes esa cantidad. A diferencia de los autobronceantes, no mancha la piel, la ropa ni las sábanas.</p>"
+          }
+        },
+        {
+          "type": "pregunta",
+          "settings": {
+            "question": "¿Cómo se toma?",
+            "answer": "<p>Tomá <strong>1 cápsula diaria</strong> con un vaso de agua. Para mejores resultados, tomala todos los días, idealmente con una de tus comidas.</p>"
+          }
+        },
+        {
+          "type": "pregunta",
+          "settings": {
+            "question": "¿Quiénes pueden tomarlo?",
+            "answer": "<p>Está pensado para adultos. Si estás embarazada, en período de lactancia, sos fumadora o tenés alguna condición médica, consultá a tu médico antes de empezar.</p>"
+          }
+        },
+        {
+          "type": "pregunta",
+          "settings": {
+            "question": "¿Es apto para celíacos?",
+            "answer": "<p>Sí, Bronzer es <strong>libre de gluten</strong>.</p>"
+          }
+        },
+        {
+          "type": "pregunta",
+          "settings": {
+            "question": "¿Cuánto dura un frasco?",
+            "answer": "<p>Cada frasco trae <strong>60 cápsulas</strong>: rinde 60 días tomando 1 por día. Por eso recomendamos el pack de 3 meses para llegar con tu tono a todo el verano.</p>"
+          }
+        },
+        {
+          "type": "pregunta",
+          "settings": {
+            "question": "¿Qué pasa si dejo de tomarlo?",
+            "answer": "<p>El tono se va aclarando de forma gradual y natural, a medida que tu piel se renueva. Para mantenerlo, seguí con la toma diaria.</p>"
+          }
+        },
+        {
+          "type": "pregunta",
+          "settings": {
+            "question": "¿Cómo son los envíos y la garantía?",
+            "answer": "<p>Enviamos a todo el país. Si no ves tu tono dorado, tenés <strong>30 días de garantía</strong> para pedir la devolución de tu dinero.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
