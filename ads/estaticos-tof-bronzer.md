@@ -29,7 +29,7 @@
 
 ## Cómo generarlos en ChatGPT (para que salgan nivel diseñadora)
 
-1. **Un chat nuevo por anuncio.** Adjuntá siempre **la foto real del frasco** y **el logo DR WOMAN en PNG**.
+1. **Un chat nuevo por anuncio.** Adjuntá siempre **la foto real del frasco**. **No lleva logo**: la marca se ve solo en la etiqueta.
 2. Pegá el **BLOQUE DE MARCA** y, en el mismo mensaje, el prompt del anuncio.
 3. Pedí siempre **formato cuadrado 1:1**. Si sale en otro formato: `Same image, square 1:1 format`.
 4. Si un texto sale mal escrito: `Keep everything identical, only fix the text so it reads exactly: "…"`.
@@ -42,13 +42,13 @@
 ```
 BRAND SYSTEM — apply strictly to the design below.
 Format: square 1:1, 1080x1080 px, Instagram/Facebook feed ad.
-Brand: DR WOMAN · Product: Bronzer, a beta-carotene dietary supplement in capsules (1 per day) that gives a natural golden tan from within, without sun exposure, tanning beds or self-tanners. Use the attached product photo as the exact bottle (same shape, label, colors and typography — never redraw, translate or invent a different label) and the attached DR WOMAN logo exactly as provided.
+Brand: DR WOMAN · Product: Bronzer, a beta-carotene dietary supplement in capsules (1 per day) that gives a natural golden tan from within, without sun exposure, tanning beds or self-tanners. Use the attached product photo as the exact bottle (same shape, label, colors and typography — never redraw, translate or invent a different label).
 Creative philosophy: this is a scroll-stopping, image-led luxury beauty ad. The IMAGE does 90% of the work: one single powerful visual idea, emotional and aspirational, showing the desired result — warm, even, luminous golden skin in a dream summer moment. Text is minimal, elegant and secondary. It must look like a campaign shot by a top fashion photographer and art-directed by a senior designer for a premium global beauty brand (think the visual level of Sol de Janeiro, Jacquemus, Summer Fridays and Vogue summer editorials).
 Photography: hyper-realistic, never CGI-looking, never stock-looking. Real-looking Argentine women with natural, varied features, real skin texture (visible pores, freckles, tiny imperfections, fine baby hairs), warm even golden-bronze tan that looks healthy and natural — luminous with a subtle natural sheen, never orange, never plastic, never over-smoothed, no beauty filter, natural bodies, no body reshaping. Natural poses, candid emotion, real fabrics with wrinkles, real sand and water. Warm cinematic color grade: creams, honey, terracotta, bronze, soft turquoise water; rich but natural contrast; slight film-like grain.
 Color palette for graphics: warm cream #FBF6EF, sand #EAD9C4, honey gold #E3B57A, bronze #B46F34, deep cocoa #1E140F, bright gold accent #F2B544. Never pure white backgrounds, never neon.
 Typography: headlines in a high-contrast elegant display serif similar to Playfair Display, with key words in italic; small labels in a clean modern sans-serif (Helvetica Neue / Montserrat) in uppercase with wide letter spacing. Maximum 2 text sizes plus the seal. Text must never cover faces or the bottle label, and must be perfectly legible on a phone.
 SIGNATURE SEAL (mandatory in every ad): a small rounded-rectangle badge in honey gold #E3B57A with a thin bronze #B46F34 outline and a tiny sun-drop icon on the left, containing two lines in uppercase sans-serif, deep cocoa #1E140F: "BETACAROTENO" (bold, larger) / "FÓRMULA EXCLUSIVA" (small, wide spacing). If the prompt does not specify a position, place it in a clean corner. It must look identical in every ad, like a brand stamp.
-Logo: the DR WOMAN logo small (about 12% of the width), never dominant.
+NO LOGO: do not add any logo, wordmark, brand name or monogram anywhere in the design; the only branding allowed is what is printed on the bottle label.
 Spanish text: render ALL text exactly as written between quotes, in Argentine Spanish, with correct accents and punctuation (á é í ó ú ñ ¿ ¡), no extra words, no typos, no English anywhere in the image. Keep 7% margins on all sides.
 Never show: sunburned skin, red skin, tanning beds in a positive way, tanning oil, people lying in direct midday sun, tan lines, cluttered layouts, more than the requested text.
 ```
@@ -86,7 +86,7 @@ SCENE: a hyper-realistic candid photo of a real-looking Argentine woman around 3
 CAMERA AND LIGHT: shot like a Vogue summer editorial on a 85mm lens at f/2, low angle at waist height, the setting sun directly behind her creating a glowing golden rim light around her hair and shoulders and a soft flare. Warm, rich, cinematic color grade: honey skin, peach-gold sky, deep teal sea. Real skin texture, no retouching look.
 COMPOSITION: she fills the center-right of the square from mid-thigh up, face in the upper-middle third. Keep the upper-left area with calmer sky for the text.
 TEXT (upper-left, 7% margins): headline in elegant display serif, cream #FBF6EF with a very subtle soft shadow for legibility, two lines: "Llegá al verano" / "ya dorada." — "dorada." in italic honey gold #F2B544.
-SEAL: the BETACAROTENO / FÓRMULA EXCLUSIVA signature seal at the bottom-left. Bottom-right: the DR WOMAN logo small in cream.
+SEAL: the BETACAROTENO / FÓRMULA EXCLUSIVA signature seal at the bottom-left.
 No other text, no bottle in this image. The feeling: freedom, glow, summer, "I want to be her".
 ```
 
@@ -116,7 +116,7 @@ SCENE: hyper-realistic close-up of a woman's elegant hand with warm, even golden
 CAMERA AND LIGHT: macro-telephoto look, 100mm lens, shallow depth of field, the hand and capsule sharp, the horizon softly blurred, backlit, rim light on the fingers, rich warm cinematic grade, realistic skin texture on the hand.
 COMPOSITION: capsule exactly in the geometric center of the square, hand entering from the bottom-right corner.
 TEXT (top-center, 7% margin): headline in elegant display serif, cream #FBF6EF, one line: "Tu sol, en una cápsula." — "en una cápsula." in italic honey gold #F2B544.
-SEAL: the BETACAROTENO / FÓRMULA EXCLUSIVA signature seal at the bottom-center, small. DR WOMAN logo small at bottom-left in cream.
+SEAL: the BETACAROTENO / FÓRMULA EXCLUSIVA signature seal at the bottom-center, small.
 No other text. Minimal, iconic, poetic, award-winning advertising concept.
 ```
 
@@ -146,7 +146,7 @@ BACKGROUND: a seamless warm honey-gold #E3B57A studio backdrop with a soft light
 GIANT TYPE: the single word "BETACAROTENO" in a massive, bold, high-contrast display serif in deep bronze #B46F34, spanning the full width of the square edge to edge, positioned across the upper-middle third. The model stands IN FRONT of the word: her head and hair overlap and partially hide some central letters, while the word stays fully readable (the first and last letters fully visible, the hidden part minimal, like a classic Vogue masthead effect).
 MODEL: a real-looking Argentine woman around 34, dark brown voluminous wavy hair, deep warm golden-bronze even tan, freckles, natural brows, glossy lips, gold hoop earrings, wearing an off-shoulder ivory linen top showing luminous shoulders and collarbones. Chest-up portrait, body slightly turned, looking straight into the camera with a confident, warm, magnetic expression.
 LIGHT: soft warm beauty-dish key light from the front-left, gentle sunlit glow on the skin, subtle natural sheen on the cheekbones and shoulders, realistic skin texture with pores, no plastic retouching, slight film grain.
-SMALL TEXT: under the giant word, aligned on the left over the backdrop, small uppercase sans-serif in deep cocoa #1E140F with wide spacing: "EL SECRETO DE TU DORADO". Bottom-right: the Bronzer bottle from the reference photo, small, with a soft shadow, label identical. Bottom-left: the BETACAROTENO / FÓRMULA EXCLUSIVA signature seal. Top-left: DR WOMAN logo small.
+SMALL TEXT: under the giant word, aligned on the left over the backdrop, small uppercase sans-serif in deep cocoa #1E140F with wide spacing: "EL SECRETO DE TU DORADO". Bottom-right: the Bronzer bottle from the reference photo, small, with a soft shadow, label identical. Bottom-left: the BETACAROTENO / FÓRMULA EXCLUSIVA signature seal.
 No other text. Bold, iconic, fashion, unforgettable.
 ```
 
@@ -174,7 +174,7 @@ SCENE: an extreme close-up, hyper-realistic macro of a woman's shoulder, collarb
 LIGHT: warm late-afternoon light from the right, raking across the skin so the texture and droplets sparkle, deep warm shadows, background softly blurred in warm cream and sand tones.
 COMPOSITION: the shoulder curve forms an elegant diagonal from bottom-left to top-right, leaving clean blurred cream space in the upper-left for text.
 TEXT (upper-left, 7% margins): headline in elegant display serif, deep cocoa #1E140F, three lines: "Este dorado" / "no vino del sol." / "Vino del betacaroteno." — the last line in italic bronze #B46F34.
-SEAL: the BETACAROTENO / FÓRMULA EXCLUSIVA signature seal at the bottom-right. DR WOMAN logo small at the bottom-left.
+SEAL: the BETACAROTENO / FÓRMULA EXCLUSIVA signature seal at the bottom-right.
 No other text. Sensual but elegant, skincare-campaign level, incredibly real.
 ```
 
@@ -203,7 +203,7 @@ SCENE: a perfectly top-down drone shot (bird's-eye view) of a luxurious pool wit
 LIGHT: soft late-afternoon light, her skin glowing warm gold against the turquoise water, crisp shadows of the ring on the pool floor, rich but natural colors, real skin texture even from above.
 COMPOSITION: the woman on the ring is in the lower-right two-thirds; the clean turquoise water in the upper-left area is used for the text.
 TEXT (upper-left, 7% margins): headline in elegant display serif, cream #FBF6EF with a subtle shadow, two lines: "Dorada desde el" / "primer chapuzón." — "primer chapuzón." in italic honey gold #F2B544.
-SEAL: the BETACAROTENO / FÓRMULA EXCLUSIVA signature seal at the bottom-left. DR WOMAN logo small at top-right in cream.
+SEAL: the BETACAROTENO / FÓRMULA EXCLUSIVA signature seal at the bottom-left.
 No other text. Pinterest-worthy, iconic summer, aspirational.
 ```
 
@@ -232,7 +232,7 @@ SCENE: a real-looking Argentine woman around 36, seen from behind from the waist
 LIGHT: low golden-hour sunlight from the right, warm and directional, making her skin glow honey-gold, deep soft shadows, realistic skin texture and natural spine and shoulder-blade definition.
 COMPOSITION: her back in the right half of the square; the textured warm wall with palm shadows in the left half holds the text.
 TEXT (left side, vertically centered, 7% margin): headline in elegant display serif, deep cocoa #1E140F, three lines: "Tu dorado" / "nace de" / "adentro." — "adentro." in italic bronze #B46F34. Below, small uppercase sans-serif bronze with wide spacing: "CON BETACAROTENO".
-SEAL: the BETACAROTENO / FÓRMULA EXCLUSIVA signature seal at the bottom-left. Bottom-right: the Bronzer bottle from the reference photo very small on the wall ledge, label identical. DR WOMAN logo small at the top-left.
+SEAL: the BETACAROTENO / FÓRMULA EXCLUSIVA signature seal at the bottom-left. Bottom-right: the Bronzer bottle from the reference photo very small on the wall ledge, label identical.
 No other text. Timeless, elegant, high-fashion summer.
 ```
 
@@ -261,7 +261,7 @@ BACKGROUND: seamless warm cream #FBF6EF with a soft golden glow behind her.
 LIGHT: warm soft key light from the front-left, natural sheen on the skin and the carrot, realistic textures (skin pores, carrot fibers), crisp focus, 100mm macro look.
 COMPOSITION: carrot and shoulder in the right two-thirds; cream space in the left third for the text.
 TEXT (left side, 7% margins): headline in elegant display serif, deep cocoa #1E140F, three lines: "Del" / "betacaroteno" / "a tu piel." — "betacaroteno" larger, in bronze #B46F34; "a tu piel." in italic.
-SEAL: the BETACAROTENO / FÓRMULA EXCLUSIVA signature seal at the bottom-left. Bottom-right: the Bronzer bottle from the reference photo small, label identical. DR WOMAN logo small at top-left.
+SEAL: the BETACAROTENO / FÓRMULA EXCLUSIVA signature seal at the bottom-left. Bottom-right: the Bronzer bottle from the reference photo small, label identical.
 No other text. Smart, clean, memorable, fashion-meets-science.
 ```
 
@@ -288,7 +288,7 @@ SCENE: a realistic mirror selfie shot on a Samsung Galaxy S24 Ultra in a beautif
 LIGHT: soft warm evening window light, a gentle golden glow on her skin, realistic phone-camera rendering with slight lens distortion and natural noise, real skin texture.
 COMPOSITION: mirror fills the frame, she is centered-right; the soft curtain area at the upper-left holds the text.
 TEXT (upper-left, 7% margins): headline in elegant display serif, deep cocoa #1E140F, three lines: "Ya no espero" / "al verano para" / "verme dorada." — "verme dorada." in italic bronze #B46F34.
-SEAL: the BETACAROTENO / FÓRMULA EXCLUSIVA signature seal at the bottom-left. DR WOMAN logo small at the bottom-right.
+SEAL: the BETACAROTENO / FÓRMULA EXCLUSIVA signature seal at the bottom-left.
 No other text. Real, relatable, aspirational, the viewer thinks "that could be me".
 ```
 
@@ -316,7 +316,7 @@ SCENE: three real-looking Argentine women friends between 28 and 38 years old si
 LIGHT: golden late-afternoon sun from the side, warm glow on all skin tones, sparkles on the sea, wind in the hair, candid motion, editorial-lifestyle quality, real skin texture.
 COMPOSITION: the three women across the lower two-thirds; clean sky and sea in the top band for the text.
 TEXT (top-center, 7% margins): headline in elegant display serif, cream #FBF6EF with a subtle shadow, two lines: "El verano que llegamos" / "todas doradas." — "todas doradas." in italic honey gold #F2B544.
-SEAL: the BETACAROTENO / FÓRMULA EXCLUSIVA signature seal at the bottom-right. DR WOMAN logo small at the bottom-left in cream.
+SEAL: the BETACAROTENO / FÓRMULA EXCLUSIVA signature seal at the bottom-right.
 No other text. Joy, friendship, freedom, summer goals.
 ```
 
@@ -344,7 +344,7 @@ SCENE: an intimate, hyper-realistic beauty close-up of a real-looking Argentine 
 LIGHT: warm golden light, glowing healthy sheen on the cheekbones and the tip of the nose, soft background in blurred cream and sand tones, extremely real skin, editorial skincare quality, 100mm lens, f/2.8.
 COMPOSITION: face in the right two-thirds; soft blurred cream space at the left for text.
 TEXT (left side, 7% margins): headline in elegant display serif, deep cocoa #1E140F, two lines in two blocks: "Glow que se nota." / "Sol que no tomaste." — "Sol que no tomaste." in italic bronze #B46F34.
-SEAL: the BETACAROTENO / FÓRMULA EXCLUSIVA signature seal at the bottom-left. DR WOMAN logo small at the bottom-right.
+SEAL: the BETACAROTENO / FÓRMULA EXCLUSIVA signature seal at the bottom-left.
 No other text. Calm, luminous, touchable skin, pure beauty.
 ```
 
@@ -373,7 +373,7 @@ SCENE: a beautiful sunny rooftop terrace in Palermo, Buenos Aires, in spring, wi
 LIGHT: warm mid-afternoon spring light in the shade of a canvas parasol (she is NOT sunbathing), her skin still glowing honey-gold, purple jacaranda flowers adding a gorgeous color contrast, realistic skin texture, phone-like realism with editorial composition.
 COMPOSITION: the woman in the right two-thirds; the soft sky and jacaranda in the upper-left for text.
 TEXT (upper-left, 7% margins): headline in elegant display serif, deep cocoa #1E140F, two lines: "Dorada en octubre." / "Sin pisar la playa." — "Sin pisar la playa." in italic bronze #B46F34.
-SEAL: the BETACAROTENO / FÓRMULA EXCLUSIVA signature seal at the bottom-left. DR WOMAN logo small at the top-right.
+SEAL: the BETACAROTENO / FÓRMULA EXCLUSIVA signature seal at the bottom-left.
 No other text. Very Argentine, very aspirational, "ahead of everyone".
 ```
 
@@ -401,7 +401,7 @@ SCENE: an elegant close-up of a woman's long legs with a perfectly even, luminou
 LIGHT: soft golden late-afternoon light from the side, natural sheen on the shins, real skin texture with tiny hairs and pores, crisp sand grains, warm cinematic grade, shot from a low 45° angle, 50mm lens.
 COMPOSITION: legs form a diagonal from the top-right to the bottom-left; clean sand in the upper-left for the text.
 TEXT (upper-left, 7% margins): headline in elegant display serif, deep cocoa #1E140F, three lines: "Piernas de verano." / "Sin autobronceante." / "Con betacaroteno." — "Con betacaroteno." in italic bronze #B46F34.
-SEAL: the BETACAROTENO / FÓRMULA EXCLUSIVA signature seal at the bottom-left. DR WOMAN logo small at the top-right.
+SEAL: the BETACAROTENO / FÓRMULA EXCLUSIVA signature seal at the bottom-left.
 No other text. Clean, luxurious, desirable.
 ```
 
@@ -430,7 +430,7 @@ SCENE: the Bronzer bottle from the reference photo (exact same bottle and label,
 LIGHT: strong golden backlight with a warm rim light outlining the bottle, a long soft shadow toward the camera, subtle lens flare, luxury commercial product photography, 100mm lens, f/4, hyper-realistic textures.
 COMPOSITION: bottle centered slightly right, capsules leading the eye from the bottom-left; clean sky area at the top for the text.
 TEXT (top-center, 7% margins): headline in elegant display serif, cream #FBF6EF with a subtle shadow, one line: "Tu frasco de sol." — "de sol." in italic honey gold #F2B544.
-SEAL: the BETACAROTENO / FÓRMULA EXCLUSIVA signature seal at the bottom-left. DR WOMAN logo small at the bottom-right in cream.
+SEAL: the BETACAROTENO / FÓRMULA EXCLUSIVA signature seal at the bottom-left.
 No other text. Iconic, premium, desirable product shot.
 ```
 
@@ -458,7 +458,7 @@ SCENE: on a beautiful beach at golden hour, a real-looking Argentine woman aroun
 LIGHT: warm sunlit beach and sand around her contrasted with the soft, warm open shade under the hat, her skin still golden and luminous, editorial fashion photography, 50mm lens, rich warm grade, real skin texture.
 COMPOSITION: woman and hat centered in the lower two-thirds; the bright sky band at the top for the text.
 TEXT (top-center, 7% margins): headline in elegant display serif, deep cocoa #1E140F, one line: "Sin sol. Con betacaroteno." — "Con betacaroteno." in italic bronze #B46F34.
-SEAL: the BETACAROTENO / FÓRMULA EXCLUSIVA signature seal at the bottom-right. DR WOMAN logo small at the bottom-left.
+SEAL: the BETACAROTENO / FÓRMULA EXCLUSIVA signature seal at the bottom-right.
 No other text. Witty, stylish, memorable, high-fashion.
 ```
 
