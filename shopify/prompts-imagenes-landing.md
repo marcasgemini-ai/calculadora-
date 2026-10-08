@@ -20,7 +20,7 @@ Un prompt por imagen, en inglés, listo para copiar y pegar.
 | 4 | Beneficios | 3 cápsulas flotando (o frasco, alternativa) | 1:1 · 2000×2000 PNG | 1 |
 | 5–9 | Oferta | Galería del producto | 1:1 · 2000×2000 | 5 |
 | 10 | Preguntas | Lifestyle con el producto | 4:5 · 1600×2000 | 1 |
-| 11–16 | Reseñas | Antes / después **ilustrativos** (fotos separadas) | 4:5 · 1200×1500 | 6 pares |
+| 11–16B | Reseñas | Antes / después **ilustrativos** (fotos separadas, incluye cuerpo completo) | 4:5 · 1200×1500 | 7 pares |
 | 17–23 | Ingredientes | Ingredientes sin fondo | 1:1 · 2048×2048 PNG | 7 (ver `prompts-ingredientes.md`) |
 
 ---
@@ -207,6 +207,27 @@ A hyper-realistic vertical 4:5 photo taken on a Samsung Galaxy S24 Ultra main ca
 ```
 Keep absolutely everything identical to the attached photo: same woman, same face and features, same expression, same pose, same framing, same hair, same clothing, same background, same lighting, same phone-camera look and image quality. Change ONLY her skin tone: her face, neck, ears and the open collar area of her chest (keep every wrinkle, line and spot exactly as they are). The new tone must be a clearly visible, natural, warm golden-bronze tan, about two shades deeper than in the attached photo, like a healthy summer glow achieved from within with a beta-carotene supplement after 18 days: rich honey-gold and bronze undertones, even and uniform, luminous, with a soft healthy sheen on the high points. It must still look like real skin with the same pores, freckles, moles and texture — not orange, not yellow, not a spray tan, no streaks, no patches, no tan lines, no makeup added, no beauty filter, no smoothing.
 ```
+
+---
+
+### 16B. Cuerpo completo — selfie en el espejo
+
+> Mismo método: generá el **ANTES** y después **editalo** adjuntando esa foto para crear el **DESPUÉS**. Formato vertical 4:5 (el de cada mitad de la tarjeta de reseña). La selfie en el espejo con el celular tapando parte de la cara es el formato más creíble de "foto de progreso" y además protege la identidad.
+
+**ANTES** (generar desde cero):
+```
+A hyper-realistic vertical 4:5 full-body mirror selfie taken on a Samsung Galaxy S24 Ultra (main camera, default phone processing, slight HDR, natural phone sharpening), used as the 'before' photo of a skin progress comparison. A real-looking Argentine woman, 30 years old, average healthy body with natural curves and real proportions (not a fitness model), standing straight and relaxed in front of a tall full-length mirror leaning against a white wall in her bedroom, holding a Samsung phone with a simple beige case in her right hand at chest height so the phone covers part of her face, the rest of her face, hair and body clearly visible, from the top of her head down to her bare feet. She wears a simple matching two-piece swimsuit in plain black (classic bikini top and mid-rise bottoms), no accessories except small gold studs, light-brown hair loose. Her skin is naturally fair, slightly pale and cool-toned all over: face, arms, shoulders, stomach and legs, with real texture, a few freckles and moles, faint natural unevenness on knees and elbows. Room: light wooden floor, white bedsheets partly visible on one side, a plant in the corner, tidy but lived-in. Light: soft, even, neutral daylight from a window to her left, no warm filter, no dramatic shadows. Honest, unretouched progress-photo style exactly like a real customer would take at home. No beauty filter, no body reshaping, no oil shine, no text, no watermark.
+```
+
+**DESPUÉS** (adjuntá la foto del ANTES y pedí que la edite):
+```
+Keep absolutely everything identical to the attached photo: same woman, same body shape and proportions, same pose, same hand position, same phone and phone case, same swimsuit, same hair, same mirror, same room, same background objects, same framing, same lighting and the same phone-camera look and image quality. Do not reshape, slim or tone the body in any way. Change ONLY her skin tone on every visible area of skin — face, neck, shoulders, arms, hands, chest, stomach, back of the hands, thighs, knees, calves and feet. The new tone must be a clearly visible, natural, warm golden-bronze tan, about two shades deeper than in the attached photo, perfectly even from head to toe, like a healthy summer glow achieved from within with a beta-carotene supplement after 18 days: rich honey-gold and bronze undertones, luminous, with a soft healthy sheen on the shoulders, collarbones and shins. Because the tan comes from within, there are NO tan lines at all under the swimsuit edges. It must still look like real skin with the same pores, freckles, moles and texture — not orange, not yellow, not a spray tan, no streaks on knees, ankles, elbows or hands, no patches, no makeup added, no beauty filter, no smoothing.
+```
+
+**Variantes opcionales** (cambiá la parte del encuadre/ropa en el ANTES y repetí el DESPUÉS igual):
+- **De espaldas**: `she stands with her back to the mirror, looking over her shoulder at the phone, showing her back, shoulders and the back of her legs`.
+- **Ropa deportiva** (más conservador): reemplazá el bikini por `a plain black sports bra and black high-waisted biker shorts`.
+- **Foto sacada por otra persona**: reemplazá "mirror selfie" por `photo taken by a friend standing 3 meters in front of her, phone held at chest height, she stands against a plain white wall with arms relaxed at her sides`.
 
 ---
 
