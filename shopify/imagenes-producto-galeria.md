@@ -69,20 +69,52 @@ Aspirational, sophisticated, timeless. No other text.
 
 ---
 
-## Imagen 3 · Antes / después
-**Objetivo:** mostrar el cambio de forma clara y creíble. Usá el par de fotos 16 (mujer de 45 años) que ya generaste para la landing, así queda coherente con la promesa.
+## Imagen 3 · Antes / después (estilo foto de celular, orgánico)
+**Objetivo:** que parezca la foto que una clienta se sacó con su celular el día 1 y el día 18, y que después juntó en una app. Nada de estudio ni de diseño perfecto. Es la mujer de 45 años, coherente con la imagen 2.
 
-> En ChatGPT adjuntá **las dos fotos (antes y después)** junto al frasco y pedí que las monte en este diseño. Si cambia las caras, armalo en Canva con este mismo diseño. **Solo para la maqueta**: en la tienda real va un antes/después real.
+> **Solo para la maqueta.** En la tienda real va un antes/después real de una clienta, con su permiso.
 
-**Prompt:**
+### Qué hace que se vea real (y qué lo delata como IA)
+
+| Se ve real ✅ | Se nota IA ❌ |
+|---|---|
+| Luz de ventana común, un poco despareja | Luz de estudio perfecta |
+| Ruido del celular, nitidez del procesado del teléfono, un poco de HDR | Foto ultra nítida, con fondo desenfocado de cámara profesional |
+| Fondo de casa común: pared, puerta, enchufe, cortina | Fondo de revista |
+| Encuadre un poco torcido, brazo extendido | Encuadre perfecto y centrado |
+| Entre el antes y el después cambia **algo chico**: el pelo, un mechón, la hora del día, un objeto que se movió | Las dos fotos idénticas al píxel, con solo el color cambiado |
+| Cambio de tono **visible pero creíble** (unos 2 tonos) | Cambio exagerado o piel naranja |
+| Piel con poros, líneas de expresión, manchitas | Piel lisa de filtro |
+
+### Paso 1 · ANTES (generar desde cero)
 ```
-Design a square 1:1 premium before/after comparison image for Bronzer's product gallery, using the two attached photos exactly as they are (do not alter the faces or skin tones): image 2 = BEFORE, image 3 = AFTER.
-LAYOUT: warm cream #FBF6EF background. Two equal vertical photo panels side by side with rounded corners (24 px radius) and an 2% gap between them, occupying the central 70% of the canvas height. BEFORE panel on the left, AFTER panel on the right.
-LABELS: on the top-left corner of each panel, a small rounded pill: on BEFORE, cream background with cocoa sans-serif uppercase text "DÍA 1"; on AFTER, bronze #B46F34 background with cream uppercase text "DÍA 18".
-TOP (top 14%, centered): headline in elegant display serif deep cocoa #1E140F, one line: "El cambio que se nota." with "se nota." in italic bronze.
-BOTTOM (bottom 16%): on the left, the bottle from image 1 small (about 22% of the canvas height) with a soft shadow; on the right, small sans-serif cocoa text, two lines: "Sin sol. Sin cama solar." / "Solo betacaroteno, 1 cápsula por día." and below in tiny grey sans-serif: "*Los resultados pueden variar."
-Clean, honest, clinical-meets-luxury. No other text.
+A completely ordinary, unedited selfie photo taken by a woman herself with the front camera of a Samsung Galaxy A54 held at arm's length, vertical 4:5, default phone processing: slight HDR, mild over-sharpening, a bit of digital noise in the shadows, slightly cool white balance, no portrait mode, no background blur. A real-looking Argentine woman, 45 years old, shoulder-length dark-blonde hair with some natural grey strands, tucked behind one ear, no makeup, natural expression lines around the eyes and mouth, a couple of small sun spots on the cheekbone. Her skin is fair-to-medium, slightly dull and pale with cool undertones. She looks straight at the phone with a neutral, slightly shy half-smile, chin a little lowered, framed from the top of her head to the upper chest, the camera angle slightly from above and tilted a few degrees. She wears a plain white cotton t-shirt. Background: a normal hallway at home in Buenos Aires: a plain off-white wall with a light switch, the edge of a wooden door frame and part of a coat hanger, slightly out of level. Light: ordinary daylight from a window on her left, a bit uneven, one side of her face slightly brighter. Real skin texture with visible pores, fine lines and tiny imperfections. It must look like a real progress photo a customer sends on WhatsApp, not a professional photo. No beauty filter, no smoothing, no makeup, no studio light, no text.
 ```
+
+### Paso 2 · DESPUÉS (adjuntá la foto del ANTES y pedile que la edite)
+```
+Edit the attached photo to create the same woman's selfie taken 18 days later in the same hallway, with the same Samsung phone front camera. Keep her identity, face, features, age, expression lines, sun spots, body, t-shirt, background, framing style and phone-camera quality the same, so it is clearly the same person and place. Add only the small natural differences of a photo taken on another day: her hair falls a little differently (a strand loose over the forehead, the other side tucked), the phone angle is a few degrees different, the daylight is a bit warmer because it is later in the afternoon, and her smile is a little more open and confident.
+Change her skin tone on every visible area (face, ears, neck and upper chest): a clearly visible but believable warm golden-bronze tan, about two shades deeper than in the attached photo, even and uniform, with honey and bronze undertones and a slightly healthier glow on the cheekbones and nose. It must still be her real skin: same pores, same fine lines, same sun spots, same texture. Never orange, never yellow, never plastic, no makeup added, no smoothing, no tan lines.
+Keep the ordinary phone look: mild noise, slight over-sharpening, no background blur, no studio light, no text.
+```
+
+### Paso 3 · Montaje (como lo arma una clienta en el celular)
+Adjuntá **las dos fotos (antes y después)** y pegá:
+```
+Combine the two attached photos into one square 1:1 image that looks like a simple before/after collage a real customer made on her phone with the Instagram Stories or CapCut collage tool. Do not change the photos at all: same faces, same skin tones, same quality.
+Layout: the two photos side by side, each filling exactly half of the square (cropped to fit, faces fully visible), separated by a thin plain white line about 6 px wide. No rounded corners, no shadows, no designed frame.
+Text, in the native Instagram Stories "Typewriter" style font, white with a subtle black outline so it is readable, small, placed near the top of each photo: on the left photo "día 1", on the right photo "día 18 ✨". Nothing else: no logo, no product, no headline, no design elements.
+It must look 100% authentic and user-made, like a screenshot a client sent on WhatsApp.
+```
+
+**Variante para la galería (opcional):** si querés que se vea el producto, pegá en Canva un **sticker chico del frasco real** en la esquina de abajo, levemente inclinado. Es lo que hacen muchas clientas cuando suben su progreso.
+
+### Los otros antes/después de la landing (pares 11 a 16B)
+Ya actualicé `shopify/prompts-imagenes-landing.md` con estas reglas:
+- **Celular:** usan un Samsung Galaxy A54. Un celular de gama media se ve más real que uno de gama alta.
+- **Diferencias en el DESPUÉS:** cada prompt pide las pequeñas diferencias naturales de una foto sacada otro día (pelo, ángulo, luz).
+
+Para que se vean todavía más caseros, podés cambiar el fondo de pared lisa por un fondo de casa común: pasillo, baño o dormitorio. Armá cada par con el **Paso 3**.
 
 ---
 
@@ -161,7 +193,7 @@ COLLAGE (central 70%): an organic, slightly overlapping editorial arrangement of
 "Chau rodillas naranjas." — "Micaela P. · La Plata"
 "Me veo con más luz en la cara." — "Laura B. · Mar del Plata"
 "Todo el cuerpo parejo." — "Agustina L. · Neuquén"
-— Two square customer-style photos with white Polaroid-like borders: (a) a candid selfie of a real-looking Argentine woman around 30 with a warm golden tan holding the bottle from image 1 at a café; (b) the bottle from image 1 on a bathroom counter next to a glass of water, shot like a real phone photo.
+— Two square customer-style photos with white Polaroid-like borders: (a) an ordinary, unedited front-camera selfie taken with a mid-range Samsung phone of a real-looking Argentine woman around 30 with a warm golden tan holding the bottle from image 1 at a neighborhood café, slight noise, mild over-sharpening, no background blur, slightly tilted framing; (b) a casual, slightly crooked phone photo of the bottle from image 1 on a real, a bit messy bathroom counter next to a glass of water, a toothbrush and a hair tie, ordinary bathroom light.
 CENTER: the bottle from image 1, upright, front-facing, about 35% of the canvas height, with a soft shadow, sitting in front of the collage as the anchor.
 Authentic yet premium, well balanced, readable on a phone. No other text.
 ```
