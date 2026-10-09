@@ -98,23 +98,35 @@ Change her skin tone on every visible area (face, ears, neck and upper chest): a
 Keep the ordinary phone look: mild noise, slight over-sharpening, no background blur, no studio light, no text.
 ```
 
-### Paso 3 · Montaje (como lo arma una clienta en el celular)
-Adjuntá **las dos fotos (antes y después)** y pegá:
+### Paso 3 · Montaje con el diseño de la galería
+Este es el diseño aprobado: titular *"El cambio que se nota."*, paneles con DÍA 1 y DÍA 18, el frasco abajo a la izquierda y el texto abajo a la derecha. Lo único que tiene que verse casero son **las fotos de la mujer**. El diseño se queda prolijo.
+
+**A) Si ya tenés el diseño armado y solo querés que la mujer se vea real**, adjuntá la imagen del diseño y pegá:
 ```
-Combine the two attached photos into one square 1:1 image that looks like a simple before/after collage a real customer made on her phone with the Instagram Stories or CapCut collage tool. Do not change the photos at all: same faces, same skin tones, same quality.
-Layout: the two photos side by side, each filling exactly half of the square (cropped to fit, faces fully visible), separated by a thin plain white line about 6 px wide. No rounded corners, no shadows, no designed frame.
-Text, in the native Instagram Stories "Typewriter" style font, white with a subtle black outline so it is readable, small, placed near the top of each photo: on the left photo "día 1", on the right photo "día 18 ✨". Nothing else: no logo, no product, no headline, no design elements.
-It must look 100% authentic and user-made, like a screenshot a client sent on WhatsApp.
+Keep this design EXACTLY as it is: same layout, same headline "El cambio que se nota.", same "DÍA 1" and "DÍA 18" pills, same rounded photo panels, same bottle, label and capsules, same bottom text and footnote, same colors and fonts. Do not touch anything outside the two photo panels.
+Inside the two photo panels only, replace the photos with ordinary, unedited phone selfies of the same woman (same face, same hair, same identity in both panels), so they look like real customer progress photos instead of a professional shoot:
+— Shot with the front camera of a mid-range Samsung phone at arm's length: mild digital noise, slight over-sharpening, a bit of HDR, no portrait-mode blur, slightly tilted framing, ordinary window daylight that is a little uneven.
+— Background: a normal room at home (plain wall with a light switch, the edge of a door frame or a curtain), no decorative palm shadows, no studio light.
+— Real skin: visible pores, freckles, fine lines and tiny imperfections; no makeup look, no glossy retouching, no beauty filter.
+— DÍA 1 panel: her natural skin, slightly pale and dull with cool undertones, neutral half-smile.
+— DÍA 18 panel: the same woman in the same place, photographed on another day: hair falling slightly differently, phone angle a few degrees different, light a little warmer, a slightly more confident smile, and her skin a clearly visible but believable warm golden-bronze tan about two shades deeper, even on face, neck and shoulders. Never orange, no tan lines.
+Everything else in the image must stay pixel-identical.
 ```
 
-**Variante para la galería (opcional):** si querés que se vea el producto, pegá en Canva un **sticker chico del frasco real** en la esquina de abajo, levemente inclinado. Es lo que hacen muchas clientas cuando suben su progreso.
+**B) Si armás el diseño de cero con tus fotos del antes y el después**, adjuntá el frasco, la foto del ANTES y la del DESPUÉS, y pegá:
+```
+Design a square 1:1 premium before/after image for a product gallery using the two attached customer photos EXACTLY as they are (do not alter the faces, skin tones, phone-photo quality or backgrounds): image 2 = BEFORE, image 3 = AFTER.
+Warm cream #FBF6EF background. Top: headline in a bold high-contrast display serif, deep cocoa #1E140F: "El cambio que se nota." with "se nota." in italic bronze #B46F34. Center: two equal vertical photo panels side by side with rounded corners and a small gap, BEFORE on the left with a cream pill label "DÍA 1", AFTER on the right with a bronze pill label "DÍA 18" (cream text). Bottom-left: the bottle from image 1, exact label, slightly overlapping the bottom of the BEFORE panel, with a few amber capsules and a soft shadow. Bottom-right: sans-serif cocoa text in two lines: "Sin sol. Sin cama solar." / "Solo betacaroteno, 1 cápsula por día." and below in small grey: "*Los resultados pueden variar." No logo, no other text.
+```
+
+**Tip:** el contraste entre fotos caseras y un diseño prolijo es justamente lo que hace que se vea real *y* de marca. Es lo que usan las marcas DTC grandes.
 
 ### Los otros antes/después de la landing (pares 11 a 16B)
 Ya actualicé `shopify/prompts-imagenes-landing.md` con estas reglas:
 - **Celular:** usan un Samsung Galaxy A54. Un celular de gama media se ve más real que uno de gama alta.
 - **Diferencias en el DESPUÉS:** cada prompt pide las pequeñas diferencias naturales de una foto sacada otro día (pelo, ángulo, luz).
 
-Para que se vean todavía más caseros, podés cambiar el fondo de pared lisa por un fondo de casa común: pasillo, baño o dormitorio. Armá cada par con el **Paso 3**.
+Para que se vean todavía más caseros, podés cambiar el fondo de pared lisa por un fondo de casa común: pasillo, baño o dormitorio. Para la tarjeta de reseña de la landing no hace falta montaje: subí cada foto por separado en *Foto antes* y *Foto después*.
 
 ---
 
