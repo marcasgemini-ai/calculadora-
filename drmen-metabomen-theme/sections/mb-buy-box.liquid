@@ -474,7 +474,7 @@
       if (btn) btn.disabled = true;
       if (err) err.style.display = 'none';
       ({{ section.settings.clear_cart | json }} ? post('/cart/clear.js') : Promise.resolve())
-        .then(function () { return post('/cart/add.js', { items: [{ id: Number(c.getAttribute('data-variant')), quantity: Number(c.getAttribute('data-qty')), properties: { _Pack: c.getAttribute('data-name') } }] }); })
+        .then(function () { return post('/cart/add.js', { items: [{ id: Number(c.getAttribute('data-variant')), quantity: Number(c.getAttribute('data-qty')), properties: { Pack: c.getAttribute('data-name') } }] }); })
         .then(function () { if (bump && cb && cb.checked) return post('/cart/add.js', { items: [{ id: Number(bump), quantity: 1 }] }).catch(function () {}); })
         .then(function () { window.location.href = code ? '/discount/' + encodeURIComponent(code) + '?redirect=' + encodeURIComponent(dest) : dest; })
         .catch(function (e) { if (btn) btn.disabled = false; if (err) err.style.display = 'block'; if (errMsg) errMsg.textContent = e && e.message ? e.message : ''; });
@@ -917,17 +917,18 @@
         {
           "type": "range",
           "id": "quantity",
-          "label": "Frascos (unidades al carrito)",
+          "label": "Unidades al carrito",
           "min": 1,
           "max": 12,
           "step": 1,
-          "default": 3
+          "default": 3,
+          "info": "Las que se agregan al carrito. Tus descuentos automáticos tienen que estar armados con estas mismas cantidades."
         },
         {
           "type": "text",
           "id": "variant_match",
           "label": "Variante (opcional)",
-          "info": "Si el producto tiene variantes por pack, escribí parte del nombre (ej: 3 frascos). Se agrega 1 unidad de esa variante."
+          "info": "Para un pack que se cobra como 1 unidad pero lleva más (ej: 2x1): creá esa variante en el producto y escribí parte de su nombre (ej: 2x1). Se agrega 1 unidad de esa variante."
         },
         {
           "type": "text",
@@ -1057,7 +1058,7 @@
         {
           "type": "range",
           "id": "min_qty",
-          "label": "Se desbloquea desde (frascos)",
+          "label": "Se desbloquea desde (unidades al carrito)",
           "min": 1,
           "max": 12,
           "step": 1,
@@ -1182,7 +1183,7 @@
           "settings": {
             "title": "Pack 6 meses",
             "subtitle": "Para 6 meses + envío gratis",
-            "quantity": 6,
+            "quantity": 3,
             "price": "$69.990",
             "compare": "$353.940",
             "savings": "Ahorrás $283.950",
@@ -1202,7 +1203,7 @@
           "settings": {
             "title": "Pack 4 meses",
             "subtitle": "Para 4 meses + envío gratis",
-            "quantity": 4,
+            "quantity": 2,
             "price": "$54.990",
             "compare": "$235.960",
             "savings": "Ahorrás $180.970",
@@ -1221,7 +1222,7 @@
           "settings": {
             "title": "Pack 2x1",
             "subtitle": "Para 2 meses + envío gratis",
-            "quantity": 2,
+            "quantity": 1,
             "price": "$39.990",
             "compare": "$117.980",
             "savings": "Ahorrás $77.990",
@@ -1265,7 +1266,7 @@
             "emoji": "🥗",
             "label": "Gratis",
             "compare": "$20.000",
-            "min_qty": 4
+            "min_qty": 3
           }
         },
         {
