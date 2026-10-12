@@ -1,5 +1,13 @@
 # DR.MEN · HAIR — Secciones para la página de producto
 
+## Instalación rápida (recomendada): plantilla completa
+
+1. Creá las 5 secciones (más abajo, una por una) en **Editar código → Secciones**.
+2. En **Editar código → Plantillas → Agregar una nueva plantilla** → tipo **product**, formato **JSON**, nombre `hair` → borrá todo, pegá el contenido de `templates/product.hair.json` → **Guardar**.
+3. En el admin del producto: **Plantilla del tema → `product.hair`**.
+
+La plantilla ya trae los 5 bloques en orden con todo el copy (ángulo DHT) y la oferta cargada.
+
 Cada bloque es **un solo archivo** de sección (CSS, JS e íconos incluidos). Se crea una sección, se pega el código y listo.
 
 ## Bloque 1 · Galería + oferta → `sections/hm-producto-oferta.liquid`

@@ -1,0 +1,496 @@
+{
+  "sections": {
+    "oferta": {
+      "type": "hm-producto-oferta",
+      "blocks": {
+        "tarjeta_1": {
+          "type": "tarjeta",
+          "settings": {
+            "titulo": "Garantía de 30 días",
+            "texto": "Si no te convence, te devolvemos la plata.",
+            "icono": "shield"
+          }
+        },
+        "tarjeta_2": {
+          "type": "tarjeta",
+          "settings": {
+            "titulo": "Envío protegido",
+            "texto": "¿Se perdió o llegó dañado? Te lo reenviamos.",
+            "icono": "box",
+            "valor": "$4.500",
+            "valor_texto": "GRATIS"
+          }
+        },
+        "tarjeta_3": {
+          "type": "tarjeta",
+          "settings": {
+            "titulo": "Envío gratis",
+            "texto": "En packs de 2 frascos o más.",
+            "icono": "truck",
+            "valor": "$6.900",
+            "valor_texto": "GRATIS"
+          }
+        },
+        "tarjeta_4": {
+          "type": "tarjeta",
+          "settings": {
+            "titulo": "3 cuotas sin interés",
+            "texto": "O 10% OFF pagando con transferencia.",
+            "icono": "card"
+          }
+        },
+        "rating_1": {
+          "type": "rating",
+          "settings": {}
+        },
+        "titulo_1": {
+          "type": "titulo",
+          "settings": {
+            "titulo": "Bloqueador de DHT <em>HAIR</em>",
+            "subtitulo": "Menos caída de pelo, <em>crecimiento más saludable</em>"
+          }
+        },
+        "texto_1": {
+          "type": "texto",
+          "settings": {
+            "texto": "<p><strong>Frená la caída desde la raíz: HAIR ayuda a bloquear la DHT, la hormona que achica el folículo. Pelo más fuerte y con más cuerpo, con garantía de devolución de 30 días.</strong> Una fórmula con 8 nutrientes (biotina, zinc, selenio, L-cistina, colágeno tipo II y vitaminas C, B5 y B6) que ayuda a mantener un equilibrio saludable de DHT y nutre el folículo desde adentro, sin químicos agresivos.*</p>"
+          }
+        },
+        "beneficio_1": {
+          "type": "beneficio",
+          "settings": {
+            "icono": "shield",
+            "texto": "Ayuda a bloquear la DHT · Reduce la caída del pelo"
+          }
+        },
+        "beneficio_2": {
+          "type": "beneficio",
+          "settings": {
+            "icono": "trend-up",
+            "texto": "Fortalece el pelo y favorece su crecimiento"
+          }
+        },
+        "beneficio_3": {
+          "type": "beneficio",
+          "settings": {
+            "icono": "dna",
+            "texto": "Nutre la raíz con 8 nutrientes clave"
+          }
+        },
+        "beneficio_4": {
+          "type": "beneficio",
+          "settings": {
+            "icono": "leaf",
+            "texto": "Sin gluten · 1 cápsula por día"
+          }
+        },
+        "precio_1": {
+          "type": "precio",
+          "settings": {}
+        },
+        "pack_1": {
+          "type": "pack",
+          "settings": {
+            "titulo": "Comprá 1 · 60 días",
+            "subtitulo": "Para empezar",
+            "variante": 1,
+            "frascos": 1
+          }
+        },
+        "pack_2": {
+          "type": "pack",
+          "settings": {
+            "titulo": "Comprá 2 · 120 días",
+            "etiqueta": "Más elegido",
+            "etiqueta_color": "marca",
+            "variante": 2,
+            "frascos": 2,
+            "preseleccionado": true
+          }
+        },
+        "pack_3": {
+          "type": "pack",
+          "settings": {
+            "titulo": "Comprá 3 · 180 días",
+            "etiqueta": "Tratamiento completo",
+            "etiqueta_color": "negro",
+            "variante": 3,
+            "frascos": 3
+          }
+        },
+        "pack_4": {
+          "type": "pack",
+          "settings": {
+            "titulo": "Comprá 6 · 12 meses",
+            "etiqueta": "Mejor precio",
+            "etiqueta_color": "naranja",
+            "variante": 4,
+            "frascos": 6
+          }
+        },
+        "regalos_1": {
+          "type": "regalos",
+          "settings": {}
+        },
+        "envio_1": {
+          "type": "envio",
+          "settings": {}
+        },
+        "boton_1": {
+          "type": "boton",
+          "settings": {}
+        },
+        "pagos_1": {
+          "type": "pagos",
+          "settings": {}
+        },
+        "social_1": {
+          "type": "social",
+          "settings": {}
+        },
+        "aviso_1": {
+          "type": "aviso",
+          "settings": {}
+        },
+        "acordeon_1": {
+          "type": "acordeon",
+          "settings": {
+            "titulo": "¿Qué es HAIR?",
+            "contenido": "<p>HAIR es un bloqueador de DHT en cápsulas, formulado para hombres. Combina vitaminas C, B5 y B6, biotina, zinc, selenio, L-cistina y colágeno tipo II para frenar la caída desde la raíz y darle al pelo lo que necesita para crecer fuerte.</p>"
+          }
+        },
+        "acordeon_2": {
+          "type": "acordeon",
+          "settings": {
+            "titulo": "¿Cómo actúa sobre la DHT?",
+            "contenido": "<p>La DHT (dihidrotestosterona) es la hormona que, con los años, se pega al folículo y lo va achicando: cada ciclo el pelo sale más fino, hasta que deja de salir.</p><p>HAIR ayuda a bloquear la DHT y a mantener un equilibrio saludable, mientras nutre el folículo desde adentro para que el pelo crezca más grueso y con más densidad.</p>"
+          }
+        },
+        "acordeon_3": {
+          "type": "acordeon",
+          "settings": {
+            "titulo": "¿Qué tiene adentro?",
+            "contenido": "<ul><li><strong>Biotina:</strong> la vitamina del pelo. Contribuye a su mantenimiento normal.</li><li><strong>Zinc y selenio:</strong> minerales que contribuyen al mantenimiento normal del cabello.</li><li><strong>L-cistina:</strong> aminoácido azufrado, componente de la queratina.</li><li><strong>Colágeno tipo II:</strong> proteína estructural.</li><li><strong>Vitaminas C, B5 y B6:</strong> la vitamina C contribuye a la formación normal de colágeno.</li></ul><p>Sin gluten.</p>"
+          }
+        },
+        "acordeon_4": {
+          "type": "acordeon",
+          "settings": {
+            "titulo": "¿Cómo se toma?",
+            "contenido": "<p><strong>1 cápsula por día</strong> con agua, preferentemente con una comida. Cada frasco trae 60 cápsulas: te dura 60 días.</p><p>El pelo crece lento. Por eso recomendamos un tratamiento de 3 a 6 meses para ver resultados.</p>"
+          }
+        },
+        "acordeon_5": {
+          "type": "acordeon",
+          "settings": {
+            "titulo": "Envíos y devoluciones",
+            "contenido": "<p>Enviamos a todo el país. Despachamos en 24 hs hábiles y te pasamos el seguimiento.</p><p><strong>Envío gratis</strong> desde 2 frascos.</p><p>Tenés 30 días de garantía de satisfacción: si no te convence, te devolvemos la plata.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "tarjeta_1",
+        "tarjeta_2",
+        "tarjeta_3",
+        "tarjeta_4",
+        "rating_1",
+        "titulo_1",
+        "texto_1",
+        "beneficio_1",
+        "beneficio_2",
+        "beneficio_3",
+        "beneficio_4",
+        "precio_1",
+        "pack_1",
+        "pack_2",
+        "pack_3",
+        "pack_4",
+        "regalos_1",
+        "envio_1",
+        "boton_1",
+        "pagos_1",
+        "social_1",
+        "aviso_1",
+        "acordeon_1",
+        "acordeon_2",
+        "acordeon_3",
+        "acordeon_4",
+        "acordeon_5"
+      ],
+      "settings": {}
+    },
+    "transformaciones": {
+      "type": "hm-transformaciones",
+      "blocks": {
+        "insignia_1": {
+          "type": "insignia",
+          "settings": {
+            "icono": "sparkles",
+            "texto": "Sin efectos secundarios"
+          }
+        },
+        "insignia_2": {
+          "type": "insignia",
+          "settings": {
+            "icono": "shield",
+            "texto": "Sin rellenos ni aditivos"
+          }
+        },
+        "insignia_3": {
+          "type": "insignia",
+          "settings": {
+            "icono": "flask",
+            "texto": "Ingredientes limpios"
+          }
+        },
+        "transformacion_1": {
+          "type": "transformacion",
+          "settings": {}
+        },
+        "transformacion_2": {
+          "type": "transformacion",
+          "settings": {}
+        },
+        "transformacion_3": {
+          "type": "transformacion",
+          "settings": {}
+        },
+        "transformacion_4": {
+          "type": "transformacion",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "insignia_1",
+        "insignia_2",
+        "insignia_3",
+        "transformacion_1",
+        "transformacion_2",
+        "transformacion_3",
+        "transformacion_4"
+      ],
+      "settings": {}
+    },
+    "dht": {
+      "type": "hm-dht",
+      "blocks": {
+        "punto_1": {
+          "type": "punto",
+          "settings": {
+            "emoji": "🧬",
+            "icono": "dna",
+            "titulo": "El problema: la DHT",
+            "texto": "<p>Con los años, la DHT (dihidrotestosterona) se pega a los folículos y los va achicando. Cada ciclo el pelo sale más fino y más débil… hasta que deja de salir.</p>"
+          }
+        },
+        "punto_2": {
+          "type": "punto",
+          "settings": {
+            "emoji": "🌿",
+            "icono": "leaf",
+            "titulo": "La solución: HAIR bloquea la DHT",
+            "texto": "<p>Nuestra fórmula ayuda a bloquear la DHT y a mantener un equilibrio saludable, mientras nutre el folículo desde adentro con biotina, zinc, selenio, L-cistina y colágeno.</p>"
+          }
+        },
+        "punto_3": {
+          "type": "punto",
+          "settings": {
+            "emoji": "💪",
+            "icono": "trend-up",
+            "titulo": "El impacto: más pelo y más grueso",
+            "texto": "<p>Con menos DHT, los folículos se mantienen abiertos y nutridos: menos caída, pelo más grueso y con más densidad a largo plazo.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "punto_1",
+        "punto_2",
+        "punto_3"
+      ],
+      "settings": {}
+    },
+    "historias": {
+      "type": "hm-historias",
+      "blocks": {
+        "foto_1": {
+          "type": "foto",
+          "settings": {}
+        },
+        "foto_2": {
+          "type": "foto",
+          "settings": {}
+        },
+        "foto_3": {
+          "type": "foto",
+          "settings": {}
+        },
+        "foto_4": {
+          "type": "foto",
+          "settings": {}
+        },
+        "foto_5": {
+          "type": "foto",
+          "settings": {}
+        },
+        "foto_6": {
+          "type": "foto",
+          "settings": {}
+        },
+        "foto_7": {
+          "type": "foto",
+          "settings": {}
+        },
+        "foto_8": {
+          "type": "foto",
+          "settings": {}
+        },
+        "resena_1": {
+          "type": "resena",
+          "settings": {
+            "puntaje": 4.9,
+            "titulo": "La coronilla se está rellenando",
+            "texto": "<p>Tenía la coronilla cada vez más rala y se notaba mucho en las fotos. Después de 3 meses con HAIR se está rellenando de a poco. Hasta mi peluquero me preguntó qué estaba usando.</p>",
+            "nombre": "Martín R.",
+            "etiqueta_1": "Coronilla más poblada",
+            "etiqueta_2": "Resultados visibles"
+          }
+        },
+        "resena_2": {
+          "type": "resena",
+          "settings": {
+            "puntaje": 5,
+            "titulo": "¡Ya no tapo la rejilla de la ducha!",
+            "texto": "<p>Antes cada semana tenía que destapar la rejilla de la ducha por la cantidad de pelo. Hace 4 meses que tomo HAIR y casi no se me cae al lavarme. Increíble la diferencia.</p>",
+            "nombre": "Lucas G.",
+            "etiqueta_1": "Menos caída",
+            "etiqueta_2": "Pelo más fuerte"
+          }
+        },
+        "resena_3": {
+          "type": "resena",
+          "settings": {
+            "puntaje": 5,
+            "titulo": "Las entradas dejaron de avanzar",
+            "texto": "<p>Las entradas me venían avanzando hace años. A los 6 meses de HAIR ya noto pelitos nuevos donde antes no había nada. Es lento, pero constante.</p>",
+            "nombre": "Diego F.",
+            "etiqueta_1": "Entradas",
+            "etiqueta_2": "Resultados a largo plazo"
+          }
+        },
+        "resena_4": {
+          "type": "resena",
+          "settings": {
+            "puntaje": 4.8,
+            "titulo": "Más volumen, menos pelo en la almohada",
+            "texto": "<p>Lo empecé por recomendación de un amigo. Al segundo mes ya veía menos pelos en la almohada y el pelo con más cuerpo. Fácil de tomar: una cápsula y listo.</p>",
+            "nombre": "Nicolás P.",
+            "etiqueta_1": "Más volumen",
+            "etiqueta_2": "Fácil de tomar"
+          }
+        }
+      },
+      "block_order": [
+        "foto_1",
+        "foto_2",
+        "foto_3",
+        "foto_4",
+        "foto_5",
+        "foto_6",
+        "foto_7",
+        "foto_8",
+        "resena_1",
+        "resena_2",
+        "resena_3",
+        "resena_4"
+      ],
+      "settings": {}
+    },
+    "razones": {
+      "type": "hm-razones",
+      "blocks": {
+        "sello_1": {
+          "type": "sello",
+          "settings": {
+            "icono": "verified",
+            "texto": "Fórmula completa"
+          }
+        },
+        "sello_2": {
+          "type": "sello",
+          "settings": {
+            "icono": "verified",
+            "texto": "Ayuda a bloquear la DHT"
+          }
+        },
+        "sello_3": {
+          "type": "sello",
+          "settings": {
+            "icono": "verified",
+            "texto": "Precio accesible"
+          }
+        },
+        "sello_4": {
+          "type": "sello",
+          "settings": {
+            "icono": "verified",
+            "texto": "Sin gluten"
+          }
+        },
+        "razon_1": {
+          "type": "razon",
+          "settings": {
+            "titulo": "Ataca la causa, no el síntoma",
+            "texto": "<p>No es un shampoo que actúa por fuera: HAIR trabaja desde adentro, ayudando a bloquear la DHT y nutriendo el folículo donde nace el pelo.</p>"
+          }
+        },
+        "razon_2": {
+          "type": "razon",
+          "settings": {
+            "titulo": "8 nutrientes. Una sola cápsula.",
+            "texto": "<p>Biotina, zinc, selenio, L-cistina, colágeno tipo II y vitaminas C, B5 y B6 juntos en una cápsula por día. Sin tomar cinco suplementos distintos.</p>"
+          }
+        },
+        "razon_3": {
+          "type": "razon",
+          "settings": {
+            "titulo": "Sin vueltas. Sin complicaciones.",
+            "texto": "<p>Una cápsula por día con agua. Sin cremas, sin lociones, sin rutinas eternas. Y sin gluten.</p>"
+          }
+        },
+        "razon_4": {
+          "type": "razon",
+          "settings": {
+            "titulo": "Resultados reales y visibles",
+            "texto": "<p>Menos caída en las primeras semanas y pelo con más cuerpo con el uso constante. Hombres de todo el país ya lo están comprobando.</p>"
+          }
+        },
+        "razon_5": {
+          "type": "razon",
+          "settings": {
+            "titulo": "Transparencia total",
+            "texto": "<p>Cada ingrediente y su dosis están en la etiqueta. Sin fórmulas secretas ni letra chica. Y si no te convence, tenés 30 días de garantía.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "sello_1",
+        "sello_2",
+        "sello_3",
+        "sello_4",
+        "razon_1",
+        "razon_2",
+        "razon_3",
+        "razon_4",
+        "razon_5"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "oferta",
+    "transformaciones",
+    "dht",
+    "historias",
+    "razones"
+  ]
+}
