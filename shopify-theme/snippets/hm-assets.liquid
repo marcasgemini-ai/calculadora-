@@ -1,3 +1,0 @@
-{%- comment -%} Carga CSS y JS compartidos de las secciones hm-. El JS tiene guard para no ejecutarse dos veces. {%- endcomment -%}
-{{ 'hm-base.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'hm-base.js' | asset_url }}" defer="defer"></script>

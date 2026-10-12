@@ -1,8 +1,0 @@
-{%- comment -%}
-  Variables de estilo de cada sección hm-.
-  Uso: style="{% render 'hm-vars', s: section.settings %}"
-{%- endcomment -%}
---hm-accent: {{ s.color_acento | default: '#6b3fc0' }};
---hm-pt: {{ s.padding_top | default: 64 }}px;
---hm-pb: {{ s.padding_bottom | default: 64 }}px;
-{%- if s.usar_fuentes_theme %}--hm-font-display: var(--font-heading-family, inherit); --hm-font-body: var(--font-body-family, inherit);{% endif -%}
