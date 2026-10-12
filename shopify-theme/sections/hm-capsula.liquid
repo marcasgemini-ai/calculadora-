@@ -1,0 +1,287 @@
+{%- comment -%}
+  HM · Bloque 7 — ¿Qué hay dentro de cada cápsula? Datos destacados + cápsulas decorativas
+  Sección autónoma: CSS y JS incluidos. Todo editable desde el personalizador.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign acc = s.color_acento | default: '#6b3fc0'
+  assign hm_font = s.fuente
+  assign hm_font_stack = "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+  if hm_font != blank
+    assign hm_font_stack = hm_font.family | prepend: "'" | append: "', " | append: hm_font.fallback_families
+  endif
+-%}
+
+{%- if hm_font != blank -%}
+  <style>
+    {{ hm_font | font_face: font_display: 'swap' }}
+    {%- assign hm_f = hm_font | font_modify: 'weight', '500' -%}{%- if hm_f -%}{{ hm_f | font_face: font_display: 'swap' }}{%- endif -%}
+    {%- assign hm_f = hm_font | font_modify: 'weight', '600' -%}{%- if hm_f -%}{{ hm_f | font_face: font_display: 'swap' }}{%- endif -%}
+    {%- assign hm_f = hm_font | font_modify: 'weight', '700' -%}{%- if hm_f -%}{{ hm_f | font_face: font_display: 'swap' }}{%- endif -%}
+  </style>
+{%- endif -%}
+
+<style>
+  /* ===== Reset: el theme no puede romper la sección ===== */
+  .hm-cp, .hm-cp *, .hm-cp *::before, .hm-cp *::after { box-sizing: border-box; }
+  .hm-cp :where(h2, h3, p, span, strong, em, img, svg, div) {
+    margin: 0; padding: 0; border: 0; text-transform: none; letter-spacing: normal;
+    font-family: inherit; line-height: inherit; box-shadow: none; background: none; color: inherit;
+  }
+  .hm-cp :where(img, svg) { display: block; max-width: 100%; border-radius: 0; }
+
+  .hm-cp {
+    position: relative; overflow: hidden;
+    font-family: var(--cp-font); color: var(--cp-fg); background: var(--cp-bg);
+    font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased;
+    padding: var(--cp-pt) 0 var(--cp-pb);
+  }
+  .hm-cp__wrap { position: relative; z-index: 1; max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+  @media (min-width: 750px) { .hm-cp__wrap { padding: 0 32px; } }
+
+  /* Cápsulas decorativas */
+  .hm-cp__pills { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+  .hm-cp__pill { position: absolute; width: var(--w); transform: rotate(var(--r)); opacity: var(--cp-pill-op); }
+  .hm-cp__pill-in { display: block; filter: drop-shadow(0 10px 14px rgba(0, 0, 0, .14)); }
+  .hm-cp--float .hm-cp__pill-in { animation: hm-cp-float var(--d, 7s) ease-in-out infinite alternate; }
+  @keyframes hm-cp-float { from { transform: translateY(-6px) rotate(-3deg); } to { transform: translateY(8px) rotate(4deg); } }
+  @media (prefers-reduced-motion: reduce) { .hm-cp--float .hm-cp__pill-in { animation: none; } }
+  .hm-cp__pill svg, .hm-cp__pill img { width: 100%; height: auto; }
+  .hm-cp__pill--1 { --w: 120px; --r: 35deg; left: 3%; top: 4%; --d: 7s; }
+  .hm-cp__pill--2 { --w: 60px; --r: 90deg; left: 2%; top: 56%; --d: 8s; }
+  .hm-cp__pill--3 { --w: 90px; --r: -40deg; left: 12%; top: 74%; --d: 6s; }
+  .hm-cp__pill--4 { --w: 120px; --r: -35deg; right: 3%; top: 2%; --d: 9s; }
+  .hm-cp__pill--5 { --w: 80px; --r: -60deg; right: -1%; top: 30%; --d: 7.5s; }
+  .hm-cp__pill--6 { --w: 110px; --r: 60deg; right: 4%; top: 74%; --d: 6.5s; }
+  @media (max-width: 749px) {
+    .hm-cp__pill--1 { --w: 64px; left: -4%; top: 2%; }
+    .hm-cp__pill--4 { --w: 64px; right: -4%; top: 1%; }
+    .hm-cp__pill--6 { --w: 60px; right: -3%; top: auto; bottom: 2%; }
+    .hm-cp__pill--2, .hm-cp__pill--3, .hm-cp__pill--5 { display: none; }
+  }
+
+  /* Encabezado */
+  .hm-cp__head { text-align: center; max-width: 680px; margin: 0 auto 36px; }
+  .hm-cp__title { font-size: var(--cp-title-m); font-weight: 600; line-height: 1.2; color: var(--cp-fg); }
+  .hm-cp__title em { font-style: normal; color: var(--cp-accent); }
+  .hm-cp__sub { margin-top: 12px !important; font-size: 15px; line-height: 1.55; color: var(--cp-muted); }
+  @media (min-width: 750px) { .hm-cp__title { font-size: var(--cp-title-d); } .hm-cp__sub { font-size: 16px; } }
+
+  /* Datos */
+  .hm-cp__grid { display: grid; grid-template-columns: repeat(var(--cp-cols-m), minmax(0, 1fr)); gap: 28px 16px; }
+  @media (min-width: 750px) { .hm-cp__grid { grid-template-columns: repeat(var(--cp-cols-d), minmax(0, 1fr)); gap: 40px 48px; } }
+  .hm-cp__stat { text-align: center; }
+  .hm-cp__num { display: block; font-size: var(--cp-num-m); font-weight: 600; line-height: 1.1; color: var(--cp-num); font-variant-numeric: tabular-nums; }
+  @media (min-width: 750px) { .hm-cp__num { font-size: var(--cp-num-d); } }
+  .hm-cp__label { margin-top: 6px !important; font-size: 15px; font-weight: 600; line-height: 1.35; color: var(--cp-fg); }
+  .hm-cp__text { margin-top: 6px !important; font-size: 14px; line-height: 1.55; color: var(--cp-muted); }
+  @media (min-width: 750px) { .hm-cp__label { font-size: 16px; } .hm-cp__text { font-size: 15px; } }
+  .hm-cp__text p + p { margin-top: .4em; }
+
+  .hm-cp__cta { display: flex; justify-content: center; margin-top: 36px; }
+  .hm-cp__btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; padding: 0 28px;
+    border-radius: 8px; background: var(--cp-btn-bg); color: var(--cp-btn-fg) !important; font-size: 16px; font-weight: 600; text-decoration: none;
+    transition: filter .2s;
+  }
+  .hm-cp__btn:hover { filter: brightness(1.1); }
+  @media (max-width: 749px) { .hm-cp__btn { width: 100%; } }
+</style>
+
+{%- capture pill_svg -%}
+  {%- if s.capsula_imagen != blank -%}
+    {{ s.capsula_imagen | image_url: width: 300 | image_tag: loading: 'lazy', widths: '150, 300', sizes: '120px', alt: '' }}
+  {%- else -%}
+    <svg viewBox="0 0 220 84" aria-hidden="true">
+      <defs>
+        <linearGradient id="hm-cp-a-{{ section.id }}" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#ffffff" stop-opacity=".55"/>
+          <stop offset=".35" stop-color="{{ s.capsula_color_1 }}"/>
+          <stop offset="1" stop-color="{{ s.capsula_color_1 | color_darken: 14 }}"/>
+        </linearGradient>
+        <linearGradient id="hm-cp-b-{{ section.id }}" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#ffffff" stop-opacity=".55"/>
+          <stop offset=".35" stop-color="{{ s.capsula_color_2 }}"/>
+          <stop offset="1" stop-color="{{ s.capsula_color_2 | color_darken: 14 }}"/>
+        </linearGradient>
+      </defs>
+      <path d="M42 4h70v76H42a38 38 0 0 1 0-76z" fill="url(#hm-cp-a-{{ section.id }})"/>
+      <path d="M108 4h70a38 38 0 0 1 0 76h-70z" fill="url(#hm-cp-b-{{ section.id }})"/>
+      <path d="M108 4v76" stroke="{{ s.capsula_color_2 | color_darken: 20 }}" stroke-width="2"/>
+      <path d="M30 18c8-6 40-7 66-6" stroke="#fff" stroke-opacity=".6" stroke-width="5" stroke-linecap="round" fill="none"/>
+    </svg>
+  {%- endif -%}
+{%- endcapture -%}
+
+<section
+  id="hm-cp-{{ section.id }}"
+  class="hm-cp{% if s.capsulas_flotar %} hm-cp--float{% endif %}"
+  style="
+    --cp-font: {{ hm_font_stack }};
+    --cp-accent: {{ acc }};
+    --cp-num: {{ s.color_numeros | default: acc }};
+    --cp-bg: {{ s.color_fondo }};
+    --cp-fg: {{ s.color_texto }};
+    --cp-muted: {{ s.color_texto | color_modify: 'alpha', 0.68 }};
+    --cp-btn-bg: {{ s.color_boton | default: acc }};
+    --cp-btn-fg: {{ s.color_boton_texto | default: '#ffffff' }};
+    --cp-pill-op: {{ s.capsulas_opacidad | divided_by: 100.0 }};
+    --cp-title-d: {{ s.titulo_desktop }}px;
+    --cp-title-m: {{ s.titulo_mobile }}px;
+    --cp-num-d: {{ s.numero_desktop }}px;
+    --cp-num-m: {{ s.numero_mobile }}px;
+    --cp-cols-d: {{ s.columnas_desktop }};
+    --cp-cols-m: {{ s.columnas_mobile }};
+    --cp-pt: {{ s.padding_top }}px;
+    --cp-pb: {{ s.padding_bottom }}px;
+  "
+>
+  {%- if s.mostrar_capsulas -%}
+    <div class="hm-cp__pills" aria-hidden="true">
+      {%- for i in (1..6) -%}
+        <span class="hm-cp__pill hm-cp__pill--{{ i }}"><span class="hm-cp__pill-in">{{ pill_svg }}</span></span>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  <div class="hm-cp__wrap">
+    {%- if s.titulo != blank or s.subtitulo != blank -%}
+      <div class="hm-cp__head">
+        {%- if s.titulo != blank -%}<h2 class="hm-cp__title">{{ s.titulo }}</h2>{%- endif -%}
+        {%- if s.subtitulo != blank -%}<p class="hm-cp__sub">{{ s.subtitulo }}</p>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="hm-cp__grid">
+      {%- for block in section.blocks -%}
+        {%- assign bs = block.settings -%}
+        <div class="hm-cp__stat" {{ block.shopify_attributes }}>
+          {%- if bs.numero != blank -%}
+            <span class="hm-cp__num"{% if s.animar_numeros %} data-hm-count="{{ bs.numero | escape }}"{% endif %}>{{ bs.numero }}</span>
+          {%- endif -%}
+          {%- if bs.titulo != blank -%}<h3 class="hm-cp__label">{{ bs.titulo }}</h3>{%- endif -%}
+          {%- if bs.texto != blank -%}<div class="hm-cp__text">{{ bs.texto }}</div>{%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+
+    {%- if s.boton_texto != blank -%}
+      <div class="hm-cp__cta"><a class="hm-cp__btn" href="{{ s.boton_link | default: '#hm-comprar' }}">{{ s.boton_texto }}</a></div>
+    {%- endif -%}
+  </div>
+</section>
+
+{%- if s.animar_numeros -%}
+<script>
+  (function () {
+    var root = document.getElementById('hm-cp-{{ section.id }}');
+    if (!root || root.dataset.ready) return;
+    root.dataset.ready = '1';
+    var els = root.querySelectorAll('[data-hm-count]');
+    if (!els.length || !('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.Shopify && window.Shopify.designMode) return;
+
+    /* Solo anima la primera cifra del texto (ej: "350 mg o más" anima el 350) */
+    function setup(el) {
+      var full = el.dataset.hmCount;
+      var m = full.match(/^(\D*)(\d+(?:[.,]\d+)?)([\s\S]*)$/);
+      if (!m) return null;
+      var target = parseFloat(m[2].replace(',', '.'));
+      var decimals = (m[2].split(/[.,]/)[1] || '').length;
+      var sep = m[2].indexOf(',') > -1 ? ',' : '.';
+      return { el: el, pre: m[1], target: target, decimals: decimals, sep: sep, post: m[3], full: full };
+    }
+    var items = Array.prototype.map.call(els, setup).filter(Boolean);
+    items.forEach(function (it) { it.el.textContent = it.pre + (0).toFixed(it.decimals).replace('.', it.sep) + it.post; });
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        io.disconnect();
+        var start = null, dur = 1200;
+        function frame(t) {
+          if (!start) start = t;
+          var p = Math.min(1, (t - start) / dur);
+          var eased = 1 - Math.pow(1 - p, 3);
+          items.forEach(function (it) {
+            if (p >= 1) { it.el.textContent = it.full; return; }
+            it.el.textContent = it.pre + (it.target * eased).toFixed(it.decimals).replace('.', it.sep) + it.post;
+          });
+          if (p < 1) requestAnimationFrame(frame);
+        }
+        requestAnimationFrame(frame);
+      });
+    }, { threshold: 0.35 });
+    io.observe(root.querySelector('.hm-cp__grid'));
+  })();
+</script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "HM · Cápsula",
+  "tag": "div",
+  "class": "hm-section-cp",
+  "settings": [
+    { "type": "header", "content": "Encabezado" },
+    { "type": "inline_richtext", "id": "titulo", "label": "Título", "default": "¿Qué hay <em>dentro</em> de cada cápsula?", "info": "La cursiva se pinta con el color de marca." },
+    { "type": "text", "id": "subtitulo", "label": "Subtítulo", "default": "8 nutrientes clave para tu pelo en una sola cápsula por día. Sin nada oculto detrás de la etiqueta." },
+    { "type": "range", "id": "titulo_desktop", "label": "Tamaño del título en PC", "min": 20, "max": 52, "step": 1, "unit": "px", "default": 36 },
+    { "type": "range", "id": "titulo_mobile", "label": "Tamaño del título en celular", "min": 18, "max": 40, "step": 1, "unit": "px", "default": 26 },
+
+    { "type": "header", "content": "Datos" },
+    { "type": "paragraph", "content": "Cada dato es un bloque: número grande, título y texto." },
+    { "type": "range", "id": "columnas_desktop", "label": "Columnas en PC", "min": 1, "max": 4, "step": 1, "default": 2 },
+    { "type": "range", "id": "columnas_mobile", "label": "Columnas en celular", "min": 1, "max": 2, "step": 1, "default": 2 },
+    { "type": "range", "id": "numero_desktop", "label": "Tamaño del número en PC", "min": 24, "max": 72, "step": 2, "unit": "px", "default": 40 },
+    { "type": "range", "id": "numero_mobile", "label": "Tamaño del número en celular", "min": 20, "max": 56, "step": 2, "unit": "px", "default": 34 },
+    { "type": "checkbox", "id": "animar_numeros", "label": "Animar los números al aparecer", "default": true, "info": "Cuentan desde 0 hasta el valor. En el editor no se animan." },
+
+    { "type": "header", "content": "Cápsulas decorativas" },
+    { "type": "checkbox", "id": "mostrar_capsulas", "label": "Mostrar cápsulas alrededor", "default": true },
+    { "type": "image_picker", "id": "capsula_imagen", "label": "Foto de tu cápsula (opcional)", "info": "PNG sin fondo. Vacío = cápsula dibujada con los colores de abajo." },
+    { "type": "color", "id": "capsula_color_1", "label": "Color mitad izquierda", "default": "#e9dfc6" },
+    { "type": "color", "id": "capsula_color_2", "label": "Color mitad derecha", "default": "#d8c8a2" },
+    { "type": "range", "id": "capsulas_opacidad", "label": "Visibilidad de las cápsulas", "min": 20, "max": 100, "step": 5, "unit": "%", "default": 100 },
+    { "type": "checkbox", "id": "capsulas_flotar", "label": "Movimiento suave (flotan)", "default": true },
+
+    { "type": "header", "content": "Botón (opcional)" },
+    { "type": "text", "id": "boton_texto", "label": "Texto del botón", "info": "Vacío = sin botón." },
+    { "type": "text", "id": "boton_link", "label": "Link del botón", "default": "#hm-comprar" },
+
+    { "type": "header", "content": "Colores y tipografía" },
+    { "type": "font_picker", "id": "fuente", "label": "Tipografía", "default": "poppins_n4" },
+    { "type": "color", "id": "color_acento", "label": "Color de marca", "default": "#6b3fc0" },
+    { "type": "color", "id": "color_numeros", "label": "Color de los números (opcional)", "info": "Vacío = color de marca." },
+    { "type": "color", "id": "color_fondo", "label": "Fondo", "default": "#faf8f4" },
+    { "type": "color", "id": "color_texto", "label": "Texto", "default": "#121116" },
+    { "type": "color", "id": "color_boton", "label": "Color del botón (opcional)" },
+    { "type": "color", "id": "color_boton_texto", "label": "Texto del botón (opcional)" },
+
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio arriba", "min": 0, "max": 140, "step": 4, "unit": "px", "default": 64 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio abajo", "min": 0, "max": 140, "step": 4, "unit": "px", "default": 64 }
+  ],
+  "blocks": [
+    {
+      "type": "dato", "name": "Dato", "limit": 8,
+      "settings": [
+        { "type": "text", "id": "numero", "label": "Número / dato grande", "default": "8", "info": "Ej: 8 · 350 mg · 60 días · 0" },
+        { "type": "text", "id": "titulo", "label": "Título", "default": "Nutrientes en una sola fórmula" },
+        { "type": "richtext", "id": "texto", "label": "Texto", "default": "<p>Descripción corta.</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "HM · Cápsula",
+      "blocks": [
+        { "type": "dato", "settings": { "numero": "8", "titulo": "Nutrientes en una sola fórmula", "texto": "<p>Biotina, zinc, selenio, L-cistina, colágeno tipo II y vitaminas C, B5 y B6.</p>" } },
+        { "type": "dato", "settings": { "numero": "1", "titulo": "Cápsula al día", "texto": "<p>Se toma con agua, preferentemente con una comida.</p>" } },
+        { "type": "dato", "settings": { "numero": "60", "titulo": "Días por frasco", "texto": "<p>Cada frasco trae 60 cápsulas: 2 meses de tratamiento.</p>" } },
+        { "type": "dato", "settings": { "numero": "0", "titulo": "Gluten", "texto": "<p>Fórmula libre de gluten, pensada para el uso diario.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

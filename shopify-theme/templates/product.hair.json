@@ -540,6 +540,50 @@
         "solucion_3"
       ],
       "settings": {}
+    },
+    "capsula": {
+      "type": "hm-capsula",
+      "blocks": {
+        "dato_1": {
+          "type": "dato",
+          "settings": {
+            "numero": "8",
+            "titulo": "Nutrientes en una sola fórmula",
+            "texto": "<p>Biotina, zinc, selenio, L-cistina, colágeno tipo II y vitaminas C, B5 y B6.</p>"
+          }
+        },
+        "dato_2": {
+          "type": "dato",
+          "settings": {
+            "numero": "1",
+            "titulo": "Cápsula al día",
+            "texto": "<p>Se toma con agua, preferentemente con una comida.</p>"
+          }
+        },
+        "dato_3": {
+          "type": "dato",
+          "settings": {
+            "numero": "60",
+            "titulo": "Días por frasco",
+            "texto": "<p>Cada frasco trae 60 cápsulas: 2 meses de tratamiento.</p>"
+          }
+        },
+        "dato_4": {
+          "type": "dato",
+          "settings": {
+            "numero": "0",
+            "titulo": "Gluten",
+            "texto": "<p>Fórmula libre de gluten, pensada para el uso diario.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "dato_1",
+        "dato_2",
+        "dato_3",
+        "dato_4"
+      ],
+      "settings": {}
     }
   },
   "order": [
@@ -548,6 +592,7 @@
     "dht",
     "historias",
     "razones",
-    "problema_solucion"
+    "problema_solucion",
+    "capsula"
   ]
 }
