@@ -661,6 +661,70 @@
         "punto_3"
       ],
       "settings": {}
+    },
+    "garantia_faq": {
+      "type": "hm-garantia-faq",
+      "blocks": {
+        "pregunta_1": {
+          "type": "pregunta",
+          "settings": {
+            "pregunta": "¿Qué es HAIR?",
+            "respuesta": "<p>HAIR es un bloqueador de DHT en cápsulas, formulado para hombres. Combina biotina, zinc, selenio, L-cistina, colágeno tipo II y vitaminas C, B5 y B6 para frenar la caída desde la raíz y ayudar a que el pelo crezca más fuerte.</p>"
+          }
+        },
+        "pregunta_2": {
+          "type": "pregunta",
+          "settings": {
+            "pregunta": "¿Es seguro tomar HAIR?",
+            "respuesta": "<p>HAIR es un suplemento dietario a base de vitaminas, minerales, aminoácidos y colágeno, libre de gluten. Si tenés alguna condición médica, tomás medicación o tenés dudas, consultá a tu médico antes de empezar.</p>"
+          }
+        },
+        "pregunta_3": {
+          "type": "pregunta",
+          "settings": {
+            "pregunta": "¿Cuánto tiempo tarda en verse resultados?",
+            "respuesta": "<p>El pelo crece lento. En general se nota menos caída en las primeras semanas, y más cuerpo y densidad a partir del segundo o tercer mes de uso constante. Por eso recomendamos un tratamiento de 3 a 6 meses.</p>"
+          }
+        },
+        "pregunta_4": {
+          "type": "pregunta",
+          "settings": {
+            "pregunta": "¿Sirve para cualquier tipo de pelo?",
+            "respuesta": "<p>Sí. HAIR está pensado para hombres con cualquier tipo de pelo que notan caída, pelo más fino o entradas.</p>"
+          }
+        },
+        "pregunta_5": {
+          "type": "pregunta",
+          "settings": {
+            "pregunta": "¿Cómo se toma?",
+            "respuesta": "<p>1 cápsula por día con agua, preferentemente con una comida. Cada frasco trae 60 cápsulas: te dura 60 días.</p>"
+          }
+        },
+        "pregunta_6": {
+          "type": "pregunta",
+          "settings": {
+            "pregunta": "¿Cuánto tarda el envío?",
+            "respuesta": "<p>Despachamos en 24 hs hábiles y te pasamos el seguimiento. Según tu zona, llega en 2 a 6 días hábiles. Envío gratis desde 2 frascos.</p>"
+          }
+        },
+        "pregunta_7": {
+          "type": "pregunta",
+          "settings": {
+            "pregunta": "¿Tienen garantía?",
+            "respuesta": "<p>Sí. Tenés 30 días de garantía de satisfacción: si HAIR no te convence, escribinos y te devolvemos el dinero.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "pregunta_1",
+        "pregunta_2",
+        "pregunta_3",
+        "pregunta_4",
+        "pregunta_5",
+        "pregunta_6",
+        "pregunta_7"
+      ],
+      "settings": {}
     }
   },
   "order": [
@@ -671,6 +735,7 @@
     "razones",
     "problema_solucion",
     "capsula",
-    "comparativa"
+    "comparativa",
+    "garantia_faq"
   ]
 }

@@ -1,0 +1,612 @@
+{%- comment -%}
+  HM · Bloque 9 — Garantía (sello + texto + botón + foto) y Preguntas frecuentes (acordeón)
+  Sección autónoma: CSS y JS incluidos. Todo editable desde el personalizador.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign acc = s.color_acento | default: '#6b3fc0'
+  assign hm_font = s.fuente
+  assign hm_font_stack = "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+  if hm_font != blank
+    assign hm_font_stack = hm_font.family | prepend: "'" | append: "', " | append: hm_font.fallback_families
+  endif
+  assign seal_bg = s.sello_color | default: acc
+-%}
+
+{%- if hm_font != blank -%}
+  <style>
+    {{ hm_font | font_face: font_display: 'swap' }}
+    {%- assign hm_f = hm_font | font_modify: 'weight', '500' -%}{%- if hm_f -%}{{ hm_f | font_face: font_display: 'swap' }}{%- endif -%}
+    {%- assign hm_f = hm_font | font_modify: 'weight', '600' -%}{%- if hm_f -%}{{ hm_f | font_face: font_display: 'swap' }}{%- endif -%}
+    {%- assign hm_f = hm_font | font_modify: 'weight', '700' -%}{%- if hm_f -%}{{ hm_f | font_face: font_display: 'swap' }}{%- endif -%}
+  </style>
+{%- endif -%}
+
+<style>
+  /* ===== Reset: el theme no puede romper la sección ===== */
+  .hm-gf, .hm-gf *, .hm-gf *::before, .hm-gf *::after { box-sizing: border-box; }
+  .hm-gf :where(h2, h3, p, span, strong, em, a, img, svg, ul, li, div, details, summary) {
+    margin: 0; padding: 0; border: 0; text-transform: none; letter-spacing: normal;
+    font-family: inherit; line-height: inherit; box-shadow: none; background: none; color: inherit; list-style: none;
+  }
+  .hm-gf :where(img, svg) { display: block; max-width: 100%; border-radius: 0; }
+  .hm-gf summary::-webkit-details-marker { display: none; }
+
+  .hm-gf { font-family: var(--gf-font); font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; overflow-x: clip; }
+  .hm-gf__wrap { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+  @media (min-width: 750px) { .hm-gf__wrap { padding: 0 32px; } }
+
+  /* ===== Garantía ===== */
+  .hm-gf__g { background: var(--gf-g-bg); color: var(--gf-g-fg); padding-top: var(--gf-g-pt); }
+  .hm-gf__g-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; align-items: end; }
+  @media (min-width: 990px) { .hm-gf__g-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; } }
+  .hm-gf__g-text { display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 520px; margin: 0 auto; padding-bottom: var(--gf-g-pt); }
+  .hm-gf--no-img .hm-gf__g-grid { grid-template-columns: minmax(0, 1fr); }
+  .hm-gf__badge { position: relative; width: var(--gf-badge); color: #fff; }
+  .hm-gf__badge svg { width: 100%; height: auto; }
+  .hm-gf__badge-txt { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1; color: var(--gf-seal-fg); }
+  .hm-gf__badge-num { font-size: calc(var(--gf-badge) * .3); font-weight: 600; }
+  .hm-gf__badge-lbl { margin-top: 4px !important; font-size: calc(var(--gf-badge) * .13); font-weight: 500; letter-spacing: .04em !important; text-transform: uppercase !important; }
+  .hm-gf__eyebrow { margin-top: 16px !important; font-size: 14px; font-weight: 500; letter-spacing: .04em !important; text-transform: uppercase !important; color: var(--gf-accent); }
+  .hm-gf__g-title { margin-top: 8px !important; font-size: var(--gf-title-m); font-weight: 600; line-height: 1.25; }
+  .hm-gf__g-title em { font-style: normal; color: var(--gf-accent); }
+  @media (min-width: 750px) { .hm-gf__g-title { font-size: var(--gf-title-d); } }
+  .hm-gf__g-body { margin-top: 14px !important; font-size: 15px; line-height: 1.6; color: var(--gf-g-muted); }
+  .hm-gf__g-body p + p { margin-top: .6em; }
+  .hm-gf__btn {
+    display: flex; align-items: center; justify-content: center; width: 100%; min-height: 56px; margin-top: 22px !important; padding: 0 28px !important;
+    border-radius: var(--gf-btn-radius); background: var(--gf-btn-bg) !important; color: var(--gf-btn-fg) !important;
+    font-size: 16px; font-weight: 600; text-decoration: none; transition: filter .2s;
+  }
+  .hm-gf--upper .hm-gf__btn { text-transform: uppercase !important; letter-spacing: .04em !important; }
+  .hm-gf__btn:hover { filter: brightness(1.1); }
+
+  .hm-gf__g-media { position: relative; display: flex; justify-content: center; align-items: flex-end; min-height: 120px; }
+  .hm-gf__person { width: 100%; max-width: var(--gf-img-w); }
+  .hm-gf__person img { width: 100%; height: auto; }
+  .hm-gf__seal { position: absolute; left: var(--gf-seal-x); top: 6%; width: var(--gf-seal); color: var(--gf-seal-fg); filter: drop-shadow(0 6px 12px rgba(0, 0, 0, .18)); }
+  .hm-gf__seal svg { width: 100%; height: auto; }
+  @media (max-width: 989px) {
+    .hm-gf--m-arriba .hm-gf__g-media { order: -1; }
+    .hm-gf__g-text { padding-bottom: 8px; }
+    .hm-gf--m-abajo .hm-gf__g-text { padding-bottom: 0; }
+    .hm-gf__seal { --gf-seal: 92px; left: 4%; }
+    .hm-gf__person { max-width: min(var(--gf-img-w), 78%); margin-left: auto; margin-right: auto; }
+  }
+
+  /* ===== FAQ ===== */
+  .hm-gf__f { background: var(--gf-f-bg); color: var(--gf-f-fg); padding: var(--gf-f-pt) 0 var(--gf-f-pb); }
+  .hm-gf__f-title { text-align: center; font-size: var(--gf-title-m); font-weight: 600; line-height: 1.25; margin-bottom: 28px !important; }
+  .hm-gf__f-title em { font-style: normal; color: var(--gf-f-hl); }
+  @media (min-width: 750px) { .hm-gf__f-title { font-size: var(--gf-title-d); margin-bottom: 36px !important; } }
+  .hm-gf__list { display: grid; gap: 10px; max-width: var(--gf-f-w); margin: 0 auto; }
+  .hm-gf__q { border-radius: var(--gf-radius); background: var(--gf-q-bg); color: var(--gf-q-fg); overflow: hidden; }
+  .hm-gf__q summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 18px; cursor: pointer; font-size: 15px; font-weight: 500; line-height: 1.4; -webkit-tap-highlight-color: transparent; }
+  @media (min-width: 750px) { .hm-gf__q summary { padding: 18px 22px; font-size: 16px; } }
+  .hm-gf__plus { position: relative; flex: none; width: 14px; height: 14px; color: var(--gf-q-icon); transition: transform .25s ease; }
+  .hm-gf__plus::before, .hm-gf__plus::after { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 2px; margin-top: -1px; background: currentColor; border-radius: 2px; }
+  .hm-gf__plus::after { transform: rotate(90deg); transition: transform .25s ease; }
+  .hm-gf__q[open] .hm-gf__plus::after { transform: rotate(0deg); }
+  .hm-gf__a { padding: 0 18px 18px !important; font-size: 14.5px; line-height: 1.65; color: var(--gf-q-muted); }
+  @media (min-width: 750px) { .hm-gf__a { padding: 0 22px 20px !important; font-size: 15px; } }
+  .hm-gf__a p + p, .hm-gf__a ul + p, .hm-gf__a p + ul { margin-top: .6em; }
+  .hm-gf__a ul { list-style: disc !important; padding-left: 1.2em !important; }
+  .hm-gf__a li { list-style: disc !important; }
+  .hm-gf__a a { color: var(--gf-accent); text-decoration: underline; }
+  .hm-gf__q[open] .hm-gf__a { animation: hm-gf-in .25s ease; }
+  @keyframes hm-gf-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+</style>
+
+{%- capture seal_wavy -%}
+  <svg viewBox="0 0 100 100" aria-hidden="true"><path fill="{{ seal_bg }}" d="M93.00 50.00 A7.20 7.20 0 0 1 89.73 66.46 A7.20 7.20 0 0 1 80.41 80.41 A7.20 7.20 0 0 1 66.46 89.73 A7.20 7.20 0 0 1 50.00 93.00 A7.20 7.20 0 0 1 33.54 89.73 A7.20 7.20 0 0 1 19.59 80.41 A7.20 7.20 0 0 1 10.27 66.46 A7.20 7.20 0 0 1 7.00 50.00 A7.20 7.20 0 0 1 10.27 33.54 A7.20 7.20 0 0 1 19.59 19.59 A7.20 7.20 0 0 1 33.54 10.27 A7.20 7.20 0 0 1 50.00 7.00 A7.20 7.20 0 0 1 66.46 10.27 A7.20 7.20 0 0 1 80.41 19.59 A7.20 7.20 0 0 1 89.73 33.54 A7.20 7.20 0 0 1 93.00 50.00 Z"/></svg>
+{%- endcapture -%}
+
+{%- assign has_img = false -%}
+{%- if s.imagen != blank -%}{%- assign has_img = true -%}{%- endif -%}
+
+<section
+  id="hm-gf-{{ section.id }}"
+  class="hm-gf hm-gf--m-{{ s.mobile_imagen }}{% unless has_img %} hm-gf--no-img{% endunless %}"
+  style="
+    --gf-font: {{ hm_font_stack }};
+    --gf-accent: {{ acc }};
+    --gf-seal-fg: {{ s.sello_texto }};
+    --gf-g-bg: {{ s.g_fondo }};
+    --gf-g-fg: {{ s.g_texto }};
+    --gf-g-muted: {{ s.g_texto | color_modify: 'alpha', 0.78 }};
+    --gf-g-pt: {{ s.g_espacio }}px;
+    --gf-btn-bg: {{ s.color_boton | default: acc }};
+    --gf-btn-fg: {{ s.color_boton_texto }};
+    --gf-btn-radius: {{ s.redondeo }}px;
+    --gf-badge: {{ s.sello_tamano }}px;
+    --gf-seal: {{ s.sello_foto_tamano }}px;
+    --gf-seal-x: 8%;
+    --gf-img-w: {{ s.imagen_ancho }}px;
+    --gf-f-bg: {{ s.f_fondo }};
+    --gf-f-fg: {{ s.f_texto }};
+    --gf-f-hl: {{ s.f_resaltado }};
+    --gf-q-bg: {{ s.q_fondo }};
+    --gf-q-fg: {{ s.q_texto }};
+    --gf-q-muted: {{ s.q_texto | color_modify: 'alpha', 0.75 }};
+    --gf-q-icon: {{ acc }};
+    --gf-f-w: 1100px;
+    --gf-f-pt: {{ s.f_espacio }}px;
+    --gf-f-pb: {{ s.f_espacio }}px;
+    --gf-radius: {{ s.redondeo }}px;
+    --gf-title-d: {{ s.titulo_desktop }}px;
+    --gf-title-m: {{ s.titulo_mobile }}px;
+  "
+>
+  {%- if s.mostrar_garantia -%}
+    <div class="hm-gf__g">
+      <div class="hm-gf__wrap">
+        <div class="hm-gf__g-grid">
+          <div class="hm-gf__g-text">
+            {%- if s.mostrar_sello -%}
+              <div class="hm-gf__badge" role="img" aria-label="{{ s.dias }} {{ s.dias_texto | escape }}">
+                {{ seal_wavy }}
+                <span class="hm-gf__badge-txt"><span class="hm-gf__badge-num">{{ s.dias }}</span><span class="hm-gf__badge-lbl">{{ s.dias_texto }}</span></span>
+              </div>
+            {%- endif -%}
+            {%- if s.eyebrow != blank -%}<p class="hm-gf__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+            {%- if s.g_titulo != blank -%}<h2 class="hm-gf__g-title">{{ s.g_titulo }}</h2>{%- endif -%}
+            {%- if s.g_texto_cuerpo != blank -%}<div class="hm-gf__g-body">{{ s.g_texto_cuerpo }}</div>{%- endif -%}
+            {%- if s.boton_texto != blank -%}<a class="hm-gf__btn" href="{{ s.boton_link | default: '#hm-comprar' }}">{{ s.boton_texto }}</a>{%- endif -%}
+          </div>
+
+          {%- if has_img -%}
+            <div class="hm-gf__g-media">
+              <div class="hm-gf__person">
+                {{ s.imagen | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '400, 600, 800, 1000', sizes: '(min-width: 990px) 40vw, 80vw', alt: 'Garantía de satisfacción' }}
+              </div>
+              {%- if s.mostrar_sello_foto -%}
+                <div class="hm-gf__seal" role="img" aria-label="{{ s.sello_arriba | escape }} {{ s.dias }} {{ s.dias_texto | escape }}">
+                  <svg viewBox="0 0 120 140">
+                    <defs>
+                      <path id="hm-gf-top-{{ section.id }}" d="M22 62 A38 38 0 0 1 98 62"/>
+                      <path id="hm-gf-bot-{{ section.id }}" d="M20 86 A40 40 0 0 0 100 86"/>
+                    </defs>
+                    <path d="M60 4 C 90 4, 112 14, 112 30 V 92 C 112 116, 88 132, 60 138 C 32 132, 8 116, 8 92 V 30 C 8 14, 30 4, 60 4 Z" fill="{{ seal_bg }}"/>
+                    <path d="M60 11 C 86 11, 105 20, 105 33 V 91 C 105 111, 85 125, 60 131 C 35 125, 15 111, 15 91 V 33 C 15 20, 34 11, 60 11 Z" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="1.5"/>
+                    <text fill="currentColor" font-family="Arial, sans-serif" font-size="10" font-weight="700" letter-spacing="1.2" text-anchor="middle"><textPath href="#hm-gf-top-{{ section.id }}" startOffset="50%">{{ s.sello_arriba | upcase | escape }}</textPath></text>
+                    <text x="60" y="78" fill="currentColor" font-family="Arial, sans-serif" font-size="30" font-weight="800" text-anchor="middle">{{ s.dias }}</text>
+                    <text x="60" y="96" fill="currentColor" font-family="Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="1" text-anchor="middle">{{ s.dias_texto | upcase | escape }}</text>
+                    <text fill="currentColor" font-family="Arial, sans-serif" font-size="9" font-weight="700" letter-spacing="1.2" text-anchor="middle"><textPath href="#hm-gf-bot-{{ section.id }}" startOffset="50%">{{ s.sello_abajo | upcase | escape }}</textPath></text>
+                  </svg>
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- if s.mostrar_faq -%}
+    <div class="hm-gf__f" id="hm-faq">
+      <div class="hm-gf__wrap">
+        {%- if s.f_titulo != blank -%}<h2 class="hm-gf__f-title">{{ s.f_titulo }}</h2>{%- endif -%}
+        <div class="hm-gf__list" data-hm-gf-list data-single="{{ s.una_abierta }}">
+          {%- for block in section.blocks -%}
+            <details class="hm-gf__q" {% if block.settings.abierta %}open{% endif %} {{ block.shopify_attributes }}>
+              <summary><span>{{ block.settings.pregunta }}</span><span class="hm-gf__plus" aria-hidden="true"></span></summary>
+              <div class="hm-gf__a">{{ block.settings.respuesta }}</div>
+            </details>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+
+    {%- if s.faq_seo and section.blocks.size > 0 -%}
+      <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            {%- for block in section.blocks -%}
+              {
+                "@type": "Question",
+                "name": {{ block.settings.pregunta | strip_html | json }},
+                "acceptedAnswer": { "@type": "Answer", "text": {{ block.settings.respuesta | strip_html | json }} }
+              }{% unless forloop.last %},{% endunless %}
+            {%- endfor -%}
+          ]
+        }
+      </script>
+    {%- endif -%}
+  {%- endif -%}
+</section>
+
+<script>
+  (function () {
+    var list = document.querySelector('#hm-gf-{{ section.id }} [data-hm-gf-list]');
+    if (!list || list.dataset.ready) return;
+    list.dataset.ready = '1';
+    if (list.dataset.single !== 'true') return;
+    /* Solo una pregunta abierta a la vez */
+    list.addEventListener('toggle', function (e) {
+      var d = e.target;
+      if (!d.open) return;
+      list.querySelectorAll('details[open]').forEach(function (o) { if (o !== d) o.open = false; });
+    }, true);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "HM · Garantía + FAQ",
+  "tag": "div",
+  "class": "hm-section-gf",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Garantía"
+    },
+    {
+      "type": "checkbox",
+      "id": "mostrar_garantia",
+      "label": "Mostrar garantía",
+      "default": true
+    },
+    {
+      "type": "number",
+      "id": "dias",
+      "label": "Días de garantía",
+      "default": 30
+    },
+    {
+      "type": "text",
+      "id": "dias_texto",
+      "label": "Texto debajo del número",
+      "default": "días"
+    },
+    {
+      "type": "checkbox",
+      "id": "mostrar_sello",
+      "label": "Mostrar sello arriba del título",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Texto chico",
+      "default": "Sentí la diferencia"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "g_titulo",
+      "label": "Título",
+      "default": "Probalo 30 días <em>sin riesgo</em>"
+    },
+    {
+      "type": "richtext",
+      "id": "g_texto_cuerpo",
+      "label": "Texto",
+      "default": "<p>Te damos 30 días de garantía de satisfacción. Si HAIR no te convence, escribinos y te devolvemos el dinero. Sin vueltas ni preguntas incómodas.</p>"
+    },
+    {
+      "type": "text",
+      "id": "boton_texto",
+      "label": "Texto del botón",
+      "default": "Probalo hoy sin riesgo"
+    },
+    {
+      "type": "text",
+      "id": "boton_link",
+      "label": "Link del botón",
+      "default": "#hm-comprar"
+    },
+    {
+      "type": "image_picker",
+      "id": "imagen",
+      "label": "Foto (derecha)",
+      "info": "Ideal: PNG recortado de una persona sosteniendo la cápsula o el frasco."
+    },
+    {
+      "type": "checkbox",
+      "id": "mostrar_sello_foto",
+      "label": "Mostrar sello sobre la foto",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "sello_arriba",
+      "label": "Texto curvo de arriba del sello",
+      "default": "Garantía de"
+    },
+    {
+      "type": "text",
+      "id": "sello_abajo",
+      "label": "Texto curvo de abajo del sello",
+      "default": "Satisfacción"
+    },
+    {
+      "type": "select",
+      "id": "mobile_imagen",
+      "label": "Foto en celular",
+      "options": [
+        {
+          "value": "abajo",
+          "label": "Debajo del texto"
+        },
+        {
+          "value": "arriba",
+          "label": "Arriba del texto"
+        }
+      ],
+      "default": "abajo"
+    },
+    {
+      "type": "header",
+      "content": "Preguntas frecuentes"
+    },
+    {
+      "type": "checkbox",
+      "id": "mostrar_faq",
+      "label": "Mostrar preguntas frecuentes",
+      "default": true
+    },
+    {
+      "type": "inline_richtext",
+      "id": "f_titulo",
+      "label": "Título",
+      "default": "Preguntas frecuentes"
+    },
+    {
+      "type": "checkbox",
+      "id": "una_abierta",
+      "label": "Solo una pregunta abierta a la vez",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "faq_seo",
+      "label": "Mostrar las preguntas en Google (SEO)",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Diseño"
+    },
+    {
+      "type": "font_picker",
+      "id": "fuente",
+      "label": "Tipografía",
+      "default": "poppins_n4"
+    },
+    {
+      "type": "color",
+      "id": "color_acento",
+      "label": "Color de marca",
+      "default": "#6b3fc0"
+    },
+    {
+      "type": "color",
+      "id": "sello_color",
+      "label": "Color de los sellos (opcional)",
+      "info": "Vacío = color de marca."
+    },
+    {
+      "type": "color",
+      "id": "sello_texto",
+      "label": "Texto de los sellos",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "g_fondo",
+      "label": "Fondo garantía",
+      "default": "#f7f3fd"
+    },
+    {
+      "type": "color",
+      "id": "g_texto",
+      "label": "Texto garantía",
+      "default": "#121116"
+    },
+    {
+      "type": "color",
+      "id": "color_boton",
+      "label": "Fondo del botón (opcional)"
+    },
+    {
+      "type": "color",
+      "id": "color_boton_texto",
+      "label": "Texto del botón",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "f_fondo",
+      "label": "Fondo preguntas",
+      "default": "#16101f"
+    },
+    {
+      "type": "color",
+      "id": "f_texto",
+      "label": "Título de preguntas",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "f_resaltado",
+      "label": "Resaltado del título (cursiva)",
+      "default": "#c9b2ff"
+    },
+    {
+      "type": "color",
+      "id": "q_fondo",
+      "label": "Fondo de cada pregunta",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "q_texto",
+      "label": "Texto de cada pregunta",
+      "default": "#121116"
+    },
+    {
+      "type": "range",
+      "id": "titulo_desktop",
+      "label": "Tamaño de títulos en PC",
+      "min": 20,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "titulo_mobile",
+      "label": "Tamaño de títulos en celular",
+      "min": 18,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "sello_tamano",
+      "label": "Tamaño del sello",
+      "min": 60,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 96
+    },
+    {
+      "type": "range",
+      "id": "sello_foto_tamano",
+      "label": "Tamaño del sello sobre la foto",
+      "min": 60,
+      "max": 180,
+      "step": 4,
+      "unit": "px",
+      "default": 112
+    },
+    {
+      "type": "range",
+      "id": "imagen_ancho",
+      "label": "Ancho máximo de la foto",
+      "min": 200,
+      "max": 600,
+      "step": 10,
+      "unit": "px",
+      "default": 380
+    },
+    {
+      "type": "range",
+      "id": "redondeo",
+      "label": "Redondeo de preguntas y botón",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "g_espacio",
+      "label": "Espacio arriba de la garantía",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "f_espacio",
+      "label": "Espacio de las preguntas",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    }
+  ],
+  "blocks": [
+    {
+      "type": "pregunta",
+      "name": "Pregunta",
+      "settings": [
+        {
+          "type": "text",
+          "id": "pregunta",
+          "label": "Pregunta",
+          "default": "¿Pregunta?"
+        },
+        {
+          "type": "richtext",
+          "id": "respuesta",
+          "label": "Respuesta",
+          "default": "<p>Respuesta.</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "abierta",
+          "label": "Abierta al entrar",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "HM · Garantía + FAQ",
+      "blocks": [
+        {
+          "type": "pregunta",
+          "settings": {
+            "pregunta": "¿Qué es HAIR?",
+            "respuesta": "<p>HAIR es un bloqueador de DHT en cápsulas, formulado para hombres. Combina biotina, zinc, selenio, L-cistina, colágeno tipo II y vitaminas C, B5 y B6 para frenar la caída desde la raíz y ayudar a que el pelo crezca más fuerte.</p>"
+          }
+        },
+        {
+          "type": "pregunta",
+          "settings": {
+            "pregunta": "¿Es seguro tomar HAIR?",
+            "respuesta": "<p>HAIR es un suplemento dietario a base de vitaminas, minerales, aminoácidos y colágeno, libre de gluten. Si tenés alguna condición médica, tomás medicación o tenés dudas, consultá a tu médico antes de empezar.</p>"
+          }
+        },
+        {
+          "type": "pregunta",
+          "settings": {
+            "pregunta": "¿Cuánto tiempo tarda en verse resultados?",
+            "respuesta": "<p>El pelo crece lento. En general se nota menos caída en las primeras semanas, y más cuerpo y densidad a partir del segundo o tercer mes de uso constante. Por eso recomendamos un tratamiento de 3 a 6 meses.</p>"
+          }
+        },
+        {
+          "type": "pregunta",
+          "settings": {
+            "pregunta": "¿Sirve para cualquier tipo de pelo?",
+            "respuesta": "<p>Sí. HAIR está pensado para hombres con cualquier tipo de pelo que notan caída, pelo más fino o entradas.</p>"
+          }
+        },
+        {
+          "type": "pregunta",
+          "settings": {
+            "pregunta": "¿Cómo se toma?",
+            "respuesta": "<p>1 cápsula por día con agua, preferentemente con una comida. Cada frasco trae 60 cápsulas: te dura 60 días.</p>"
+          }
+        },
+        {
+          "type": "pregunta",
+          "settings": {
+            "pregunta": "¿Cuánto tarda el envío?",
+            "respuesta": "<p>Despachamos en 24 hs hábiles y te pasamos el seguimiento. Según tu zona, llega en 2 a 6 días hábiles. Envío gratis desde 2 frascos.</p>"
+          }
+        },
+        {
+          "type": "pregunta",
+          "settings": {
+            "pregunta": "¿Tienen garantía?",
+            "respuesta": "<p>Sí. Tenés 30 días de garantía de satisfacción: si HAIR no te convence, escribinos y te devolvemos el dinero.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
