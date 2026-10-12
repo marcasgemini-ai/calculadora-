@@ -94,3 +94,12 @@ No hace falta "precio de comparación": el tachado y el "Ahorrás $X" se calcula
 1. **Editar código → Secciones → Agregar una nueva sección** → nombre: `hm-timeline` → borrá todo, pegá el código y **Guardar**.
 2. **Personalizar → plantilla `hair` → Agregar sección → HM · Línea de tiempo**.
 3. Cada **Etapa** es un bloque: texto del botón, altura en el gráfico, texto del sello y el texto que aparece abajo. El gráfico se arma solo.
+
+## Oferta simple (Liquid personalizado) → `custom-liquid/hm-oferta-hair.liquid`
+
+Alternativa rápida al bloque 1: selector de packs + upsell Multimagnesio dentro de la página de producto del theme.
+
+1. **Personalizar → Producto → en la sección del producto: Agregar bloque → Liquid personalizado** → pegá todo el código → **Guardar**.
+2. Arriba del código está el handle del upsell: `multimagnesio-oferta-upsell`. Cambialo si tu producto tiene otro handle. Precio y precio tachado del upsell salen solos del producto.
+3. Los packs suman 1, 2, 3 o 6 unidades del producto. Para que el carrito cobre $80.800 / $99.700 / $121.500, creá un **descuento automático por cantidad** en Shopify (o ajustá los precios del código a tu descuento real).
+4. Agregar al carrito abre el carrito lateral (Dawn y temas parecidos); si el theme no tiene, lleva a /cart.

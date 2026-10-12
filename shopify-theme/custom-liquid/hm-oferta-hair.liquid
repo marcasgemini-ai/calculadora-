@@ -1,0 +1,292 @@
+{%- comment -%}
+  DR.MEN · Selector de packs HAIR + upsell MULTIMAGNESIO
+  Pegar en: Personalizar > Producto > Agregar bloque > Liquid personalizado
+  - Packs: suma N unidades del producto (1, 2, 3 o 6). Los precios se muestran como están escritos acá:
+    el descuento real del carrito lo tiene que aplicar Shopify (descuento automático por cantidad).
+  - Upsell: producto MULTIMAGNESIO (handle abajo). Precio y precio tachado salen del producto en Shopify.
+{%- endcomment -%}
+{%- assign hm_upsell_handle = 'multimagnesio-oferta-upsell' -%}
+{%- assign hm_upsell_texto = 'Sumá Multimagnesio' -%}
+{%- assign hm_variant = product.selected_or_first_available_variant -%}
+{%- assign hm_up = all_products[hm_upsell_handle] -%}
+{%- assign hm_up_variant = hm_up.selected_or_first_available_variant -%}
+{%- liquid
+  assign hm_up_price = 0
+  assign hm_up_save = 0
+  assign hm_up_pct = 0
+  if hm_up_variant
+    assign hm_up_price = hm_up_variant.price | divided_by: 100
+    if hm_up_variant.compare_at_price > hm_up_variant.price
+      assign hm_up_save = hm_up_variant.compare_at_price | minus: hm_up_variant.price | divided_by: 100
+      assign hm_up_pct = hm_up_variant.compare_at_price | minus: hm_up_variant.price | times: 100 | divided_by: hm_up_variant.compare_at_price
+    endif
+  endif
+-%}
+
+<div class="hm-of" id="hm-offer" data-variant="{{ hm_variant.id }}" data-cart-add="{{ routes.cart_add_url }}.js" data-cart="{{ routes.cart_url }}" data-root="{{ routes.root_url }}" data-upsell="{{ hm_upsell_handle }}">
+  <div class="hm-of-head"><span>Envío a todo el país + 3 cuotas sin interés</span></div>
+
+  <label class="hm-of-bar">
+    <input type="radio" name="hm-of-pack" value="1" data-save="0" data-total="57900">
+    <span class="hm-of-radio"></span>
+    <span class="hm-of-info">
+      <span class="hm-of-title">1 frasco</span>
+      <span class="hm-of-sub">60 días de tratamiento</span>
+    </span>
+    <span class="hm-of-prices">
+      <span class="hm-of-price">$57.900</span>
+    </span>
+  </label>
+
+  <label class="hm-of-bar">
+    <span class="hm-of-badge">Más comprado</span>
+    <input type="radio" name="hm-of-pack" value="2" data-save="35000" data-total="80800">
+    <span class="hm-of-radio"></span>
+    <span class="hm-of-info">
+      <span class="hm-of-title">2 frascos <span class="hm-of-tag">30% OFF</span></span>
+      <span class="hm-of-sub">120 días · envío gratis</span>
+    </span>
+    <span class="hm-of-prices">
+      <span class="hm-of-price">$80.800</span>
+      <s class="hm-of-compare">$115.800</s>
+    </span>
+  </label>
+
+  <label class="hm-of-bar is-active">
+    <span class="hm-of-badge hm-of-badge--hot">Tratamiento recomendado</span>
+    <input type="radio" name="hm-of-pack" value="3" data-save="74000" data-total="99700" checked>
+    <span class="hm-of-radio"></span>
+    <span class="hm-of-info">
+      <span class="hm-of-title">3 frascos <span class="hm-of-tag">43% OFF</span></span>
+      <span class="hm-of-sub">180 días · envío gratis</span>
+    </span>
+    <span class="hm-of-prices">
+      <span class="hm-of-price">$99.700</span>
+      <s class="hm-of-compare">$173.700</s>
+    </span>
+  </label>
+
+  <label class="hm-of-bar">
+    <span class="hm-of-badge">🔥 Mejor precio</span>
+    <input type="radio" name="hm-of-pack" value="6" data-save="225900" data-total="121500">
+    <span class="hm-of-radio"></span>
+    <span class="hm-of-info">
+      <span class="hm-of-title">6 frascos <span class="hm-of-tag">65% OFF</span></span>
+      <span class="hm-of-sub">12 meses · envío gratis</span>
+    </span>
+    <span class="hm-of-prices">
+      <span class="hm-of-price">$121.500</span>
+      <s class="hm-of-compare">$347.400</s>
+    </span>
+  </label>
+
+  <label class="hm-of-upsell"{% unless hm_up_variant.available %} hidden{% endunless %}>
+    <input type="checkbox" id="hm-of-upsell" value="{% if hm_up_variant.available %}{{ hm_up_variant.id }}{% endif %}" data-save="{{ hm_up_save }}" data-total="{{ hm_up_price }}">
+    <span class="hm-of-check"></span>
+    {%- if hm_up.featured_image -%}
+      <span class="hm-of-up-img">{{ hm_up.featured_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: hm_up.title }}</span>
+    {%- endif -%}
+    <span class="hm-of-up-text">{{ hm_upsell_texto }}{% if hm_up_pct > 0 %} <b>al {{ hm_up_pct }}% OFF</b>{% endif %}</span>
+    <span class="hm-of-up-prices">
+      <span class="hm-of-up-price" data-hm-up-price>{% if hm_up_variant %}{{ hm_up_variant.price | money_without_trailing_zeros }}{% endif %}</span>
+      {%- if hm_up_save > 0 -%}<s class="hm-of-up-compare">{{ hm_up_variant.compare_at_price | money_without_trailing_zeros }}</s>{%- endif -%}
+    </span>
+  </label>
+
+  <div class="hm-of-save">→ Estás ahorrando <strong data-hm-save>$74.000</strong> en este pedido</div>
+
+  <button type="button" class="hm-of-btn"><span data-hm-btn-label>Agregar al carrito</span><span class="hm-of-btn-total" data-hm-total></span></button>
+  <p class="hm-of-msg" data-hm-msg role="alert" hidden></p>
+</div>
+
+<style>
+  .hm-of{--of-ink:#121116;--of-accent:#6b3fc0;--of-soft:#efe8fb;--of-cream:#f7f3fd;--of-line:#e4dcef;
+    width:100%;max-width:100%;margin:14px 0;padding:0;background:transparent;overflow:visible;
+    color:var(--of-ink);font-family:inherit;line-height:1.3;letter-spacing:0;box-sizing:border-box}
+  .hm-of *,.hm-of *:before,.hm-of *:after{box-sizing:border-box;letter-spacing:0}
+  .hm-of .hm-of-head{display:flex;align-items:center;gap:10px;margin:0 0 16px;font-size:14px;font-weight:600;white-space:nowrap}
+  .hm-of .hm-of-head:before,.hm-of .hm-of-head:after{content:"";flex:1;height:1px;background:var(--of-line)}
+  .hm-of .hm-of-bar{position:relative;display:flex;align-items:center;gap:12px;width:100%;margin:0 0 14px;padding:16px 18px;
+    background:#fff;border:1.5px solid var(--of-line);border-radius:12px;cursor:pointer;
+    transition:border-color .2s,box-shadow .2s;-webkit-tap-highlight-color:transparent;text-transform:none;font-size:inherit}
+  .hm-of .hm-of-bar.is-active{border:2px solid var(--of-ink);box-shadow:0 2px 12px rgba(18,17,22,.12)}
+  .hm-of input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+  .hm-of .hm-of-radio{flex:0 0 20px;width:20px;height:20px;border:2px solid #b3abc0;border-radius:50%;position:relative}
+  .hm-of .hm-of-bar.is-active .hm-of-radio{border-color:var(--of-ink)}
+  .hm-of .hm-of-bar.is-active .hm-of-radio:after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--of-ink)}
+  .hm-of .hm-of-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+  .hm-of .hm-of-title{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-size:17px;font-weight:700;color:var(--of-ink)}
+  .hm-of .hm-of-sub{font-size:13px;opacity:.72;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--of-ink)}
+  .hm-of .hm-of-tag{background:var(--of-soft);color:var(--of-accent);font-size:12px;font-weight:700;padding:2px 8px;border-radius:6px;white-space:nowrap}
+  .hm-of .hm-of-prices{display:flex;flex-direction:column;align-items:flex-end;white-space:nowrap}
+  .hm-of .hm-of-price{font-size:18px;font-weight:700;color:var(--of-ink)}
+  .hm-of .hm-of-compare{font-size:13px;opacity:.5;color:var(--of-ink)}
+  .hm-of .hm-of-badge{position:absolute;top:-11px;right:14px;background:var(--of-ink);color:#fff;font-size:12px;font-weight:700;
+    padding:3px 10px;border-radius:6px;line-height:1.3}
+  .hm-of .hm-of-badge--hot{background:var(--of-accent)}
+  .hm-of .hm-of-upsell[hidden],.hm-of .hm-of-save[hidden],.hm-of .hm-of-msg[hidden]{display:none}
+  .hm-of .hm-of-upsell{position:relative;display:flex;align-items:center;gap:10px;width:100%;margin:0 0 12px;padding:12px 18px;
+    background:var(--of-cream);border:1.5px dashed #c9b8e8;border-radius:12px;cursor:pointer;font-size:14px;text-transform:none}
+  .hm-of .hm-of-check{flex:0 0 18px;width:18px;height:18px;border:2px solid var(--of-ink);border-radius:4px;position:relative;background:#fff}
+  .hm-of .hm-of-upsell input:checked + .hm-of-check{background:var(--of-ink)}
+  .hm-of .hm-of-upsell input:checked + .hm-of-check:after{content:"";position:absolute;left:4px;top:0;width:5px;height:10px;
+    border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+  .hm-of .hm-of-up-img{flex:0 0 40px;width:40px;height:40px;border-radius:8px;overflow:hidden;background:#fff}
+  .hm-of .hm-of-up-img img{display:block;width:100%;height:100%;object-fit:cover;border-radius:0;margin:0}
+  .hm-of .hm-of-up-text{flex:1;min-width:0;font-weight:500;color:var(--of-ink)}
+  .hm-of .hm-of-up-text b{color:var(--of-accent);font-weight:700}
+  .hm-of .hm-of-up-prices{display:flex;flex-direction:column;align-items:flex-end;white-space:nowrap}
+  .hm-of .hm-of-up-price{font-weight:700;color:var(--of-ink)}
+  .hm-of .hm-of-up-compare{font-size:12px;opacity:.5;color:var(--of-ink)}
+  .hm-of .hm-of-save{margin:0 0 12px;padding:10px 14px;border:1px solid var(--of-line);border-radius:10px;font-size:14px;text-align:center;color:var(--of-ink)}
+  .hm-of .hm-of-save strong{color:var(--of-accent)}
+  .hm-of .hm-of-btn{display:block;width:100%;min-height:54px;margin:0;padding:16px;background:var(--of-ink);color:#fff;
+    border:0;border-radius:10px;font-family:inherit;font-size:17px;font-weight:700;text-transform:none;letter-spacing:0;line-height:1.2;
+    cursor:pointer;-webkit-appearance:none;appearance:none;transition:opacity .2s;box-shadow:none}
+  .hm-of .hm-of-btn:hover{opacity:.9}
+  .hm-of .hm-of-btn:disabled{opacity:.6;cursor:wait}
+  .hm-of .hm-of-btn-total{font-weight:600;opacity:.85}
+  .hm-of .hm-of-btn-total:not(:empty):before{content:" · "}
+  .hm-of .hm-of-msg{margin:8px 0 0;font-size:13px;color:#b42318;text-align:center}
+  @media (max-width:749px){
+    .hm-of .hm-of-bar{padding:14px 14px;gap:10px}
+    .hm-of .hm-of-title{font-size:16px;gap:6px}
+    .hm-of .hm-of-sub{font-size:12px}
+    .hm-of .hm-of-price{font-size:17px}
+    .hm-of .hm-of-compare{font-size:12px}
+    .hm-of .hm-of-upsell{padding:12px 14px;font-size:13px}
+    .hm-of .hm-of-save{font-size:13px;padding:9px 10px}
+  }
+</style>
+
+<script>
+(function(){
+  var root = document.getElementById('hm-offer');
+  if (!root || root.dataset.ready) return;
+  root.dataset.ready = '1';
+
+  var up = document.getElementById('hm-of-upsell');
+  var btn = root.querySelector('.hm-of-btn');
+  var label = root.querySelector('[data-hm-btn-label]');
+  var totalEl = root.querySelector('[data-hm-total]');
+  var saveEl = root.querySelector('[data-hm-save]');
+  var msg = root.querySelector('[data-hm-msg]');
+  var base = (root.dataset.root || '/').replace(/\/$/, '');
+  var busy = false;
+  var fmt = function(n){ return '$' + String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); };
+
+  /* ---------- Precios, ahorro y total en el botón ---------- */
+  function update(){
+    var save = 0, total = 0;
+    root.querySelectorAll('.hm-of-bar').forEach(function(bar){
+      var input = bar.querySelector('input');
+      bar.classList.toggle('is-active', input.checked);
+      if (input.checked) { save += Number(input.dataset.save); total += Number(input.dataset.total); }
+    });
+    if (up && up.value && up.checked) { save += Number(up.dataset.save); total += Number(up.dataset.total); }
+    saveEl.textContent = fmt(save);
+    saveEl.parentNode.hidden = save <= 0;
+    totalEl.textContent = fmt(total);
+  }
+  root.addEventListener('change', update);
+  update();
+
+  /* ---------- Upsell MULTIMAGNESIO (respaldo si Liquid no lo encontró) ---------- */
+  if (up && !up.value) {
+    fetch(base + '/products/' + root.dataset.upsell + '.js')
+      .then(function(r){ if (!r.ok) throw new Error('Upsell no encontrado'); return r.json(); })
+      .then(function(prod){
+        var v = prod.variants.filter(function(x){ return x.available; })[0];
+        if (!v) return;
+        up.value = v.id;
+        up.dataset.total = Math.round(v.price / 100);
+        if (v.compare_at_price > v.price) up.dataset.save = Math.round((v.compare_at_price - v.price) / 100);
+        var p = root.querySelector('[data-hm-up-price]');
+        if (p && !p.textContent.trim()) p.textContent = fmt(v.price / 100);
+        up.closest('.hm-of-upsell').hidden = false;
+        update();
+      })
+      .catch(function(e){ console.warn('[HM offer]', e); });
+  }
+
+  /* ---------- Botón ---------- */
+  function setIdle(){
+    busy = false;
+    btn.disabled = false;
+    btn.classList.remove('is-done');
+    label.textContent = 'Agregar al carrito';
+    update();
+  }
+  function showError(text){
+    msg.textContent = text;
+    msg.hidden = false;
+    setTimeout(function(){ msg.hidden = true; }, 5000);
+  }
+  // Si vuelven con el botón "atrás" del navegador, el botón queda usable
+  window.addEventListener('pageshow', setIdle);
+
+  /* ---------- Carrito lateral (Dawn y temas basados en Dawn) ---------- */
+  function getDrawer(){
+    var d = document.querySelector('cart-drawer') || document.querySelector('cart-notification');
+    return d && typeof d.renderContents === 'function' ? d : null;
+  }
+
+  function openOtherDrawers(){
+    // Otros temas: eventos habituales para refrescar y abrir el carrito lateral
+    ['cart:refresh', 'cart:build', 'cart:open', 'theme:cart:reload', 'theme:cart:open', 'ajaxProduct:added', 'dispatch:cart-drawer:refresh', 'dispatch:cart-drawer:open']
+      .forEach(function(name){ document.dispatchEvent(new CustomEvent(name, { bubbles: true, detail: { open: true } })); });
+    var trigger = document.querySelector('[data-cart-drawer-toggle], [data-drawer-toggle="cart"], .js-drawer-open-cart, [data-action="open-cart"], #cart-icon-bubble, a.header__icon--cart');
+    if (trigger) { trigger.click(); return true; }
+    return false;
+  }
+
+  btn.addEventListener('click', function(){
+    if (busy) return;
+    var sel = root.querySelector('input[name="hm-of-pack"]:checked');
+    if (!sel) return;
+    busy = true;
+    btn.disabled = true;
+    msg.hidden = true;
+    label.textContent = 'Agregando...';
+    totalEl.textContent = '';
+
+    var items = [{ id: Number(root.dataset.variant), quantity: Number(sel.value) }];
+    if (up && up.value && up.checked) items.push({ id: Number(up.value), quantity: 1 });
+
+    var drawer = getDrawer();
+    var body = { items: items };
+    if (drawer && drawer.getSectionsToRender) {
+      body.sections = drawer.getSectionsToRender().map(function(s){ return s.id; });
+      body.sections_url = window.location.pathname;
+    }
+
+    fetch(root.dataset.cartAdd, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(body)
+    })
+    .then(function(r){
+      return r.json().then(function(data){
+        if (!r.ok || data.status) throw new Error();
+        return data;
+      });
+    })
+    .then(function(data){
+      label.textContent = '✓ Agregado';
+      btn.classList.add('is-done');
+      setTimeout(setIdle, 1800);
+
+      if (drawer && data.sections) {
+        drawer.classList.remove('is-empty');
+        drawer.renderContents(data);
+        return;
+      }
+      if (!openOtherDrawers()) window.location.href = root.dataset.cart;
+    })
+    .catch(function(){
+      setIdle();
+      showError('No pudimos agregar el producto. Probá de nuevo.');
+    });
+  });
+})();
+</script>
