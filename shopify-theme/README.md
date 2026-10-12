@@ -44,3 +44,9 @@ No hace falta "precio de comparación": el tachado y el "Ahorrás $X" se calcula
 1. **Editar código → Secciones → Agregar una nueva sección** → nombre: `hm-historias` → borrá todo, pegá el código y **Guardar**.
 2. **Personalizar → plantilla `hair` → Agregar sección → HM · Historias reales**.
 3. Bloques **Foto (cinta)**: fotos de clientes con el producto. Bloques **Reseña**: reseñas reales (puntaje, título, texto, nombre, foto, etiquetas).
+
+## Bloque 5 · Por qué elegirnos + Razones → `sections/hm-razones.liquid`
+
+1. **Editar código → Secciones → Agregar una nueva sección** → nombre: `hm-razones` → borrá todo, pegá el código y **Guardar**.
+2. **Personalizar → plantilla `hair` → Agregar sección → HM · Razones**.
+3. Bloques **Sello**: los sellos del banner. Bloques **Razón**: imagen, título y el texto que se despliega con el +.

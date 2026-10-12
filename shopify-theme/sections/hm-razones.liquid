@@ -1,0 +1,344 @@
+{%- comment -%}
+  HM · Bloque 5 — ¿Por qué elegirnos? (banner con checks y sellos) + 5 razones (tarjetas desplegables)
+  Sección autónoma: CSS e íconos incluidos. Todo editable desde el personalizador.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign acc = s.color_acento | default: '#6b3fc0'
+  assign hm_font = s.fuente
+  assign hm_font_stack = "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+  if hm_font != blank
+    assign hm_font_stack = hm_font.family | prepend: "'" | append: "', " | append: hm_font.fallback_families
+  endif
+  assign seal_count = 0
+  assign reason_count = 0
+  for block in section.blocks
+    if block.type == 'sello'
+      assign seal_count = seal_count | plus: 1
+    elsif block.type == 'razon'
+      assign reason_count = reason_count | plus: 1
+    endif
+  endfor
+-%}
+
+{%- if hm_font != blank -%}
+  <style>
+    {{ hm_font | font_face: font_display: 'swap' }}
+    {%- assign hm_f = hm_font | font_modify: 'weight', '500' -%}{%- if hm_f -%}{{ hm_f | font_face: font_display: 'swap' }}{%- endif -%}
+    {%- assign hm_f = hm_font | font_modify: 'weight', '600' -%}{%- if hm_f -%}{{ hm_f | font_face: font_display: 'swap' }}{%- endif -%}
+    {%- assign hm_f = hm_font | font_modify: 'weight', '700' -%}{%- if hm_f -%}{{ hm_f | font_face: font_display: 'swap' }}{%- endif -%}
+  </style>
+{%- endif -%}
+
+<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false"><defs><symbol id="hmi-check" viewBox="0 0 24 24"><path d="M4.5 12.5l5 5 10-11"/></symbol><symbol id="hmi-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M8 12.3l2.8 2.8L16.2 9.5"/></symbol><symbol id="hmi-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol><symbol id="hmi-x-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M9 9l6 6M15 9l-6 6"/></symbol><symbol id="hmi-truck" viewBox="0 0 24 24"><path d="M2.5 6.5h11v9h-11zM13.5 9.5h4l3 3v3h-7"/><circle cx="6.5" cy="17" r="1.8"/><circle cx="17" cy="17" r="1.8"/></symbol><symbol id="hmi-shield" viewBox="0 0 24 24"><path d="M12 2.8l7.5 3v5.6c0 4.6-3.2 8.3-7.5 9.8-4.3-1.5-7.5-5.2-7.5-9.8V5.8z"/><path d="M8.7 12l2.3 2.3 4.3-4.6"/></symbol><symbol id="hmi-card" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 9.5h19M6 15h4"/></symbol><symbol id="hmi-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M12 7v5.2l3.4 2"/></symbol><symbol id="hmi-leaf" viewBox="0 0 24 24"><path d="M5 19c0-8 5-13 15-14-1 10-6 15-14 15M5 19l7-7"/></symbol><symbol id="hmi-capsule" viewBox="0 0 24 24"><rect x="2.8" y="8.2" width="18.4" height="7.6" rx="3.8" transform="rotate(-35 12 12)"/><path d="M9.9 9.2l4.3 5.9"/></symbol><symbol id="hmi-flask" viewBox="0 0 24 24"><path d="M9.5 3h5M10.2 3v6.2L4.8 18.4A1.8 1.8 0 0 0 6.4 21h11.2a1.8 1.8 0 0 0 1.6-2.6L13.8 9.2V3M7.5 15h9"/></symbol><symbol id="hmi-gift" viewBox="0 0 24 24"><rect x="3.2" y="8.5" width="17.6" height="4" rx="1"/><path d="M4.8 12.5v8h14.4v-8M12 8.5v12M12 8.5S10.8 4 8.4 4a2.2 2.2 0 0 0 0 4.5M12 8.5S13.2 4 15.6 4a2.2 2.2 0 0 1 0 4.5"/></symbol><symbol id="hmi-lock" viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="10" rx="2.2"/><path d="M8 10.5V7.8a4 4 0 0 1 8 0v2.7"/></symbol><symbol id="hmi-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></symbol><symbol id="hmi-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol><symbol id="hmi-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol><symbol id="hmi-star" viewBox="0 0 24 24"><path d="M12 2.8l2.8 5.8 6.4.8-4.7 4.4 1.2 6.4L12 17l-5.7 3.2 1.2-6.4-4.7-4.4 6.4-.8z"/></symbol><symbol id="hmi-verified" viewBox="0 0 24 24"><path d="M12 2.5l2.3 1.7 2.8-.1.9 2.7 2.3 1.6-.9 2.7.9 2.7-2.3 1.6-.9 2.7-2.8-.1L12 21.5l-2.3-1.7-2.8.1-.9-2.7-2.3-1.6.9-2.7-.9-2.7 2.3-1.6.9-2.7 2.8.1z"/><path d="M8.8 12.2l2.2 2.2 4.2-4.4"/></symbol><symbol id="hmi-bolt" viewBox="0 0 24 24"><path d="M13 2.5L4.5 13.5H12l-1 8 8.5-11H12z"/></symbol><symbol id="hmi-heart" viewBox="0 0 24 24"><path d="M12 20.5s-8.5-5-8.5-11A4.8 4.8 0 0 1 12 6.6a4.8 4.8 0 0 1 8.5 2.9c0 6-8.5 11-8.5 11z"/></symbol><symbol id="hmi-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.1-5.8 6.5-5.8s5.9 2.2 6.5 5.8M16 4.8a3.5 3.5 0 0 1 0 6.6M18 14.6c2 .7 3.2 2.6 3.5 5.4"/></symbol><symbol id="hmi-medal" viewBox="0 0 24 24"><circle cx="12" cy="14.5" r="6"/><path d="M8.5 9.6L6 2.5h4l2 4.5 2-4.5h4l-2.5 7.1M12 12v5"/></symbol><symbol id="hmi-refresh" viewBox="0 0 24 24"><path d="M20 11.5A8 8 0 0 0 5.6 6.8L3.5 9M4 12.5a8 8 0 0 0 14.4 4.7l2.1-2.2M3.5 4v5h5M20.5 20v-5h-5"/></symbol><symbol id="hmi-dna" viewBox="0 0 24 24"><path d="M7 2.5c0 6 10 7 10 13s0 6 0 6M17 2.5c0 6-10 7-10 13v6M8 6h8M8 18h8M9.5 9.5h5M9.5 14.5h5"/></symbol><symbol id="hmi-sparkles" viewBox="0 0 24 24"><path d="M10 3l1.8 5.2L17 10l-5.2 1.8L10 17l-1.8-5.2L3 10l5.2-1.8zM18 14l.9 2.1 2.1.9-2.1.9L18 20l-.9-2.1-2.1-.9 2.1-.9z"/></symbol><symbol id="hmi-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2.2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol><symbol id="hmi-droplet" viewBox="0 0 24 24"><path d="M12 3s6.5 7 6.5 11.3a6.5 6.5 0 0 1-13 0C5.5 10 12 3 12 3z"/></symbol><symbol id="hmi-sound-off" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4zM16 9.5l5 5M21 9.5l-5 5"/></symbol><symbol id="hmi-sound-on" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4zM16 9a4.2 4.2 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></symbol><symbol id="hmi-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z" fill="currentColor"/></symbol><symbol id="hmi-hair" viewBox="0 0 24 24"><path d="M6 21c1-6 0-10-1-14M10 21c.5-6 0-11 2-17M14.5 21c-.5-5 .5-9 3.5-14M18.5 21c-.5-3 0-6 2-9"/></symbol><symbol id="hmi-stethoscope" viewBox="0 0 24 24"><path d="M5 3v5a5 5 0 0 0 10 0V3M10 13v2.5a5 5 0 0 0 10 0V13"/><circle cx="20" cy="11" r="2"/></symbol><symbol id="hmi-ban" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M5.5 5.5l13 13"/></symbol><symbol id="hmi-map-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.3-7-11.5a7 7 0 0 1 14 0C19 14.7 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></symbol><symbol id="hmi-percent" viewBox="0 0 24 24"><path d="M19 5L5 19"/><circle cx="7" cy="7" r="2.5"/><circle cx="17" cy="17" r="2.5"/></symbol><symbol id="hmi-box" viewBox="0 0 24 24"><path d="M3.5 7.5L12 3l8.5 4.5v9L12 21l-8.5-4.5zM3.5 7.5L12 12l8.5-4.5M12 12v9"/></symbol><symbol id="hmi-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></symbol><symbol id="hmi-moon" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></symbol><symbol id="hmi-trend-up" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8M15 7h6v6"/></symbol></defs></svg>
+
+<style>
+  /* ===== Reset: el theme no puede romper la sección ===== */
+  .hm-rz, .hm-rz *, .hm-rz *::before, .hm-rz *::after { box-sizing: border-box; }
+  .hm-rz :where(h2, h3, p, span, strong, em, a, img, svg, ul, li, div, details, summary) {
+    margin: 0; padding: 0; border: 0; text-transform: none; letter-spacing: normal;
+    font-family: inherit; line-height: inherit; box-shadow: none; background: none; color: inherit; list-style: none;
+  }
+  .hm-rz :where(img, svg) { display: block; max-width: 100%; border-radius: 0; }
+  .hm-rz summary::-webkit-details-marker { display: none; }
+
+  .hm-rz {
+    font-family: var(--rz-font); color: var(--rz-fg); background: var(--rz-bg);
+    font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; overflow-x: clip;
+  }
+  .hm-rz__wrap { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+  @media (min-width: 750px) { .hm-rz__wrap { padding: 0 32px; } }
+
+  /* ===== Banner ===== */
+  .hm-rz__banner-zone { background: var(--rz-banner-zone); padding: var(--rz-pt) 0 calc(var(--rz-pt) * .75); }
+  .hm-rz__banner {
+    position: relative; overflow: hidden; border-radius: var(--rz-radius); background: var(--rz-banner-bg); color: var(--rz-banner-fg);
+    padding: 32px 18px; text-align: center;
+  }
+  @media (min-width: 750px) { .hm-rz__banner { padding: 40px 40px 44px; } }
+  .hm-rz__banner-img { position: absolute; inset: 0; opacity: var(--rz-banner-img-op); }
+  .hm-rz__banner-img img { width: 100%; height: 100%; object-fit: cover; }
+  .hm-rz__banner-in { position: relative; }
+  .hm-rz__banner-title { font-size: var(--rz-banner-title-m); font-weight: 600; line-height: 1.25; }
+  @media (min-width: 750px) { .hm-rz__banner-title { font-size: var(--rz-banner-title-d); } }
+  .hm-rz__checks { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 22px; margin-top: 18px !important; }
+  .hm-rz__checks li { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; line-height: 1.3; opacity: .95; }
+  .hm-rz__checks svg { width: 16px; height: 16px; flex: none; }
+  @media (max-width: 749px) {
+    .hm-rz__checks { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 12px; text-align: left; }
+    .hm-rz__checks li { font-size: 13px; align-items: flex-start; }
+    .hm-rz__checks svg { margin-top: 1px; }
+  }
+  .hm-rz__seals { display: grid; grid-template-columns: repeat(var(--rz-seals), minmax(0, 120px)); justify-content: center; gap: 14px; margin-top: 24px; }
+  @media (max-width: 749px) { .hm-rz__seals { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; } }
+  .hm-rz__seal {
+    display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 14px 8px;
+    border: 1px solid var(--rz-banner-line); border-radius: 8px; background: rgba(255, 255, 255, .04);
+    font-size: 11.5px; font-weight: 600; line-height: 1.3; letter-spacing: .03em !important; text-transform: uppercase !important;
+  }
+  .hm-rz__seal svg, .hm-rz__seal img { width: 34px; height: 34px; flex: none; object-fit: contain; }
+
+  /* ===== Razones ===== */
+  .hm-rz__reasons { background: var(--rz-reasons-bg); padding: var(--rz-pt) 0 var(--rz-pb); }
+  .hm-rz__head { text-align: center; max-width: 860px; margin: 0 auto 28px; }
+  .hm-rz__pill { display: inline-block; padding: 10px 26px; border-radius: 8px; background: var(--rz-accent); color: #fff; font-size: var(--rz-pill-size); font-weight: 600; line-height: 1.2; margin-bottom: 14px; }
+  .hm-rz__title { font-size: var(--rz-title-m); font-weight: 600; line-height: 1.25; }
+  .hm-rz__title em { font-style: normal; color: var(--rz-accent); }
+  @media (min-width: 750px) { .hm-rz__title { font-size: var(--rz-title-d); } }
+
+  .hm-rz__grid { display: grid; grid-template-columns: repeat(var(--rz-cols), minmax(0, 1fr)); gap: 12px; align-items: stretch; }
+  @media (max-width: 989px) and (min-width: 750px) { .hm-rz__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (max-width: 749px) {
+    .hm-rz--m-carrusel .hm-rz__grid {
+      grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 62%;
+      overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+      padding: 2px 16px 8px; margin: 0 -16px; scroll-padding-inline: 16px; align-items: start;
+    }
+    .hm-rz--m-carrusel .hm-rz__grid::-webkit-scrollbar { display: none; }
+    .hm-rz--m-carrusel .hm-rz__card { scroll-snap-align: start; }
+    .hm-rz--m-grilla .hm-rz__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  }
+
+  .hm-rz__card {
+    display: flex; flex-direction: column; align-items: center; text-align: center; min-width: 0;
+    padding: 14px 14px 16px; border-radius: var(--rz-radius); background: var(--rz-card); border: 1px solid var(--rz-line);
+  }
+  .hm-rz__img { width: 100%; aspect-ratio: 1 / 1; overflow: hidden; border-radius: calc(var(--rz-radius) * .6); background: var(--rz-line); }
+  .hm-rz__img img, .hm-rz__img svg { width: 100%; height: 100%; object-fit: cover; }
+  .hm-rz__num { display: inline-block; margin-top: 12px !important; padding: 3px 10px !important; border-radius: 4px; background: var(--rz-accent) !important; color: #fff !important; font-size: 12.5px; font-weight: 600; }
+  .hm-rz__card-title { margin-top: 8px !important; font-size: 16px; font-weight: 600; line-height: 1.3; }
+  .hm-rz__more { width: 100%; margin-top: auto !important; padding-top: 12px !important; }
+  .hm-rz__more summary { list-style: none; display: flex; justify-content: center; cursor: pointer; }
+  .hm-rz__plus {
+    position: relative; width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--rz-muted) !important;
+    color: var(--rz-muted); transition: transform .25s ease, background .2s, color .2s, border-color .2s;
+  }
+  .hm-rz__plus::before, .hm-rz__plus::after { content: ''; position: absolute; left: 50%; top: 50%; width: 11px; height: 1.5px; margin: -.75px 0 0 -5.5px; background: currentColor; border-radius: 2px; }
+  .hm-rz__plus::after { transform: rotate(90deg); }
+  .hm-rz__more:not([open]) summary:hover .hm-rz__plus { border-color: var(--rz-accent) !important; color: var(--rz-accent); }
+  .hm-rz__more[open] .hm-rz__plus { transform: rotate(45deg); background: var(--rz-accent); border-color: var(--rz-accent) !important; color: #fff; }
+  .hm-rz__more-text { margin-top: 10px !important; font-size: 13.5px; line-height: 1.55; color: var(--rz-muted); text-align: left; }
+  .hm-rz__more-text p + p { margin-top: .5em; }
+  .hm-rz__more[open] .hm-rz__more-text { animation: hm-rz-in .25s ease; }
+  @keyframes hm-rz-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+
+  .hm-rz__cta { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 32px; text-align: center; }
+  .hm-rz__btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 54px; min-width: 260px; padding: 0 32px;
+    border-radius: 8px; background: var(--rz-btn-bg); color: var(--rz-btn-fg) !important; font-size: 16px; font-weight: 600; text-decoration: none;
+    transition: filter .2s;
+  }
+  .hm-rz__btn:hover { filter: brightness(1.1); }
+  .hm-rz__note { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--rz-fg); }
+  .hm-rz__note svg { width: 17px; height: 17px; color: var(--rz-accent); }
+  @media (max-width: 749px) { .hm-rz__btn { width: 100%; min-width: 0; } }
+</style>
+
+<section
+  id="hm-rz-{{ section.id }}"
+  class="hm-rz hm-rz--m-{{ s.mobile_modo }}"
+  style="
+    --rz-font: {{ hm_font_stack }};
+    --rz-accent: {{ acc }};
+    --rz-fg: {{ s.color_texto }};
+    --rz-muted: {{ s.color_texto | color_modify: 'alpha', 0.72 }};
+    --rz-line: {{ s.color_texto | color_modify: 'alpha', 0.14 }};
+    --rz-banner-zone: {{ s.color_fondo_banner_zona }};
+    --rz-banner-bg: {{ s.banner_fondo }};
+    --rz-banner-fg: {{ s.banner_texto }};
+    --rz-banner-line: {{ s.banner_texto | color_modify: 'alpha', 0.5 }};
+    --rz-banner-img-op: {{ s.banner_opacidad | divided_by: 100.0 }};
+    --rz-seals: {{ seal_count | at_least: 1 }};
+    --rz-reasons-bg: {{ s.color_fondo }};
+    --rz-card: {{ s.color_tarjeta }};
+    --rz-cols: {{ s.columnas | at_most: reason_count | at_least: 1 }};
+    --rz-btn-bg: {{ s.color_boton | default: acc }};
+    --rz-btn-fg: {{ s.color_boton_texto | default: '#ffffff' }};
+    --rz-title-d: {{ s.titulo_desktop }}px;
+    --rz-title-m: {{ s.titulo_mobile }}px;
+    --rz-banner-title-d: {{ s.titulo_desktop | minus: 6 }}px;
+    --rz-banner-title-m: {{ s.titulo_mobile | minus: 2 }}px;
+    --rz-pill-size: {{ s.titulo_mobile | minus: 6 | at_least: 14 }}px;
+    --rz-radius: {{ s.bordes }}px;
+    --rz-pt: {{ s.padding_top }}px;
+    --rz-pb: {{ s.padding_bottom }}px;
+  "
+>
+  {%- if s.mostrar_banner -%}
+    <div class="hm-rz__banner-zone">
+      <div class="hm-rz__wrap">
+        <div class="hm-rz__banner">
+          {%- if s.banner_imagen != blank -%}
+            <div class="hm-rz__banner-img">
+              {{ s.banner_imagen | image_url: width: 1600 | image_tag: loading: 'lazy', widths: '600, 900, 1200, 1600', sizes: '100vw', alt: '' }}
+            </div>
+          {%- endif -%}
+          <div class="hm-rz__banner-in">
+            {%- if s.banner_titulo != blank -%}<h2 class="hm-rz__banner-title">{{ s.banner_titulo }}</h2>{%- endif -%}
+            {%- assign checks = s.banner_checks | newline_to_br | split: '<br />' -%}
+            {%- if s.banner_checks != blank -%}
+              <ul class="hm-rz__checks">
+                {%- for c in checks -%}
+                  {%- assign cc = c | strip -%}
+                  {%- if cc != blank -%}
+                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#hmi-check-circle"/></svg>{{ cc }}</li>
+                  {%- endif -%}
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+            {%- if seal_count > 0 -%}
+              <div class="hm-rz__seals">
+                {%- for block in section.blocks -%}
+                  {%- if block.type != 'sello' -%}{%- continue -%}{%- endif -%}
+                  <div class="hm-rz__seal" {{ block.shopify_attributes }}>
+                    {%- if block.settings.imagen != blank -%}
+                      {{ block.settings.imagen | image_url: width: 96 | image_tag: loading: 'lazy', widths: '48, 96', sizes: '34px', alt: '' }}
+                    {%- else -%}
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#hmi-{{ block.settings.icono }}"/></svg>
+                    {%- endif -%}
+                    <span>{{ block.settings.texto }}</span>
+                  </div>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- if s.mostrar_razones -%}
+    <div class="hm-rz__reasons">
+      <div class="hm-rz__wrap">
+        {%- if s.pill != blank or s.titulo != blank -%}
+          <div class="hm-rz__head">
+            {%- if s.pill != blank -%}<span class="hm-rz__pill">{{ s.pill }}</span>{%- endif -%}
+            {%- if s.titulo != blank -%}<h2 class="hm-rz__title">{{ s.titulo }}</h2>{%- endif -%}
+          </div>
+        {%- endif -%}
+
+        <div class="hm-rz__grid">
+          {%- assign n = 0 -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type != 'razon' -%}{%- continue -%}{%- endif -%}
+            {%- assign n = n | plus: 1 -%}
+            {%- assign bs = block.settings -%}
+            <div class="hm-rz__card" {{ block.shopify_attributes }}>
+              <div class="hm-rz__img">
+                {%- if bs.imagen != blank -%}
+                  {{ bs.imagen | image_url: width: 600 | image_tag: loading: 'lazy', widths: '300, 450, 600', sizes: '(min-width: 990px) 20vw, (min-width: 750px) 30vw, 60vw', alt: bs.titulo }}
+                {%- else -%}
+                  {{ 'image' | placeholder_svg_tag }}
+                {%- endif -%}
+              </div>
+              {%- if s.razon_label != blank -%}<span class="hm-rz__num">{{ s.razon_label }} {{ n }}</span>{%- endif -%}
+              <h3 class="hm-rz__card-title">{{ bs.titulo }}</h3>
+              {%- if bs.texto != blank -%}
+                <details class="hm-rz__more">
+                  <summary aria-label="{{ bs.titulo | escape }}"><span class="hm-rz__plus" aria-hidden="true"></span></summary>
+                  <div class="hm-rz__more-text">{{ bs.texto }}</div>
+                </details>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+
+        {%- if s.boton_texto != blank or s.garantia_texto != blank -%}
+          <div class="hm-rz__cta">
+            {%- if s.boton_texto != blank -%}
+              <a class="hm-rz__btn" href="{{ s.boton_link | default: '#hm-comprar' }}">{{ s.boton_texto }}</a>
+            {%- endif -%}
+            {%- if s.garantia_texto != blank -%}
+              <span class="hm-rz__note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#hmi-shield"/></svg>{{ s.garantia_texto }}</span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "HM · Razones",
+  "tag": "div",
+  "class": "hm-section-rz",
+  "settings": [
+    { "type": "header", "content": "Banner ¿Por qué elegirnos?" },
+    { "type": "checkbox", "id": "mostrar_banner", "label": "Mostrar banner", "default": true },
+    { "type": "text", "id": "banner_titulo", "label": "Título", "default": "¿Por qué elegir HAIR?" },
+    { "type": "textarea", "id": "banner_checks", "label": "Frases con check (una por línea)", "default": "8 nutrientes, una fórmula\nSin gluten\nHecho para hombres\n1 cápsula por día\nEnvío a todo el país\nGarantía de 30 días" },
+    { "type": "paragraph", "content": "Los sellos se agregan como bloques \"Sello\"." },
+    { "type": "image_picker", "id": "banner_imagen", "label": "Foto de fondo (opcional)" },
+    { "type": "range", "id": "banner_opacidad", "label": "Visibilidad de la foto de fondo", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 20 },
+    { "type": "color", "id": "banner_fondo", "label": "Color del banner", "default": "#1a1422" },
+    { "type": "color", "id": "banner_texto", "label": "Texto del banner", "default": "#ffffff" },
+    { "type": "color", "id": "color_fondo_banner_zona", "label": "Fondo alrededor del banner", "default": "#ffffff" },
+
+    { "type": "header", "content": "Razones" },
+    { "type": "checkbox", "id": "mostrar_razones", "label": "Mostrar razones", "default": true },
+    { "type": "text", "id": "pill", "label": "Etiqueta", "default": "5 razones por las que" },
+    { "type": "inline_richtext", "id": "titulo", "label": "Título", "default": "HAIR es diferente a <em>todo lo que probaste</em>", "info": "La cursiva se pinta con el color de marca." },
+    { "type": "text", "id": "razon_label", "label": "Texto del número", "default": "Razón", "info": "Se muestra como \"Razón 1\", \"Razón 2\"… Vacío = ocultar." },
+    { "type": "range", "id": "columnas", "label": "Tarjetas por fila en PC", "min": 3, "max": 5, "step": 1, "default": 5 },
+    {
+      "type": "select", "id": "mobile_modo", "label": "Tarjetas en celular",
+      "options": [ { "value": "carrusel", "label": "Carrusel (deslizar)" }, { "value": "grilla", "label": "Grilla de 2 columnas" } ],
+      "default": "carrusel"
+    },
+    { "type": "text", "id": "boton_texto", "label": "Texto del botón", "default": "Probalo hoy sin riesgo" },
+    { "type": "text", "id": "boton_link", "label": "Link del botón", "default": "#hm-comprar", "info": "#hm-comprar lleva a la oferta (bloque 1)." },
+    { "type": "text", "id": "garantia_texto", "label": "Texto debajo del botón", "default": "Garantía de devolución de 30 días" },
+
+    { "type": "header", "content": "Colores y tipografía" },
+    { "type": "font_picker", "id": "fuente", "label": "Tipografía", "default": "poppins_n4" },
+    { "type": "color", "id": "color_acento", "label": "Color de marca", "default": "#6b3fc0", "info": "Etiqueta, \"Razón N\", resaltado y botón." },
+    { "type": "color", "id": "color_fondo", "label": "Fondo de las razones", "default": "#f7f3fd" },
+    { "type": "color", "id": "color_tarjeta", "label": "Fondo de las tarjetas", "default": "#ffffff" },
+    { "type": "color", "id": "color_texto", "label": "Texto", "default": "#121116" },
+    { "type": "color", "id": "color_boton", "label": "Color del botón (opcional)", "info": "Vacío = color de marca." },
+    { "type": "color", "id": "color_boton_texto", "label": "Texto del botón (opcional)" },
+    { "type": "range", "id": "titulo_desktop", "label": "Tamaño de títulos en PC", "min": 20, "max": 48, "step": 1, "unit": "px", "default": 32 },
+    { "type": "range", "id": "titulo_mobile", "label": "Tamaño de títulos en celular", "min": 18, "max": 36, "step": 1, "unit": "px", "default": 24 },
+    { "type": "range", "id": "bordes", "label": "Redondeo", "min": 0, "max": 24, "step": 2, "unit": "px", "default": 12 },
+
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio arriba", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 32 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio abajo", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 }
+  ],
+  "blocks": [
+    {
+      "type": "sello", "name": "Sello (banner)", "limit": 6,
+      "settings": [
+        { "type": "select", "id": "icono", "label": "Ícono", "options": [{"value": "check-circle", "label": "Check"}, {"value": "check", "label": "Tilde"}, {"value": "truck", "label": "Envío"}, {"value": "shield", "label": "Escudo / garantía"}, {"value": "card", "label": "Tarjeta / cuotas"}, {"value": "clock", "label": "Reloj"}, {"value": "leaf", "label": "Natural / hoja"}, {"value": "capsule", "label": "Cápsula"}, {"value": "flask", "label": "Laboratorio"}, {"value": "gift", "label": "Regalo"}, {"value": "lock", "label": "Pago seguro"}, {"value": "verified", "label": "Verificado"}, {"value": "bolt", "label": "Energía"}, {"value": "heart", "label": "Corazón"}, {"value": "users", "label": "Clientes"}, {"value": "medal", "label": "Medalla"}, {"value": "refresh", "label": "Devolución"}, {"value": "dna", "label": "ADN"}, {"value": "sparkles", "label": "Brillo"}, {"value": "calendar", "label": "Calendario"}, {"value": "droplet", "label": "Gota"}, {"value": "hair", "label": "Cabello"}, {"value": "stethoscope", "label": "Médico"}, {"value": "ban", "label": "Prohibido"}, {"value": "x-circle", "label": "Cruz"}, {"value": "map-pin", "label": "Ubicación"}, {"value": "percent", "label": "Descuento"}, {"value": "box", "label": "Paquete"}, {"value": "trend-up", "label": "Crecimiento"}, {"value": "star", "label": "Estrella"}, {"value": "sun", "label": "Sol"}, {"value": "moon", "label": "Luna"}], "default": "verified" },
+        { "type": "image_picker", "id": "imagen", "label": "Ícono propio (opcional)" },
+        { "type": "text", "id": "texto", "label": "Texto", "default": "Fórmula completa" }
+      ]
+    },
+    {
+      "type": "razon", "name": "Razón", "limit": 8,
+      "settings": [
+        { "type": "image_picker", "id": "imagen", "label": "Imagen" },
+        { "type": "text", "id": "titulo", "label": "Título", "default": "Título de la razón" },
+        { "type": "richtext", "id": "texto", "label": "Texto que se despliega con el +", "default": "<p>Explicación de la razón.</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "HM · Razones",
+      "blocks": [
+        { "type": "sello", "settings": { "icono": "verified", "texto": "Fórmula completa" } },
+        { "type": "sello", "settings": { "icono": "verified", "texto": "Ayuda a bloquear la DHT" } },
+        { "type": "sello", "settings": { "icono": "verified", "texto": "Precio accesible" } },
+        { "type": "sello", "settings": { "icono": "verified", "texto": "Sin gluten" } },
+        { "type": "razon", "settings": { "titulo": "Ataca la causa, no el síntoma", "texto": "<p>No es un shampoo que actúa por fuera: HAIR trabaja desde adentro, ayudando a bloquear la DHT y nutriendo el folículo donde nace el pelo.</p>" } },
+        { "type": "razon", "settings": { "titulo": "8 nutrientes. Una sola cápsula.", "texto": "<p>Biotina, zinc, selenio, L-cistina, colágeno tipo II y vitaminas C, B5 y B6 juntos en una cápsula por día. Sin tomar cinco suplementos distintos.</p>" } },
+        { "type": "razon", "settings": { "titulo": "Sin vueltas. Sin complicaciones.", "texto": "<p>Una cápsula por día con agua. Sin cremas, sin lociones, sin rutinas eternas. Y sin gluten.</p>" } },
+        { "type": "razon", "settings": { "titulo": "Resultados reales y visibles", "texto": "<p>Menos caída en las primeras semanas y pelo con más cuerpo con el uso constante. Hombres de todo el país ya lo están comprobando.</p>" } },
+        { "type": "razon", "settings": { "titulo": "Transparencia total", "texto": "<p>Cada ingrediente y su dosis están en la etiqueta. Sin fórmulas secretas ni letra chica. Y si no te convence, tenés 30 días de garantía.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
