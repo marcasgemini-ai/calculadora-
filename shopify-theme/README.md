@@ -2,11 +2,11 @@
 
 ## Instalación rápida (recomendada): plantilla completa
 
-1. Creá las 10 secciones (más abajo, una por una) en **Editar código → Secciones**.
+1. Creá las 11 secciones (más abajo, una por una) en **Editar código → Secciones**.
 2. En **Editar código → Plantillas → Agregar una nueva plantilla** → tipo **product**, formato **JSON**, nombre `hair` → borrá todo, pegá el contenido de `templates/product.hair.json` → **Guardar**.
 3. En el admin del producto: **Plantilla del tema → `product.hair`**.
 
-La plantilla ya trae los 10 bloques en orden con todo el copy (ángulo DHT) y la oferta cargada.
+La plantilla ya trae los 11 bloques en orden con todo el copy (ángulo DHT) y la oferta cargada.
 
 Cada bloque es **un solo archivo** de sección (CSS, JS e íconos incluidos). Se crea una sección, se pega el código y listo.
 
@@ -88,3 +88,9 @@ No hace falta "precio de comparación": el tachado y el "Ahorrás $X" se calcula
 1. **Editar código → Secciones → Agregar una nueva sección** → nombre: `hm-faq` → borrá todo, pegá el código y **Guardar**.
 2. **Personalizar → plantilla `hair` → Agregar sección → HM · Preguntas frecuentes**.
 3. Cada **Pregunta** es un bloque. Abajo podés poner el link de WhatsApp. Las preguntas también aparecen en Google (SEO).
+
+## Bloque 11 · Línea de tiempo → `sections/hm-timeline.liquid`
+
+1. **Editar código → Secciones → Agregar una nueva sección** → nombre: `hm-timeline` → borrá todo, pegá el código y **Guardar**.
+2. **Personalizar → plantilla `hair` → Agregar sección → HM · Línea de tiempo**.
+3. Cada **Etapa** es un bloque: texto del botón, altura en el gráfico, texto del sello y el texto que aparece abajo. El gráfico se arma solo.

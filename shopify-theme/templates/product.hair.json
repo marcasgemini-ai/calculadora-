@@ -585,6 +585,66 @@
       ],
       "settings": {}
     },
+    "timeline": {
+      "type": "hm-timeline",
+      "blocks": {
+        "etapa_1": {
+          "type": "etapa",
+          "settings": {
+            "boton": "Semana 1",
+            "eje": "Día 1",
+            "valor": 18,
+            "sello_titulo": "Primer paso",
+            "sello_texto": "El folículo empieza a nutrirse",
+            "titulo": "Tu pelo recibe lo que necesita",
+            "texto": "<p>Desde la primera cápsula le das al folículo biotina, zinc, selenio y aminoácidos todos los días. Es la base de todo lo que viene.</p>"
+          }
+        },
+        "etapa_2": {
+          "type": "etapa",
+          "settings": {
+            "boton": "Mes 1",
+            "eje": "Mes 1",
+            "valor": 42,
+            "sello_titulo": "Menos caída",
+            "sello_texto": "Menos pelos en la almohada",
+            "titulo": "Empezás a notar menos caída",
+            "texto": "<p>Muchos hombres ven menos pelos en la almohada, la ducha y el peine. HAIR ayuda a mantener la DHT bajo control mientras nutre la raíz.</p>"
+          }
+        },
+        "etapa_3": {
+          "type": "etapa",
+          "settings": {
+            "boton": "Mes 3",
+            "eje": "Mes 3",
+            "valor": 70,
+            "sello_titulo": "Más cuerpo",
+            "sello_texto": "Pelo más fuerte",
+            "titulo": "El pelo se siente más fuerte",
+            "texto": "<p>Con el uso constante, el pelo nuevo crece más grueso y con más cuerpo. Es cuando más se nota la diferencia en el espejo.</p>"
+          }
+        },
+        "etapa_4": {
+          "type": "etapa",
+          "settings": {
+            "boton": "Mes 6+",
+            "eje": "Mes 6+",
+            "valor": 88,
+            "sello_titulo": "Más densidad",
+            "sello_texto": "Resultados que se sostienen",
+            "titulo": "Resultados que se sostienen",
+            "texto": "<p>A partir del sexto mes la densidad se ve más pareja en entradas y coronilla. Seguir con el tratamiento ayuda a mantener lo logrado.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "etapa_1",
+        "etapa_2",
+        "etapa_3",
+        "etapa_4"
+      ],
+      "settings": {}
+    },
     "comparativa": {
       "type": "hm-comparativa",
       "blocks": {
@@ -741,6 +801,7 @@
     "razones",
     "problema_solucion",
     "capsula",
+    "timeline",
     "comparativa",
     "garantia",
     "faq"

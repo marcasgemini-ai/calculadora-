@@ -1,0 +1,370 @@
+{%- comment -%}
+  HM · Bloque 11 — Línea de tiempo "Qué esperar": etapas con botones + gráfico con sello que se mueve
+  Sección autónoma: CSS y JS incluidos. Todo editable desde el personalizador.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign acc = s.color_acento | default: '#6b3fc0'
+  assign hm_font = s.fuente
+  assign hm_font_stack = "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+  if hm_font != blank
+    assign hm_font_stack = hm_font.family | prepend: "'" | append: "', " | append: hm_font.fallback_families
+  endif
+
+  assign pl = 13.0
+  assign pr = 90.0
+  assign ptop = 12.0
+  assign pbot = 80.0
+  assign span_x = pr | minus: pl
+  assign span_y = pbot | minus: ptop
+
+  assign n = 0
+  for block in section.blocks
+    assign n = n | plus: 1
+  endfor
+  assign n1 = n | minus: 1
+  if n1 < 1
+    assign n1 = 1
+  endif
+
+  assign points = ''
+  assign xs = ''
+  assign ys = ''
+  assign i = 0
+  for block in section.blocks
+    assign v = block.settings.valor | default: 50
+    assign x = i | times: span_x | divided_by: n1 | plus: pl
+    if n == 1
+      assign x = span_x | divided_by: 2 | plus: pl
+    endif
+    assign inv = 100 | minus: v
+    assign y = inv | times: span_y | divided_by: 100.0 | plus: ptop
+    assign x = x | round: 2
+    assign y = y | round: 2
+    assign points = points | append: x | append: ',' | append: y | append: ' '
+    assign xs = xs | append: x | append: '|'
+    assign ys = ys | append: y | append: '|'
+    assign i = i | plus: 1
+  endfor
+  assign xs = xs | split: '|'
+  assign ys = ys | split: '|'
+-%}
+
+{%- if hm_font != blank -%}
+  <style>
+    {{ hm_font | font_face: font_display: 'swap' }}
+    {%- assign hm_f = hm_font | font_modify: 'weight', '500' -%}{%- if hm_f -%}{{ hm_f | font_face: font_display: 'swap' }}{%- endif -%}
+    {%- assign hm_f = hm_font | font_modify: 'weight', '600' -%}{%- if hm_f -%}{{ hm_f | font_face: font_display: 'swap' }}{%- endif -%}
+    {%- assign hm_f = hm_font | font_modify: 'weight', '700' -%}{%- if hm_f -%}{{ hm_f | font_face: font_display: 'swap' }}{%- endif -%}
+  </style>
+{%- endif -%}
+
+<style>
+  /* ===== Reset: el theme no puede romper la sección ===== */
+  #hm-tl-{{ section.id }}, #hm-tl-{{ section.id }} *, #hm-tl-{{ section.id }} *::before, #hm-tl-{{ section.id }} *::after { box-sizing: border-box; }
+  #hm-tl-{{ section.id }} :where(h2, h3, p, span, strong, em, a, img, svg, div, button, sup) {
+    margin: 0; padding: 0; border: 0; text-transform: none; letter-spacing: normal;
+    font-family: inherit; line-height: inherit; box-shadow: none; background: none; color: inherit;
+  }
+  #hm-tl-{{ section.id }} :where(svg) { display: block; max-width: 100%; }
+  #hm-tl-{{ section.id }} :where(button) { min-width: 0; width: auto; min-height: 0; cursor: pointer; }
+  #hm-tl-{{ section.id }} [hidden] { display: none !important; }
+
+  #hm-tl-{{ section.id }} {
+    font-family: var(--tl-font); color: var(--tl-fg); background: var(--tl-bg);
+    font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased;
+    padding: var(--tl-pt) 0 var(--tl-pb); overflow-x: clip;
+  }
+  #hm-tl-{{ section.id }} .hm-tl__wrap { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+  @media (min-width: 750px) { #hm-tl-{{ section.id }} .hm-tl__wrap { padding: 0 32px; } }
+
+  #hm-tl-{{ section.id }} .hm-tl__grid { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "tabs" "chart" "panel"; gap: 22px; }
+  @media (min-width: 990px) {
+    #hm-tl-{{ section.id }} .hm-tl__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); grid-template-areas: "head chart" "tabs chart" "panel chart"; column-gap: 64px; row-gap: 24px; align-items: start; }
+    #hm-tl-{{ section.id }} .hm-tl__chart { align-self: center; }
+  }
+  #hm-tl-{{ section.id }} .hm-tl__head { grid-area: head; }
+  #hm-tl-{{ section.id }} .hm-tl__tabs { grid-area: tabs; }
+  #hm-tl-{{ section.id }} .hm-tl__chart { grid-area: chart; }
+  #hm-tl-{{ section.id }} .hm-tl__panels { grid-area: panel; }
+
+  /* Encabezado */
+  #hm-tl-{{ section.id }} .hm-tl__eyebrow { display: block; margin-bottom: 14px !important; font-size: 13px; font-weight: 500; letter-spacing: .08em !important; text-transform: uppercase !important; color: var(--tl-muted); }
+  #hm-tl-{{ section.id }} .hm-tl__title { font-size: var(--tl-title-m); font-weight: 600; line-height: 1.15; color: var(--tl-fg); }
+  #hm-tl-{{ section.id }} .hm-tl__title em { font-style: normal; color: var(--tl-hl); }
+  #hm-tl-{{ section.id }} .hm-tl__sub { margin-top: 12px !important; font-size: 16px; line-height: 1.55; color: var(--tl-muted); max-width: 560px; }
+  @media (min-width: 750px) { #hm-tl-{{ section.id }} .hm-tl__title { font-size: var(--tl-title-d); } #hm-tl-{{ section.id }} .hm-tl__sub { font-size: 18px; } }
+  #hm-tl-{{ section.id }} sup { font-size: .6em; vertical-align: super; line-height: 0; }
+
+  /* Botones de etapas */
+  #hm-tl-{{ section.id }} .hm-tl__tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; max-width: 560px; }
+  #hm-tl-{{ section.id }} .hm-tl__tab {
+    min-height: 50px; padding: 10px 14px !important; border-radius: var(--tl-radius) !important;
+    background: var(--tl-tab-bg) !important; color: var(--tl-tab-fg) !important;
+    font-size: 16px; font-weight: 500; line-height: 1.2; text-align: center; transition: background .2s, color .2s, transform .1s;
+  }
+  #hm-tl-{{ section.id }} .hm-tl__tab:hover { filter: brightness(1.12); }
+  #hm-tl-{{ section.id }} .hm-tl__tab[aria-selected="true"] { background: var(--tl-tab-on) !important; color: var(--tl-tab-on-fg) !important; font-weight: 600; }
+  @media (min-width: 750px) { #hm-tl-{{ section.id }} .hm-tl__tab { min-height: 54px; font-size: 17px; } }
+
+  /* Panel de texto */
+  #hm-tl-{{ section.id }} .hm-tl__panels { max-width: 560px; }
+  #hm-tl-{{ section.id }} .hm-tl__panel-title { font-size: 20px; font-weight: 600; line-height: 1.3; color: var(--tl-fg); }
+  #hm-tl-{{ section.id }} .hm-tl__panel-text { margin-top: 10px !important; font-size: 16px; line-height: 1.6; color: var(--tl-muted); }
+  #hm-tl-{{ section.id }} .hm-tl__panel-text p + p { margin-top: .5em; }
+  #hm-tl-{{ section.id }} .hm-tl__panel:not([hidden]) { animation: hm-tl-in .3s ease; }
+  @keyframes hm-tl-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  @media (min-width: 750px) { #hm-tl-{{ section.id }} .hm-tl__panel-title { font-size: 22px; } #hm-tl-{{ section.id }} .hm-tl__panel-text { font-size: 17px; } }
+  #hm-tl-{{ section.id }} .hm-tl__note { margin-top: 18px !important; font-size: 12.5px; color: var(--tl-muted); opacity: .8; }
+
+  /* Gráfico */
+  #hm-tl-{{ section.id }} .hm-tl__card { position: relative; border-radius: var(--tl-radius); background: var(--tl-card); padding: 0; }
+  #hm-tl-{{ section.id }} .hm-tl__plot { position: relative; width: 100%; height: var(--tl-chart-h-m); }
+  @media (min-width: 750px) { #hm-tl-{{ section.id }} .hm-tl__plot { height: var(--tl-chart-h-d); } }
+  #hm-tl-{{ section.id }} .hm-tl__svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  #hm-tl-{{ section.id }} .hm-tl__ylabel { position: absolute; left: 4%; top: 12%; height: 68%; display: flex; align-items: center; justify-content: center; writing-mode: vertical-rl; transform: rotate(180deg); font-size: 11px; font-weight: 600; color: var(--tl-fg); opacity: .85; white-space: nowrap; }
+  #hm-tl-{{ section.id }} .hm-tl__xlabel { position: absolute; top: 86%; transform: translateX(-50%); font-size: 12px; color: var(--tl-muted); white-space: nowrap; transition: color .2s; }
+  #hm-tl-{{ section.id }} .hm-tl__xlabel.is-on { color: var(--tl-fg); font-weight: 600; }
+  @media (min-width: 750px) { #hm-tl-{{ section.id }} .hm-tl__xlabel { font-size: 13px; } }
+  #hm-tl-{{ section.id }} .hm-tl__dot { position: absolute; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; background: var(--tl-point); box-shadow: 0 0 0 4px var(--tl-point-glow); }
+
+  /* Sello que se mueve */
+  #hm-tl-{{ section.id }} .hm-tl__badge {
+    position: absolute; z-index: 2; width: var(--tl-badge-m); height: var(--tl-badge-m);
+    left: clamp(calc(var(--tl-badge-m) / 2), var(--bx, 10%), calc(100% - var(--tl-badge-m) / 2));
+    top: clamp(calc(var(--tl-badge-m) / 2), var(--by, 50%), calc(100% - var(--tl-badge-m) / 2));
+    transform: translate(-50%, -50%); transition: left .5s cubic-bezier(.4, 0, .2, 1), top .5s cubic-bezier(.4, 0, .2, 1);
+    color: var(--tl-badge-fg); filter: drop-shadow(0 6px 14px rgba(0, 0, 0, .25));
+  }
+  @media (min-width: 750px) {
+    #hm-tl-{{ section.id }} .hm-tl__badge { width: var(--tl-badge-d); height: var(--tl-badge-d);
+      left: clamp(calc(var(--tl-badge-d) / 2), var(--bx, 10%), calc(100% - var(--tl-badge-d) / 2));
+      top: clamp(calc(var(--tl-badge-d) / 2), var(--by, 50%), calc(100% - var(--tl-badge-d) / 2)); }
+  }
+  #hm-tl-{{ section.id }} .hm-tl__badge svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  #hm-tl-{{ section.id }} .hm-tl__badge-in { position: absolute; inset: 14%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  #hm-tl-{{ section.id }} .hm-tl__badge-title { font-size: calc(var(--tl-badge-m) * .15); font-weight: 700; line-height: 1.05; }
+  #hm-tl-{{ section.id }} .hm-tl__badge-sub { margin-top: 4px !important; font-size: calc(var(--tl-badge-m) * .085); font-weight: 500; line-height: 1.2; opacity: .85; }
+  @media (min-width: 750px) {
+    #hm-tl-{{ section.id }} .hm-tl__badge-title { font-size: calc(var(--tl-badge-d) * .15); }
+    #hm-tl-{{ section.id }} .hm-tl__badge-sub { font-size: calc(var(--tl-badge-d) * .085); }
+  }
+  #hm-tl-{{ section.id }} .hm-tl__badge.is-pop { animation: hm-tl-pop .45s ease; }
+  @keyframes hm-tl-pop { 40% { transform: translate(-50%, -50%) scale(1.08); } }
+  @media (prefers-reduced-motion: reduce) { #hm-tl-{{ section.id }} .hm-tl__badge { transition: none; } #hm-tl-{{ section.id }} .hm-tl__badge.is-pop { animation: none; } }
+</style>
+
+{%- assign first = section.blocks.first -%}
+<section
+  id="hm-tl-{{ section.id }}"
+  class="hm-tl"
+  style="
+    --tl-font: {{ hm_font_stack }};
+    --tl-bg: {{ s.color_fondo | default: '#16101f' }};
+    --tl-fg: {{ s.color_texto | default: '#ffffff' }};
+    --tl-muted: {{ s.color_texto | default: '#ffffff' | color_modify: 'alpha', 0.72 }};
+    --tl-hl: {{ s.color_resaltado | default: '#c9b2ff' }};
+    --tl-card: {{ s.color_tarjeta | default: '#241a33' }};
+    --tl-grid: {{ s.color_texto | default: '#ffffff' | color_modify: 'alpha', 0.14 }};
+    --tl-tab-bg: {{ s.tab_fondo | default: '#2a2038' }};
+    --tl-tab-fg: {{ s.tab_texto | default: '#d9d2e6' }};
+    --tl-tab-on: {{ s.tab_activo | default: acc }};
+    --tl-tab-on-fg: {{ s.tab_activo_texto | default: '#ffffff' }};
+    --tl-line: {{ s.color_linea | default: '#c9b2ff' }};
+    --tl-point: {{ s.color_linea | default: '#c9b2ff' }};
+    --tl-point-glow: {{ s.color_linea | default: '#c9b2ff' | color_modify: 'alpha', 0.25 }};
+    --tl-badge-fg: {{ s.sello_texto | default: '#16101f' }};
+    --tl-badge-d: {{ s.sello_tamano | default: 120 }}px;
+    --tl-badge-m: {{ s.sello_tamano | default: 120 | times: 0.78 | round }}px;
+    --tl-chart-h-d: {{ s.alto_grafico | default: 340 }}px;
+    --tl-chart-h-m: {{ s.alto_grafico | default: 340 | times: 0.78 | round }}px;
+    --tl-radius: {{ s.redondeo | default: 8 }}px;
+    --tl-title-d: {{ s.titulo_desktop | default: 44 }}px;
+    --tl-title-m: {{ s.titulo_mobile | default: 32 }}px;
+    --tl-pt: {{ s.padding_top | default: 72 }}px;
+    --tl-pb: {{ s.padding_bottom | default: 72 }}px;
+    --bx: {{ xs[0] | default: 10 }}%;
+    --by: {{ ys[0] | default: 50 }}%;
+  "
+  data-hm-tl
+>
+  <div class="hm-tl__wrap">
+    <div class="hm-tl__grid">
+
+      <div class="hm-tl__head">
+        {%- if s.eyebrow != blank -%}<span class="hm-tl__eyebrow">{{ s.eyebrow }}</span>{%- endif -%}
+        {%- if s.titulo != blank -%}<h2 class="hm-tl__title">{{ s.titulo }}</h2>{%- endif -%}
+        {%- if s.subtitulo != blank -%}<p class="hm-tl__sub">{{ s.subtitulo }}</p>{%- endif -%}
+      </div>
+
+      {%- if section.blocks.size > 0 -%}
+        <div class="hm-tl__tabs" role="tablist" aria-label="{{ s.titulo | strip_html | escape }}">
+          {%- for block in section.blocks -%}
+            <button
+              type="button" role="tab" class="hm-tl__tab"
+              id="hm-tl-tab-{{ block.id }}" aria-controls="hm-tl-panel-{{ block.id }}"
+              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+              tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
+              data-i="{{ forloop.index0 }}" data-x="{{ xs[forloop.index0] }}" data-y="{{ ys[forloop.index0] }}"
+              data-bt="{{ block.settings.sello_titulo | escape }}" data-bs="{{ block.settings.sello_texto | escape }}"
+              {{ block.shopify_attributes }}
+            >{{ block.settings.boton }}</button>
+          {%- endfor -%}
+        </div>
+
+        <div class="hm-tl__panels">
+          {%- for block in section.blocks -%}
+            <div class="hm-tl__panel" role="tabpanel" id="hm-tl-panel-{{ block.id }}" aria-labelledby="hm-tl-tab-{{ block.id }}" {% unless forloop.first %}hidden{% endunless %}>
+              {%- if block.settings.titulo != blank -%}<h3 class="hm-tl__panel-title">{{ block.settings.titulo }}</h3>{%- endif -%}
+              {%- if block.settings.texto != blank -%}<div class="hm-tl__panel-text">{{ block.settings.texto }}</div>{%- endif -%}
+            </div>
+          {%- endfor -%}
+          {%- if s.nota != blank -%}<p class="hm-tl__note">{{ s.nota }}</p>{%- endif -%}
+        </div>
+
+        <div class="hm-tl__chart">
+          <div class="hm-tl__card">
+            <div class="hm-tl__plot">
+              <svg class="hm-tl__svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                {%- for k in (1..3) -%}
+                  {%- assign gy = k | times: span_y | divided_by: 4.0 | plus: ptop | round: 2 -%}
+                  <line x1="{{ pl }}" x2="{{ pr | plus: 3 }}" y1="{{ gy }}" y2="{{ gy }}" stroke="var(--tl-grid)" stroke-width="1" vector-effect="non-scaling-stroke"/>
+                {%- endfor -%}
+                <line x1="{{ pl }}" x2="{{ pl }}" y1="{{ ptop | minus: 4 }}" y2="{{ pbot }}" stroke="var(--tl-grid)" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+                <line x1="{{ pl }}" x2="{{ pr | plus: 3 }}" y1="{{ pbot }}" y2="{{ pbot }}" stroke="var(--tl-grid)" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+                <polyline points="{{ points | strip }}" fill="none" stroke="var(--tl-line)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
+              </svg>
+              {%- if s.eje_y != blank -%}<span class="hm-tl__ylabel">{{ s.eje_y }}</span>{%- endif -%}
+              {%- for block in section.blocks -%}
+                <span class="hm-tl__dot" style="left: {{ xs[forloop.index0] }}%; top: {{ ys[forloop.index0] }}%;"></span>
+                <span class="hm-tl__xlabel{% if forloop.first %} is-on{% endif %}" data-xl="{{ forloop.index0 }}" style="left: {{ xs[forloop.index0] }}%;">{{ block.settings.eje | default: block.settings.boton }}</span>
+              {%- endfor -%}
+              <div class="hm-tl__badge" data-hm-tl-badge aria-live="polite">
+                <svg viewBox="0 0 100 100" aria-hidden="true"><path fill="{{ s.sello_fondo | default: '#efe7ff' }}" stroke="{{ s.sello_texto | default: '#16101f' }}" stroke-opacity=".25" stroke-width="1.2" stroke-dasharray="2 2" d="M93.00 50.00 A7.20 7.20 0 0 1 89.73 66.46 A7.20 7.20 0 0 1 80.41 80.41 A7.20 7.20 0 0 1 66.46 89.73 A7.20 7.20 0 0 1 50.00 93.00 A7.20 7.20 0 0 1 33.54 89.73 A7.20 7.20 0 0 1 19.59 80.41 A7.20 7.20 0 0 1 10.27 66.46 A7.20 7.20 0 0 1 7.00 50.00 A7.20 7.20 0 0 1 10.27 33.54 A7.20 7.20 0 0 1 19.59 19.59 A7.20 7.20 0 0 1 33.54 10.27 A7.20 7.20 0 0 1 50.00 7.00 A7.20 7.20 0 0 1 66.46 10.27 A7.20 7.20 0 0 1 80.41 19.59 A7.20 7.20 0 0 1 89.73 33.54 A7.20 7.20 0 0 1 93.00 50.00 Z"/></svg>
+                <span class="hm-tl__badge-in">
+                  <span class="hm-tl__badge-title" data-hm-tl-bt>{{ first.settings.sello_titulo }}</span>
+                  <span class="hm-tl__badge-sub" data-hm-tl-bs>{{ first.settings.sello_texto }}</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    function initTl(root) {
+      if (!root || root.dataset.ready) return;
+      root.dataset.ready = '1';
+      var tabs = Array.prototype.slice.call(root.querySelectorAll('.hm-tl__tab'));
+      var badge = root.querySelector('[data-hm-tl-badge]');
+      var bt = root.querySelector('[data-hm-tl-bt]');
+      var bs = root.querySelector('[data-hm-tl-bs]');
+      function select(tab, focus) {
+        tabs.forEach(function (t) {
+          var on = t === tab;
+          t.setAttribute('aria-selected', on ? 'true' : 'false');
+          t.tabIndex = on ? 0 : -1;
+          var panel = document.getElementById(t.getAttribute('aria-controls'));
+          if (panel) panel.hidden = !on;
+        });
+        root.querySelectorAll('[data-xl]').forEach(function (l) { l.classList.toggle('is-on', l.dataset.xl === tab.dataset.i); });
+        root.style.setProperty('--bx', tab.dataset.x + '%');
+        root.style.setProperty('--by', tab.dataset.y + '%');
+        if (bt) bt.textContent = tab.dataset.bt;
+        if (bs) bs.textContent = tab.dataset.bs;
+        if (badge) { badge.classList.remove('is-pop'); void badge.offsetWidth; badge.classList.add('is-pop'); }
+        if (focus) tab.focus();
+      }
+      tabs.forEach(function (t, i) {
+        t.addEventListener('click', function () { select(t); });
+        t.addEventListener('keydown', function (e) {
+          var k = e.key, j = -1;
+          if (k === 'ArrowRight' || k === 'ArrowDown') j = (i + 1) % tabs.length;
+          if (k === 'ArrowLeft' || k === 'ArrowUp') j = (i - 1 + tabs.length) % tabs.length;
+          if (j > -1) { e.preventDefault(); select(tabs[j], true); }
+        });
+      });
+    }
+    initTl(document.getElementById('hm-tl-{{ section.id }}'));
+    if (!window.__hmTlEditor) {
+      window.__hmTlEditor = true;
+      document.addEventListener('shopify:section:load', function (e) { initTl(e.target.querySelector('[data-hm-tl]')); });
+      document.addEventListener('shopify:block:select', function (e) {
+        var t = e.target;
+        if (t && t.classList && t.classList.contains('hm-tl__tab')) t.click();
+      });
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "HM · Línea de tiempo",
+  "tag": "div",
+  "class": "hm-section-tl",
+  "settings": [
+    { "type": "header", "content": "Encabezado" },
+    { "type": "text", "id": "eyebrow", "label": "Texto chico", "default": "Línea de tiempo" },
+    { "type": "inline_richtext", "id": "titulo", "label": "Título", "default": "Qué esperar†", "info": "La cursiva se pinta con el color resaltado." },
+    { "type": "text", "id": "subtitulo", "label": "Subtítulo", "default": "Los resultados llegan con la constancia, no con una sola cápsula. Este es el camino estimado:" },
+    { "type": "text", "id": "nota", "label": "Aclaración (abajo)", "default": "† Estimación orientativa. Los resultados varían según cada persona y su constancia." },
+    { "type": "paragraph", "content": "Cada etapa es un bloque: botón, texto y su punto en el gráfico." },
+
+    { "type": "header", "content": "Gráfico" },
+    { "type": "text", "id": "eje_y", "label": "Texto del eje vertical", "default": "Resultado acumulado" },
+    { "type": "range", "id": "alto_grafico", "label": "Alto del gráfico", "min": 240, "max": 480, "step": 10, "unit": "px", "default": 340 },
+    { "type": "range", "id": "sello_tamano", "label": "Tamaño del sello", "min": 80, "max": 160, "step": 4, "unit": "px", "default": 120 },
+
+    { "type": "header", "content": "Colores y tipografía" },
+    { "type": "font_picker", "id": "fuente", "label": "Tipografía", "default": "poppins_n4" },
+    { "type": "color", "id": "color_acento", "label": "Color de marca", "default": "#6b3fc0" },
+    { "type": "color", "id": "color_fondo", "label": "Fondo", "default": "#16101f" },
+    { "type": "color", "id": "color_texto", "label": "Texto", "default": "#ffffff" },
+    { "type": "color", "id": "color_resaltado", "label": "Resaltado del título (cursiva)", "default": "#c9b2ff" },
+    { "type": "color", "id": "color_tarjeta", "label": "Fondo del gráfico", "default": "#241a33" },
+    { "type": "color", "id": "color_linea", "label": "Línea y puntos", "default": "#c9b2ff" },
+    { "type": "color", "id": "tab_fondo", "label": "Botones: fondo", "default": "#2a2038" },
+    { "type": "color", "id": "tab_texto", "label": "Botones: texto", "default": "#d9d2e6" },
+    { "type": "color", "id": "tab_activo", "label": "Botón elegido: fondo (opcional)", "info": "Vacío = color de marca." },
+    { "type": "color", "id": "tab_activo_texto", "label": "Botón elegido: texto", "default": "#ffffff" },
+    { "type": "color", "id": "sello_fondo", "label": "Sello: fondo", "default": "#efe7ff" },
+    { "type": "color", "id": "sello_texto", "label": "Sello: texto", "default": "#16101f" },
+
+    { "type": "header", "content": "Tamaños y espacios" },
+    { "type": "range", "id": "titulo_desktop", "label": "Tamaño del título en PC", "min": 24, "max": 64, "step": 1, "unit": "px", "default": 44 },
+    { "type": "range", "id": "titulo_mobile", "label": "Tamaño del título en celular", "min": 20, "max": 44, "step": 1, "unit": "px", "default": 32 },
+    { "type": "range", "id": "redondeo", "label": "Redondeo", "min": 0, "max": 24, "step": 2, "unit": "px", "default": 8 },
+    { "type": "range", "id": "padding_top", "label": "Espacio arriba", "min": 0, "max": 140, "step": 4, "unit": "px", "default": 72 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio abajo", "min": 0, "max": 140, "step": 4, "unit": "px", "default": 72 }
+  ],
+  "blocks": [
+    {
+      "type": "etapa", "name": "Etapa", "limit": 6,
+      "settings": [
+        { "type": "text", "id": "boton", "label": "Texto del botón", "default": "Semana 1" },
+        { "type": "text", "id": "eje", "label": "Texto en el gráfico (abajo)", "info": "Vacío = el del botón." },
+        { "type": "range", "id": "valor", "label": "Altura en el gráfico", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 25 },
+        { "type": "text", "id": "sello_titulo", "label": "Sello: título", "default": "Primer paso" },
+        { "type": "text", "id": "sello_texto", "label": "Sello: texto chico", "default": "Empieza a nutrirse" },
+        { "type": "text", "id": "titulo", "label": "Título de la etapa", "default": "Título" },
+        { "type": "richtext", "id": "texto", "label": "Texto de la etapa", "default": "<p>Qué pasa en esta etapa.</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "HM · Línea de tiempo",
+      "blocks": [
+        { "type": "etapa", "settings": { "boton": "Semana 1", "eje": "Día 1", "valor": 18, "sello_titulo": "Primer paso", "sello_texto": "El folículo empieza a nutrirse", "titulo": "Tu pelo recibe lo que necesita", "texto": "<p>Desde la primera cápsula le das al folículo biotina, zinc, selenio y aminoácidos todos los días. Es la base de todo lo que viene.</p>" } },
+        { "type": "etapa", "settings": { "boton": "Mes 1", "eje": "Mes 1", "valor": 42, "sello_titulo": "Menos caída", "sello_texto": "Menos pelos en la almohada", "titulo": "Empezás a notar menos caída", "texto": "<p>Muchos hombres ven menos pelos en la almohada, la ducha y el peine. HAIR ayuda a mantener la DHT bajo control mientras nutre la raíz.</p>" } },
+        { "type": "etapa", "settings": { "boton": "Mes 3", "eje": "Mes 3", "valor": 70, "sello_titulo": "Más cuerpo", "sello_texto": "Pelo más fuerte", "titulo": "El pelo se siente más fuerte", "texto": "<p>Con el uso constante, el pelo nuevo crece más grueso y con más cuerpo. Es cuando más se nota la diferencia en el espejo.</p>" } },
+        { "type": "etapa", "settings": { "boton": "Mes 6+", "eje": "Mes 6+", "valor": 88, "sello_titulo": "Más densidad", "sello_texto": "Resultados que se sostienen", "titulo": "Resultados que se sostienen", "texto": "<p>A partir del sexto mes la densidad se ve más pareja en entradas y coronilla. Seguir con el tratamiento ayuda a mantener lo logrado.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
