@@ -32,3 +32,9 @@ No hace falta "precio de comparación": el tachado y el "Ahorrás $X" se calcula
 1. **Editar código → Secciones → Agregar una nueva sección** → nombre: `hm-transformaciones` → borrá todo, pegá el código y **Guardar**.
 2. **Personalizar → plantilla `hair` → Agregar sección → HM · Transformaciones** (debajo de la oferta).
 3. En cada bloque **Transformación** subí una foto con el antes/después ya armado (o dos fotos separadas). Las frases de la cinta son los bloques **Insignia**.
+
+## Bloque 3 · DHT → `sections/hm-dht.liquid`
+
+1. **Editar código → Secciones → Agregar una nueva sección** → nombre: `hm-dht` → borrá todo, pegá el código y **Guardar**.
+2. **Personalizar → plantilla `hair` → Agregar sección → HM · DHT**.
+3. La ilustración de folículos viene incluida (textos y colores editables). Si preferís una foto, cargala en **Imagen**.

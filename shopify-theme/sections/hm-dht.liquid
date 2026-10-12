@@ -1,0 +1,263 @@
+{%- comment -%}
+  HM · Bloque 3 — DHT: imagen/ilustración + puntos (problema · solución · impacto)
+  Sección autónoma: CSS e íconos incluidos. Todo editable desde el personalizador.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign acc = s.color_acento | default: '#6b3fc0'
+  assign hm_font = s.fuente
+  assign hm_font_stack = "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+  if hm_font != blank
+    assign hm_font_stack = hm_font.family | prepend: "'" | append: "', " | append: hm_font.fallback_families
+  endif
+-%}
+
+{%- if hm_font != blank -%}
+  <style>
+    {{ hm_font | font_face: font_display: 'swap' }}
+    {%- assign hm_f = hm_font | font_modify: 'weight', '500' -%}{%- if hm_f -%}{{ hm_f | font_face: font_display: 'swap' }}{%- endif -%}
+    {%- assign hm_f = hm_font | font_modify: 'weight', '600' -%}{%- if hm_f -%}{{ hm_f | font_face: font_display: 'swap' }}{%- endif -%}
+    {%- assign hm_f = hm_font | font_modify: 'weight', '700' -%}{%- if hm_f -%}{{ hm_f | font_face: font_display: 'swap' }}{%- endif -%}
+  </style>
+{%- endif -%}
+
+<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false"><defs><symbol id="hmi-check" viewBox="0 0 24 24"><path d="M4.5 12.5l5 5 10-11"/></symbol><symbol id="hmi-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M8 12.3l2.8 2.8L16.2 9.5"/></symbol><symbol id="hmi-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol><symbol id="hmi-x-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M9 9l6 6M15 9l-6 6"/></symbol><symbol id="hmi-truck" viewBox="0 0 24 24"><path d="M2.5 6.5h11v9h-11zM13.5 9.5h4l3 3v3h-7"/><circle cx="6.5" cy="17" r="1.8"/><circle cx="17" cy="17" r="1.8"/></symbol><symbol id="hmi-shield" viewBox="0 0 24 24"><path d="M12 2.8l7.5 3v5.6c0 4.6-3.2 8.3-7.5 9.8-4.3-1.5-7.5-5.2-7.5-9.8V5.8z"/><path d="M8.7 12l2.3 2.3 4.3-4.6"/></symbol><symbol id="hmi-card" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 9.5h19M6 15h4"/></symbol><symbol id="hmi-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M12 7v5.2l3.4 2"/></symbol><symbol id="hmi-leaf" viewBox="0 0 24 24"><path d="M5 19c0-8 5-13 15-14-1 10-6 15-14 15M5 19l7-7"/></symbol><symbol id="hmi-capsule" viewBox="0 0 24 24"><rect x="2.8" y="8.2" width="18.4" height="7.6" rx="3.8" transform="rotate(-35 12 12)"/><path d="M9.9 9.2l4.3 5.9"/></symbol><symbol id="hmi-flask" viewBox="0 0 24 24"><path d="M9.5 3h5M10.2 3v6.2L4.8 18.4A1.8 1.8 0 0 0 6.4 21h11.2a1.8 1.8 0 0 0 1.6-2.6L13.8 9.2V3M7.5 15h9"/></symbol><symbol id="hmi-gift" viewBox="0 0 24 24"><rect x="3.2" y="8.5" width="17.6" height="4" rx="1"/><path d="M4.8 12.5v8h14.4v-8M12 8.5v12M12 8.5S10.8 4 8.4 4a2.2 2.2 0 0 0 0 4.5M12 8.5S13.2 4 15.6 4a2.2 2.2 0 0 1 0 4.5"/></symbol><symbol id="hmi-lock" viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="10" rx="2.2"/><path d="M8 10.5V7.8a4 4 0 0 1 8 0v2.7"/></symbol><symbol id="hmi-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></symbol><symbol id="hmi-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol><symbol id="hmi-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol><symbol id="hmi-star" viewBox="0 0 24 24"><path d="M12 2.8l2.8 5.8 6.4.8-4.7 4.4 1.2 6.4L12 17l-5.7 3.2 1.2-6.4-4.7-4.4 6.4-.8z"/></symbol><symbol id="hmi-verified" viewBox="0 0 24 24"><path d="M12 2.5l2.3 1.7 2.8-.1.9 2.7 2.3 1.6-.9 2.7.9 2.7-2.3 1.6-.9 2.7-2.8-.1L12 21.5l-2.3-1.7-2.8.1-.9-2.7-2.3-1.6.9-2.7-.9-2.7 2.3-1.6.9-2.7 2.8.1z"/><path d="M8.8 12.2l2.2 2.2 4.2-4.4"/></symbol><symbol id="hmi-bolt" viewBox="0 0 24 24"><path d="M13 2.5L4.5 13.5H12l-1 8 8.5-11H12z"/></symbol><symbol id="hmi-heart" viewBox="0 0 24 24"><path d="M12 20.5s-8.5-5-8.5-11A4.8 4.8 0 0 1 12 6.6a4.8 4.8 0 0 1 8.5 2.9c0 6-8.5 11-8.5 11z"/></symbol><symbol id="hmi-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.1-5.8 6.5-5.8s5.9 2.2 6.5 5.8M16 4.8a3.5 3.5 0 0 1 0 6.6M18 14.6c2 .7 3.2 2.6 3.5 5.4"/></symbol><symbol id="hmi-medal" viewBox="0 0 24 24"><circle cx="12" cy="14.5" r="6"/><path d="M8.5 9.6L6 2.5h4l2 4.5 2-4.5h4l-2.5 7.1M12 12v5"/></symbol><symbol id="hmi-refresh" viewBox="0 0 24 24"><path d="M20 11.5A8 8 0 0 0 5.6 6.8L3.5 9M4 12.5a8 8 0 0 0 14.4 4.7l2.1-2.2M3.5 4v5h5M20.5 20v-5h-5"/></symbol><symbol id="hmi-dna" viewBox="0 0 24 24"><path d="M7 2.5c0 6 10 7 10 13s0 6 0 6M17 2.5c0 6-10 7-10 13v6M8 6h8M8 18h8M9.5 9.5h5M9.5 14.5h5"/></symbol><symbol id="hmi-sparkles" viewBox="0 0 24 24"><path d="M10 3l1.8 5.2L17 10l-5.2 1.8L10 17l-1.8-5.2L3 10l5.2-1.8zM18 14l.9 2.1 2.1.9-2.1.9L18 20l-.9-2.1-2.1-.9 2.1-.9z"/></symbol><symbol id="hmi-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2.2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol><symbol id="hmi-droplet" viewBox="0 0 24 24"><path d="M12 3s6.5 7 6.5 11.3a6.5 6.5 0 0 1-13 0C5.5 10 12 3 12 3z"/></symbol><symbol id="hmi-sound-off" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4zM16 9.5l5 5M21 9.5l-5 5"/></symbol><symbol id="hmi-sound-on" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4zM16 9a4.2 4.2 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></symbol><symbol id="hmi-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z" fill="currentColor"/></symbol><symbol id="hmi-hair" viewBox="0 0 24 24"><path d="M6 21c1-6 0-10-1-14M10 21c.5-6 0-11 2-17M14.5 21c-.5-5 .5-9 3.5-14M18.5 21c-.5-3 0-6 2-9"/></symbol><symbol id="hmi-stethoscope" viewBox="0 0 24 24"><path d="M5 3v5a5 5 0 0 0 10 0V3M10 13v2.5a5 5 0 0 0 10 0V13"/><circle cx="20" cy="11" r="2"/></symbol><symbol id="hmi-ban" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M5.5 5.5l13 13"/></symbol><symbol id="hmi-map-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.3-7-11.5a7 7 0 0 1 14 0C19 14.7 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></symbol><symbol id="hmi-percent" viewBox="0 0 24 24"><path d="M19 5L5 19"/><circle cx="7" cy="7" r="2.5"/><circle cx="17" cy="17" r="2.5"/></symbol><symbol id="hmi-box" viewBox="0 0 24 24"><path d="M3.5 7.5L12 3l8.5 4.5v9L12 21l-8.5-4.5zM3.5 7.5L12 12l8.5-4.5M12 12v9"/></symbol><symbol id="hmi-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></symbol><symbol id="hmi-moon" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></symbol><symbol id="hmi-trend-up" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8M15 7h6v6"/></symbol></defs></svg>
+
+<style>
+  /* ===== Reset: el theme no puede romper la sección ===== */
+  .hm-dht, .hm-dht *, .hm-dht *::before, .hm-dht *::after { box-sizing: border-box; }
+  .hm-dht :where(h2, h3, p, span, strong, em, a, img, svg, ul, li, div) {
+    margin: 0; padding: 0; border: 0; text-transform: none; letter-spacing: normal;
+    font-family: inherit; line-height: inherit; box-shadow: none; background: none; color: inherit;
+  }
+  .hm-dht :where(img, svg) { display: block; max-width: 100%; border-radius: 0; }
+
+  .hm-dht {
+    font-family: var(--dh-font); color: var(--dh-fg); background: var(--dh-bg);
+    font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased;
+    padding: var(--dh-pt) 0 var(--dh-pb); overflow-x: clip;
+  }
+  .hm-dht__wrap { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+  @media (min-width: 750px) { .hm-dht__wrap { padding: 0 32px; } }
+
+  .hm-dht__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; align-items: center; }
+  @media (min-width: 990px) {
+    .hm-dht__grid { grid-template-columns: minmax(0, var(--dh-img-w)) minmax(0, 1fr); gap: 56px; }
+    .hm-dht--right .hm-dht__grid { grid-template-columns: minmax(0, 1fr) minmax(0, var(--dh-img-w)); }
+    .hm-dht--right .hm-dht__media { order: 2; }
+  }
+  @media (max-width: 989px) { .hm-dht--m-bottom .hm-dht__media { order: 2; } }
+
+  /* Imagen / ilustración */
+  .hm-dht__media { position: relative; border-radius: var(--dh-radius); overflow: hidden; background: var(--dh-img-bg); }
+  .hm-dht__media > img { width: 100%; height: auto; }
+  .hm-dht__illu { position: relative; aspect-ratio: 6 / 5; display: flex; flex-direction: column; justify-content: center; padding: 6% 4% 8%; }
+  .hm-dht__illu svg { width: 100%; height: auto; }
+  .hm-dht__tags { display: grid; grid-template-columns: 1fr 1fr; margin-top: 2%; }
+  .hm-dht__tag { text-align: center; font-weight: 600; line-height: 1.2; font-size: clamp(15px, 2.6vw, 24px); color: var(--dh-illu-txt); }
+  .hm-dht__tag small { display: block; margin-top: 4px; font-size: .62em; font-weight: 500; opacity: .75; }
+
+  /* Texto */
+  .hm-dht__pill {
+    display: inline-block; padding: 10px 18px; border-radius: 8px; margin-bottom: 18px;
+    background: var(--dh-pill-bg); color: var(--dh-pill-fg);
+    font-size: 14px; font-weight: 600; line-height: 1.2;
+  }
+  .hm-dht--upper .hm-dht__pill { text-transform: uppercase; letter-spacing: .03em; }
+  .hm-dht__title { font-size: var(--dh-title-m); font-weight: 600; line-height: 1.25; color: var(--dh-fg); margin-bottom: 22px; }
+  .hm-dht__title em { font-style: normal; color: var(--dh-accent); }
+  @media (min-width: 750px) { .hm-dht__title { font-size: var(--dh-title-d); } }
+
+  .hm-dht__points { display: grid; gap: 20px; }
+  .hm-dht__point-head { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .hm-dht__ico { flex: none; width: 28px; height: 28px; display: grid; place-items: center; font-size: 18px; line-height: 1; }
+  .hm-dht__ico--icon { border-radius: 8px; background: var(--dh-accent-soft); color: var(--dh-accent); }
+  .hm-dht__ico--icon svg { width: 18px; height: 18px; }
+  .hm-dht__ico img { width: 28px; height: 28px; object-fit: contain; }
+  .hm-dht__point-title { font-size: 17px; font-weight: 600; line-height: 1.3; color: var(--dh-fg); }
+  .hm-dht__point-text { font-size: 15px; line-height: 1.6; color: var(--dh-muted); }
+  .hm-dht__point-text p + p { margin-top: .5em; }
+  .hm-dht__point-text strong { color: var(--dh-fg); font-weight: 600; }
+
+  .hm-dht__cta { margin-top: 28px; }
+  .hm-dht__btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; padding: 0 28px;
+    border-radius: 8px; background: var(--dh-btn-bg); color: var(--dh-btn-fg) !important; font-size: 16px; font-weight: 600; text-decoration: none;
+    transition: filter .2s;
+  }
+  .hm-dht__btn:hover { filter: brightness(1.1); }
+  .hm-dht__btn svg { width: 18px; height: 18px; }
+  @media (max-width: 749px) { .hm-dht__btn { width: 100%; } }
+</style>
+
+<section
+  id="hm-dht-{{ section.id }}"
+  class="hm-dht hm-dht--{{ s.posicion }} hm-dht--m-{{ s.posicion_mobile }}{% if s.pill_mayus %} hm-dht--upper{% endif %}"
+  style="
+    --dh-font: {{ hm_font_stack }};
+    --dh-accent: {{ acc }};
+    --dh-accent-soft: {{ acc | color_modify: 'alpha', 0.1 }};
+    --dh-bg: {{ s.color_fondo }};
+    --dh-fg: {{ s.color_texto }};
+    --dh-muted: {{ s.color_texto | color_modify: 'alpha', 0.75 }};
+    --dh-pill-bg: {{ s.pill_fondo | default: acc }};
+    --dh-pill-fg: {{ s.pill_texto }};
+    --dh-img-bg: {{ s.imagen_fondo }};
+    --dh-illu-txt: {{ s.ilustracion_texto }};
+    --dh-img-w: {{ s.ancho_imagen }}fr;
+    --dh-radius: {{ s.bordes }}px;
+    --dh-btn-bg: {{ s.color_boton | default: acc }};
+    --dh-btn-fg: {{ s.color_boton_texto | default: '#ffffff' }};
+    --dh-title-d: {{ s.titulo_desktop }}px;
+    --dh-title-m: {{ s.titulo_mobile }}px;
+    --dh-pt: {{ s.padding_top }}px;
+    --dh-pb: {{ s.padding_bottom }}px;
+  "
+>
+  <div class="hm-dht__wrap">
+    <div class="hm-dht__grid">
+
+      <div class="hm-dht__media">
+        {%- if s.imagen != blank -%}
+          {{ s.imagen | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '400, 600, 800, 1000, 1200, 1400', sizes: '(min-width: 990px) 50vw, 100vw', alt: s.imagen_alt }}
+        {%- else -%}
+          <div class="hm-dht__illu" role="img" aria-label="{{ s.label_1 | escape }} vs {{ s.label_2 | escape }}">
+            <svg viewBox="0 0 600 340" aria-hidden="true">
+              {%- comment -%} Piel izquierda {%- endcomment -%}
+              <rect x="40" y="200" width="230" height="120" rx="6" fill="{{ s.color_piel }}"/>
+              <rect x="40" y="200" width="230" height="22" fill="{{ s.color_piel_borde }}"/>
+              <rect x="40" y="300" width="230" height="20" fill="{{ s.color_piel_borde }}"/>
+              {%- comment -%} Folículo debilitado: chico, pelo fino {%- endcomment -%}
+              <ellipse cx="160" cy="268" rx="17" ry="24" fill="{{ s.color_piel_borde }}"/>
+              <ellipse cx="160" cy="272" rx="10" ry="15" fill="{{ s.color_pelo }}"/>
+              <path d="M155 268 C 152 215, 158 165, 186 112 L 191 115 C 166 166, 163 216, 166 268 Z" fill="{{ s.color_pelo }}"/>
+
+              {%- comment -%} Piel derecha {%- endcomment -%}
+              <rect x="330" y="200" width="230" height="120" rx="6" fill="{{ s.color_piel }}"/>
+              <rect x="330" y="200" width="230" height="22" fill="{{ s.color_piel_borde }}"/>
+              <rect x="330" y="300" width="230" height="20" fill="{{ s.color_piel_borde }}"/>
+              {%- comment -%} Folículo sano: grande, pelo grueso {%- endcomment -%}
+              <ellipse cx="445" cy="266" rx="28" ry="36" fill="{{ s.color_piel_borde }}"/>
+              <ellipse cx="445" cy="272" rx="19" ry="26" fill="{{ s.color_pelo }}"/>
+              <path d="M432 270 C 426 190, 440 95, 512 14 L 521 22 C 458 100, 452 190, 458 270 Z" fill="{{ s.color_pelo }}"/>
+            </svg>
+            <div class="hm-dht__tags">
+              <span class="hm-dht__tag">{{ s.label_1 }}{%- if s.sublabel_1 != blank -%}<small>{{ s.sublabel_1 }}</small>{%- endif -%}</span>
+              <span class="hm-dht__tag">{{ s.label_2 }}{%- if s.sublabel_2 != blank -%}<small>{{ s.sublabel_2 }}</small>{%- endif -%}</span>
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="hm-dht__body">
+        {%- if s.pill != blank -%}<span class="hm-dht__pill">{{ s.pill }}</span>{%- endif -%}
+        {%- if s.titulo != blank -%}<h2 class="hm-dht__title">{{ s.titulo }}</h2>{%- endif -%}
+
+        <div class="hm-dht__points">
+          {%- for block in section.blocks -%}
+            {%- assign bs = block.settings -%}
+            <div class="hm-dht__point" {{ block.shopify_attributes }}>
+              <div class="hm-dht__point-head">
+                {%- if bs.imagen != blank -%}
+                  <span class="hm-dht__ico">{{ bs.imagen | image_url: width: 64 | image_tag: loading: 'lazy', widths: '32, 64', sizes: '28px', alt: '' }}</span>
+                {%- elsif bs.tipo == 'emoji' and bs.emoji != blank -%}
+                  <span class="hm-dht__ico" aria-hidden="true">{{ bs.emoji }}</span>
+                {%- elsif bs.tipo == 'icono' -%}
+                  <span class="hm-dht__ico hm-dht__ico--icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#hmi-{{ bs.icono }}"/></svg></span>
+                {%- endif -%}
+                <h3 class="hm-dht__point-title">{{ bs.titulo }}</h3>
+              </div>
+              <div class="hm-dht__point-text">{{ bs.texto }}</div>
+            </div>
+          {%- endfor -%}
+        </div>
+
+        {%- if s.boton_texto != blank -%}
+          <div class="hm-dht__cta">
+            <a class="hm-dht__btn" href="{{ s.boton_link | default: '#hm-comprar' }}">
+              {{ s.boton_texto }}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "HM · DHT",
+  "tag": "div",
+  "class": "hm-section-dht",
+  "settings": [
+    { "type": "header", "content": "Imagen" },
+    { "type": "image_picker", "id": "imagen", "label": "Imagen (opcional)", "info": "Vacío = ilustración de folículos incluida (editable abajo)." },
+    { "type": "text", "id": "imagen_alt", "label": "Texto alternativo (SEO)", "default": "Folículo debilitado por la DHT vs folículo sano" },
+    { "type": "select", "id": "posicion", "label": "Imagen en PC", "options": [ { "value": "left", "label": "A la izquierda" }, { "value": "right", "label": "A la derecha" } ], "default": "left" },
+    { "type": "select", "id": "posicion_mobile", "label": "Imagen en celular", "options": [ { "value": "top", "label": "Arriba del texto" }, { "value": "bottom", "label": "Debajo del texto" } ], "default": "top" },
+    { "type": "range", "id": "ancho_imagen", "label": "Ancho de la imagen en PC", "min": 0.6, "max": 1.6, "step": 0.1, "default": 1, "info": "1 = mitad y mitad." },
+    { "type": "color", "id": "imagen_fondo", "label": "Fondo de la imagen", "default": "#f7f1e8" },
+    { "type": "range", "id": "bordes", "label": "Redondeo de la imagen", "min": 0, "max": 32, "step": 2, "unit": "px", "default": 12 },
+
+    { "type": "header", "content": "Ilustración de folículos" },
+    { "type": "text", "id": "label_1", "label": "Texto folículo izquierdo", "default": "Folículo debilitado" },
+    { "type": "text", "id": "sublabel_1", "label": "Subtexto izquierdo (opcional)", "default": "Con exceso de DHT" },
+    { "type": "text", "id": "label_2", "label": "Texto folículo derecho", "default": "Folículo sano" },
+    { "type": "text", "id": "sublabel_2", "label": "Subtexto derecho (opcional)", "default": "Con HAIR" },
+    { "type": "color", "id": "ilustracion_texto", "label": "Color de los textos", "default": "#2b2433" },
+    { "type": "color", "id": "color_pelo", "label": "Color del pelo", "default": "#2b2433" },
+    { "type": "color", "id": "color_piel", "label": "Color de la piel", "default": "#fbe0c8" },
+    { "type": "color", "id": "color_piel_borde", "label": "Color de las capas de piel", "default": "#f2c29d" },
+
+    { "type": "header", "content": "Texto" },
+    { "type": "text", "id": "pill", "label": "Etiqueta de arriba", "default": "Lo atacamos desde la raíz" },
+    { "type": "checkbox", "id": "pill_mayus", "label": "Etiqueta en mayúsculas", "default": true },
+    { "type": "inline_richtext", "id": "titulo", "label": "Título", "default": "DHT: la hormona oculta detrás de la <em>caída del pelo</em>", "info": "La cursiva se pinta con el color de marca." },
+    { "type": "range", "id": "titulo_desktop", "label": "Tamaño del título en PC", "min": 20, "max": 48, "step": 1, "unit": "px", "default": 32 },
+    { "type": "range", "id": "titulo_mobile", "label": "Tamaño del título en celular", "min": 18, "max": 36, "step": 1, "unit": "px", "default": 24 },
+    { "type": "paragraph", "content": "Los puntos (problema, solución, impacto) se editan como bloques." },
+
+    { "type": "header", "content": "Botón (opcional)" },
+    { "type": "text", "id": "boton_texto", "label": "Texto del botón", "info": "Vacío = sin botón." },
+    { "type": "text", "id": "boton_link", "label": "Link del botón", "default": "#hm-comprar", "info": "#hm-comprar lleva a la oferta (bloque 1)." },
+
+    { "type": "header", "content": "Colores y tipografía" },
+    { "type": "font_picker", "id": "fuente", "label": "Tipografía", "default": "poppins_n4" },
+    { "type": "color", "id": "color_acento", "label": "Color de marca", "default": "#6b3fc0" },
+    { "type": "color", "id": "pill_fondo", "label": "Fondo de la etiqueta (opcional)", "info": "Vacío = color de marca." },
+    { "type": "color", "id": "pill_texto", "label": "Texto de la etiqueta", "default": "#ffffff" },
+    { "type": "color", "id": "color_fondo", "label": "Fondo de la sección", "default": "#ffffff" },
+    { "type": "color", "id": "color_texto", "label": "Texto", "default": "#121116" },
+    { "type": "color", "id": "color_boton", "label": "Color del botón (opcional)" },
+    { "type": "color", "id": "color_boton_texto", "label": "Texto del botón (opcional)" },
+
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio arriba", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio abajo", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 }
+  ],
+  "blocks": [
+    {
+      "type": "punto", "name": "Punto",
+      "settings": [
+        { "type": "select", "id": "tipo", "label": "Tipo de ícono", "options": [ { "value": "emoji", "label": "Emoji" }, { "value": "icono", "label": "Ícono de línea" }, { "value": "ninguno", "label": "Sin ícono" } ], "default": "emoji" },
+        { "type": "text", "id": "emoji", "label": "Emoji", "default": "🧬" },
+        { "type": "select", "id": "icono", "label": "Ícono de línea", "options": [{"value": "check-circle", "label": "Check"}, {"value": "check", "label": "Tilde"}, {"value": "truck", "label": "Envío"}, {"value": "shield", "label": "Escudo / garantía"}, {"value": "card", "label": "Tarjeta / cuotas"}, {"value": "clock", "label": "Reloj"}, {"value": "leaf", "label": "Natural / hoja"}, {"value": "capsule", "label": "Cápsula"}, {"value": "flask", "label": "Laboratorio"}, {"value": "gift", "label": "Regalo"}, {"value": "lock", "label": "Pago seguro"}, {"value": "verified", "label": "Verificado"}, {"value": "bolt", "label": "Energía"}, {"value": "heart", "label": "Corazón"}, {"value": "users", "label": "Clientes"}, {"value": "medal", "label": "Medalla"}, {"value": "refresh", "label": "Devolución"}, {"value": "dna", "label": "ADN"}, {"value": "sparkles", "label": "Brillo"}, {"value": "calendar", "label": "Calendario"}, {"value": "droplet", "label": "Gota"}, {"value": "hair", "label": "Cabello"}, {"value": "stethoscope", "label": "Médico"}, {"value": "ban", "label": "Prohibido"}, {"value": "x-circle", "label": "Cruz"}, {"value": "map-pin", "label": "Ubicación"}, {"value": "percent", "label": "Descuento"}, {"value": "box", "label": "Paquete"}, {"value": "trend-up", "label": "Crecimiento"}, {"value": "star", "label": "Estrella"}, {"value": "sun", "label": "Sol"}, {"value": "moon", "label": "Luna"}], "default": "dna" },
+        { "type": "image_picker", "id": "imagen", "label": "Ícono propio (opcional)", "info": "Reemplaza al emoji o ícono." },
+        { "type": "text", "id": "titulo", "label": "Título", "default": "El problema: la DHT" },
+        { "type": "richtext", "id": "texto", "label": "Texto", "default": "<p>Texto del punto.</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "HM · DHT",
+      "blocks": [
+        { "type": "punto", "settings": { "emoji": "🧬", "icono": "dna", "titulo": "El problema: la DHT", "texto": "<p>Con los años, la DHT (dihidrotestosterona) se pega a los folículos y los va achicando. Cada ciclo el pelo sale más fino y más débil… hasta que deja de salir.</p>" } },
+        { "type": "punto", "settings": { "emoji": "🌿", "icono": "leaf", "titulo": "La solución: HAIR bloquea la DHT", "texto": "<p>Nuestra fórmula ayuda a bloquear la DHT y a mantener un equilibrio saludable, mientras nutre el folículo desde adentro con biotina, zinc, selenio, L-cistina y colágeno.</p>" } },
+        { "type": "punto", "settings": { "emoji": "💪", "icono": "trend-up", "titulo": "El impacto: más pelo y más grueso", "texto": "<p>Con menos DHT, los folículos se mantienen abiertos y nutridos: menos caída, pelo más grueso y con más densidad a largo plazo.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
