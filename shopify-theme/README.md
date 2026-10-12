@@ -102,18 +102,24 @@ Misma oferta que la del Bronzer, adaptada a HAIR: 3 packs (1, 2 y 3 frascos) + u
 3. Agregar al carrito abre el carrito lateral (Dawn y temas parecidos); si el theme no tiene, lleva a /cart.
 
 ### Descuentos para los packs (Shopify → Descuentos)
-Crear **2 descuentos automáticos**: **Crear descuento → Monto de descuento en productos → Descuento automático**.
+HAIR a **$59.900 por unidad**, una sola variante. Se crean 2 descuentos **automáticos**:
 
-| Nombre (lo ve el cliente) | Valor | Monto fijo | Se aplica a | Requisito mínimo | Pack resultante |
-|---|---|---|---|---|---|
-| `Pack 2 frascos -50%` | Monto fijo | **$21.810** | Productos específicos → HAIR | Cantidad mínima de artículos: **2** | 2 × $59.900 − $21.810 = **$97.990** |
-| `Pack 3x2` | Monto fijo | **$59.900** | Productos específicos → HAIR | Cantidad mínima de artículos: **3** | 3 × $59.900 − $59.900 = **$119.800** |
+**1) Pack 2 frascos — $97.990**
+- Crear descuento → **Monto de descuento en productos** → **Descuento automático**. Nombre: `Pack 2 frascos 50% OFF`.
+- Valor: **Monto fijo $10.905** → *Se aplica a:* Productos específicos → **HAIR**.
+- **NO** tildar "Aplicar el descuento solo una vez por pedido" (se descuenta $10.905 por frasco).
+- Requisitos mínimos: **Cantidad mínima de artículos: 2**.
+- 2 × ($59.900 − $10.905) = **$97.990**.
 
-En los dos:
-- Tildar **"Aplicar el descuento solo una vez por pedido"** (si no, Shopify descuenta el monto por cada frasco).
-- **Combinaciones:** no combinar con otros descuentos de productos (Shopify aplica solo el mejor: con 3 frascos aplica el de $59.900). Si tenés envío gratis por descuento, tildá **Descuentos de envío**.
-- Sin fecha de finalización (o la que quieras para la promo).
+**2) Pack 3x2 — $119.800**
+- Crear descuento → **Comprá X y llevate Y** → **Descuento automático**. Nombre: `3x2 HAIR`.
+- *El cliente compra:* **Cantidad mínima de artículos: 2** → Productos específicos → **HAIR**.
+- *El cliente obtiene:* **Cantidad: 1** → Productos específicos → **HAIR** → **Gratis**.
+- **Establecer un número máximo de usos por pedido: 1**.
+- 3 × $59.900 − $59.900 = **$119.800**.
 
-El upsell Multimagnesio **no** entra en estos descuentos: su precio ya es el rebajado del producto.
+**Combinaciones:** en los dos dejá **sin tildar** "Descuentos de productos" (que no se sumen entre sí). Con 3 frascos Shopify aplica el que más conviene (el 3x2). Si tenés envío gratis por descuento, tildá **Descuentos de envío**.
 
-Probalo antes de pautar: agregá cada pack al carrito y fijate que el checkout muestre $97.990 / $119.800.
+El upsell Multimagnesio no entra en estos descuentos: cobra el precio del producto.
+
+Probalo antes de pautar: agregá cada pack al carrito y fijate que el checkout muestre $97.990 (2 frascos) y $119.800 (3 frascos), y que con 1 HAIR + 1 Multimagnesio no se aplique ningún descuento.
