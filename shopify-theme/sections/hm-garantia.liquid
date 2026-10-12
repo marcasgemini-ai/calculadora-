@@ -37,10 +37,13 @@
   @media (min-width: 750px) { .hm-gf__wrap { padding: 0 32px; } }
 
   /* ===== Garantía ===== */
-  .hm-gf__g { background: var(--gf-g-bg); color: var(--gf-g-fg); padding-top: var(--gf-g-pt); }
-  .hm-gf__g-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; align-items: end; }
+  .hm-gf__g { background: var(--gf-g-bg); color: var(--gf-g-fg); padding: var(--gf-g-pt) 0 var(--gf-g-pb); }
+  .hm-gf__g-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 32px; align-items: center; }
+  .hm-gf--edge .hm-gf__g { padding-bottom: 0; }
+  .hm-gf--edge .hm-gf__g-grid { align-items: end; }
   @media (min-width: 990px) { .hm-gf__g-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; } }
-  .hm-gf__g-text { display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 520px; margin: 0 auto; padding-bottom: var(--gf-g-pt); }
+  .hm-gf__g-text { display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 520px; margin: 0 auto; }
+  .hm-gf--edge .hm-gf__g-text { padding-bottom: var(--gf-g-pb); }
   .hm-gf--no-img .hm-gf__g-grid { grid-template-columns: minmax(0, 1fr); }
   .hm-gf__badge { position: relative; width: var(--gf-badge); color: #fff; }
   .hm-gf__badge svg { width: 100%; height: auto; }
@@ -69,8 +72,9 @@
   .hm-gf__seal svg { width: 100%; height: auto; }
   @media (max-width: 989px) {
     .hm-gf--m-arriba .hm-gf__g-media { order: -1; }
-    .hm-gf__g-text { padding-bottom: 8px; }
-    .hm-gf--m-abajo .hm-gf__g-text { padding-bottom: 0; }
+    .hm-gf__g-grid { gap: 28px; }
+    .hm-gf--edge .hm-gf__g-text { padding-bottom: 0; }
+    .hm-gf--edge.hm-gf--m-arriba .hm-gf__g-text { padding-bottom: var(--gf-g-pb); }
     .hm-gf__seal { --gf-seal: 92px; left: 4%; }
     .hm-gf__person { max-width: min(var(--gf-img-w), 78%); margin-left: auto; margin-right: auto; }
   }
@@ -86,7 +90,7 @@
 
 <section
   id="hm-gf-{{ section.id }}"
-  class="hm-gf hm-gf--m-{{ s.mobile_imagen }}{% if s.boton_mayus %} hm-gf--upper{% endif %}{% unless has_img %} hm-gf--no-img{% endunless %}"
+  class="hm-gf hm-gf--m-{{ s.mobile_imagen }}{% if s.foto_al_borde and has_img %} hm-gf--edge{% endif %}{% if s.boton_mayus %} hm-gf--upper{% endif %}{% unless has_img %} hm-gf--no-img{% endunless %}"
   style="
     --gf-font: {{ hm_font_stack }};
     --gf-accent: {{ acc }};
@@ -94,7 +98,8 @@
     --gf-g-bg: {{ s.g_fondo }};
     --gf-g-fg: {{ s.g_texto }};
     --gf-g-muted: {{ s.g_texto | color_modify: 'alpha', 0.78 }};
-    --gf-g-pt: {{ s.g_espacio }}px;
+    --gf-g-pt: {{ s.padding_top }}px;
+    --gf-g-pb: {{ s.padding_bottom }}px;
     --gf-btn-bg: {{ s.color_boton | default: acc }};
     --gf-btn-fg: {{ s.color_boton_texto }};
     --gf-btn-radius: {{ s.redondeo_boton }}px;
@@ -269,6 +274,13 @@
       "default": "abajo"
     },
     {
+      "type": "checkbox",
+      "id": "foto_al_borde",
+      "label": "Foto pegada al borde de abajo",
+      "default": false,
+      "info": "Para fotos recortadas (PNG sin fondo) que \"salen\" desde abajo, estilo Revival."
+    },
+    {
       "type": "header",
       "content": "Colores y tipografía"
     },
@@ -395,13 +407,23 @@
     },
     {
       "type": "range",
-      "id": "g_espacio",
-      "label": "Espacio arriba y abajo",
+      "id": "padding_top",
+      "label": "Espacio arriba",
       "min": 0,
-      "max": 120,
+      "max": 140,
       "step": 4,
       "unit": "px",
-      "default": 40
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Espacio abajo",
+      "min": 0,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "default": 64
     }
   ],
   "presets": [
