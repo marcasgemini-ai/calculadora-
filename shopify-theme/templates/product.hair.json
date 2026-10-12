@@ -1,0 +1,213 @@
+{
+  "sections": {
+    "hm_oferta": {
+      "type": "hm-producto-hero",
+      "blocks": {
+        "tarjeta_1": {
+          "type": "tarjeta",
+          "settings": {
+            "titulo": "Garantía de 30 días",
+            "texto": "Si no te convence, te devolvemos la plata.",
+            "icono": "shield"
+          }
+        },
+        "tarjeta_2": {
+          "type": "tarjeta",
+          "settings": {
+            "titulo": "Envío protegido",
+            "texto": "¿Se perdió o llegó dañado? Te lo reenviamos.",
+            "icono": "box",
+            "valor": "$4.500",
+            "valor_texto": "GRATIS"
+          }
+        },
+        "tarjeta_3": {
+          "type": "tarjeta",
+          "settings": {
+            "titulo": "Envío gratis",
+            "texto": "En packs de 2 frascos o más.",
+            "icono": "truck",
+            "valor": "$6.900",
+            "valor_texto": "GRATIS"
+          }
+        },
+        "tarjeta_4": {
+          "type": "tarjeta",
+          "settings": {
+            "titulo": "3 cuotas sin interés",
+            "texto": "O 10% OFF pagando con transferencia.",
+            "icono": "card"
+          }
+        },
+        "rating_1": {
+          "type": "rating",
+          "settings": {}
+        },
+        "titulo_1": {
+          "type": "titulo",
+          "settings": {}
+        },
+        "texto_1": {
+          "type": "texto",
+          "settings": {}
+        },
+        "beneficio_1": {
+          "type": "beneficio",
+          "settings": {
+            "icono": "hair",
+            "texto": "Ayuda a reducir la caída del pelo"
+          }
+        },
+        "beneficio_2": {
+          "type": "beneficio",
+          "settings": {
+            "icono": "trend-up",
+            "texto": "Fortalece el pelo y favorece su crecimiento"
+          }
+        },
+        "beneficio_3": {
+          "type": "beneficio",
+          "settings": {
+            "icono": "dna",
+            "texto": "Nutre la raíz con 8 nutrientes clave"
+          }
+        },
+        "beneficio_4": {
+          "type": "beneficio",
+          "settings": {
+            "icono": "leaf",
+            "texto": "Sin gluten · 1 cápsula por día"
+          }
+        },
+        "precio_1": {
+          "type": "precio",
+          "settings": {}
+        },
+        "pack_1": {
+          "type": "pack",
+          "settings": {
+            "titulo": "Comprá 1 · 60 días",
+            "subtitulo": "Para empezar",
+            "variante": 1,
+            "frascos": 1
+          }
+        },
+        "pack_2": {
+          "type": "pack",
+          "settings": {
+            "titulo": "Comprá 2 · 120 días",
+            "etiqueta": "Más elegido",
+            "etiqueta_color": "marca",
+            "variante": 2,
+            "frascos": 2,
+            "preseleccionado": true
+          }
+        },
+        "pack_3": {
+          "type": "pack",
+          "settings": {
+            "titulo": "Comprá 3 · 180 días",
+            "etiqueta": "Tratamiento completo",
+            "etiqueta_color": "negro",
+            "variante": 3,
+            "frascos": 3
+          }
+        },
+        "pack_4": {
+          "type": "pack",
+          "settings": {
+            "titulo": "Comprá 6 · 12 meses",
+            "etiqueta": "Mejor precio",
+            "etiqueta_color": "naranja",
+            "variante": 4,
+            "frascos": 6
+          }
+        },
+        "regalos_1": {
+          "type": "regalos",
+          "settings": {}
+        },
+        "envio_1": {
+          "type": "envio",
+          "settings": {}
+        },
+        "boton_1": {
+          "type": "boton",
+          "settings": {}
+        },
+        "pagos_1": {
+          "type": "pagos",
+          "settings": {}
+        },
+        "social_1": {
+          "type": "social",
+          "settings": {}
+        },
+        "aviso_1": {
+          "type": "aviso",
+          "settings": {}
+        },
+        "acordeon_1": {
+          "type": "acordeon",
+          "settings": {
+            "titulo": "¿Qué es HAIR?",
+            "contenido": "<p>HAIR es un suplemento dietario en cápsulas, formulado para hombres, con vitaminas C, B5 y B6, biotina, zinc, selenio, L-cistina y colágeno tipo II. Le da a tu pelo, desde adentro, los nutrientes que necesita para crecer fuerte.</p>"
+          }
+        },
+        "acordeon_2": {
+          "type": "acordeon",
+          "settings": {
+            "titulo": "¿Qué tiene adentro?",
+            "contenido": "<ul><li><strong>Biotina:</strong> la vitamina del pelo. Contribuye a su mantenimiento normal.</li><li><strong>Zinc y selenio:</strong> minerales que contribuyen al mantenimiento normal del cabello.</li><li><strong>L-cistina:</strong> aminoácido azufrado, componente de la queratina.</li><li><strong>Colágeno tipo II:</strong> proteína estructural.</li><li><strong>Vitaminas C, B5 y B6:</strong> la vitamina C contribuye a la formación normal de colágeno.</li></ul><p>Sin gluten.</p>"
+          }
+        },
+        "acordeon_3": {
+          "type": "acordeon",
+          "settings": {
+            "titulo": "¿Cómo se toma?",
+            "contenido": "<p><strong>1 cápsula por día</strong> con agua, preferentemente con una comida. Cada frasco trae 60 cápsulas: te dura 60 días.</p><p>El pelo crece lento. Por eso recomendamos un tratamiento de 3 a 6 meses para ver resultados.</p>"
+          }
+        },
+        "acordeon_4": {
+          "type": "acordeon",
+          "settings": {
+            "titulo": "Envíos y devoluciones",
+            "contenido": "<p>Enviamos a todo el país. Despachamos en 24 hs hábiles y te pasamos el seguimiento.</p><p><strong>Envío gratis</strong> desde 2 frascos.</p><p>Tenés 30 días de garantía de satisfacción: si no te convence, te devolvemos la plata.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "tarjeta_1",
+        "tarjeta_2",
+        "tarjeta_3",
+        "tarjeta_4",
+        "rating_1",
+        "titulo_1",
+        "texto_1",
+        "beneficio_1",
+        "beneficio_2",
+        "beneficio_3",
+        "beneficio_4",
+        "precio_1",
+        "pack_1",
+        "pack_2",
+        "pack_3",
+        "pack_4",
+        "regalos_1",
+        "envio_1",
+        "boton_1",
+        "pagos_1",
+        "social_1",
+        "aviso_1",
+        "acordeon_1",
+        "acordeon_2",
+        "acordeon_3",
+        "acordeon_4"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "hm_oferta"
+  ]
+}

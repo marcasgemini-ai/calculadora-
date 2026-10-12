@@ -1,0 +1,953 @@
+{%- comment -%}
+  HM · Producto — Bloque 1: galería + oferta
+  Estructura de copy: Simple Revival · Oferta: Aurivita · Branding: DR.MEN HAIR
+
+  Cómo funciona la oferta:
+  - Cada bloque "Pack" apunta a una VARIANTE del producto (1 = primera, 2 = segunda...).
+  - Precio y precio tachado salen de Shopify (precio y "precio de comparación" de la variante).
+  - Si la variante no tiene precio de comparación, el tachado se calcula como
+    precio del pack 1 × frascos (ej: 3 frascos → 3 × $57.900).
+{%- endcomment -%}
+{%- render 'hm-assets' -%}
+
+{%- liquid
+  assign s = section.settings
+  assign cuotas = s.cuotas | default: 1
+  assign transfer_pct = s.transfer_pct | default: 0
+  assign transfer_mult = 100 | minus: transfer_pct
+  assign base_variant = product.selected_or_first_available_variant
+
+  assign sel_id = ''
+  assign first_pack_id = ''
+  for block in section.blocks
+    if block.type == 'pack'
+      if first_pack_id == ''
+        assign first_pack_id = block.id
+      endif
+      if block.settings.preseleccionado and sel_id == ''
+        assign sel_id = block.id
+      endif
+    endif
+  endfor
+  if sel_id == ''
+    assign sel_id = first_pack_id
+  endif
+
+  assign sel_variant = base_variant
+  assign sel_qty = 1
+  assign sel_price = base_variant.price | money_without_trailing_zeros
+  assign sel_compare = ''
+  assign sel_promo = ''
+  if base_variant.compare_at_price > base_variant.price
+    assign sel_compare = base_variant.compare_at_price | money_without_trailing_zeros
+    assign tmp = base_variant.compare_at_price | minus: base_variant.price | money_without_trailing_zeros
+    assign sel_promo = s.promo_label | replace: '[monto]', tmp
+  endif
+  assign tmp = base_variant.price | times: transfer_mult | divided_by: 10000 | times: 100
+  assign sel_transfer = tmp | money_without_trailing_zeros
+  assign tmp = base_variant.price | divided_by: cuotas | divided_by: 100 | times: 100
+  assign sel_cuota = tmp | money_without_trailing_zeros
+  assign sel_name = product.title
+  assign ref_unit = 0
+
+  assign image_ids = ''
+  for media in product.media
+    if media.media_type == 'image'
+      assign image_ids = image_ids | append: media.id | append: ','
+    endif
+  endfor
+  assign image_ids = image_ids | split: ','
+-%}
+
+{%- capture packs_html -%}
+  {%- assign pack_index = 0 -%}
+  {%- for block in section.blocks -%}
+    {%- if block.type != 'pack' -%}{%- continue -%}{%- endif -%}
+    {%- liquid
+      assign pack_index = pack_index | plus: 1
+      assign bs = block.settings
+      assign p = product
+      if bs.producto != blank
+        assign p = bs.producto
+      endif
+      assign vi = bs.variante | minus: 1
+      assign v = p.variants[vi]
+      if v == blank
+        assign v = p.selected_or_first_available_variant
+      endif
+      assign qty = bs.cantidad | default: 1
+      assign frascos = bs.frascos | default: 1
+      assign total = v.price | times: qty
+
+      if ref_unit == 0
+        assign ref_unit = total | divided_by: frascos
+      endif
+      assign compare = 0
+      if v.compare_at_price > v.price
+        assign compare = v.compare_at_price | times: qty
+      endif
+      assign ref_total = ref_unit | times: frascos
+      if bs.comparar_con_unitario and ref_total > compare
+        assign compare = ref_total
+      endif
+
+      assign compare_txt = ''
+      assign save_txt = ''
+      assign promo_txt = ''
+      if compare > total
+        assign compare_txt = compare | money_without_trailing_zeros
+        assign save_amount = compare | minus: total
+        assign save_amount_txt = save_amount | money_without_trailing_zeros
+        assign half = compare | divided_by: 2
+        assign pct = save_amount | times: 100 | plus: half | divided_by: compare
+        assign save_txt = s.save_label | replace: '[monto]', save_amount_txt | replace: '[pct]', pct
+        assign promo_txt = s.promo_label | replace: '[monto]', save_amount_txt | replace: '[pct]', pct
+      endif
+
+      assign total_txt = total | money_without_trailing_zeros
+      assign tmp = total | times: transfer_mult | divided_by: 10000 | times: 100
+      assign transfer_txt = tmp | money_without_trailing_zeros
+      assign tmp = total | divided_by: cuotas | divided_by: 100 | times: 100
+      assign cuota_txt = tmp | money_without_trailing_zeros
+
+      assign slide = ''
+      if v.featured_media != blank
+        assign fm_s = v.featured_media.id | append: ''
+        for img_id in image_ids
+          if img_id == fm_s
+            assign slide = forloop.index0
+          endif
+        endfor
+      endif
+
+      assign is_sel = false
+      if block.id == sel_id
+        assign is_sel = true
+        assign sel_variant = v
+        assign sel_qty = qty
+        assign sel_price = total_txt
+        assign sel_compare = compare_txt
+        assign sel_promo = promo_txt
+        assign sel_transfer = transfer_txt
+        assign sel_cuota = cuota_txt
+        assign sel_name = bs.titulo
+      endif
+    -%}
+    <label
+      class="hm-pack{% if is_sel %} is-selected{% endif %}{% unless v.available %} is-soldout{% endunless %}{% if bs.etiqueta != blank %} has-tag{% endif %}"
+      data-hm-pack
+      data-index="{{ pack_index }}"
+      data-slide="{{ slide }}"
+      data-variant-id="{{ v.id }}"
+      data-qty="{{ qty }}"
+      data-available="{{ v.available }}"
+      data-price="{{ total_txt | escape }}"
+      data-compare="{{ compare_txt | escape }}"
+      data-promo="{{ promo_txt | escape }}"
+      data-transfer="{{ transfer_txt | escape }}"
+      data-cuota="{{ cuota_txt | escape }}"
+      data-name="{{ bs.titulo | escape }}"
+      {{ block.shopify_attributes }}
+    >
+      <input type="radio" name="hm-pack-{{ section.id }}" value="{{ v.id }}" class="hm-visually-hidden" {% if is_sel %}checked{% endif %} {% unless v.available %}disabled{% endunless %}>
+      {%- if bs.etiqueta != blank -%}
+        <span class="hm-pack__tag hm-pack__tag--{{ bs.etiqueta_color }}">{{ bs.etiqueta }}</span>
+      {%- endif -%}
+      <span class="hm-pack__info">
+        <span class="hm-pack__title">{{ bs.titulo }}</span>
+        {%- if save_txt != '' -%}
+          <span class="hm-pack__save">{{ save_txt }}</span>
+        {%- elsif bs.subtitulo != blank -%}
+          <span class="hm-pack__sub">{{ bs.subtitulo }}</span>
+        {%- endif -%}
+        {%- unless v.available -%}<span class="hm-pack__soldout">{{ s.soldout_label }}</span>{%- endunless -%}
+      </span>
+      <span class="hm-pack__img">
+        {%- if bs.imagen != blank -%}
+          {{ bs.imagen | image_url: width: 300 | image_tag: loading: 'lazy', widths: '150, 300', sizes: '96px', alt: bs.titulo }}
+        {%- elsif v.featured_image != blank -%}
+          {{ v.featured_image | image_url: width: 300 | image_tag: loading: 'lazy', widths: '150, 300', sizes: '96px', alt: bs.titulo }}
+        {%- elsif p.featured_image != blank -%}
+          {{ p.featured_image | image_url: width: 300 | image_tag: loading: 'lazy', widths: '150, 300', sizes: '96px', alt: bs.titulo }}
+        {%- endif -%}
+      </span>
+      <span class="hm-pack__price">
+        <span class="hm-pack__now">{{ total_txt }}</span>
+        {%- if compare_txt != '' -%}<s class="hm-pack__was">{{ compare_txt }}</s>{%- endif -%}
+      </span>
+    </label>
+  {%- endfor -%}
+{%- endcapture -%}
+
+{%- capture overlay_html -%}
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'beneficio_foto' -%}
+      <div class="hm-gal__chip" {{ block.shopify_attributes }}>
+        {% render 'hm-icon', name: block.settings.icono %}
+        <span>{{ block.settings.texto }}</span>
+      </div>
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
+{%- capture cards_html -%}
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'tarjeta' -%}
+      {%- assign bs = block.settings -%}
+      <div class="hm-card2" {{ block.shopify_attributes }}>
+        <p class="hm-card2__title">{% render 'hm-icon', name: 'check-circle', class: 'hm-card2__check' %}{{ bs.titulo }}</p>
+        <div class="hm-card2__body">
+          <span class="hm-card2__img">
+            {%- if bs.imagen != blank -%}
+              {{ bs.imagen | image_url: width: 160 | image_tag: loading: 'lazy', widths: '80, 160', sizes: '56px', alt: '' }}
+            {%- else -%}
+              {% render 'hm-icon', name: bs.icono %}
+            {%- endif -%}
+          </span>
+          <span class="hm-card2__text">
+            {{ bs.texto }}
+            {%- if bs.valor != blank -%}
+              <span class="hm-card2__value"><s>{{ bs.valor }}</s> <strong>{{ bs.valor_texto }}</strong></span>
+            {%- endif -%}
+          </span>
+        </div>
+      </div>
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
+<section id="hm-{{ section.id }}" class="hm hm--{{ s.esquema }} hm-pdp" style="{% render 'hm-vars', s: s %}">
+  <div class="hm-container">
+    <div class="hm-pdp__grid">
+
+      {%- comment -%} ===================== GALERÍA ===================== {%- endcomment -%}
+      <div class="hm-pdp__media">
+        <div class="hm-gal hm-gal--{{ s.proporcion }}" data-hm-gallery>
+          <div class="hm-gal__main">
+            <div class="hm-gal__track" data-hm-track>
+              {%- assign img_count = 0 -%}
+              {%- for media in product.media -%}
+                {%- if media.media_type != 'image' -%}{%- continue -%}{%- endif -%}
+                {%- assign img_count = img_count | plus: 1 -%}
+                <div class="hm-gal__slide">
+                  {%- if img_count == 1 -%}
+                    {{ media.preview_image | image_url: width: 1400 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '400, 600, 800, 1000, 1200, 1400', sizes: '(min-width: 990px) 50vw, 100vw', alt: media.alt | default: product.title }}
+                    {%- if overlay_html != blank -%}<div class="hm-gal__chips">{{ overlay_html }}</div>{%- endif -%}
+                  {%- else -%}
+                    {{ media.preview_image | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '400, 600, 800, 1000, 1200, 1400', sizes: '(min-width: 990px) 50vw, 100vw', alt: media.alt | default: product.title }}
+                  {%- endif -%}
+                </div>
+              {%- endfor -%}
+              {%- if img_count == 0 -%}
+                <div class="hm-gal__slide">{{ 'product-1' | placeholder_svg_tag: 'hm-ph' }}</div>
+              {%- endif -%}
+            </div>
+            {%- if img_count > 1 -%}
+              <button type="button" class="hm-gal__arrow hm-gal__arrow--prev" data-hm-gprev aria-label="Imagen anterior">{% render 'hm-icon', name: 'arrow-left' %}</button>
+              <button type="button" class="hm-gal__arrow hm-gal__arrow--next" data-hm-gnext aria-label="Imagen siguiente">{% render 'hm-icon', name: 'arrow-right' %}</button>
+              <span class="hm-gal__count"><span data-hm-count>1</span>/{{ img_count }}</span>
+            {%- endif -%}
+          </div>
+
+          {%- if img_count > 1 -%}
+            <div class="hm-gal__thumbs" data-hm-thumbs>
+              {%- assign ti = 0 -%}
+              {%- for media in product.media -%}
+                {%- if media.media_type != 'image' -%}{%- continue -%}{%- endif -%}
+                <button type="button" class="hm-gal__thumb{% if ti == 0 %} is-active{% endif %}" data-hm-thumb="{{ ti }}" aria-label="Ver imagen {{ ti | plus: 1 }}">
+                  {{ media.preview_image | image_url: width: 240 | image_tag: loading: 'lazy', widths: '120, 240', sizes: '96px', alt: '' }}
+                </button>
+                {%- assign ti = ti | plus: 1 -%}
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        </div>
+
+        {%- if cards_html != blank -%}
+          <div class="hm-cards2 hm-cards2--media hm-cards2--m-{{ s.tarjetas_mobile }}">{{ cards_html }}</div>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} ===================== INFO + OFERTA ===================== {%- endcomment -%}
+      <div class="hm-pdp__info" id="hm-comprar" data-hm-buybox data-after="{{ s.despues_de_agregar }}">
+        {%- assign packs_rendered = false -%}
+        {%- for block in section.blocks -%}
+          {%- assign bs = block.settings -%}
+          {%- case block.type -%}
+
+            {%- when 'rating' -%}
+              <div class="hm-rating" {{ block.shopify_attributes }}>
+                {% render 'hm-stars', rating: bs.estrellas %}
+                <span>{{ bs.texto }}</span>
+                {%- if bs.link_texto != blank -%}
+                  <span class="hm-rating__sep" aria-hidden="true">|</span>
+                  <a href="{{ bs.link | default: '#' }}">{{ bs.link_texto }}</a>
+                {%- endif -%}
+              </div>
+
+            {%- when 'titulo' -%}
+              <div class="hm-pdp__heading" {{ block.shopify_attributes }}>
+                {%- if bs.marca != blank -%}<p class="hm-pdp__brand">{{ bs.marca }}</p>{%- endif -%}
+                <h1 class="hm-pdp__title">
+                  {%- if bs.titulo != blank -%}{{ bs.titulo }}{%- else -%}{{ product.title | escape }}{%- endif -%}
+                </h1>
+                {%- if bs.subtitulo != blank -%}<p class="hm-pdp__subtitle">{{ bs.subtitulo }}</p>{%- endif -%}
+              </div>
+
+            {%- when 'texto' -%}
+              <div class="hm-pdp__text" {{ block.shopify_attributes }}>{{ bs.texto }}</div>
+
+            {%- when 'beneficio' -%}
+              <p class="hm-feat" {{ block.shopify_attributes }}>
+                {% render 'hm-icon', name: bs.icono %}
+                <span>{{ bs.texto }}</span>
+              </p>
+
+            {%- when 'precio' -%}
+              <div class="hm-price" {{ block.shopify_attributes }}>
+                <span class="hm-price__now" data-hm-price>{{ sel_price }}</span>
+                <s class="hm-price__was" data-hm-compare {% if sel_compare == '' %}hidden{% endif %}>{{ sel_compare }}</s>
+                <span class="hm-price__promo" data-hm-promo {% if sel_promo == '' %}hidden{% endif %}>{{ sel_promo }}</span>
+              </div>
+
+            {%- when 'pack' -%}
+              {%- unless packs_rendered -%}
+                {%- assign packs_rendered = true -%}
+                <div class="hm-packs" role="radiogroup" aria-label="{{ s.packs_aria | escape }}">
+                  {{ packs_html }}
+                </div>
+              {%- endunless -%}
+
+            {%- when 'regalos' -%}
+              <div class="hm-gifts" {{ block.shopify_attributes }}>
+                <span class="hm-gifts__title">{{ bs.titulo }}</span>
+                <div class="hm-gifts__row">
+                  {%- for i in (1..3) -%}
+                    {%- assign gk = 'regalo_' | append: i -%}
+                    {%- assign gi = 'regalo_' | append: i | append: '_img' -%}
+                    {%- assign gd = 'regalo_' | append: i | append: '_desde' -%}
+                    {%- if bs[gk] != blank -%}
+                      {%- unless forloop.first -%}<span class="hm-gifts__plus" aria-hidden="true">+</span>{%- endunless -%}
+                      <div class="hm-gift" data-hm-gift data-from="{{ bs[gd] }}">
+                        <span class="hm-gift__img">
+                          {%- if bs[gi] != blank -%}
+                            {{ bs[gi] | image_url: width: 160 | image_tag: loading: 'lazy', widths: '80, 160', sizes: '56px', alt: bs[gk] }}
+                          {%- else -%}
+                            {% render 'hm-icon', name: 'gift' %}
+                          {%- endif -%}
+                          <span class="hm-gift__lock">{% render 'hm-icon', name: 'lock' %}</span>
+                        </span>
+                        <span class="hm-gift__state" data-on="{{ bs[gk] | escape }}" data-off="{{ bs.texto_bloqueado | escape }}">{{ bs.texto_bloqueado }}</span>
+                      </div>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              </div>
+
+            {%- when 'envio' -%}
+              <p class="hm-eta" data-hm-eta data-days="{{ bs.dias }}" {{ block.shopify_attributes }}>
+                {% render 'hm-icon', name: 'clock' %}
+                <span>{{ bs.texto | replace: '[fecha]', '<strong data-hm-eta-date></strong>' }}</span>
+              </p>
+
+            {%- when 'boton' -%}
+              <div class="hm-buy" id="hm-buy-{{ section.id }}" {{ block.shopify_attributes }}>
+                {%- form 'product', product, class: 'hm-buy__form', data-hm-form: '', novalidate: 'novalidate' -%}
+                  <input type="hidden" name="id" value="{{ sel_variant.id }}" data-hm-variant-id>
+                  <input type="hidden" name="quantity" value="{{ sel_qty }}" data-hm-qty>
+                  <button
+                    type="submit"
+                    class="hm-btn hm-btn--block hm-buy__btn"
+                    data-hm-submit
+                    data-label="{{ bs.texto | escape }}"
+                    data-soldout="{{ s.soldout_label | escape }}"
+                    {% unless sel_variant.available %}disabled{% endunless %}
+                  >
+                    <span class="hm-btn__label">{% if sel_variant.available %}{{ bs.texto }}{% else %}{{ s.soldout_label }}{% endif %}</span>
+                    <span class="hm-buy__pill">
+                      <s data-hm-compare {% if sel_compare == '' %}hidden{% endif %}>{{ sel_compare }}</s>
+                      <strong data-hm-price>{{ sel_price }}</strong>
+                      {%- if bs.garantia != blank -%}
+                        <span class="hm-buy__guar">{% render 'hm-icon', name: 'check-circle' %}{{ bs.garantia }}</span>
+                      {%- endif -%}
+                    </span>
+                    {% render 'hm-icon', name: 'arrow-right', class: 'hm-buy__arrow' %}
+                  </button>
+                {%- endform -%}
+                <p class="hm-buy__error" data-hm-error role="alert" hidden></p>
+                <p class="hm-buy__added" data-hm-added hidden>{% render 'hm-icon', name: 'check-circle' %} {{ s.added_label }}</p>
+              </div>
+
+            {%- when 'pagos' -%}
+              <div class="hm-pay" {{ block.shopify_attributes }}>
+                {%- if cuotas > 1 -%}
+                  <p>{% render 'hm-icon', name: 'card' %}<span>{{ bs.texto_cuotas | replace: '[n]', cuotas }} <strong data-hm-cuota>{{ sel_cuota }}</strong></span></p>
+                {%- endif -%}
+                {%- if transfer_pct > 0 -%}
+                  <p>{% render 'hm-icon', name: 'percent' %}<span><strong data-hm-transfer>{{ sel_transfer }}</strong> {{ bs.texto_transferencia | replace: '[pct]', transfer_pct }}</span></p>
+                {%- endif -%}
+                {%- if bs.texto_seguro != blank -%}
+                  <p>{% render 'hm-icon', name: 'lock' %}<span>{{ bs.texto_seguro }}</span></p>
+                {%- endif -%}
+              </div>
+
+            {%- when 'social' -%}
+              <div class="hm-social" {{ block.shopify_attributes }}>
+                <span class="hm-social__faces">
+                  {%- for i in (1..4) -%}
+                    {%- assign ak = 'avatar_' | append: i -%}
+                    {%- if bs[ak] != blank -%}{{ bs[ak] | image_url: width: 80 | image_tag: loading: 'lazy', widths: '40, 80', sizes: '32px', alt: '' }}{%- endif -%}
+                  {%- endfor -%}
+                  <span class="hm-social__ok">{% render 'hm-icon', name: 'check' %}</span>
+                </span>
+                <span class="hm-social__text">
+                  <strong>{{ bs.titulo }}</strong>
+                  {%- if bs.texto != blank -%}<span>{{ bs.texto }}</span>{%- endif -%}
+                </span>
+              </div>
+
+            {%- when 'aviso' -%}
+              <div class="hm-alert hm-alert--{{ bs.estilo }}" {{ block.shopify_attributes }}>
+                <p class="hm-alert__title">{% render 'hm-icon', name: bs.icono %}<strong>{{ bs.titulo }}</strong></p>
+                {%- if bs.texto != blank -%}<p class="hm-alert__text">{{ bs.texto }}</p>{%- endif -%}
+              </div>
+
+            {%- when 'acordeon' -%}
+              <details class="hm-acc" {% if bs.abierto %}open{% endif %} {{ block.shopify_attributes }}>
+                <summary class="hm-acc__sum">
+                  <span>{{ bs.titulo }}</span>
+                  <span class="hm-acc__icon" aria-hidden="true"></span>
+                </summary>
+                <div class="hm-acc__body">{{ bs.contenido }}</div>
+              </details>
+
+            {%- when 'espacio' -%}
+              <div class="hm-space" style="height: {{ bs.alto }}px" {{ block.shopify_attributes }}></div>
+
+          {%- endcase -%}
+        {%- endfor -%}
+        {%- if cards_html != blank and s.tarjetas_mobile == 'final' -%}
+          <div class="hm-cards2 hm-cards2--end">{{ cards_html }}</div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  {%- if s.sticky -%}
+    <div class="hm-sticky" data-hm-sticky data-target="hm-buy-{{ section.id }}" role="region" aria-label="{{ s.sticky_texto | escape }}">
+      <div class="hm-sticky__inner">
+        <div class="hm-sticky__product">
+          {%- if product.featured_image != blank -%}
+            {{ product.featured_image | image_url: width: 120 | image_tag: loading: 'lazy', widths: '60, 120', sizes: '44px', alt: '' }}
+          {%- endif -%}
+          <div>
+            <strong data-hm-pack-name>{{ sel_name }}</strong>
+            <span class="hm-sticky__price">
+              <span data-hm-price>{{ sel_price }}</span>
+              <s data-hm-compare {% if sel_compare == '' %}hidden{% endif %}>{{ sel_compare }}</s>
+            </span>
+          </div>
+        </div>
+        <button type="button" class="hm-btn hm-sticky__btn" data-hm-submit-external>
+          <span class="hm-btn__label">{{ s.sticky_texto }}</span>
+        </button>
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+<script>
+  (function () {
+    var root = document.getElementById('hm-{{ section.id }}');
+    if (!root || root.dataset.hmLocal) return;
+    root.dataset.hmLocal = '1';
+
+    /* Regalos: se desbloquean según el pack elegido */
+    function syncGifts() {
+      var sel = root.querySelector('[data-hm-pack].is-selected');
+      var idx = sel ? parseInt(sel.dataset.index, 10) : 1;
+      root.querySelectorAll('[data-hm-gift]').forEach(function (g) {
+        var on = idx >= parseInt(g.dataset.from || '1', 10);
+        g.classList.toggle('is-unlocked', on);
+        var st = g.querySelector('.hm-gift__state');
+        if (st) st.textContent = on ? st.dataset.on : st.dataset.off;
+      });
+      /* Promo del precio */
+      var promo = root.querySelector('[data-hm-promo]');
+      if (promo && sel) { promo.textContent = sel.dataset.promo; promo.hidden = !sel.dataset.promo; }
+    }
+    root.addEventListener('change', function (e) { if (e.target.closest('[data-hm-pack]')) syncGifts(); });
+    syncGifts();
+
+    /* Fecha estimada de entrega en días hábiles */
+    var meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+    root.querySelectorAll('[data-hm-eta]').forEach(function (el) {
+      var n = parseInt(el.dataset.days || '5', 10);
+      var d = new Date();
+      while (n > 0) { d.setDate(d.getDate() + 1); if (d.getDay() !== 0 && d.getDay() !== 6) n--; }
+      var out = el.querySelector('[data-hm-eta-date]');
+      if (out) out.textContent = d.getDate() + ' de ' + meses[d.getMonth()];
+    });
+  })();
+</script>
+
+{% stylesheet %}
+  /* ---------- Layout ---------- */
+  .hm-pdp__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .hm-pdp__media, .hm-pdp__info { min-width: 0; }
+  @media (min-width: 990px) {
+    .hm-pdp__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: start; }
+    .hm-pdp__media { position: sticky; top: 20px; }
+  }
+  @media (max-width: 749px) {
+    .hm-pdp > .hm-container { padding: 0; }
+    .hm-pdp__info, .hm-cards2 { padding: 0 16px; }
+  }
+
+  /* ---------- Galería ---------- */
+  .hm-gal__main { position: relative; overflow: hidden; background: var(--hm-card); border-radius: 8px; }
+  @media (max-width: 749px) { .hm-gal__main { border-radius: 0; } }
+  .hm-gal__track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .hm-gal__track::-webkit-scrollbar { display: none; }
+  .hm-gal__slide { position: relative; flex: 0 0 100%; scroll-snap-align: start; aspect-ratio: 1 / 1; }
+  .hm-gal--retrato .hm-gal__slide { aspect-ratio: 4 / 5; }
+  .hm-gal__slide > img, .hm-gal__slide > svg { width: 100%; height: 100%; object-fit: cover; }
+  .hm-gal__arrow { position: absolute; top: 50%; z-index: 2; width: 38px; height: 38px; margin-top: -19px; border: 0; border-radius: 50%; background: rgba(255,255,255,.92); color: #121116; display: grid; place-items: center; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,.12); opacity: 0; transition: opacity .2s; }
+  .hm-gal__arrow svg { width: 17px; height: 17px; }
+  .hm-gal__arrow--prev { left: 12px; }
+  .hm-gal__arrow--next { right: 12px; }
+  .hm-gal__main:hover .hm-gal__arrow, .hm-gal__arrow:focus-visible { opacity: 1; }
+  .hm-gal__count { position: absolute; right: 12px; bottom: 12px; z-index: 2; background: rgba(18,17,22,.7); color: #fff; font-size: 12px; font-weight: 600; padding: 4px 9px; border-radius: 999px; font-variant-numeric: tabular-nums; }
+  @media (hover: none) { .hm-gal__arrow { display: none; } }
+
+  .hm-gal__chips { position: absolute; z-index: 1; top: 10px; right: 10px; width: 27%; display: grid; gap: 8px; }
+  .hm-gal__chip { display: grid; justify-items: center; gap: 6px; text-align: center; background: rgba(255,255,255,.95); color: #121116; border-radius: 8px; padding: 12px 6px; font-size: 12px; line-height: 1.2; font-weight: 600; }
+  .hm-gal__chip svg { width: 24px; height: 24px; color: var(--hm-accent); }
+  @media (max-width: 749px) { .hm-gal__chip { font-size: 10px; padding: 8px 4px; } .hm-gal__chip svg { width: 18px; height: 18px; } }
+
+  .hm-gal__thumbs { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin-top: 10px; }
+  .hm-gal__thumbs::-webkit-scrollbar { display: none; }
+  @media (max-width: 749px) { .hm-gal__thumbs { padding: 0 16px; } }
+  .hm-gal__thumb { flex: 0 0 calc((100% - 32px) / 5); min-width: 60px; aspect-ratio: 1; padding: 0; border: 2px solid transparent; border-radius: 6px; overflow: hidden; cursor: pointer; background: var(--hm-card); transition: border-color .2s; }
+  .hm-gal__thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .hm-gal__thumb.is-active { border-color: var(--hm-accent); }
+
+  /* Tarjetas debajo de la galería (estilo Revival) */
+  .hm-cards2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; margin-top: 14px; }
+  .hm-cards2--end { margin-top: 24px !important; }
+  @media (min-width: 990px) { .hm-cards2--end { display: none; } }
+  @media (max-width: 989px) { .hm-cards2--m-final, .hm-cards2--m-ocultar { display: none; } }
+  @media (max-width: 749px) { .hm-pdp__info > .hm-cards2--end { padding: 0; } }
+  .hm-card2 { border: 1px solid color-mix(in srgb, var(--hm-accent) 35%, var(--hm-line)); border-radius: 8px; padding: 12px; background: var(--hm-bg); }
+  .hm-card2__title { display: flex; align-items: center; gap: 6px; margin: 0 0 8px; font-size: 13.5px; font-weight: 700; line-height: 1.2; }
+  .hm-card2__check { width: 18px; height: 18px; fill: var(--hm-accent); stroke: #fff; flex: none; }
+  .hm-card2__body { display: flex; gap: 10px; align-items: flex-start; }
+  .hm-card2__img { width: 48px; height: 48px; flex: none; display: grid; place-items: center; border-radius: 8px; background: color-mix(in srgb, var(--hm-accent) 8%, var(--hm-bg)); color: var(--hm-accent); overflow: hidden; }
+  .hm-card2__img img { width: 100%; height: 100%; object-fit: contain; }
+  .hm-card2__text { font-size: 12.5px; line-height: 1.4; color: var(--hm-muted); }
+  .hm-card2__value { display: block; margin-top: 4px; font-size: 12.5px; }
+  .hm-card2__value strong { color: var(--hm-accent); font-weight: 700; }
+  @media (max-width: 749px) { .hm-card2__img { display: none; } .hm-rating { font-size: 13px; } }
+
+  /* ---------- Info ---------- */
+  .hm-pdp__info > * + * { margin-top: 14px; }
+  .hm-pdp__info > .hm-feat + .hm-feat { margin-top: 8px; }
+  .hm-pdp__info > .hm-pdp__text + .hm-feat { margin-top: 16px; }
+  .hm-pdp__info > .hm-acc + .hm-acc { margin-top: 0; }
+  .hm-pdp__info > .hm-space { margin-top: 0; }
+
+  .hm-rating { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; font-size: 14px; }
+  .hm-rating .hm-stars svg { width: 17px; height: 17px; }
+  .hm-rating__sep { color: var(--hm-line); }
+  .hm-rating a { color: var(--hm-fg); text-underline-offset: 3px; }
+
+  .hm-pdp__heading { margin-top: 8px !important; }
+  .hm-pdp__brand { margin: 0 0 4px; font-size: 13px; color: var(--hm-muted); }
+  .hm-pdp__title { margin: 0; font-family: var(--hm-font-body); font-weight: 700; font-size: clamp(26px, 3vw, 32px); line-height: 1.15; letter-spacing: -.01em; color: var(--hm-fg); }
+  .hm-pdp__title em, .hm-pdp__subtitle em { font-style: normal; color: var(--hm-accent); }
+  .hm-pdp__subtitle { margin: 6px 0 0; font-size: clamp(18px, 2vw, 20px); font-weight: 600; line-height: 1.3; }
+  .hm-pdp__text { font-size: 15px; line-height: 1.55; color: var(--hm-muted); }
+  .hm-pdp__text strong { color: var(--hm-fg); }
+  .hm-pdp__text p { margin: 0; }
+
+  .hm-feat { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 0; font-size: 15px; line-height: 1.4; color: var(--hm-accent); }
+  .hm-feat svg { width: 20px; height: 20px; flex: none; }
+  .hm-feat span { color: var(--hm-fg); }
+
+  /* ---------- Precio ---------- */
+  .hm-price { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding-top: 16px; border-top: 1px solid var(--hm-line); margin-top: 18px !important; }
+  .hm-price__now { font-size: 26px; font-weight: 700; line-height: 1; color: var(--hm-accent); }
+  .hm-price__was { font-size: 18px; color: var(--hm-muted); }
+  .hm-price__promo { font-size: 13px; font-weight: 600; color: #fff; background: var(--hm-accent); padding: 6px 10px; border-radius: 6px; }
+
+  /* ---------- Packs ---------- */
+  .hm-packs { display: grid; gap: 12px; }
+  .hm-pack {
+    position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 88px auto; align-items: center; gap: 12px;
+    min-height: 84px; padding: 12px 16px; cursor: pointer;
+    background: var(--hm-bg); border: 1px solid var(--hm-line); border-radius: 8px;
+    transition: border-color .15s, background .15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .hm-pack.has-tag { margin-top: 6px; }
+  .hm-pack:hover { border-color: color-mix(in srgb, var(--hm-accent) 55%, var(--hm-line)); }
+  .hm-pack.is-selected { border-color: var(--hm-accent); box-shadow: inset 0 0 0 1px var(--hm-accent); background: color-mix(in srgb, var(--hm-accent) 6%, var(--hm-bg)); }
+  .hm-pack:focus-within { outline: 2px solid var(--hm-accent); outline-offset: 2px; }
+  .hm-pack.is-soldout { opacity: .5; cursor: not-allowed; }
+  .hm-pack__tag { position: absolute; top: -11px; right: 12px; font-size: 11.5px; font-weight: 700; line-height: 1; padding: 5px 9px; border-radius: 4px; color: #fff; background: var(--hm-accent); white-space: nowrap; }
+  .hm-pack__tag--negro { background: #121116; }
+  .hm-pack__tag--naranja { background: #e07b00; }
+  .hm-pack__tag--verde { background: #1f9d55; }
+  .hm-pack__info { display: grid; gap: 3px; min-width: 0; }
+  .hm-pack__title { font-size: 15px; font-weight: 700; line-height: 1.25; }
+  .hm-pack__save { font-size: 13px; font-weight: 600; color: var(--hm-accent); }
+  .hm-pack__sub { font-size: 13px; color: var(--hm-muted); }
+  .hm-pack__soldout { font-size: 12px; font-weight: 700; color: #c0392b; }
+  .hm-pack__img { width: 88px; height: 60px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .hm-pack__img img { height: 100%; width: 100%; object-fit: contain; }
+  .hm-pack__price { display: grid; justify-items: end; gap: 2px; text-align: right; }
+  .hm-pack__now { font-size: 16px; font-weight: 700; white-space: nowrap; }
+  .hm-pack__was { font-size: 13px; color: var(--hm-muted); white-space: nowrap; }
+  @media (max-width: 400px) {
+    .hm-pack { grid-template-columns: minmax(0, 1fr) 64px auto; gap: 8px; padding: 12px; }
+    .hm-pack__img { width: 64px; height: 52px; }
+    .hm-pack__title { font-size: 14px; }
+  }
+
+  /* ---------- Regalos ---------- */
+  .hm-gifts { position: relative; border: 1px solid var(--hm-line); border-radius: 8px; padding: 22px 12px 12px; margin-top: 22px !important; }
+  .hm-gifts__title { position: absolute; top: -11px; left: 12px; background: color-mix(in srgb, var(--hm-accent) 10%, var(--hm-bg)); color: var(--hm-accent); border: 1px solid color-mix(in srgb, var(--hm-accent) 25%, transparent); font-size: 11.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 4px 8px; border-radius: 4px; }
+  .hm-gifts__row { display: flex; align-items: center; justify-content: space-around; gap: 6px; }
+  .hm-gifts__plus { color: var(--hm-muted); font-size: 14px; }
+  .hm-gift { display: grid; justify-items: center; gap: 6px; text-align: center; flex: 1; min-width: 0; }
+  .hm-gift__img { position: relative; width: 56px; height: 56px; border-radius: 8px; background: var(--hm-card); color: var(--hm-accent); display: grid; place-items: center; overflow: hidden; }
+  .hm-gift__img img { width: 100%; height: 100%; object-fit: cover; }
+  .hm-gift__lock { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(255,255,255,.7); color: #121116; transition: opacity .25s; }
+  .hm-gift__lock svg { width: 18px; height: 18px; }
+  .hm-gift:not(.is-unlocked) .hm-gift__img > img, .hm-gift:not(.is-unlocked) .hm-gift__img > svg { filter: blur(2px) grayscale(1); opacity: .6; }
+  .hm-gift.is-unlocked .hm-gift__lock { opacity: 0; }
+  .hm-gift__state { font-size: 12px; font-weight: 600; line-height: 1.2; color: var(--hm-muted); }
+  .hm-gift.is-unlocked .hm-gift__state { color: var(--hm-fg); }
+
+  /* ---------- Fecha de entrega ---------- */
+  .hm-eta { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 0; padding: 10px 12px; border-radius: 8px; background: color-mix(in srgb, var(--hm-accent) 8%, var(--hm-bg)); font-size: 14px; text-align: center; }
+  .hm-eta svg { width: 18px; height: 18px; color: var(--hm-accent); flex: none; }
+  .hm-eta strong { text-decoration: underline; text-underline-offset: 3px; }
+
+  /* ---------- Botón ---------- */
+  .hm-buy__form { margin: 0; }
+  .hm-pdp .hm-buy__btn { justify-content: space-between; min-height: 56px; padding: 0 14px 0 18px; border-radius: 8px; font-size: 16px; gap: 10px; }
+  .hm-pdp .hm-buy__btn .hm-btn__label { font-weight: 600; white-space: nowrap; }
+  .hm-buy__pill { display: inline-flex; align-items: center; gap: 8px; margin-left: auto; padding: 6px 10px; border: 1px solid rgba(255,255,255,.35); border-radius: 6px; font-size: 14px; white-space: nowrap; }
+  .hm-buy__pill s { opacity: .7; font-size: 13px; }
+  .hm-buy__guar { display: inline-flex; align-items: center; gap: 4px; padding-left: 8px; border-left: 1px solid rgba(255,255,255,.35); font-size: 13px; }
+  .hm-buy__guar svg { width: 15px; height: 15px; }
+  .hm-buy__arrow { width: 18px; height: 18px; flex: none; }
+  .hm-pdp .hm-buy__btn[disabled] { background: #9b97a5; cursor: not-allowed; }
+  @media (max-width: 520px) { .hm-buy__guar { display: none; } }
+  @media (max-width: 360px) { .hm-buy__pill s { display: none; } .hm-buy__arrow { display: none; } }
+  .hm-buy__error { color: #c0392b; font-size: 13.5px; text-align: center; margin: 8px 0 0; }
+  .hm-buy__added { display: flex; align-items: center; justify-content: center; gap: 6px; color: var(--hm-ok); font-size: 14px; font-weight: 600; margin: 8px 0 0; }
+
+  /* ---------- Pagos ---------- */
+  .hm-pay { display: grid; justify-items: center; gap: 4px; margin-top: 10px !important; }
+  .hm-pay p { display: flex; align-items: center; gap: 6px; margin: 0; font-size: 13px; color: var(--hm-muted); }
+  .hm-pay svg { width: 15px; height: 15px; }
+  .hm-pay strong { color: var(--hm-fg); }
+
+  /* ---------- Prueba social ---------- */
+  .hm-social { display: flex; align-items: center; gap: 12px; padding: 8px 14px 8px 8px; border-radius: 999px; background: var(--hm-card); margin-top: 18px !important; }
+  .hm-social__faces { position: relative; display: flex; flex: none; min-width: 32px; min-height: 32px; }
+  .hm-social__faces img { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--hm-bg); object-fit: cover; margin-left: -10px; }
+  .hm-social__faces img:first-child { margin-left: 0; }
+  .hm-social__ok { position: absolute; right: -4px; top: -4px; width: 16px; height: 16px; border-radius: 50%; background: var(--hm-accent); color: #fff; display: grid; place-items: center; }
+  .hm-social__ok svg { width: 10px; height: 10px; stroke-width: 3.5; }
+  .hm-social__text { display: grid; font-size: 12.5px; line-height: 1.3; color: var(--hm-muted); }
+  .hm-social__text strong { font-size: 13.5px; color: var(--hm-fg); }
+
+  /* ---------- Aviso ---------- */
+  .hm-alert { border-radius: 8px; padding: 12px 14px; font-size: 13px; line-height: 1.45; }
+  .hm-alert__title { display: flex; align-items: center; gap: 6px; margin: 0 0 4px; font-size: 13px; }
+  .hm-alert__title svg { width: 16px; height: 16px; flex: none; }
+  .hm-alert__text { margin: 0; }
+  .hm-alert--alerta { background: #fff5f5; border: 1px dashed #e8a0a0; color: #7a2323; }
+  .hm-alert--alerta .hm-alert__title { color: #c62828; }
+  .hm-alert--info { background: color-mix(in srgb, var(--hm-accent) 6%, var(--hm-bg)); border: 1px dashed color-mix(in srgb, var(--hm-accent) 40%, transparent); }
+  .hm-alert--info .hm-alert__title { color: var(--hm-accent); }
+
+  /* ---------- Desplegables ---------- */
+  .hm-acc { border-bottom: 1px solid var(--hm-line); }
+  .hm-pdp__info > :not(.hm-acc) + .hm-acc { border-top: 1px solid var(--hm-line); margin-top: 22px; }
+  .hm-acc__sum { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 15px 2px; cursor: pointer; font-size: 15px; font-weight: 600; }
+  .hm-acc__sum::-webkit-details-marker { display: none; }
+  .hm-acc__icon { position: relative; width: 12px; height: 12px; flex: none; color: var(--hm-accent); }
+  .hm-acc__icon::before, .hm-acc__icon::after { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 2px; margin-top: -1px; background: currentColor; border-radius: 2px; transition: transform .2s ease; }
+  .hm-acc__icon::after { transform: rotate(90deg); }
+  .hm-acc[open] .hm-acc__icon::after { transform: rotate(0deg); }
+  .hm-acc__body { padding: 0 2px 16px; font-size: 14.5px; line-height: 1.55; color: var(--hm-muted); }
+  .hm-acc__body p { margin: 0 0 .6em; }
+  .hm-acc__body ul { margin: 0 0 .6em; padding-left: 1.1em; }
+  .hm-acc__body li + li { margin-top: 4px; }
+  .hm-acc__body strong { color: var(--hm-fg); }
+
+  /* ---------- Barra fija ---------- */
+  .hm-sticky {
+    position: fixed; z-index: 60; left: 0; right: 0; bottom: 0;
+    background: var(--hm-bg); border-top: 1px solid var(--hm-line);
+    transform: translateY(110%); visibility: hidden; transition: transform .25s ease, visibility 0s .25s;
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+  }
+  .hm-sticky.is-visible { transform: none; visibility: visible; transition: transform .25s ease; box-shadow: 0 -4px 20px rgba(0,0,0,.08); }
+  .hm-sticky__inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .hm-sticky__product { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .hm-sticky__product img { width: 44px; height: 44px; border-radius: 6px; object-fit: cover; flex: none; }
+  .hm-sticky__product > div { min-width: 0; }
+  .hm-sticky__product strong { display: block; font-size: 13px; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .hm-sticky__price { display: flex; gap: 6px; align-items: baseline; font-weight: 700; font-size: 15px; color: var(--hm-accent); }
+  .hm-sticky__price s { font-weight: 400; font-size: 12px; color: var(--hm-muted); }
+  .hm-pdp .hm-sticky__btn { min-height: 46px; padding: 0 20px; font-size: 15px; border-radius: 8px; flex: none; }
+  @media (min-width: 990px) {
+    .hm-sticky { top: 0; bottom: auto; transform: translateY(-110%); border-top: 0; border-bottom: 1px solid var(--hm-line); padding: 10px 32px; }
+    .hm-sticky.is-visible { box-shadow: 0 4px 20px rgba(0,0,0,.06); }
+    .hm-pdp .hm-sticky__btn { min-width: 240px; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "HM · Producto (oferta)",
+  "tag": "div",
+  "class": "hm-section-pdp",
+  "enabled_on": { "templates": ["product"] },
+  "settings": [
+    { "type": "header", "content": "Galería" },
+    { "type": "paragraph", "content": "Las fotos salen del producto (admin → Productos → Multimedia)." },
+    {
+      "type": "select", "id": "proporcion", "label": "Formato de las fotos",
+      "options": [ { "value": "cuadrado", "label": "Cuadrado (1:1)" }, { "value": "retrato", "label": "Vertical (4:5)" } ],
+      "default": "cuadrado"
+    },
+
+    {
+      "type": "select", "id": "tarjetas_mobile", "label": "Tarjetas bajo la galería en celular",
+      "options": [ { "value": "final", "label": "Al final de la info (recomendado)" }, { "value": "galeria", "label": "Debajo de la galería" }, { "value": "ocultar", "label": "Ocultar" } ],
+      "default": "final"
+    },
+
+    { "type": "header", "content": "Oferta" },
+    { "type": "text", "id": "save_label", "label": "Ahorro en cada pack", "default": "Ahorrás [monto]", "info": "[monto] = ahorro en pesos · [pct] = porcentaje" },
+    { "type": "text", "id": "promo_label", "label": "Etiqueta junto al precio", "default": "Promo de lanzamiento: ¡Ahorrás [monto]!", "info": "[monto] = ahorro en pesos · [pct] = porcentaje" },
+    { "type": "text", "id": "packs_aria", "label": "Nombre del selector (accesibilidad)", "default": "Elegí tu pack" },
+    { "type": "text", "id": "soldout_label", "label": "Texto sin stock", "default": "Sin stock" },
+
+    { "type": "header", "content": "Cuotas y transferencia" },
+    { "type": "number", "id": "cuotas", "label": "Cuotas sin interés", "default": 3, "info": "Para calcular el valor de la cuota. Poné 1 para ocultar." },
+    { "type": "range", "id": "transfer_pct", "label": "Descuento por transferencia", "min": 0, "max": 30, "step": 1, "unit": "%", "default": 10, "info": "Poné 0 para ocultar. Tiene que coincidir con el descuento real del checkout." },
+
+    { "type": "header", "content": "Al agregar al carrito" },
+    {
+      "type": "select", "id": "despues_de_agregar", "label": "Después de tocar el botón",
+      "options": [
+        { "value": "checkout", "label": "Ir directo al checkout" },
+        { "value": "cart", "label": "Ir al carrito" },
+        { "value": "stay", "label": "Quedarse en la página" }
+      ],
+      "default": "checkout"
+    },
+    { "type": "text", "id": "added_label", "label": "Mensaje al agregar (si se queda en la página)", "default": "¡Listo! Lo agregamos a tu carrito." },
+
+    { "type": "header", "content": "Barra de compra fija" },
+    { "type": "checkbox", "id": "sticky", "label": "Mostrar al scrollear", "default": true },
+    { "type": "text", "id": "sticky_texto", "label": "Texto del botón", "default": "Agregar al carrito" },
+
+    {"type": "header", "content": "Diseño"},
+    {"type": "select", "id": "esquema", "label": "Fondo", "options": [{"value": "claro", "label": "Blanco"}, {"value": "suave", "label": "Lila suave"}, {"value": "oscuro", "label": "Negro"}, {"value": "acento", "label": "Violeta (marca)"}], "default": "claro"},
+    {"type": "color", "id": "color_acento", "label": "Color de marca", "default": "#7b4bc9"},
+    {"type": "checkbox", "id": "usar_fuentes_theme", "label": "Usar tipografías del theme", "default": false},
+    {"type": "range", "id": "padding_top", "label": "Espacio arriba", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 24},
+    {"type": "range", "id": "padding_bottom", "label": "Espacio abajo", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48}
+  ],
+  "blocks": [
+    {
+      "type": "tarjeta", "name": "Tarjeta bajo la galería", "limit": 4,
+      "settings": [
+        { "type": "text", "id": "titulo", "label": "Título", "default": "Garantía de 30 días" },
+        { "type": "text", "id": "texto", "label": "Texto", "default": "Si no te convence, te devolvemos la plata." },
+        { "type": "select", "id": "icono", "label": "Ícono", "options": [{"value": "check-circle", "label": "Check"}, {"value": "check", "label": "Tilde"}, {"value": "truck", "label": "Envío"}, {"value": "shield", "label": "Escudo / garantía"}, {"value": "card", "label": "Tarjeta / cuotas"}, {"value": "clock", "label": "Reloj"}, {"value": "leaf", "label": "Natural / hoja"}, {"value": "capsule", "label": "Cápsula"}, {"value": "flask", "label": "Laboratorio"}, {"value": "gift", "label": "Regalo"}, {"value": "lock", "label": "Pago seguro"}, {"value": "verified", "label": "Verificado"}, {"value": "bolt", "label": "Energía"}, {"value": "heart", "label": "Corazón"}, {"value": "users", "label": "Clientes"}, {"value": "medal", "label": "Medalla"}, {"value": "refresh", "label": "Devolución"}, {"value": "dna", "label": "ADN"}, {"value": "sparkles", "label": "Brillo"}, {"value": "calendar", "label": "Calendario"}, {"value": "droplet", "label": "Gota"}, {"value": "hair", "label": "Cabello"}, {"value": "stethoscope", "label": "Médico"}, {"value": "ban", "label": "Prohibido"}, {"value": "x-circle", "label": "Cruz"}, {"value": "map-pin", "label": "Ubicación"}, {"value": "percent", "label": "Descuento"}, {"value": "box", "label": "Paquete"}, {"value": "trend-up", "label": "Crecimiento"}, {"value": "star", "label": "Estrella"}, {"value": "sun", "label": "Sol"}, {"value": "moon", "label": "Luna"}], "default": "shield" },
+        { "type": "image_picker", "id": "imagen", "label": "Imagen (reemplaza al ícono)" },
+        { "type": "text", "id": "valor", "label": "Valor tachado (opcional)", "info": "Ej: $4.500" },
+        { "type": "text", "id": "valor_texto", "label": "Texto junto al valor", "default": "GRATIS" }
+      ]
+    },
+    {
+      "type": "beneficio_foto", "name": "Beneficio sobre la foto", "limit": 4,
+      "settings": [
+        { "type": "select", "id": "icono", "label": "Ícono", "options": [{"value": "check-circle", "label": "Check"}, {"value": "check", "label": "Tilde"}, {"value": "truck", "label": "Envío"}, {"value": "shield", "label": "Escudo / garantía"}, {"value": "card", "label": "Tarjeta / cuotas"}, {"value": "clock", "label": "Reloj"}, {"value": "leaf", "label": "Natural / hoja"}, {"value": "capsule", "label": "Cápsula"}, {"value": "flask", "label": "Laboratorio"}, {"value": "gift", "label": "Regalo"}, {"value": "lock", "label": "Pago seguro"}, {"value": "verified", "label": "Verificado"}, {"value": "bolt", "label": "Energía"}, {"value": "heart", "label": "Corazón"}, {"value": "users", "label": "Clientes"}, {"value": "medal", "label": "Medalla"}, {"value": "refresh", "label": "Devolución"}, {"value": "dna", "label": "ADN"}, {"value": "sparkles", "label": "Brillo"}, {"value": "calendar", "label": "Calendario"}, {"value": "droplet", "label": "Gota"}, {"value": "hair", "label": "Cabello"}, {"value": "stethoscope", "label": "Médico"}, {"value": "ban", "label": "Prohibido"}, {"value": "x-circle", "label": "Cruz"}, {"value": "map-pin", "label": "Ubicación"}, {"value": "percent", "label": "Descuento"}, {"value": "box", "label": "Paquete"}, {"value": "trend-up", "label": "Crecimiento"}, {"value": "star", "label": "Estrella"}, {"value": "sun", "label": "Sol"}, {"value": "moon", "label": "Luna"}], "default": "hair" },
+        { "type": "text", "id": "texto", "label": "Texto (corto)", "default": "Fortalece el pelo" }
+      ]
+    },
+    {
+      "type": "rating", "name": "Estrellas", "limit": 1,
+      "settings": [
+        { "type": "range", "id": "estrellas", "label": "Estrellas", "min": 3, "max": 5, "step": 0.1, "default": 4.8 },
+        { "type": "inline_richtext", "id": "texto", "label": "Texto", "default": "Calificación: <strong>4.8</strong> (Excelente)" },
+        { "type": "text", "id": "link_texto", "label": "Texto del link", "default": "Más de 1.000 reseñas", "info": "Usá tu número real de reseñas." },
+        { "type": "text", "id": "link", "label": "Link", "default": "#hm-resenas" }
+      ]
+    },
+    {
+      "type": "titulo", "name": "Título", "limit": 1,
+      "settings": [
+        { "type": "text", "id": "marca", "label": "Marca", "default": "DR.MEN®" },
+        { "type": "inline_richtext", "id": "titulo", "label": "Título", "default": "Activador capilar <em>HAIR</em>", "info": "Vacío = nombre del producto. La cursiva se pinta con el color de marca." },
+        { "type": "inline_richtext", "id": "subtitulo", "label": "Subtítulo", "default": "Menos caída de pelo, <em>crecimiento más saludable</em>" }
+      ]
+    },
+    {
+      "type": "texto", "name": "Texto",
+      "settings": [
+        { "type": "richtext", "id": "texto", "label": "Texto", "default": "<p><strong>Menos pelo en la almohada y en la ducha. Un pelo más fuerte y con más cuerpo, con garantía de devolución de 30 días.</strong> Una fórmula con 8 nutrientes (biotina, zinc, selenio, L-cistina, colágeno tipo II y vitaminas C, B5 y B6) que nutre el folículo desde adentro para un pelo más sano y abundante, sin químicos agresivos.*</p>" }
+      ]
+    },
+    {
+      "type": "beneficio", "name": "Beneficio con ícono",
+      "settings": [
+        { "type": "select", "id": "icono", "label": "Ícono", "options": [{"value": "check-circle", "label": "Check"}, {"value": "check", "label": "Tilde"}, {"value": "truck", "label": "Envío"}, {"value": "shield", "label": "Escudo / garantía"}, {"value": "card", "label": "Tarjeta / cuotas"}, {"value": "clock", "label": "Reloj"}, {"value": "leaf", "label": "Natural / hoja"}, {"value": "capsule", "label": "Cápsula"}, {"value": "flask", "label": "Laboratorio"}, {"value": "gift", "label": "Regalo"}, {"value": "lock", "label": "Pago seguro"}, {"value": "verified", "label": "Verificado"}, {"value": "bolt", "label": "Energía"}, {"value": "heart", "label": "Corazón"}, {"value": "users", "label": "Clientes"}, {"value": "medal", "label": "Medalla"}, {"value": "refresh", "label": "Devolución"}, {"value": "dna", "label": "ADN"}, {"value": "sparkles", "label": "Brillo"}, {"value": "calendar", "label": "Calendario"}, {"value": "droplet", "label": "Gota"}, {"value": "hair", "label": "Cabello"}, {"value": "stethoscope", "label": "Médico"}, {"value": "ban", "label": "Prohibido"}, {"value": "x-circle", "label": "Cruz"}, {"value": "map-pin", "label": "Ubicación"}, {"value": "percent", "label": "Descuento"}, {"value": "box", "label": "Paquete"}, {"value": "trend-up", "label": "Crecimiento"}, {"value": "star", "label": "Estrella"}, {"value": "sun", "label": "Sol"}, {"value": "moon", "label": "Luna"}], "default": "hair" },
+        { "type": "text", "id": "texto", "label": "Texto", "default": "Ayuda a reducir la caída del pelo" }
+      ]
+    },
+    {
+      "type": "precio", "name": "Precio", "limit": 1,
+      "settings": [
+        { "type": "paragraph", "content": "Muestra el precio del pack elegido. El texto de la etiqueta se edita en los ajustes de la sección (Oferta)." }
+      ]
+    },
+    {
+      "type": "pack", "name": "Pack", "limit": 6,
+      "settings": [
+        { "type": "text", "id": "titulo", "label": "Título", "default": "Comprá 1 · 60 días" },
+        { "type": "text", "id": "subtitulo", "label": "Texto si no hay ahorro", "default": "Para empezar" },
+        { "type": "text", "id": "etiqueta", "label": "Etiqueta", "info": "Ej: Más elegido, Mejor precio" },
+        {
+          "type": "select", "id": "etiqueta_color", "label": "Color de la etiqueta",
+          "options": [ { "value": "marca", "label": "Violeta (marca)" }, { "value": "negro", "label": "Negro" }, { "value": "naranja", "label": "Naranja" }, { "value": "verde", "label": "Verde" } ],
+          "default": "marca"
+        },
+        { "type": "image_picker", "id": "imagen", "label": "Imagen del pack", "info": "PNG sin fondo con los frascos. Si está vacío, usa la foto de la variante." },
+        { "type": "header", "content": "Qué se agrega al carrito" },
+        { "type": "range", "id": "variante", "label": "Número de variante", "min": 1, "max": 10, "step": 1, "default": 1, "info": "1 = primera variante del producto, 2 = segunda, etc." },
+        { "type": "range", "id": "cantidad", "label": "Unidades de esa variante", "min": 1, "max": 6, "step": 1, "default": 1, "info": "Si cada pack es una variante con su precio, dejá 1." },
+        { "type": "product", "id": "producto", "label": "Otro producto (opcional)", "info": "Vacío = el producto de esta página." },
+        { "type": "header", "content": "Ahorro" },
+        { "type": "range", "id": "frascos", "label": "Frascos que recibe", "min": 1, "max": 12, "step": 1, "default": 1 },
+        { "type": "checkbox", "id": "comparar_con_unitario", "label": "Calcular el ahorro contra el pack 1", "default": true, "info": "Si la variante no tiene precio de comparación, tacha lo que costaría comprar esos frascos de a uno." },
+        { "type": "checkbox", "id": "preseleccionado", "label": "Seleccionado al entrar", "default": false }
+      ]
+    },
+    {
+      "type": "regalos", "name": "Regalos desbloqueados", "limit": 1,
+      "settings": [
+        { "type": "text", "id": "titulo", "label": "Título", "default": "Regalos desbloqueados" },
+        { "type": "text", "id": "texto_bloqueado", "label": "Texto bloqueado", "default": "Bloqueado" },
+        { "type": "text", "id": "regalo_1", "label": "Regalo 1", "default": "Envío gratis" },
+        { "type": "image_picker", "id": "regalo_1_img", "label": "Imagen regalo 1" },
+        { "type": "range", "id": "regalo_1_desde", "label": "Se desbloquea desde el pack", "min": 1, "max": 6, "step": 1, "default": 2 },
+        { "type": "text", "id": "regalo_2", "label": "Regalo 2", "default": "Guía capilar" },
+        { "type": "image_picker", "id": "regalo_2_img", "label": "Imagen regalo 2" },
+        { "type": "range", "id": "regalo_2_desde", "label": "Se desbloquea desde el pack", "min": 1, "max": 6, "step": 1, "default": 3 },
+        { "type": "text", "id": "regalo_3", "label": "Regalo 3", "default": "Peine de madera" },
+        { "type": "image_picker", "id": "regalo_3_img", "label": "Imagen regalo 3" },
+        { "type": "range", "id": "regalo_3_desde", "label": "Se desbloquea desde el pack", "min": 1, "max": 6, "step": 1, "default": 4 }
+      ]
+    },
+    {
+      "type": "envio", "name": "Fecha de entrega", "limit": 1,
+      "settings": [
+        { "type": "text", "id": "texto", "label": "Texto", "default": "Hacé tu pedido hoy y recibilo antes del [fecha]", "info": "[fecha] se calcula sola sumando días hábiles." },
+        { "type": "range", "id": "dias", "label": "Días hábiles", "min": 1, "max": 15, "step": 1, "default": 6 }
+      ]
+    },
+    {
+      "type": "boton", "name": "Botón de compra", "limit": 1,
+      "settings": [
+        { "type": "text", "id": "texto", "label": "Texto del botón", "default": "Agregar al carrito" },
+        { "type": "text", "id": "garantia", "label": "Garantía dentro del botón", "default": "Garantía 30 días", "info": "Se oculta en celulares chicos." }
+      ]
+    },
+    {
+      "type": "pagos", "name": "Cuotas y transferencia", "limit": 1,
+      "settings": [
+        { "type": "paragraph", "content": "Cuotas y % de transferencia: en los ajustes de la sección." },
+        { "type": "text", "id": "texto_cuotas", "label": "Texto cuotas", "default": "[n] cuotas sin interés de", "info": "[n] = cantidad de cuotas" },
+        { "type": "text", "id": "texto_transferencia", "label": "Texto transferencia", "default": "con transferencia ([pct]% OFF)", "info": "[pct] = descuento" },
+        { "type": "text", "id": "texto_seguro", "label": "Texto de pago seguro", "default": "Pago 100% seguro con Mercado Pago" }
+      ]
+    },
+    {
+      "type": "social", "name": "Prueba social", "limit": 1,
+      "settings": [
+        { "type": "image_picker", "id": "avatar_1", "label": "Foto 1" },
+        { "type": "image_picker", "id": "avatar_2", "label": "Foto 2" },
+        { "type": "image_picker", "id": "avatar_3", "label": "Foto 3" },
+        { "type": "image_picker", "id": "avatar_4", "label": "Foto 4" },
+        { "type": "text", "id": "titulo", "label": "Título", "default": "Más de 10.000 frascos vendidos" },
+        { "type": "text", "id": "texto", "label": "Texto", "default": "de hombres que eligen DR.MEN para cuidar su pelo todos los días." }
+      ]
+    },
+    {
+      "type": "aviso", "name": "Aviso",
+      "settings": [
+        { "type": "select", "id": "estilo", "label": "Estilo", "options": [ { "value": "alerta", "label": "Alerta (rojo)" }, { "value": "info", "label": "Marca (violeta)" } ], "default": "alerta" },
+        { "type": "select", "id": "icono", "label": "Ícono", "options": [{"value": "check-circle", "label": "Check"}, {"value": "check", "label": "Tilde"}, {"value": "truck", "label": "Envío"}, {"value": "shield", "label": "Escudo / garantía"}, {"value": "card", "label": "Tarjeta / cuotas"}, {"value": "clock", "label": "Reloj"}, {"value": "leaf", "label": "Natural / hoja"}, {"value": "capsule", "label": "Cápsula"}, {"value": "flask", "label": "Laboratorio"}, {"value": "gift", "label": "Regalo"}, {"value": "lock", "label": "Pago seguro"}, {"value": "verified", "label": "Verificado"}, {"value": "bolt", "label": "Energía"}, {"value": "heart", "label": "Corazón"}, {"value": "users", "label": "Clientes"}, {"value": "medal", "label": "Medalla"}, {"value": "refresh", "label": "Devolución"}, {"value": "dna", "label": "ADN"}, {"value": "sparkles", "label": "Brillo"}, {"value": "calendar", "label": "Calendario"}, {"value": "droplet", "label": "Gota"}, {"value": "hair", "label": "Cabello"}, {"value": "stethoscope", "label": "Médico"}, {"value": "ban", "label": "Prohibido"}, {"value": "x-circle", "label": "Cruz"}, {"value": "map-pin", "label": "Ubicación"}, {"value": "percent", "label": "Descuento"}, {"value": "box", "label": "Paquete"}, {"value": "trend-up", "label": "Crecimiento"}, {"value": "star", "label": "Estrella"}, {"value": "sun", "label": "Sol"}, {"value": "moon", "label": "Luna"}], "default": "clock" },
+        { "type": "text", "id": "titulo", "label": "Título", "default": "ATENCIÓN: stock limitado" },
+        { "type": "text", "id": "texto", "label": "Texto", "default": "Por la demanda, este producto ya se agotó varias veces. Te recomendamos aprovechar la promo de lanzamiento mientras haya stock." }
+      ]
+    },
+    {
+      "type": "acordeon", "name": "Desplegable",
+      "settings": [
+        { "type": "text", "id": "titulo", "label": "Título", "default": "¿Qué es HAIR?" },
+        { "type": "richtext", "id": "contenido", "label": "Contenido", "default": "<p>Contenido del desplegable.</p>" },
+        { "type": "checkbox", "id": "abierto", "label": "Abierto al entrar", "default": false }
+      ]
+    },
+    {
+      "type": "espacio", "name": "Espacio",
+      "settings": [ { "type": "range", "id": "alto", "label": "Alto", "min": 0, "max": 60, "step": 2, "unit": "px", "default": 12 } ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "HM · Producto (oferta)",
+      "blocks": [
+        { "type": "tarjeta", "settings": { "titulo": "Garantía de 30 días", "texto": "Si no te convence, te devolvemos la plata.", "icono": "shield" } },
+        { "type": "tarjeta", "settings": { "titulo": "Envío protegido", "texto": "¿Se perdió o llegó dañado? Te lo reenviamos.", "icono": "box", "valor": "$4.500", "valor_texto": "GRATIS" } },
+        { "type": "tarjeta", "settings": { "titulo": "Envío gratis", "texto": "En packs de 2 frascos o más.", "icono": "truck", "valor": "$6.900", "valor_texto": "GRATIS" } },
+        { "type": "tarjeta", "settings": { "titulo": "3 cuotas sin interés", "texto": "O 10% OFF pagando con transferencia.", "icono": "card" } },
+        { "type": "rating" },
+        { "type": "titulo" },
+        { "type": "texto" },
+        { "type": "beneficio", "settings": { "icono": "hair", "texto": "Ayuda a reducir la caída del pelo" } },
+        { "type": "beneficio", "settings": { "icono": "trend-up", "texto": "Fortalece el pelo y favorece su crecimiento" } },
+        { "type": "beneficio", "settings": { "icono": "dna", "texto": "Nutre la raíz con 8 nutrientes clave" } },
+        { "type": "beneficio", "settings": { "icono": "leaf", "texto": "Sin gluten · 1 cápsula por día" } },
+        { "type": "precio" },
+        { "type": "pack", "settings": { "titulo": "Comprá 1 · 60 días", "subtitulo": "Para empezar", "variante": 1, "frascos": 1 } },
+        { "type": "pack", "settings": { "titulo": "Comprá 2 · 120 días", "etiqueta": "Más elegido", "etiqueta_color": "marca", "variante": 2, "frascos": 2, "preseleccionado": true } },
+        { "type": "pack", "settings": { "titulo": "Comprá 3 · 180 días", "etiqueta": "Tratamiento completo", "etiqueta_color": "negro", "variante": 3, "frascos": 3 } },
+        { "type": "pack", "settings": { "titulo": "Comprá 6 · 12 meses", "etiqueta": "Mejor precio", "etiqueta_color": "naranja", "variante": 4, "frascos": 6 } },
+        { "type": "regalos" },
+        { "type": "envio" },
+        { "type": "boton" },
+        { "type": "pagos" },
+        { "type": "social" },
+        { "type": "aviso" },
+        { "type": "acordeon", "settings": { "titulo": "¿Qué es HAIR?", "contenido": "<p>HAIR es un suplemento dietario en cápsulas, formulado para hombres, con vitaminas C, B5 y B6, biotina, zinc, selenio, L-cistina y colágeno tipo II. Le da a tu pelo, desde adentro, los nutrientes que necesita para crecer fuerte.</p>" } },
+        { "type": "acordeon", "settings": { "titulo": "¿Qué tiene adentro?", "contenido": "<ul><li><strong>Biotina:</strong> la vitamina del pelo. Contribuye a su mantenimiento normal.</li><li><strong>Zinc y selenio:</strong> minerales que contribuyen al mantenimiento normal del cabello.</li><li><strong>L-cistina:</strong> aminoácido azufrado, componente de la queratina.</li><li><strong>Colágeno tipo II:</strong> proteína estructural.</li><li><strong>Vitaminas C, B5 y B6:</strong> la vitamina C contribuye a la formación normal de colágeno.</li></ul><p>Sin gluten.</p>" } },
+        { "type": "acordeon", "settings": { "titulo": "¿Cómo se toma?", "contenido": "<p><strong>1 cápsula por día</strong> con agua, preferentemente con una comida. Cada frasco trae 60 cápsulas: te dura 60 días.</p><p>El pelo crece lento. Por eso recomendamos un tratamiento de 3 a 6 meses para ver resultados.</p>" } },
+        { "type": "acordeon", "settings": { "titulo": "Envíos y devoluciones", "contenido": "<p>Enviamos a todo el país. Despachamos en 24 hs hábiles y te pasamos el seguimiento.</p><p><strong>Envío gratis</strong> desde 2 frascos.</p><p>Tenés 30 días de garantía de satisfacción: si no te convence, te devolvemos la plata.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
