@@ -584,6 +584,83 @@
         "dato_4"
       ],
       "settings": {}
+    },
+    "comparativa": {
+      "type": "hm-comparativa",
+      "blocks": {
+        "fila_1": {
+          "type": "fila",
+          "settings": {
+            "icono": "shield",
+            "nosotros": "Ayuda a bloquear la DHT",
+            "otros": "Solo actúan por fuera"
+          }
+        },
+        "fila_2": {
+          "type": "fila",
+          "settings": {
+            "icono": "dna",
+            "nosotros": "8 nutrientes en una fórmula",
+            "otros": "Fórmulas incompletas"
+          }
+        },
+        "fila_3": {
+          "type": "fila",
+          "settings": {
+            "icono": "capsule",
+            "nosotros": "1 cápsula por día",
+            "otros": "Rutinas complicadas"
+          }
+        },
+        "fila_4": {
+          "type": "fila",
+          "settings": {
+            "icono": "leaf",
+            "nosotros": "Sin gluten",
+            "otros": "Rellenos y aditivos"
+          }
+        },
+        "fila_5": {
+          "type": "fila",
+          "settings": {
+            "icono": "truck",
+            "nosotros": "Envío rápido a todo el país",
+            "otros": "Importados: demoras y aduana"
+          }
+        },
+        "punto_1": {
+          "type": "punto",
+          "settings": {
+            "titulo": "Resultados reales sin químicos agresivos",
+            "texto": "actúa desde adentro, ayudando a bloquear la DHT y a frenar la caída."
+          }
+        },
+        "punto_2": {
+          "type": "punto",
+          "settings": {
+            "titulo": "Seguro para el uso diario",
+            "texto": "sin gluten y sin complicaciones: una cápsula por día y listo."
+          }
+        },
+        "punto_3": {
+          "type": "punto",
+          "settings": {
+            "titulo": "Nutrientes con respaldo científico",
+            "texto": "la biotina, el zinc y el selenio contribuyen al mantenimiento normal del cabello."
+          }
+        }
+      },
+      "block_order": [
+        "fila_1",
+        "fila_2",
+        "fila_3",
+        "fila_4",
+        "fila_5",
+        "punto_1",
+        "punto_2",
+        "punto_3"
+      ],
+      "settings": {}
     }
   },
   "order": [
@@ -593,6 +670,7 @@
     "historias",
     "razones",
     "problema_solucion",
-    "capsula"
+    "capsula",
+    "comparativa"
   ]
 }

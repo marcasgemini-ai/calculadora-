@@ -2,11 +2,11 @@
 
 ## Instalación rápida (recomendada): plantilla completa
 
-1. Creá las 7 secciones (más abajo, una por una) en **Editar código → Secciones**.
+1. Creá las 8 secciones (más abajo, una por una) en **Editar código → Secciones**.
 2. En **Editar código → Plantillas → Agregar una nueva plantilla** → tipo **product**, formato **JSON**, nombre `hair` → borrá todo, pegá el contenido de `templates/product.hair.json` → **Guardar**.
 3. En el admin del producto: **Plantilla del tema → `product.hair`**.
 
-La plantilla ya trae los 7 bloques en orden con todo el copy (ángulo DHT) y la oferta cargada.
+La plantilla ya trae los 8 bloques en orden con todo el copy (ángulo DHT) y la oferta cargada.
 
 Cada bloque es **un solo archivo** de sección (CSS, JS e íconos incluidos). Se crea una sección, se pega el código y listo.
 
@@ -70,3 +70,9 @@ No hace falta "precio de comparación": el tachado y el "Ahorrás $X" se calcula
 1. **Editar código → Secciones → Agregar una nueva sección** → nombre: `hm-capsula` → borrá todo, pegá el código y **Guardar**.
 2. **Personalizar → plantilla `hair` → Agregar sección → HM · Cápsula**.
 3. Bloques **Dato**: número grande + título + texto. Las cápsulas decorativas se pueden reemplazar por una foto propia (PNG sin fondo).
+
+## Bloque 8 · Comparativa → `sections/hm-comparativa.liquid`
+
+1. **Editar código → Secciones → Agregar una nueva sección** → nombre: `hm-comparativa` → borrá todo, pegá el código y **Guardar**.
+2. **Personalizar → plantilla `hair` → Agregar sección → HM · Comparativa**.
+3. Cargá la **foto del producto** (PNG sin fondo). Bloques **Fila**: lo tuyo vs lo de los otros. Bloques **Punto**: los checks de la derecha.

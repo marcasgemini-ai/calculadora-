@@ -1,0 +1,276 @@
+{%- comment -%}
+  HM · Bloque 8 — Comparativa: Nosotros vs Otras soluciones + puntos + botón
+  Sección autónoma: CSS e íconos incluidos. Todo editable desde el personalizador.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign acc = s.color_acento | default: '#6b3fc0'
+  assign hm_font = s.fuente
+  assign hm_font_stack = "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+  if hm_font != blank
+    assign hm_font_stack = hm_font.family | prepend: "'" | append: "', " | append: hm_font.fallback_families
+  endif
+  assign row_count = 0
+  for block in section.blocks
+    if block.type == 'fila'
+      assign row_count = row_count | plus: 1
+    endif
+  endfor
+-%}
+
+{%- if hm_font != blank -%}
+  <style>
+    {{ hm_font | font_face: font_display: 'swap' }}
+    {%- assign hm_f = hm_font | font_modify: 'weight', '500' -%}{%- if hm_f -%}{{ hm_f | font_face: font_display: 'swap' }}{%- endif -%}
+    {%- assign hm_f = hm_font | font_modify: 'weight', '600' -%}{%- if hm_f -%}{{ hm_f | font_face: font_display: 'swap' }}{%- endif -%}
+    {%- assign hm_f = hm_font | font_modify: 'weight', '700' -%}{%- if hm_f -%}{{ hm_f | font_face: font_display: 'swap' }}{%- endif -%}
+  </style>
+{%- endif -%}
+
+<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false"><defs><symbol id="hmi-check" viewBox="0 0 24 24"><path d="M4.5 12.5l5 5 10-11"/></symbol><symbol id="hmi-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M8 12.3l2.8 2.8L16.2 9.5"/></symbol><symbol id="hmi-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol><symbol id="hmi-x-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M9 9l6 6M15 9l-6 6"/></symbol><symbol id="hmi-truck" viewBox="0 0 24 24"><path d="M2.5 6.5h11v9h-11zM13.5 9.5h4l3 3v3h-7"/><circle cx="6.5" cy="17" r="1.8"/><circle cx="17" cy="17" r="1.8"/></symbol><symbol id="hmi-shield" viewBox="0 0 24 24"><path d="M12 2.8l7.5 3v5.6c0 4.6-3.2 8.3-7.5 9.8-4.3-1.5-7.5-5.2-7.5-9.8V5.8z"/><path d="M8.7 12l2.3 2.3 4.3-4.6"/></symbol><symbol id="hmi-card" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 9.5h19M6 15h4"/></symbol><symbol id="hmi-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M12 7v5.2l3.4 2"/></symbol><symbol id="hmi-leaf" viewBox="0 0 24 24"><path d="M5 19c0-8 5-13 15-14-1 10-6 15-14 15M5 19l7-7"/></symbol><symbol id="hmi-capsule" viewBox="0 0 24 24"><rect x="2.8" y="8.2" width="18.4" height="7.6" rx="3.8" transform="rotate(-35 12 12)"/><path d="M9.9 9.2l4.3 5.9"/></symbol><symbol id="hmi-flask" viewBox="0 0 24 24"><path d="M9.5 3h5M10.2 3v6.2L4.8 18.4A1.8 1.8 0 0 0 6.4 21h11.2a1.8 1.8 0 0 0 1.6-2.6L13.8 9.2V3M7.5 15h9"/></symbol><symbol id="hmi-gift" viewBox="0 0 24 24"><rect x="3.2" y="8.5" width="17.6" height="4" rx="1"/><path d="M4.8 12.5v8h14.4v-8M12 8.5v12M12 8.5S10.8 4 8.4 4a2.2 2.2 0 0 0 0 4.5M12 8.5S13.2 4 15.6 4a2.2 2.2 0 0 1 0 4.5"/></symbol><symbol id="hmi-lock" viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="10" rx="2.2"/><path d="M8 10.5V7.8a4 4 0 0 1 8 0v2.7"/></symbol><symbol id="hmi-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></symbol><symbol id="hmi-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol><symbol id="hmi-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol><symbol id="hmi-star" viewBox="0 0 24 24"><path d="M12 2.8l2.8 5.8 6.4.8-4.7 4.4 1.2 6.4L12 17l-5.7 3.2 1.2-6.4-4.7-4.4 6.4-.8z"/></symbol><symbol id="hmi-verified" viewBox="0 0 24 24"><path d="M12 2.5l2.3 1.7 2.8-.1.9 2.7 2.3 1.6-.9 2.7.9 2.7-2.3 1.6-.9 2.7-2.8-.1L12 21.5l-2.3-1.7-2.8.1-.9-2.7-2.3-1.6.9-2.7-.9-2.7 2.3-1.6.9-2.7 2.8.1z"/><path d="M8.8 12.2l2.2 2.2 4.2-4.4"/></symbol><symbol id="hmi-bolt" viewBox="0 0 24 24"><path d="M13 2.5L4.5 13.5H12l-1 8 8.5-11H12z"/></symbol><symbol id="hmi-heart" viewBox="0 0 24 24"><path d="M12 20.5s-8.5-5-8.5-11A4.8 4.8 0 0 1 12 6.6a4.8 4.8 0 0 1 8.5 2.9c0 6-8.5 11-8.5 11z"/></symbol><symbol id="hmi-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.1-5.8 6.5-5.8s5.9 2.2 6.5 5.8M16 4.8a3.5 3.5 0 0 1 0 6.6M18 14.6c2 .7 3.2 2.6 3.5 5.4"/></symbol><symbol id="hmi-medal" viewBox="0 0 24 24"><circle cx="12" cy="14.5" r="6"/><path d="M8.5 9.6L6 2.5h4l2 4.5 2-4.5h4l-2.5 7.1M12 12v5"/></symbol><symbol id="hmi-refresh" viewBox="0 0 24 24"><path d="M20 11.5A8 8 0 0 0 5.6 6.8L3.5 9M4 12.5a8 8 0 0 0 14.4 4.7l2.1-2.2M3.5 4v5h5M20.5 20v-5h-5"/></symbol><symbol id="hmi-dna" viewBox="0 0 24 24"><path d="M7 2.5c0 6 10 7 10 13s0 6 0 6M17 2.5c0 6-10 7-10 13v6M8 6h8M8 18h8M9.5 9.5h5M9.5 14.5h5"/></symbol><symbol id="hmi-sparkles" viewBox="0 0 24 24"><path d="M10 3l1.8 5.2L17 10l-5.2 1.8L10 17l-1.8-5.2L3 10l5.2-1.8zM18 14l.9 2.1 2.1.9-2.1.9L18 20l-.9-2.1-2.1-.9 2.1-.9z"/></symbol><symbol id="hmi-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2.2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol><symbol id="hmi-droplet" viewBox="0 0 24 24"><path d="M12 3s6.5 7 6.5 11.3a6.5 6.5 0 0 1-13 0C5.5 10 12 3 12 3z"/></symbol><symbol id="hmi-sound-off" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4zM16 9.5l5 5M21 9.5l-5 5"/></symbol><symbol id="hmi-sound-on" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4zM16 9a4.2 4.2 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></symbol><symbol id="hmi-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z" fill="currentColor"/></symbol><symbol id="hmi-hair" viewBox="0 0 24 24"><path d="M6 21c1-6 0-10-1-14M10 21c.5-6 0-11 2-17M14.5 21c-.5-5 .5-9 3.5-14M18.5 21c-.5-3 0-6 2-9"/></symbol><symbol id="hmi-stethoscope" viewBox="0 0 24 24"><path d="M5 3v5a5 5 0 0 0 10 0V3M10 13v2.5a5 5 0 0 0 10 0V13"/><circle cx="20" cy="11" r="2"/></symbol><symbol id="hmi-ban" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M5.5 5.5l13 13"/></symbol><symbol id="hmi-map-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.3-7-11.5a7 7 0 0 1 14 0C19 14.7 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></symbol><symbol id="hmi-percent" viewBox="0 0 24 24"><path d="M19 5L5 19"/><circle cx="7" cy="7" r="2.5"/><circle cx="17" cy="17" r="2.5"/></symbol><symbol id="hmi-box" viewBox="0 0 24 24"><path d="M3.5 7.5L12 3l8.5 4.5v9L12 21l-8.5-4.5zM3.5 7.5L12 12l8.5-4.5M12 12v9"/></symbol><symbol id="hmi-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></symbol><symbol id="hmi-moon" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></symbol><symbol id="hmi-trend-up" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8M15 7h6v6"/></symbol></defs></svg>
+
+<style>
+  /* ===== Reset: el theme no puede romper la sección ===== */
+  .hm-vs, .hm-vs *, .hm-vs *::before, .hm-vs *::after { box-sizing: border-box; }
+  .hm-vs :where(h2, h3, p, span, strong, em, a, img, svg, ul, li, div) {
+    margin: 0; padding: 0; border: 0; text-transform: none; letter-spacing: normal;
+    font-family: inherit; line-height: inherit; box-shadow: none; background: none; color: inherit; list-style: none;
+  }
+  .hm-vs :where(img, svg) { display: block; max-width: 100%; border-radius: 0; }
+
+  .hm-vs {
+    font-family: var(--vs-font); color: var(--vs-fg);
+    background: linear-gradient(160deg, var(--vs-bg-1) 0%, var(--vs-bg-2) 100%);
+    font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased;
+    padding: var(--vs-pt) 0 var(--vs-pb); overflow-x: clip;
+  }
+  .hm-vs__wrap { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+  @media (min-width: 750px) { .hm-vs__wrap { padding: 0 32px; } }
+  .hm-vs__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 36px; align-items: center; }
+  @media (min-width: 990px) { .hm-vs__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; } }
+  @media (max-width: 989px) { .hm-vs--m-texto .hm-vs__text { order: -1; } }
+
+  /* ===== Tabla ===== */
+  .hm-vs__table { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 8px; max-width: 520px; margin: 0 auto; width: 100%; padding-top: var(--vs-img-over); }
+  .hm-vs__cell { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center; padding: 14px 10px; min-height: 76px; font-size: 14px; line-height: 1.3; }
+  @media (min-width: 750px) { .hm-vs__cell { min-height: 82px; font-size: 15px; } }
+
+  .hm-vs__head--us { position: relative; background: var(--vs-us-bg); color: var(--vs-us-fg); border-radius: var(--vs-radius) var(--vs-radius) 0 0; padding-top: 0; justify-content: flex-end; padding-bottom: 6px; }
+  .hm-vs__prod { width: var(--vs-img-w); margin-top: calc(var(--vs-img-over) * -1) !important; }
+  .hm-vs__prod img { width: 100%; height: auto; filter: drop-shadow(0 8px 14px rgba(0, 0, 0, .3)); }
+  .hm-vs__brand { font-size: 15px; font-weight: 600; letter-spacing: .03em !important; text-transform: uppercase !important; }
+  .hm-vs__head--them { justify-content: flex-end; padding-bottom: 12px; font-size: 16px; font-weight: 500; color: var(--vs-fg); }
+  @media (min-width: 750px) { .hm-vs__brand { font-size: 16px; } .hm-vs__head--them { font-size: 18px; } }
+
+  .hm-vs__cell--us { background: var(--vs-us-bg); color: var(--vs-us-fg); }
+  .hm-vs__cell--us + .hm-vs__cell--them + .hm-vs__cell--us { border-top: 1px solid var(--vs-us-line); }
+  .hm-vs__cell--them { background: var(--vs-them-bg); color: var(--vs-them-fg); }
+  .hm-vs__cell--them + .hm-vs__cell--us + .hm-vs__cell--them { border-top: 1px solid var(--vs-them-line); }
+  .hm-vs__cell--first.hm-vs__cell--them { border-radius: var(--vs-radius) var(--vs-radius) 0 0; }
+  .hm-vs__cell--last { border-radius: 0 0 var(--vs-radius) var(--vs-radius); }
+  .hm-vs__ico { width: 30px; height: 30px; display: grid; place-items: center; }
+  .hm-vs__ico svg { width: 28px; height: 28px; }
+  .hm-vs__ico img { width: 30px; height: 30px; object-fit: contain; }
+  .hm-vs__x { width: 20px; height: 20px; color: var(--vs-x); }
+
+  /* ===== Texto ===== */
+  .hm-vs__title { font-size: var(--vs-title-m); font-weight: 600; line-height: 1.2; color: var(--vs-fg); }
+  .hm-vs__title em { font-style: normal; color: var(--vs-hl); }
+  @media (min-width: 750px) { .hm-vs__title { font-size: var(--vs-title-d); } }
+  @media (max-width: 989px) { .hm-vs__text { text-align: left; } }
+  .hm-vs__points { display: grid; gap: 22px; margin-top: 28px !important; }
+  .hm-vs__point { display: flex; align-items: flex-start; gap: 12px; font-size: 15px; line-height: 1.55; color: var(--vs-muted); }
+  .hm-vs__point strong { color: var(--vs-fg); font-weight: 600; }
+  .hm-vs__check { flex: none; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; background: var(--vs-check); color: var(--vs-check-fg); margin-top: 1px; }
+  .hm-vs__check svg { width: 13px; height: 13px; }
+  .hm-vs__cta { display: flex; flex-direction: column; align-items: stretch; gap: 12px; margin-top: 32px; }
+  .hm-vs__btn {
+    display: flex; align-items: center; justify-content: center; min-height: 56px; padding: 0 28px;
+    border-radius: var(--vs-btn-radius); background: var(--vs-btn-bg); color: var(--vs-btn-fg) !important;
+    font-size: 16px; font-weight: 600; text-decoration: none; transition: filter .2s, transform .1s;
+  }
+  .hm-vs--upper .hm-vs__btn { text-transform: uppercase; letter-spacing: .04em; }
+  .hm-vs__btn:hover { filter: brightness(.95); }
+  .hm-vs__note { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 14px; color: var(--vs-muted); }
+  .hm-vs__note svg { width: 17px; height: 17px; }
+</style>
+
+<section
+  id="hm-vs-{{ section.id }}"
+  class="hm-vs hm-vs--m-{{ s.mobile_orden }}{% if s.boton_mayus %} hm-vs--upper{% endif %}"
+  style="
+    --vs-font: {{ hm_font_stack }};
+    --vs-bg-1: {{ s.color_fondo_1 }};
+    --vs-bg-2: {{ s.color_fondo_2 }};
+    --vs-fg: {{ s.color_texto }};
+    --vs-muted: {{ s.color_texto | color_modify: 'alpha', 0.82 }};
+    --vs-hl: {{ s.color_resaltado }};
+    --vs-us-bg: {{ s.columna_fondo | default: acc }};
+    --vs-us-fg: {{ s.columna_texto }};
+    --vs-us-line: {{ s.columna_texto | color_modify: 'alpha', 0.22 }};
+    --vs-them-bg: {{ s.otros_fondo }};
+    --vs-them-fg: {{ s.otros_texto }};
+    --vs-them-line: {{ s.otros_texto | color_modify: 'alpha', 0.1 }};
+    --vs-x: {{ s.color_cruz }};
+    --vs-check: {{ s.color_check }};
+    --vs-check-fg: {{ s.color_fondo_1 }};
+    --vs-btn-bg: {{ s.color_boton }};
+    --vs-btn-fg: {{ s.color_boton_texto }};
+    --vs-btn-radius: {{ s.redondeo_boton }}px;
+    --vs-radius: {{ s.redondeo }}px;
+    --vs-img-w: {{ s.imagen_ancho }}px;
+    --vs-img-over: {% if s.marca_imagen != blank %}{{ s.imagen_ancho | times: 0.6 | round }}px{% else %}0px{% endif %};
+    --vs-title-d: {{ s.titulo_desktop }}px;
+    --vs-title-m: {{ s.titulo_mobile }}px;
+    --vs-pt: {{ s.padding_top }}px;
+    --vs-pb: {{ s.padding_bottom }}px;
+  "
+>
+  <div class="hm-vs__wrap">
+    <div class="hm-vs__grid">
+
+      {%- comment -%} ===== Tabla comparativa ===== {%- endcomment -%}
+      <div class="hm-vs__table" role="table" aria-label="{{ s.marca_nombre | escape }} vs {{ s.otros_titulo | escape }}">
+        <div class="hm-vs__cell hm-vs__head--us" role="columnheader">
+          {%- if s.marca_imagen != blank -%}
+            <span class="hm-vs__prod">{{ s.marca_imagen | image_url: width: 400 | image_tag: loading: 'lazy', widths: '200, 300, 400', sizes: '160px', alt: s.marca_nombre }}</span>
+          {%- endif -%}
+          <span class="hm-vs__brand">{{ s.marca_nombre }}</span>
+        </div>
+        <div class="hm-vs__cell hm-vs__head--them" role="columnheader">{{ s.otros_titulo }}</div>
+
+        {%- assign r = 0 -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type != 'fila' -%}{%- continue -%}{%- endif -%}
+          {%- assign r = r | plus: 1 -%}
+          {%- assign bs = block.settings -%}
+          {%- capture pos -%}{% if r == 1 %} hm-vs__cell--first{% endif %}{% if r == row_count %} hm-vs__cell--last{% endif %}{%- endcapture -%}
+          <div class="hm-vs__cell hm-vs__cell--us{{ pos }}" role="cell" {{ block.shopify_attributes }}>
+            <span class="hm-vs__ico">
+              {%- if bs.imagen != blank -%}
+                {{ bs.imagen | image_url: width: 64 | image_tag: loading: 'lazy', widths: '32, 64', sizes: '30px', alt: '' }}
+              {%- else -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#hmi-{{ bs.icono }}"/></svg>
+              {%- endif -%}
+            </span>
+            <span>{{ bs.nosotros }}</span>
+          </div>
+          <div class="hm-vs__cell hm-vs__cell--them{{ pos }}" role="cell">
+            <svg class="hm-vs__x" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+            <span>{{ bs.otros }}</span>
+          </div>
+        {%- endfor -%}
+      </div>
+
+      {%- comment -%} ===== Texto ===== {%- endcomment -%}
+      <div class="hm-vs__text">
+        {%- if s.titulo != blank -%}<h2 class="hm-vs__title">{{ s.titulo }}</h2>{%- endif -%}
+        <ul class="hm-vs__points">
+          {%- for block in section.blocks -%}
+            {%- if block.type != 'punto' -%}{%- continue -%}{%- endif -%}
+            <li class="hm-vs__point" {{ block.shopify_attributes }}>
+              <span class="hm-vs__check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+              <span>{%- if block.settings.titulo != blank -%}<strong>{{ block.settings.titulo }}</strong>{% if block.settings.texto != blank %}: {% endif %}{%- endif -%}{{ block.settings.texto }}</span>
+            </li>
+          {%- endfor -%}
+        </ul>
+        {%- if s.boton_texto != blank or s.garantia_texto != blank -%}
+          <div class="hm-vs__cta">
+            {%- if s.boton_texto != blank -%}<a class="hm-vs__btn" href="{{ s.boton_link | default: '#hm-comprar' }}">{{ s.boton_texto }}</a>{%- endif -%}
+            {%- if s.garantia_texto != blank -%}
+              <span class="hm-vs__note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#hmi-shield"/></svg>{{ s.garantia_texto }}</span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "HM · Comparativa",
+  "tag": "div",
+  "class": "hm-section-vs",
+  "settings": [
+    { "type": "header", "content": "Tabla" },
+    { "type": "text", "id": "marca_nombre", "label": "Nombre de tu columna", "default": "DR.MEN HAIR" },
+    { "type": "image_picker", "id": "marca_imagen", "label": "Foto del producto (arriba de la columna)", "info": "PNG sin fondo del frasco." },
+    { "type": "range", "id": "imagen_ancho", "label": "Tamaño de la foto", "min": 60, "max": 200, "step": 5, "unit": "px", "default": 90 },
+    { "type": "text", "id": "otros_titulo", "label": "Título de la otra columna", "default": "Otras soluciones" },
+    { "type": "paragraph", "content": "Cada fila es un bloque \"Fila\": lo tuyo vs lo de los otros." },
+    { "type": "range", "id": "redondeo", "label": "Redondeo de la tabla", "min": 0, "max": 24, "step": 2, "unit": "px", "default": 8 },
+
+    { "type": "header", "content": "Texto" },
+    { "type": "inline_richtext", "id": "titulo", "label": "Título", "default": "<em>HAIR</em> vs otros", "info": "La cursiva se pinta con el color resaltado." },
+    { "type": "range", "id": "titulo_desktop", "label": "Tamaño del título en PC", "min": 22, "max": 56, "step": 1, "unit": "px", "default": 40 },
+    { "type": "range", "id": "titulo_mobile", "label": "Tamaño del título en celular", "min": 20, "max": 40, "step": 1, "unit": "px", "default": 30 },
+    { "type": "paragraph", "content": "Los puntos con check se agregan como bloques \"Punto\"." },
+    {
+      "type": "select", "id": "mobile_orden", "label": "En celular mostrar primero",
+      "options": [ { "value": "texto", "label": "El título y los puntos" }, { "value": "tabla", "label": "La tabla" } ],
+      "default": "tabla"
+    },
+
+    { "type": "header", "content": "Botón" },
+    { "type": "text", "id": "boton_texto", "label": "Texto del botón", "default": "Probalo hoy sin riesgo" },
+    { "type": "text", "id": "boton_link", "label": "Link del botón", "default": "#hm-comprar" },
+    { "type": "text", "id": "garantia_texto", "label": "Texto debajo del botón", "default": "Garantía de devolución de 30 días" },
+    { "type": "checkbox", "id": "boton_mayus", "label": "Botón en mayúsculas", "default": true },
+    { "type": "range", "id": "redondeo_boton", "label": "Redondeo del botón", "min": 0, "max": 30, "step": 1, "unit": "px", "default": 6 },
+
+    { "type": "header", "content": "Colores y tipografía" },
+    { "type": "font_picker", "id": "fuente", "label": "Tipografía", "default": "poppins_n4" },
+    { "type": "color", "id": "color_fondo_1", "label": "Fondo (arriba)", "default": "#16101f" },
+    { "type": "color", "id": "color_fondo_2", "label": "Fondo (abajo, degradé)", "default": "#2a1b45" },
+    { "type": "color", "id": "color_texto", "label": "Texto", "default": "#ffffff" },
+    { "type": "color", "id": "color_resaltado", "label": "Color resaltado del título", "default": "#c9b2ff" },
+    { "type": "color", "id": "color_acento", "label": "Color de marca", "default": "#6b3fc0" },
+    { "type": "color", "id": "columna_fondo", "label": "Fondo de tu columna (opcional)", "info": "Vacío = color de marca." },
+    { "type": "color", "id": "columna_texto", "label": "Texto de tu columna", "default": "#ffffff" },
+    { "type": "color", "id": "otros_fondo", "label": "Fondo de la otra columna", "default": "#ffffff" },
+    { "type": "color", "id": "otros_texto", "label": "Texto de la otra columna", "default": "#121116" },
+    { "type": "color", "id": "color_cruz", "label": "Color de las cruces", "default": "#3a3540" },
+    { "type": "color", "id": "color_check", "label": "Color de los checks", "default": "#c9b2ff" },
+    { "type": "color", "id": "color_boton", "label": "Fondo del botón", "default": "#ffffff" },
+    { "type": "color", "id": "color_boton_texto", "label": "Texto del botón", "default": "#16101f" },
+
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio arriba", "min": 0, "max": 140, "step": 4, "unit": "px", "default": 72 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio abajo", "min": 0, "max": 140, "step": 4, "unit": "px", "default": 64 }
+  ],
+  "blocks": [
+    {
+      "type": "fila", "name": "Fila", "limit": 8,
+      "settings": [
+        { "type": "select", "id": "icono", "label": "Ícono de tu columna", "options": [{"value": "check-circle", "label": "Check"}, {"value": "check", "label": "Tilde"}, {"value": "truck", "label": "Envío"}, {"value": "shield", "label": "Escudo / garantía"}, {"value": "card", "label": "Tarjeta / cuotas"}, {"value": "clock", "label": "Reloj"}, {"value": "leaf", "label": "Natural / hoja"}, {"value": "capsule", "label": "Cápsula"}, {"value": "flask", "label": "Laboratorio"}, {"value": "gift", "label": "Regalo"}, {"value": "lock", "label": "Pago seguro"}, {"value": "verified", "label": "Verificado"}, {"value": "bolt", "label": "Energía"}, {"value": "heart", "label": "Corazón"}, {"value": "users", "label": "Clientes"}, {"value": "medal", "label": "Medalla"}, {"value": "refresh", "label": "Devolución"}, {"value": "dna", "label": "ADN"}, {"value": "sparkles", "label": "Brillo"}, {"value": "calendar", "label": "Calendario"}, {"value": "droplet", "label": "Gota"}, {"value": "hair", "label": "Cabello"}, {"value": "stethoscope", "label": "Médico"}, {"value": "ban", "label": "Prohibido"}, {"value": "x-circle", "label": "Cruz"}, {"value": "map-pin", "label": "Ubicación"}, {"value": "percent", "label": "Descuento"}, {"value": "box", "label": "Paquete"}, {"value": "trend-up", "label": "Crecimiento"}, {"value": "star", "label": "Estrella"}, {"value": "sun", "label": "Sol"}, {"value": "moon", "label": "Luna"}], "default": "check-circle" },
+        { "type": "image_picker", "id": "imagen", "label": "Ícono propio (opcional)" },
+        { "type": "text", "id": "nosotros", "label": "Tu producto", "default": "Ayuda a bloquear la DHT" },
+        { "type": "text", "id": "otros", "label": "Otras soluciones", "default": "Solo actúan por fuera" }
+      ]
+    },
+    {
+      "type": "punto", "name": "Punto", "limit": 6,
+      "settings": [
+        { "type": "text", "id": "titulo", "label": "Título en negrita", "default": "Resultados reales" },
+        { "type": "text", "id": "texto", "label": "Texto", "default": "Descripción del punto." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "HM · Comparativa",
+      "blocks": [
+        { "type": "fila", "settings": { "icono": "shield", "nosotros": "Ayuda a bloquear la DHT", "otros": "Solo actúan por fuera" } },
+        { "type": "fila", "settings": { "icono": "dna", "nosotros": "8 nutrientes en una fórmula", "otros": "Fórmulas incompletas" } },
+        { "type": "fila", "settings": { "icono": "capsule", "nosotros": "1 cápsula por día", "otros": "Rutinas complicadas" } },
+        { "type": "fila", "settings": { "icono": "leaf", "nosotros": "Sin gluten", "otros": "Rellenos y aditivos" } },
+        { "type": "fila", "settings": { "icono": "truck", "nosotros": "Envío rápido a todo el país", "otros": "Importados: demoras y aduana" } },
+        { "type": "punto", "settings": { "titulo": "Resultados reales sin químicos agresivos", "texto": "actúa desde adentro, ayudando a bloquear la DHT y a frenar la caída." } },
+        { "type": "punto", "settings": { "titulo": "Seguro para el uso diario", "texto": "sin gluten y sin complicaciones: una cápsula por día y listo." } },
+        { "type": "punto", "settings": { "titulo": "Nutrientes con respaldo científico", "texto": "la biotina, el zinc y el selenio contribuyen al mantenimiento normal del cabello." } }
+      ]
+    }
+  ]
+}
+{% endschema %}
