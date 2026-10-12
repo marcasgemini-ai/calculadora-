@@ -232,7 +232,7 @@
     { "type": "header", "content": "Datos" },
     { "type": "paragraph", "content": "Cada dato es un bloque: número grande, título y texto." },
     { "type": "range", "id": "columnas_desktop", "label": "Columnas en PC", "min": 1, "max": 4, "step": 1, "default": 2 },
-    { "type": "range", "id": "columnas_mobile", "label": "Columnas en celular", "min": 1, "max": 2, "step": 1, "default": 2 },
+    { "type": "select", "id": "columnas_mobile", "label": "Columnas en celular", "options": [ { "value": "1", "label": "1 columna" }, { "value": "2", "label": "2 columnas" } ], "default": "2" },
     { "type": "range", "id": "numero_desktop", "label": "Tamaño del número en PC", "min": 24, "max": 72, "step": 2, "unit": "px", "default": 40 },
     { "type": "range", "id": "numero_mobile", "label": "Tamaño del número en celular", "min": 20, "max": 56, "step": 2, "unit": "px", "default": 34 },
     { "type": "checkbox", "id": "animar_numeros", "label": "Animar los números al aparecer", "default": true, "info": "Cuentan desde 0 hasta el valor. En el editor no se animan." },
