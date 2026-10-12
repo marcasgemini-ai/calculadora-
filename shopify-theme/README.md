@@ -2,11 +2,11 @@
 
 ## Instalación rápida (recomendada): plantilla completa
 
-1. Creá las 5 secciones (más abajo, una por una) en **Editar código → Secciones**.
+1. Creá las 6 secciones (más abajo, una por una) en **Editar código → Secciones**.
 2. En **Editar código → Plantillas → Agregar una nueva plantilla** → tipo **product**, formato **JSON**, nombre `hair` → borrá todo, pegá el contenido de `templates/product.hair.json` → **Guardar**.
 3. En el admin del producto: **Plantilla del tema → `product.hair`**.
 
-La plantilla ya trae los 5 bloques en orden con todo el copy (ángulo DHT) y la oferta cargada.
+La plantilla ya trae los 6 bloques en orden con todo el copy (ángulo DHT) y la oferta cargada.
 
 Cada bloque es **un solo archivo** de sección (CSS, JS e íconos incluidos). Se crea una sección, se pega el código y listo.
 
@@ -58,3 +58,9 @@ No hace falta "precio de comparación": el tachado y el "Ahorrás $X" se calcula
 1. **Editar código → Secciones → Agregar una nueva sección** → nombre: `hm-razones` → borrá todo, pegá el código y **Guardar**.
 2. **Personalizar → plantilla `hair` → Agregar sección → HM · Razones**.
 3. Bloques **Sello**: los sellos del banner. Bloques **Razón**: imagen, título y el texto que se despliega con el +.
+
+## Bloque 6 · Problema / solución → `sections/hm-problema-solucion.liquid`
+
+1. **Editar código → Secciones → Agregar una nueva sección** → nombre: `hm-problema-solucion` → borrá todo, pegá el código y **Guardar**.
+2. **Personalizar → plantilla `hair` → Agregar sección → HM · Problema/solución**.
+3. Bloques **Problema** y **Solución**: ícono (o emoji/imagen) + texto. Abajo, cargá la foto ANTES y DESPUÉS (ideal PNG sin fondo).

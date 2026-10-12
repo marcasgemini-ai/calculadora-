@@ -484,6 +484,62 @@
         "razon_5"
       ],
       "settings": {}
+    },
+    "problema_solucion": {
+      "type": "hm-problema-solucion",
+      "blocks": {
+        "problema_1": {
+          "type": "problema",
+          "settings": {
+            "icono": "head",
+            "texto": "Pelo cada vez más fino en las entradas y la coronilla"
+          }
+        },
+        "problema_2": {
+          "type": "problema",
+          "settings": {
+            "icono": "face-sad",
+            "texto": "Inseguridad con tu pelo: gorras, ángulos, fotos…"
+          }
+        },
+        "problema_3": {
+          "type": "problema",
+          "settings": {
+            "icono": "x-circle",
+            "texto": "Cansado de probar cosas que no funcionan"
+          }
+        },
+        "solucion_1": {
+          "type": "solucion",
+          "settings": {
+            "icono": "hair",
+            "texto": "Pelo visiblemente más abundante y con mejor aspecto"
+          }
+        },
+        "solucion_2": {
+          "type": "solucion",
+          "settings": {
+            "icono": "confidence",
+            "texto": "Confianza renovada"
+          }
+        },
+        "solucion_3": {
+          "type": "solucion",
+          "settings": {
+            "icono": "face-happy",
+            "texto": "Ayuda a bloquear la DHT · Sin gluten y fácil de tomar"
+          }
+        }
+      },
+      "block_order": [
+        "problema_1",
+        "problema_2",
+        "problema_3",
+        "solucion_1",
+        "solucion_2",
+        "solucion_3"
+      ],
+      "settings": {}
     }
   },
   "order": [
@@ -491,6 +547,7 @@
     "transformaciones",
     "dht",
     "historias",
-    "razones"
+    "razones",
+    "problema_solucion"
   ]
 }

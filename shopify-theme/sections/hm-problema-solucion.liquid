@@ -1,0 +1,903 @@
+{%- comment -%}
+  HM · Bloque 6 — Tu problema vs Nuestra solución + transformación antes → después
+  Sección autónoma: CSS e íconos incluidos. Todo editable desde el personalizador.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign acc = s.color_acento | default: '#6b3fc0'
+  assign hm_font = s.fuente
+  assign hm_font_stack = "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+  if hm_font != blank
+    assign hm_font_stack = hm_font.family | prepend: "'" | append: "', " | append: hm_font.fallback_families
+  endif
+-%}
+
+{%- if hm_font != blank -%}
+  <style>
+    {{ hm_font | font_face: font_display: 'swap' }}
+    {%- assign hm_f = hm_font | font_modify: 'weight', '500' -%}{%- if hm_f -%}{{ hm_f | font_face: font_display: 'swap' }}{%- endif -%}
+    {%- assign hm_f = hm_font | font_modify: 'weight', '600' -%}{%- if hm_f -%}{{ hm_f | font_face: font_display: 'swap' }}{%- endif -%}
+    {%- assign hm_f = hm_font | font_modify: 'weight', '700' -%}{%- if hm_f -%}{{ hm_f | font_face: font_display: 'swap' }}{%- endif -%}
+  </style>
+{%- endif -%}
+
+<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false"><defs><symbol id="hmi-check" viewBox="0 0 24 24"><path d="M4.5 12.5l5 5 10-11"/></symbol><symbol id="hmi-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M8 12.3l2.8 2.8L16.2 9.5"/></symbol><symbol id="hmi-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol><symbol id="hmi-x-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M9 9l6 6M15 9l-6 6"/></symbol><symbol id="hmi-truck" viewBox="0 0 24 24"><path d="M2.5 6.5h11v9h-11zM13.5 9.5h4l3 3v3h-7"/><circle cx="6.5" cy="17" r="1.8"/><circle cx="17" cy="17" r="1.8"/></symbol><symbol id="hmi-shield" viewBox="0 0 24 24"><path d="M12 2.8l7.5 3v5.6c0 4.6-3.2 8.3-7.5 9.8-4.3-1.5-7.5-5.2-7.5-9.8V5.8z"/><path d="M8.7 12l2.3 2.3 4.3-4.6"/></symbol><symbol id="hmi-card" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 9.5h19M6 15h4"/></symbol><symbol id="hmi-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M12 7v5.2l3.4 2"/></symbol><symbol id="hmi-leaf" viewBox="0 0 24 24"><path d="M5 19c0-8 5-13 15-14-1 10-6 15-14 15M5 19l7-7"/></symbol><symbol id="hmi-capsule" viewBox="0 0 24 24"><rect x="2.8" y="8.2" width="18.4" height="7.6" rx="3.8" transform="rotate(-35 12 12)"/><path d="M9.9 9.2l4.3 5.9"/></symbol><symbol id="hmi-flask" viewBox="0 0 24 24"><path d="M9.5 3h5M10.2 3v6.2L4.8 18.4A1.8 1.8 0 0 0 6.4 21h11.2a1.8 1.8 0 0 0 1.6-2.6L13.8 9.2V3M7.5 15h9"/></symbol><symbol id="hmi-gift" viewBox="0 0 24 24"><rect x="3.2" y="8.5" width="17.6" height="4" rx="1"/><path d="M4.8 12.5v8h14.4v-8M12 8.5v12M12 8.5S10.8 4 8.4 4a2.2 2.2 0 0 0 0 4.5M12 8.5S13.2 4 15.6 4a2.2 2.2 0 0 1 0 4.5"/></symbol><symbol id="hmi-lock" viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="10" rx="2.2"/><path d="M8 10.5V7.8a4 4 0 0 1 8 0v2.7"/></symbol><symbol id="hmi-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></symbol><symbol id="hmi-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol><symbol id="hmi-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol><symbol id="hmi-star" viewBox="0 0 24 24"><path d="M12 2.8l2.8 5.8 6.4.8-4.7 4.4 1.2 6.4L12 17l-5.7 3.2 1.2-6.4-4.7-4.4 6.4-.8z"/></symbol><symbol id="hmi-verified" viewBox="0 0 24 24"><path d="M12 2.5l2.3 1.7 2.8-.1.9 2.7 2.3 1.6-.9 2.7.9 2.7-2.3 1.6-.9 2.7-2.8-.1L12 21.5l-2.3-1.7-2.8.1-.9-2.7-2.3-1.6.9-2.7-.9-2.7 2.3-1.6.9-2.7 2.8.1z"/><path d="M8.8 12.2l2.2 2.2 4.2-4.4"/></symbol><symbol id="hmi-bolt" viewBox="0 0 24 24"><path d="M13 2.5L4.5 13.5H12l-1 8 8.5-11H12z"/></symbol><symbol id="hmi-heart" viewBox="0 0 24 24"><path d="M12 20.5s-8.5-5-8.5-11A4.8 4.8 0 0 1 12 6.6a4.8 4.8 0 0 1 8.5 2.9c0 6-8.5 11-8.5 11z"/></symbol><symbol id="hmi-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.1-5.8 6.5-5.8s5.9 2.2 6.5 5.8M16 4.8a3.5 3.5 0 0 1 0 6.6M18 14.6c2 .7 3.2 2.6 3.5 5.4"/></symbol><symbol id="hmi-medal" viewBox="0 0 24 24"><circle cx="12" cy="14.5" r="6"/><path d="M8.5 9.6L6 2.5h4l2 4.5 2-4.5h4l-2.5 7.1M12 12v5"/></symbol><symbol id="hmi-refresh" viewBox="0 0 24 24"><path d="M20 11.5A8 8 0 0 0 5.6 6.8L3.5 9M4 12.5a8 8 0 0 0 14.4 4.7l2.1-2.2M3.5 4v5h5M20.5 20v-5h-5"/></symbol><symbol id="hmi-dna" viewBox="0 0 24 24"><path d="M7 2.5c0 6 10 7 10 13s0 6 0 6M17 2.5c0 6-10 7-10 13v6M8 6h8M8 18h8M9.5 9.5h5M9.5 14.5h5"/></symbol><symbol id="hmi-sparkles" viewBox="0 0 24 24"><path d="M10 3l1.8 5.2L17 10l-5.2 1.8L10 17l-1.8-5.2L3 10l5.2-1.8zM18 14l.9 2.1 2.1.9-2.1.9L18 20l-.9-2.1-2.1-.9 2.1-.9z"/></symbol><symbol id="hmi-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2.2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol><symbol id="hmi-droplet" viewBox="0 0 24 24"><path d="M12 3s6.5 7 6.5 11.3a6.5 6.5 0 0 1-13 0C5.5 10 12 3 12 3z"/></symbol><symbol id="hmi-sound-off" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4zM16 9.5l5 5M21 9.5l-5 5"/></symbol><symbol id="hmi-sound-on" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4zM16 9a4.2 4.2 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></symbol><symbol id="hmi-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z" fill="currentColor"/></symbol><symbol id="hmi-hair" viewBox="0 0 24 24"><path d="M6 21c1-6 0-10-1-14M10 21c.5-6 0-11 2-17M14.5 21c-.5-5 .5-9 3.5-14M18.5 21c-.5-3 0-6 2-9"/></symbol><symbol id="hmi-stethoscope" viewBox="0 0 24 24"><path d="M5 3v5a5 5 0 0 0 10 0V3M10 13v2.5a5 5 0 0 0 10 0V13"/><circle cx="20" cy="11" r="2"/></symbol><symbol id="hmi-ban" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M5.5 5.5l13 13"/></symbol><symbol id="hmi-map-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.3-7-11.5a7 7 0 0 1 14 0C19 14.7 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></symbol><symbol id="hmi-percent" viewBox="0 0 24 24"><path d="M19 5L5 19"/><circle cx="7" cy="7" r="2.5"/><circle cx="17" cy="17" r="2.5"/></symbol><symbol id="hmi-box" viewBox="0 0 24 24"><path d="M3.5 7.5L12 3l8.5 4.5v9L12 21l-8.5-4.5zM3.5 7.5L12 12l8.5-4.5M12 12v9"/></symbol><symbol id="hmi-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></symbol><symbol id="hmi-moon" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></symbol><symbol id="hmi-trend-up" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8M15 7h6v6"/></symbol><symbol id="hmi-face-sad" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M8.5 16.2c1.9-1.7 5.1-1.7 7 0M9 9.5h.01M15 9.5h.01"/></symbol><symbol id="hmi-face-happy" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M8 13.5c2.2 2.6 5.8 2.6 8 0M9 9.5h.01M15 9.5h.01"/></symbol><symbol id="hmi-confidence" viewBox="0 0 24 24"><circle cx="12" cy="7" r="3"/><path d="M7.5 21v-4.5a4.5 4.5 0 0 1 9 0V21M12 1.5v1M4.5 4.5l.8.8M19.5 4.5l-.8.8M2 10h1.2M22 10h-1.2"/></symbol><symbol id="hmi-head" viewBox="0 0 24 24"><path d="M6 20v-3.2A7 7 0 1 1 18.5 12l1.5 3h-2v2.5a2 2 0 0 1-2 2H14V21"/><path d="M9 8.5c1-1.5 3-2 4.5-1"/></symbol></defs></svg>
+
+<style>
+  /* ===== Reset: el theme no puede romper la sección ===== */
+  .hm-ps, .hm-ps *, .hm-ps *::before, .hm-ps *::after { box-sizing: border-box; }
+  .hm-ps :where(h2, h3, p, span, strong, em, a, img, svg, ul, li, div) {
+    margin: 0; padding: 0; border: 0; text-transform: none; letter-spacing: normal;
+    font-family: inherit; line-height: inherit; box-shadow: none; background: none; color: inherit; list-style: none;
+  }
+  .hm-ps :where(img, svg) { display: block; max-width: 100%; border-radius: 0; }
+
+  .hm-ps {
+    font-family: var(--ps-font); color: var(--ps-fg); background: var(--ps-bg);
+    font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased;
+    padding: var(--ps-pt) 0 0; overflow: hidden;
+  }
+  .hm-ps--no-img { padding-bottom: var(--ps-pb); }
+  .hm-ps__wrap { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+  @media (min-width: 750px) { .hm-ps__wrap { padding: 0 32px; } }
+
+  /* Encabezado */
+  .hm-ps__head { text-align: center; max-width: 760px; margin: 0 auto 32px; }
+  .hm-ps__pill { display: inline-block; padding: 9px 20px !important; border-radius: 6px; background: var(--ps-pill-bg) !important; color: var(--ps-pill-fg) !important; font-size: 14px; font-weight: 500; line-height: 1.3; margin-bottom: 16px !important; }
+  .hm-ps--upper .hm-ps__pill { text-transform: uppercase !important; letter-spacing: .03em !important; }
+  .hm-ps__title { font-size: var(--ps-title-m); font-weight: 600; line-height: 1.25; color: var(--ps-fg); }
+  .hm-ps__title em { font-style: normal; color: var(--ps-hl); }
+  @media (min-width: 750px) { .hm-ps__title { font-size: var(--ps-title-d); } }
+  .hm-ps__emoji { display: block; margin-top: 12px !important; font-size: var(--ps-emoji); line-height: 1; }
+  .hm-ps__emoji img { width: var(--ps-emoji); height: var(--ps-emoji); margin: 0 auto; object-fit: contain; }
+
+  /* Tarjetas */
+  .hm-ps__cards { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  @media (min-width: 750px) { .hm-ps__cards { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; } }
+  .hm-ps__card { border-radius: var(--ps-radius); padding: 22px 20px; }
+  @media (min-width: 750px) { .hm-ps__card { padding: 26px 24px; } }
+  .hm-ps__card--p { background: var(--ps-p-bg); color: var(--ps-p-fg); }
+  .hm-ps__card--s { background: var(--ps-s-bg); color: var(--ps-s-fg); }
+  .hm-ps--glow .hm-ps__card--s { box-shadow: 0 0 34px var(--ps-glow) !important; }
+  .hm-ps__card-title { font-size: 16px; font-weight: 600; margin-bottom: 16px !important; }
+  .hm-ps__list { display: grid; gap: 14px; }
+  .hm-ps__item { display: flex; align-items: flex-start; gap: 12px; font-size: 15px; line-height: 1.45; }
+  .hm-ps__ico { flex: none; width: 28px; height: 28px; display: grid; place-items: center; margin-top: -2px; font-size: 20px; line-height: 1; }
+  .hm-ps__ico svg { width: 26px; height: 26px; }
+  .hm-ps__ico img { width: 28px; height: 28px; object-fit: contain; }
+  .hm-ps__card--p .hm-ps__ico { color: var(--ps-p-ico); }
+  .hm-ps__card--s .hm-ps__ico { color: var(--ps-s-ico); }
+
+  /* Transformación */
+  .hm-ps__ba { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: end; max-width: 760px; margin: 28px auto 0; }
+  .hm-ps__ba-img { height: var(--ps-img-m); display: flex; align-items: flex-end; justify-content: center; }
+  .hm-ps__ba-img img, .hm-ps__ba-img svg { height: 100%; width: auto; max-width: 100%; object-fit: contain; object-position: bottom; }
+  .hm-ps--gray .hm-ps__ba-img--before img { filter: grayscale(1); }
+  @media (min-width: 750px) { .hm-ps__ba-img { height: var(--ps-img-d); } }
+  .hm-ps__mid { align-self: center; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 0 6px; margin-bottom: 18%; text-align: center; }
+  .hm-ps__mid-text { font-size: 14px; font-weight: 600; line-height: 1.2; color: var(--ps-fg); white-space: nowrap; }
+  .hm-ps__mid-text em { font-style: italic; font-weight: 700; color: var(--ps-hl); text-transform: uppercase; }
+  .hm-ps__arrow { width: 52px; height: 18px; color: var(--ps-fg); opacity: .85; }
+  @media (min-width: 750px) { .hm-ps__mid { padding: 0 18px; gap: 10px; } .hm-ps__mid-text { font-size: 19px; } .hm-ps__arrow { width: 72px; height: 22px; } }
+
+  .hm-ps__cta { display: flex; justify-content: center; margin-top: 28px; }
+  .hm-ps__btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; padding: 0 28px;
+    border-radius: 8px; background: var(--ps-btn-bg); color: var(--ps-btn-fg) !important; font-size: 16px; font-weight: 600; text-decoration: none;
+    transition: filter .2s;
+  }
+  .hm-ps__btn:hover { filter: brightness(1.1); }
+  @media (max-width: 749px) { .hm-ps__btn { width: 100%; } }
+</style>
+
+{%- assign has_ba = false -%}
+{%- if s.mostrar_transformacion -%}{%- if s.imagen_antes != blank or s.imagen_despues != blank -%}{%- assign has_ba = true -%}{%- endif -%}{%- endif -%}
+
+<section
+  id="hm-ps-{{ section.id }}"
+  class="hm-ps{% if s.pill_mayus %} hm-ps--upper{% endif %}{% if s.brillo %} hm-ps--glow{% endif %}{% if s.antes_gris %} hm-ps--gray{% endif %}{% unless has_ba %} hm-ps--no-img{% endunless %}"
+  style="
+    --ps-font: {{ hm_font_stack }};
+    --ps-bg: {{ s.color_fondo }};
+    --ps-fg: {{ s.color_texto }};
+    --ps-hl: {{ s.color_resaltado }};
+    --ps-pill-bg: {{ s.pill_fondo }};
+    --ps-pill-fg: {{ s.pill_texto }};
+    --ps-p-bg: {{ s.problema_fondo }};
+    --ps-p-fg: {{ s.problema_texto }};
+    --ps-p-ico: {{ s.problema_iconos }};
+    --ps-s-bg: {{ s.solucion_fondo | default: acc }};
+    --ps-s-fg: {{ s.solucion_texto }};
+    --ps-s-ico: {{ s.solucion_iconos }};
+    --ps-glow: {{ s.solucion_fondo | default: acc | color_modify: 'alpha', 0.55 }};
+    --ps-btn-bg: {{ s.color_boton | default: acc }};
+    --ps-btn-fg: {{ s.color_boton_texto | default: '#ffffff' }};
+    --ps-title-d: {{ s.titulo_desktop }}px;
+    --ps-title-m: {{ s.titulo_mobile }}px;
+    --ps-emoji: {{ s.emoji_tamano }}px;
+    --ps-img-d: {{ s.alto_desktop }}px;
+    --ps-img-m: {{ s.alto_mobile }}px;
+    --ps-radius: {{ s.bordes }}px;
+    --ps-pt: {{ s.padding_top }}px;
+    --ps-pb: {{ s.padding_bottom }}px;
+  "
+>
+  <div class="hm-ps__wrap">
+    <div class="hm-ps__head">
+      {%- if s.pill != blank -%}<span class="hm-ps__pill">{{ s.pill }}</span>{%- endif -%}
+      {%- if s.titulo != blank -%}<h2 class="hm-ps__title">{{ s.titulo }}</h2>{%- endif -%}
+      {%- if s.emoji_imagen != blank -%}
+        <span class="hm-ps__emoji">{{ s.emoji_imagen | image_url: width: 160 | image_tag: loading: 'lazy', widths: '80, 160', sizes: '48px', alt: '' }}</span>
+      {%- elsif s.emoji != blank -%}
+        <span class="hm-ps__emoji" aria-hidden="true">{{ s.emoji }}</span>
+      {%- endif -%}
+    </div>
+
+    <div class="hm-ps__cards">
+      {%- for side in (1..2) -%}
+        {%- if side == 1 -%}
+          {%- assign btype = 'problema' -%}{%- assign ctitle = s.problema_titulo -%}{%- assign cmod = 'p' -%}
+        {%- else -%}
+          {%- assign btype = 'solucion' -%}{%- assign ctitle = s.solucion_titulo -%}{%- assign cmod = 's' -%}
+        {%- endif -%}
+        <div class="hm-ps__card hm-ps__card--{{ cmod }}">
+          {%- if ctitle != blank -%}<h3 class="hm-ps__card-title">{{ ctitle }}</h3>{%- endif -%}
+          <ul class="hm-ps__list">
+            {%- for block in section.blocks -%}
+              {%- if block.type != btype -%}{%- continue -%}{%- endif -%}
+              {%- assign bs = block.settings -%}
+              <li class="hm-ps__item" {{ block.shopify_attributes }}>
+                {%- if bs.imagen != blank -%}
+                  <span class="hm-ps__ico">{{ bs.imagen | image_url: width: 64 | image_tag: loading: 'lazy', widths: '32, 64', sizes: '28px', alt: '' }}</span>
+                {%- elsif bs.emoji != blank -%}
+                  <span class="hm-ps__ico" aria-hidden="true">{{ bs.emoji }}</span>
+                {%- elsif bs.icono != 'ninguno' -%}
+                  <span class="hm-ps__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#hmi-{{ bs.icono }}"/></svg></span>
+                {%- endif -%}
+                <span>{{ bs.texto }}</span>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    {%- if s.boton_texto != blank -%}
+      <div class="hm-ps__cta">
+        <a class="hm-ps__btn" href="{{ s.boton_link | default: '#hm-comprar' }}">{{ s.boton_texto }}</a>
+      </div>
+    {%- endif -%}
+
+    {%- if has_ba -%}
+      <div class="hm-ps__ba">
+        <div class="hm-ps__ba-img hm-ps__ba-img--before">
+          {%- if s.imagen_antes != blank -%}
+            {{ s.imagen_antes | image_url: width: 900 | image_tag: loading: 'lazy', widths: '300, 450, 600, 900', sizes: '(min-width: 750px) 320px, 40vw', alt: 'Antes' }}
+          {%- endif -%}
+        </div>
+        <div class="hm-ps__mid">
+          {%- if s.texto_tiempo != blank or s.texto_tiempo_dest != blank -%}
+            <span class="hm-ps__mid-text">{{ s.texto_tiempo }} <em>{{ s.texto_tiempo_dest }}</em></span>
+          {%- endif -%}
+          <svg class="hm-ps__arrow" viewBox="0 0 72 22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 11h66M58 2l10 9-10 9"/></svg>
+        </div>
+        <div class="hm-ps__ba-img hm-ps__ba-img--after">
+          {%- if s.imagen_despues != blank -%}
+            {{ s.imagen_despues | image_url: width: 900 | image_tag: loading: 'lazy', widths: '300, 450, 600, 900', sizes: '(min-width: 750px) 320px, 40vw', alt: 'Después' }}
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "HM · Problema/solución",
+  "tag": "div",
+  "class": "hm-section-ps",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Encabezado"
+    },
+    {
+      "type": "text",
+      "id": "pill",
+      "label": "Etiqueta",
+      "default": "La salud de tu pelo empieza acá"
+    },
+    {
+      "type": "checkbox",
+      "id": "pill_mayus",
+      "label": "Etiqueta en mayúsculas",
+      "default": true
+    },
+    {
+      "type": "inline_richtext",
+      "id": "titulo",
+      "label": "Título",
+      "default": "De ralo e inseguro a <em>tupido y seguro</em>",
+      "info": "La cursiva se pinta con el color resaltado."
+    },
+    {
+      "type": "text",
+      "id": "emoji",
+      "label": "Emoji",
+      "default": "💪"
+    },
+    {
+      "type": "image_picker",
+      "id": "emoji_imagen",
+      "label": "Imagen en vez del emoji (opcional)"
+    },
+    {
+      "type": "range",
+      "id": "emoji_tamano",
+      "label": "Tamaño del emoji",
+      "min": 20,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "titulo_desktop",
+      "label": "Tamaño del título en PC",
+      "min": 20,
+      "max": 52,
+      "step": 1,
+      "unit": "px",
+      "default": 34
+    },
+    {
+      "type": "range",
+      "id": "titulo_mobile",
+      "label": "Tamaño del título en celular",
+      "min": 18,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 26
+    },
+    {
+      "type": "header",
+      "content": "Tarjetas"
+    },
+    {
+      "type": "paragraph",
+      "content": "Los ítems se agregan como bloques \"Problema\" y \"Solución\"."
+    },
+    {
+      "type": "text",
+      "id": "problema_titulo",
+      "label": "Título tarjeta problema",
+      "default": "Tu problema"
+    },
+    {
+      "type": "text",
+      "id": "solucion_titulo",
+      "label": "Título tarjeta solución",
+      "default": "Nuestra solución"
+    },
+    {
+      "type": "checkbox",
+      "id": "brillo",
+      "label": "Brillo en la tarjeta de solución",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "bordes",
+      "label": "Redondeo de las tarjetas",
+      "min": 0,
+      "max": 28,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Transformación (abajo)"
+    },
+    {
+      "type": "checkbox",
+      "id": "mostrar_transformacion",
+      "label": "Mostrar antes → después",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "imagen_antes",
+      "label": "Foto ANTES",
+      "info": "Ideal: PNG recortado (sin fondo), persona de cintura para arriba."
+    },
+    {
+      "type": "checkbox",
+      "id": "antes_gris",
+      "label": "Foto ANTES en blanco y negro",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "imagen_despues",
+      "label": "Foto DESPUÉS",
+      "info": "Ideal: PNG recortado, sosteniendo el producto."
+    },
+    {
+      "type": "text",
+      "id": "texto_tiempo",
+      "label": "Texto del medio",
+      "default": "En solo"
+    },
+    {
+      "type": "text",
+      "id": "texto_tiempo_dest",
+      "label": "Texto destacado",
+      "default": "90 días"
+    },
+    {
+      "type": "range",
+      "id": "alto_desktop",
+      "label": "Alto de las fotos en PC",
+      "min": 160,
+      "max": 480,
+      "step": 10,
+      "unit": "px",
+      "default": 300
+    },
+    {
+      "type": "range",
+      "id": "alto_mobile",
+      "label": "Alto de las fotos en celular",
+      "min": 120,
+      "max": 340,
+      "step": 10,
+      "unit": "px",
+      "default": 200
+    },
+    {
+      "type": "header",
+      "content": "Botón (opcional)"
+    },
+    {
+      "type": "text",
+      "id": "boton_texto",
+      "label": "Texto del botón",
+      "info": "Vacío = sin botón."
+    },
+    {
+      "type": "text",
+      "id": "boton_link",
+      "label": "Link del botón",
+      "default": "#hm-comprar"
+    },
+    {
+      "type": "header",
+      "content": "Colores y tipografía"
+    },
+    {
+      "type": "font_picker",
+      "id": "fuente",
+      "label": "Tipografía",
+      "default": "poppins_n4"
+    },
+    {
+      "type": "color",
+      "id": "color_acento",
+      "label": "Color de marca",
+      "default": "#6b3fc0"
+    },
+    {
+      "type": "color",
+      "id": "color_fondo",
+      "label": "Fondo de la sección",
+      "default": "#16101f"
+    },
+    {
+      "type": "color",
+      "id": "color_texto",
+      "label": "Texto",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "color_resaltado",
+      "label": "Color resaltado (título y \"90 días\")",
+      "default": "#c9b2ff"
+    },
+    {
+      "type": "color",
+      "id": "pill_fondo",
+      "label": "Fondo de la etiqueta",
+      "default": "#2a2138"
+    },
+    {
+      "type": "color",
+      "id": "pill_texto",
+      "label": "Texto de la etiqueta",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "problema_fondo",
+      "label": "Fondo tarjeta problema",
+      "default": "#261d33"
+    },
+    {
+      "type": "color",
+      "id": "problema_texto",
+      "label": "Texto tarjeta problema",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "problema_iconos",
+      "label": "Íconos problema",
+      "default": "#ef8a8a"
+    },
+    {
+      "type": "color",
+      "id": "solucion_fondo",
+      "label": "Fondo tarjeta solución (opcional)",
+      "info": "Vacío = color de marca."
+    },
+    {
+      "type": "color",
+      "id": "solucion_texto",
+      "label": "Texto tarjeta solución",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "solucion_iconos",
+      "label": "Íconos solución",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "color_boton",
+      "label": "Color del botón (opcional)"
+    },
+    {
+      "type": "color",
+      "id": "color_boton_texto",
+      "label": "Texto del botón (opcional)"
+    },
+    {
+      "type": "header",
+      "content": "Espaciado"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Espacio arriba",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Espacio abajo (sin fotos)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    }
+  ],
+  "blocks": [
+    {
+      "type": "problema",
+      "name": "Problema",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icono",
+          "label": "Ícono",
+          "options": [
+            {
+              "value": "face-sad",
+              "label": "Cara triste"
+            },
+            {
+              "value": "face-happy",
+              "label": "Cara feliz"
+            },
+            {
+              "value": "confidence",
+              "label": "Confianza"
+            },
+            {
+              "value": "head",
+              "label": "Cabeza"
+            },
+            {
+              "value": "check-circle",
+              "label": "Check"
+            },
+            {
+              "value": "check",
+              "label": "Tilde"
+            },
+            {
+              "value": "truck",
+              "label": "Envío"
+            },
+            {
+              "value": "shield",
+              "label": "Escudo / garantía"
+            },
+            {
+              "value": "card",
+              "label": "Tarjeta / cuotas"
+            },
+            {
+              "value": "clock",
+              "label": "Reloj"
+            },
+            {
+              "value": "leaf",
+              "label": "Natural / hoja"
+            },
+            {
+              "value": "capsule",
+              "label": "Cápsula"
+            },
+            {
+              "value": "flask",
+              "label": "Laboratorio"
+            },
+            {
+              "value": "gift",
+              "label": "Regalo"
+            },
+            {
+              "value": "lock",
+              "label": "Pago seguro"
+            },
+            {
+              "value": "verified",
+              "label": "Verificado"
+            },
+            {
+              "value": "bolt",
+              "label": "Energía"
+            },
+            {
+              "value": "heart",
+              "label": "Corazón"
+            },
+            {
+              "value": "users",
+              "label": "Clientes"
+            },
+            {
+              "value": "medal",
+              "label": "Medalla"
+            },
+            {
+              "value": "refresh",
+              "label": "Devolución"
+            },
+            {
+              "value": "dna",
+              "label": "ADN"
+            },
+            {
+              "value": "sparkles",
+              "label": "Brillo"
+            },
+            {
+              "value": "calendar",
+              "label": "Calendario"
+            },
+            {
+              "value": "droplet",
+              "label": "Gota"
+            },
+            {
+              "value": "hair",
+              "label": "Cabello"
+            },
+            {
+              "value": "stethoscope",
+              "label": "Médico"
+            },
+            {
+              "value": "ban",
+              "label": "Prohibido"
+            },
+            {
+              "value": "x-circle",
+              "label": "Cruz"
+            },
+            {
+              "value": "map-pin",
+              "label": "Ubicación"
+            },
+            {
+              "value": "percent",
+              "label": "Descuento"
+            },
+            {
+              "value": "box",
+              "label": "Paquete"
+            },
+            {
+              "value": "trend-up",
+              "label": "Crecimiento"
+            },
+            {
+              "value": "star",
+              "label": "Estrella"
+            },
+            {
+              "value": "sun",
+              "label": "Sol"
+            },
+            {
+              "value": "moon",
+              "label": "Luna"
+            },
+            {
+              "value": "ninguno",
+              "label": "Sin ícono"
+            }
+          ],
+          "default": "face-sad"
+        },
+        {
+          "type": "text",
+          "id": "emoji",
+          "label": "Emoji (reemplaza al ícono)"
+        },
+        {
+          "type": "image_picker",
+          "id": "imagen",
+          "label": "Ícono propio (opcional)"
+        },
+        {
+          "type": "text",
+          "id": "texto",
+          "label": "Texto",
+          "default": "Texto del problema"
+        }
+      ]
+    },
+    {
+      "type": "solucion",
+      "name": "Solución",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icono",
+          "label": "Ícono",
+          "options": [
+            {
+              "value": "face-sad",
+              "label": "Cara triste"
+            },
+            {
+              "value": "face-happy",
+              "label": "Cara feliz"
+            },
+            {
+              "value": "confidence",
+              "label": "Confianza"
+            },
+            {
+              "value": "head",
+              "label": "Cabeza"
+            },
+            {
+              "value": "check-circle",
+              "label": "Check"
+            },
+            {
+              "value": "check",
+              "label": "Tilde"
+            },
+            {
+              "value": "truck",
+              "label": "Envío"
+            },
+            {
+              "value": "shield",
+              "label": "Escudo / garantía"
+            },
+            {
+              "value": "card",
+              "label": "Tarjeta / cuotas"
+            },
+            {
+              "value": "clock",
+              "label": "Reloj"
+            },
+            {
+              "value": "leaf",
+              "label": "Natural / hoja"
+            },
+            {
+              "value": "capsule",
+              "label": "Cápsula"
+            },
+            {
+              "value": "flask",
+              "label": "Laboratorio"
+            },
+            {
+              "value": "gift",
+              "label": "Regalo"
+            },
+            {
+              "value": "lock",
+              "label": "Pago seguro"
+            },
+            {
+              "value": "verified",
+              "label": "Verificado"
+            },
+            {
+              "value": "bolt",
+              "label": "Energía"
+            },
+            {
+              "value": "heart",
+              "label": "Corazón"
+            },
+            {
+              "value": "users",
+              "label": "Clientes"
+            },
+            {
+              "value": "medal",
+              "label": "Medalla"
+            },
+            {
+              "value": "refresh",
+              "label": "Devolución"
+            },
+            {
+              "value": "dna",
+              "label": "ADN"
+            },
+            {
+              "value": "sparkles",
+              "label": "Brillo"
+            },
+            {
+              "value": "calendar",
+              "label": "Calendario"
+            },
+            {
+              "value": "droplet",
+              "label": "Gota"
+            },
+            {
+              "value": "hair",
+              "label": "Cabello"
+            },
+            {
+              "value": "stethoscope",
+              "label": "Médico"
+            },
+            {
+              "value": "ban",
+              "label": "Prohibido"
+            },
+            {
+              "value": "x-circle",
+              "label": "Cruz"
+            },
+            {
+              "value": "map-pin",
+              "label": "Ubicación"
+            },
+            {
+              "value": "percent",
+              "label": "Descuento"
+            },
+            {
+              "value": "box",
+              "label": "Paquete"
+            },
+            {
+              "value": "trend-up",
+              "label": "Crecimiento"
+            },
+            {
+              "value": "star",
+              "label": "Estrella"
+            },
+            {
+              "value": "sun",
+              "label": "Sol"
+            },
+            {
+              "value": "moon",
+              "label": "Luna"
+            },
+            {
+              "value": "ninguno",
+              "label": "Sin ícono"
+            }
+          ],
+          "default": "face-happy"
+        },
+        {
+          "type": "text",
+          "id": "emoji",
+          "label": "Emoji (reemplaza al ícono)"
+        },
+        {
+          "type": "image_picker",
+          "id": "imagen",
+          "label": "Ícono propio (opcional)"
+        },
+        {
+          "type": "text",
+          "id": "texto",
+          "label": "Texto",
+          "default": "Texto de la solución"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "HM · Problema/solución",
+      "blocks": [
+        {
+          "type": "problema",
+          "settings": {
+            "icono": "head",
+            "texto": "Pelo cada vez más fino en las entradas y la coronilla"
+          }
+        },
+        {
+          "type": "problema",
+          "settings": {
+            "icono": "face-sad",
+            "texto": "Inseguridad con tu pelo: gorras, ángulos, fotos…"
+          }
+        },
+        {
+          "type": "problema",
+          "settings": {
+            "icono": "x-circle",
+            "texto": "Cansado de probar cosas que no funcionan"
+          }
+        },
+        {
+          "type": "solucion",
+          "settings": {
+            "icono": "hair",
+            "texto": "Pelo visiblemente más abundante y con mejor aspecto"
+          }
+        },
+        {
+          "type": "solucion",
+          "settings": {
+            "icono": "confidence",
+            "texto": "Confianza renovada"
+          }
+        },
+        {
+          "type": "solucion",
+          "settings": {
+            "icono": "face-happy",
+            "texto": "Ayuda a bloquear la DHT · Sin gluten y fácil de tomar"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
