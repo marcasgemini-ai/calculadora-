@@ -2107,7 +2107,7 @@
           "type": "inline_richtext",
           "id": "titulo",
           "label": "Título",
-          "default": "Activador capilar <em>HAIR</em>",
+          "default": "Bloqueador de DHT <em>HAIR</em>",
           "info": "Vacío = nombre del producto. La cursiva se pinta con el color de marca."
         },
         {
@@ -2126,7 +2126,7 @@
           "type": "richtext",
           "id": "texto",
           "label": "Texto",
-          "default": "<p><strong>Menos pelo en la almohada y en la ducha. Un pelo más fuerte y con más cuerpo, con garantía de devolución de 30 días.</strong> Una fórmula con 8 nutrientes (biotina, zinc, selenio, L-cistina, colágeno tipo II y vitaminas C, B5 y B6) que nutre el folículo desde adentro para un pelo más sano y abundante, sin químicos agresivos.*</p>"
+          "default": "<p><strong>Frená la caída desde la raíz: HAIR ayuda a bloquear la DHT, la hormona que achica el folículo. Pelo más fuerte y con más cuerpo, con garantía de devolución de 30 días.</strong> Una fórmula con 8 nutrientes (biotina, zinc, selenio, L-cistina, colágeno tipo II y vitaminas C, B5 y B6) que ayuda a mantener un equilibrio saludable de DHT y nutre el folículo desde adentro, sin químicos agresivos.*</p>"
         }
       ]
     },
@@ -2268,13 +2268,13 @@
               "label": "Luna"
             }
           ],
-          "default": "hair"
+          "default": "shield"
         },
         {
           "type": "text",
           "id": "texto",
           "label": "Texto",
-          "default": "Ayuda a reducir la caída del pelo"
+          "default": "Ayuda a bloquear la DHT · Reduce la caída del pelo"
         }
       ]
     },
@@ -2894,16 +2894,23 @@
           "type": "rating"
         },
         {
-          "type": "titulo"
+          "type": "titulo",
+          "settings": {
+            "titulo": "Bloqueador de DHT <em>HAIR</em>",
+            "subtitulo": "Menos caída de pelo, <em>crecimiento más saludable</em>"
+          }
         },
         {
-          "type": "texto"
+          "type": "texto",
+          "settings": {
+            "texto": "<p><strong>Frená la caída desde la raíz: HAIR ayuda a bloquear la DHT, la hormona que achica el folículo. Pelo más fuerte y con más cuerpo, con garantía de devolución de 30 días.</strong> Una fórmula con 8 nutrientes (biotina, zinc, selenio, L-cistina, colágeno tipo II y vitaminas C, B5 y B6) que ayuda a mantener un equilibrio saludable de DHT y nutre el folículo desde adentro, sin químicos agresivos.*</p>"
+          }
         },
         {
           "type": "beneficio",
           "settings": {
-            "icono": "hair",
-            "texto": "Ayuda a reducir la caída del pelo"
+            "icono": "shield",
+            "texto": "Ayuda a bloquear la DHT · Reduce la caída del pelo"
           }
         },
         {
@@ -2992,7 +2999,14 @@
           "type": "acordeon",
           "settings": {
             "titulo": "¿Qué es HAIR?",
-            "contenido": "<p>HAIR es un suplemento dietario en cápsulas, formulado para hombres, con vitaminas C, B5 y B6, biotina, zinc, selenio, L-cistina y colágeno tipo II. Le da a tu pelo, desde adentro, los nutrientes que necesita para crecer fuerte.</p>"
+            "contenido": "<p>HAIR es un bloqueador de DHT en cápsulas, formulado para hombres. Combina vitaminas C, B5 y B6, biotina, zinc, selenio, L-cistina y colágeno tipo II para frenar la caída desde la raíz y darle al pelo lo que necesita para crecer fuerte.</p>"
+          }
+        },
+        {
+          "type": "acordeon",
+          "settings": {
+            "titulo": "¿Cómo actúa sobre la DHT?",
+            "contenido": "<p>La DHT (dihidrotestosterona) es la hormona que, con los años, se pega al folículo y lo va achicando: cada ciclo el pelo sale más fino, hasta que deja de salir.</p><p>HAIR ayuda a bloquear la DHT y a mantener un equilibrio saludable, mientras nutre el folículo desde adentro para que el pelo crezca más grueso y con más densidad.</p>"
           }
         },
         {
