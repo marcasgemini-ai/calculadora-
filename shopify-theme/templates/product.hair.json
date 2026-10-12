@@ -662,8 +662,14 @@
       ],
       "settings": {}
     },
-    "garantia_faq": {
-      "type": "hm-garantia-faq",
+    "garantia": {
+      "type": "hm-garantia",
+      "blocks": {},
+      "block_order": [],
+      "settings": {}
+    },
+    "faq": {
+      "type": "hm-faq",
       "blocks": {
         "pregunta_1": {
           "type": "pregunta",
@@ -736,6 +742,7 @@
     "problema_solucion",
     "capsula",
     "comparativa",
-    "garantia_faq"
+    "garantia",
+    "faq"
   ]
 }

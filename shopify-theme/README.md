@@ -2,11 +2,11 @@
 
 ## Instalación rápida (recomendada): plantilla completa
 
-1. Creá las 9 secciones (más abajo, una por una) en **Editar código → Secciones**.
+1. Creá las 10 secciones (más abajo, una por una) en **Editar código → Secciones**.
 2. En **Editar código → Plantillas → Agregar una nueva plantilla** → tipo **product**, formato **JSON**, nombre `hair` → borrá todo, pegá el contenido de `templates/product.hair.json` → **Guardar**.
 3. En el admin del producto: **Plantilla del tema → `product.hair`**.
 
-La plantilla ya trae los 9 bloques en orden con todo el copy (ángulo DHT) y la oferta cargada.
+La plantilla ya trae los 10 bloques en orden con todo el copy (ángulo DHT) y la oferta cargada.
 
 Cada bloque es **un solo archivo** de sección (CSS, JS e íconos incluidos). Se crea una sección, se pega el código y listo.
 
@@ -77,8 +77,14 @@ No hace falta "precio de comparación": el tachado y el "Ahorrás $X" se calcula
 2. **Personalizar → plantilla `hair` → Agregar sección → HM · Comparativa**.
 3. Cargá la **foto del producto** (PNG sin fondo). Bloques **Fila**: lo tuyo vs lo de los otros. Bloques **Punto**: los checks de la derecha.
 
-## Bloque 9 · Garantía + Preguntas frecuentes → `sections/hm-garantia-faq.liquid`
+## Bloque 9 · Garantía → `sections/hm-garantia.liquid`
 
-1. **Editar código → Secciones → Agregar una nueva sección** → nombre: `hm-garantia-faq` → borrá todo, pegá el código y **Guardar**.
-2. **Personalizar → plantilla `hair` → Agregar sección → HM · Garantía + FAQ**.
-3. Cargá la **foto** de la derecha (PNG recortado). Cada **Pregunta** es un bloque. Las preguntas también aparecen en Google (SEO), se puede desactivar.
+1. **Editar código → Secciones → Agregar una nueva sección** → nombre: `hm-garantia` → borrá todo, pegá el código y **Guardar**.
+2. **Personalizar → plantilla `hair` → Agregar sección → HM · Garantía**.
+3. Cargá la **foto** de la derecha (PNG recortado). Los días se cambian en un solo lugar y se actualizan los dos sellos.
+
+## Bloque 10 · Preguntas frecuentes → `sections/hm-faq.liquid`
+
+1. **Editar código → Secciones → Agregar una nueva sección** → nombre: `hm-faq` → borrá todo, pegá el código y **Guardar**.
+2. **Personalizar → plantilla `hair` → Agregar sección → HM · Preguntas frecuentes**.
+3. Cada **Pregunta** es un bloque. Abajo podés poner el link de WhatsApp. Las preguntas también aparecen en Google (SEO).
