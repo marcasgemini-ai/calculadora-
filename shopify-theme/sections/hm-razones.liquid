@@ -100,26 +100,41 @@
   }
 
   .hm-rz__card {
-    display: flex; flex-direction: column; align-items: center; text-align: center; min-width: 0;
-    padding: 14px 14px 16px; border-radius: var(--rz-radius); background: var(--rz-card); border: 1px solid var(--rz-line);
+    display: flex; flex-direction: column; min-width: 0;
+    padding: 14px 14px 16px; border-radius: var(--rz-radius); background: var(--rz-card); border: 1px solid var(--rz-line) !important;
   }
-  .hm-rz__img { width: 100%; aspect-ratio: 1 / 1; overflow: hidden; border-radius: calc(var(--rz-radius) * .6); background: var(--rz-line); }
+  .hm-rz__sum { list-style: none; cursor: pointer; flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; -webkit-tap-highlight-color: transparent; }
+  div.hm-rz__sum { cursor: default; }
+  .hm-rz__img { display: block; width: 100%; aspect-ratio: 1 / 1; overflow: hidden; border-radius: calc(var(--rz-radius) * .6); background: var(--rz-line); }
   .hm-rz__img img, .hm-rz__img svg { width: 100%; height: 100%; object-fit: cover; }
+  .hm-rz__info { flex: 1; display: flex; flex-direction: column; align-items: center; }
   .hm-rz__num { display: inline-block; margin-top: 12px !important; padding: 3px 10px !important; border-radius: 4px; background: var(--rz-accent) !important; color: #fff !important; font-size: 12.5px; font-weight: 600; }
-  .hm-rz__card-title { margin-top: 8px !important; font-size: 16px; font-weight: 600; line-height: 1.3; }
-  .hm-rz__more { width: 100%; margin-top: auto !important; padding-top: 12px !important; }
-  .hm-rz__more summary { list-style: none; display: flex; justify-content: center; cursor: pointer; }
+  .hm-rz__card-title { display: block; margin-top: 8px !important; font-size: 16px; font-weight: 600; line-height: 1.3; }
   .hm-rz__plus {
-    position: relative; width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--rz-muted) !important;
+    position: relative; flex: none; width: 28px; height: 28px; margin-top: 14px !important; border-radius: 50%; border: 1px solid var(--rz-muted) !important;
     color: var(--rz-muted); transition: transform .25s ease, background .2s, color .2s, border-color .2s;
   }
-  .hm-rz__plus::before, .hm-rz__plus::after { content: ''; position: absolute; left: 50%; top: 50%; width: 11px; height: 1.5px; margin: -.75px 0 0 -5.5px; background: currentColor; border-radius: 2px; }
+  .hm-rz__plus::before, .hm-rz__plus::after { content: ''; position: absolute; left: 50%; top: 50%; width: 12px; height: 1.5px; margin: -.75px 0 0 -6px; background: currentColor; border-radius: 2px; }
   .hm-rz__plus::after { transform: rotate(90deg); }
-  .hm-rz__more:not([open]) summary:hover .hm-rz__plus { border-color: var(--rz-accent) !important; color: var(--rz-accent); }
-  .hm-rz__more[open] .hm-rz__plus { transform: rotate(45deg); background: var(--rz-accent); border-color: var(--rz-accent) !important; color: #fff; }
-  .hm-rz__more-text { margin-top: 10px !important; font-size: 13.5px; line-height: 1.55; color: var(--rz-muted); text-align: left; }
+  .hm-rz__card:not([open]) .hm-rz__sum:hover .hm-rz__plus { border-color: var(--rz-accent) !important; color: var(--rz-accent); }
+  .hm-rz__card[open] .hm-rz__plus { transform: rotate(45deg); background: var(--rz-accent); border-color: var(--rz-accent) !important; color: #fff; }
+  .hm-rz__more-text { margin-top: 12px !important; font-size: 13.5px; line-height: 1.55; color: var(--rz-muted); text-align: left; }
   .hm-rz__more-text p + p { margin-top: .5em; }
-  .hm-rz__more[open] .hm-rz__more-text { animation: hm-rz-in .25s ease; }
+  .hm-rz__card[open] .hm-rz__more-text { animation: hm-rz-in .25s ease; }
+
+  /* Celular: lista horizontal (estilo Revival) */
+  @media (max-width: 749px) {
+    .hm-rz--m-lista .hm-rz__grid { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+    .hm-rz--m-lista .hm-rz__card { padding: 10px 12px 10px 10px; }
+    .hm-rz--m-lista .hm-rz__sum { flex-direction: row; align-items: center; text-align: left; gap: 14px; }
+    .hm-rz--m-lista .hm-rz__img { width: 34%; max-width: 128px; flex: none; }
+    .hm-rz--m-lista .hm-rz__info { align-items: flex-start; justify-content: center; }
+    .hm-rz--m-lista .hm-rz__num { margin-top: 0 !important; }
+    .hm-rz--m-lista .hm-rz__card-title { font-size: 17px; }
+    .hm-rz--m-lista .hm-rz__plus { width: 38px; height: 38px; margin: 0 4px 0 0 !important; }
+    .hm-rz--m-lista .hm-rz__plus::before, .hm-rz--m-lista .hm-rz__plus::after { width: 16px; margin-left: -8px; }
+    .hm-rz--m-lista .hm-rz__more-text { font-size: 14.5px; padding: 0 4px 4px !important; }
+  }
   @keyframes hm-rz-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
 
   .hm-rz__cta { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 32px; text-align: center; }
@@ -223,23 +238,32 @@
             {%- if block.type != 'razon' -%}{%- continue -%}{%- endif -%}
             {%- assign n = n | plus: 1 -%}
             {%- assign bs = block.settings -%}
-            <div class="hm-rz__card" {{ block.shopify_attributes }}>
-              <div class="hm-rz__img">
+            {%- capture sum_inner -%}
+              <span class="hm-rz__img">
                 {%- if bs.imagen != blank -%}
-                  {{ bs.imagen | image_url: width: 600 | image_tag: loading: 'lazy', widths: '300, 450, 600', sizes: '(min-width: 990px) 20vw, (min-width: 750px) 30vw, 60vw', alt: bs.titulo }}
+                  {{ bs.imagen | image_url: width: 600 | image_tag: loading: 'lazy', widths: '200, 300, 450, 600', sizes: '(min-width: 990px) 20vw, (min-width: 750px) 30vw, 35vw', alt: bs.titulo }}
                 {%- else -%}
                   {{ 'image' | placeholder_svg_tag }}
                 {%- endif -%}
+              </span>
+              <span class="hm-rz__info">
+                {%- if s.razon_label != blank -%}<span class="hm-rz__num">{{ s.razon_label }} {{ n }}</span>{%- endif -%}
+                <span class="hm-rz__card-title" role="heading" aria-level="3">{{ bs.titulo }}</span>
+              </span>
+            {%- endcapture -%}
+            {%- if bs.texto != blank -%}
+              <details class="hm-rz__card" {{ block.shopify_attributes }}>
+                <summary class="hm-rz__sum">
+                  {{ sum_inner }}
+                  <span class="hm-rz__plus" aria-hidden="true"></span>
+                </summary>
+                <div class="hm-rz__more-text">{{ bs.texto }}</div>
+              </details>
+            {%- else -%}
+              <div class="hm-rz__card" {{ block.shopify_attributes }}>
+                <div class="hm-rz__sum">{{ sum_inner }}</div>
               </div>
-              {%- if s.razon_label != blank -%}<span class="hm-rz__num">{{ s.razon_label }} {{ n }}</span>{%- endif -%}
-              <h3 class="hm-rz__card-title">{{ bs.titulo }}</h3>
-              {%- if bs.texto != blank -%}
-                <details class="hm-rz__more">
-                  <summary aria-label="{{ bs.titulo | escape }}"><span class="hm-rz__plus" aria-hidden="true"></span></summary>
-                  <div class="hm-rz__more-text">{{ bs.texto }}</div>
-                </details>
-              {%- endif -%}
-            </div>
+            {%- endif -%}
           {%- endfor -%}
         </div>
 
@@ -264,63 +288,421 @@
   "tag": "div",
   "class": "hm-section-rz",
   "settings": [
-    { "type": "header", "content": "Banner ¿Por qué elegirnos?" },
-    { "type": "checkbox", "id": "mostrar_banner", "label": "Mostrar banner", "default": true },
-    { "type": "text", "id": "banner_titulo", "label": "Título", "default": "¿Por qué elegir HAIR?" },
-    { "type": "textarea", "id": "banner_checks", "label": "Frases con check (una por línea)", "default": "8 nutrientes, una fórmula\nSin gluten\nHecho para hombres\n1 cápsula por día\nEnvío a todo el país\nGarantía de 30 días" },
-    { "type": "paragraph", "content": "Los sellos se agregan como bloques \"Sello\"." },
-    { "type": "image_picker", "id": "banner_imagen", "label": "Foto de fondo (opcional)" },
-    { "type": "range", "id": "banner_opacidad", "label": "Visibilidad de la foto de fondo", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 20 },
-    { "type": "color", "id": "banner_fondo", "label": "Color del banner", "default": "#1a1422" },
-    { "type": "color", "id": "banner_texto", "label": "Texto del banner", "default": "#ffffff" },
-    { "type": "color", "id": "color_fondo_banner_zona", "label": "Fondo alrededor del banner", "default": "#ffffff" },
-
-    { "type": "header", "content": "Razones" },
-    { "type": "checkbox", "id": "mostrar_razones", "label": "Mostrar razones", "default": true },
-    { "type": "text", "id": "pill", "label": "Etiqueta", "default": "5 razones por las que" },
-    { "type": "inline_richtext", "id": "titulo", "label": "Título", "default": "HAIR es diferente a <em>todo lo que probaste</em>", "info": "La cursiva se pinta con el color de marca." },
-    { "type": "text", "id": "razon_label", "label": "Texto del número", "default": "Razón", "info": "Se muestra como \"Razón 1\", \"Razón 2\"… Vacío = ocultar." },
-    { "type": "range", "id": "columnas", "label": "Tarjetas por fila en PC", "min": 3, "max": 5, "step": 1, "default": 5 },
     {
-      "type": "select", "id": "mobile_modo", "label": "Tarjetas en celular",
-      "options": [ { "value": "carrusel", "label": "Carrusel (deslizar)" }, { "value": "grilla", "label": "Grilla de 2 columnas" } ],
-      "default": "carrusel"
+      "type": "header",
+      "content": "Banner ¿Por qué elegirnos?"
     },
-    { "type": "text", "id": "boton_texto", "label": "Texto del botón", "default": "Probalo hoy sin riesgo" },
-    { "type": "text", "id": "boton_link", "label": "Link del botón", "default": "#hm-comprar", "info": "#hm-comprar lleva a la oferta (bloque 1)." },
-    { "type": "text", "id": "garantia_texto", "label": "Texto debajo del botón", "default": "Garantía de devolución de 30 días" },
-
-    { "type": "header", "content": "Colores y tipografía" },
-    { "type": "font_picker", "id": "fuente", "label": "Tipografía", "default": "poppins_n4" },
-    { "type": "color", "id": "color_acento", "label": "Color de marca", "default": "#6b3fc0", "info": "Etiqueta, \"Razón N\", resaltado y botón." },
-    { "type": "color", "id": "color_fondo", "label": "Fondo de las razones", "default": "#f7f3fd" },
-    { "type": "color", "id": "color_tarjeta", "label": "Fondo de las tarjetas", "default": "#ffffff" },
-    { "type": "color", "id": "color_texto", "label": "Texto", "default": "#121116" },
-    { "type": "color", "id": "color_boton", "label": "Color del botón (opcional)", "info": "Vacío = color de marca." },
-    { "type": "color", "id": "color_boton_texto", "label": "Texto del botón (opcional)" },
-    { "type": "range", "id": "titulo_desktop", "label": "Tamaño de títulos en PC", "min": 20, "max": 48, "step": 1, "unit": "px", "default": 32 },
-    { "type": "range", "id": "titulo_mobile", "label": "Tamaño de títulos en celular", "min": 18, "max": 36, "step": 1, "unit": "px", "default": 24 },
-    { "type": "range", "id": "bordes", "label": "Redondeo", "min": 0, "max": 24, "step": 2, "unit": "px", "default": 12 },
-
-    { "type": "header", "content": "Espaciado" },
-    { "type": "range", "id": "padding_top", "label": "Espacio arriba", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 32 },
-    { "type": "range", "id": "padding_bottom", "label": "Espacio abajo", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 }
+    {
+      "type": "checkbox",
+      "id": "mostrar_banner",
+      "label": "Mostrar banner",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "banner_titulo",
+      "label": "Título",
+      "default": "¿Por qué elegir HAIR?"
+    },
+    {
+      "type": "textarea",
+      "id": "banner_checks",
+      "label": "Frases con check (una por línea)",
+      "default": "8 nutrientes, una fórmula\nSin gluten\nHecho para hombres\n1 cápsula por día\nEnvío a todo el país\nGarantía de 30 días"
+    },
+    {
+      "type": "paragraph",
+      "content": "Los sellos se agregan como bloques \"Sello\"."
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_imagen",
+      "label": "Foto de fondo (opcional)"
+    },
+    {
+      "type": "range",
+      "id": "banner_opacidad",
+      "label": "Visibilidad de la foto de fondo",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 20
+    },
+    {
+      "type": "color",
+      "id": "banner_fondo",
+      "label": "Color del banner",
+      "default": "#1a1422"
+    },
+    {
+      "type": "color",
+      "id": "banner_texto",
+      "label": "Texto del banner",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "color_fondo_banner_zona",
+      "label": "Fondo alrededor del banner",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Razones"
+    },
+    {
+      "type": "checkbox",
+      "id": "mostrar_razones",
+      "label": "Mostrar razones",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "pill",
+      "label": "Etiqueta",
+      "default": "5 razones por las que"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "titulo",
+      "label": "Título",
+      "default": "HAIR es diferente a <em>todo lo que probaste</em>",
+      "info": "La cursiva se pinta con el color de marca."
+    },
+    {
+      "type": "text",
+      "id": "razon_label",
+      "label": "Texto del número",
+      "default": "Razón",
+      "info": "Se muestra como \"Razón 1\", \"Razón 2\"… Vacío = ocultar."
+    },
+    {
+      "type": "range",
+      "id": "columnas",
+      "label": "Tarjetas por fila en PC",
+      "min": 3,
+      "max": 5,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "select",
+      "id": "mobile_modo",
+      "label": "Tarjetas en celular",
+      "options": [
+        {
+          "value": "lista",
+          "label": "Lista (foto + título, recomendado)"
+        },
+        {
+          "value": "carrusel",
+          "label": "Carrusel (deslizar)"
+        },
+        {
+          "value": "grilla",
+          "label": "Grilla de 2 columnas"
+        }
+      ],
+      "default": "lista"
+    },
+    {
+      "type": "text",
+      "id": "boton_texto",
+      "label": "Texto del botón",
+      "default": "Probalo hoy sin riesgo"
+    },
+    {
+      "type": "text",
+      "id": "boton_link",
+      "label": "Link del botón",
+      "default": "#hm-comprar",
+      "info": "#hm-comprar lleva a la oferta (bloque 1)."
+    },
+    {
+      "type": "text",
+      "id": "garantia_texto",
+      "label": "Texto debajo del botón",
+      "default": "Garantía de devolución de 30 días"
+    },
+    {
+      "type": "header",
+      "content": "Colores y tipografía"
+    },
+    {
+      "type": "font_picker",
+      "id": "fuente",
+      "label": "Tipografía",
+      "default": "poppins_n4"
+    },
+    {
+      "type": "color",
+      "id": "color_acento",
+      "label": "Color de marca",
+      "default": "#6b3fc0",
+      "info": "Etiqueta, \"Razón N\", resaltado y botón."
+    },
+    {
+      "type": "color",
+      "id": "color_fondo",
+      "label": "Fondo de las razones",
+      "default": "#f7f3fd"
+    },
+    {
+      "type": "color",
+      "id": "color_tarjeta",
+      "label": "Fondo de las tarjetas",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "color_texto",
+      "label": "Texto",
+      "default": "#121116"
+    },
+    {
+      "type": "color",
+      "id": "color_boton",
+      "label": "Color del botón (opcional)",
+      "info": "Vacío = color de marca."
+    },
+    {
+      "type": "color",
+      "id": "color_boton_texto",
+      "label": "Texto del botón (opcional)"
+    },
+    {
+      "type": "range",
+      "id": "titulo_desktop",
+      "label": "Tamaño de títulos en PC",
+      "min": 20,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "titulo_mobile",
+      "label": "Tamaño de títulos en celular",
+      "min": 18,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "bordes",
+      "label": "Redondeo",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Espaciado"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Espacio arriba",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Espacio abajo",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    }
   ],
   "blocks": [
     {
-      "type": "sello", "name": "Sello (banner)", "limit": 6,
+      "type": "sello",
+      "name": "Sello (banner)",
+      "limit": 6,
       "settings": [
-        { "type": "select", "id": "icono", "label": "Ícono", "options": [{"value": "check-circle", "label": "Check"}, {"value": "check", "label": "Tilde"}, {"value": "truck", "label": "Envío"}, {"value": "shield", "label": "Escudo / garantía"}, {"value": "card", "label": "Tarjeta / cuotas"}, {"value": "clock", "label": "Reloj"}, {"value": "leaf", "label": "Natural / hoja"}, {"value": "capsule", "label": "Cápsula"}, {"value": "flask", "label": "Laboratorio"}, {"value": "gift", "label": "Regalo"}, {"value": "lock", "label": "Pago seguro"}, {"value": "verified", "label": "Verificado"}, {"value": "bolt", "label": "Energía"}, {"value": "heart", "label": "Corazón"}, {"value": "users", "label": "Clientes"}, {"value": "medal", "label": "Medalla"}, {"value": "refresh", "label": "Devolución"}, {"value": "dna", "label": "ADN"}, {"value": "sparkles", "label": "Brillo"}, {"value": "calendar", "label": "Calendario"}, {"value": "droplet", "label": "Gota"}, {"value": "hair", "label": "Cabello"}, {"value": "stethoscope", "label": "Médico"}, {"value": "ban", "label": "Prohibido"}, {"value": "x-circle", "label": "Cruz"}, {"value": "map-pin", "label": "Ubicación"}, {"value": "percent", "label": "Descuento"}, {"value": "box", "label": "Paquete"}, {"value": "trend-up", "label": "Crecimiento"}, {"value": "star", "label": "Estrella"}, {"value": "sun", "label": "Sol"}, {"value": "moon", "label": "Luna"}], "default": "verified" },
-        { "type": "image_picker", "id": "imagen", "label": "Ícono propio (opcional)" },
-        { "type": "text", "id": "texto", "label": "Texto", "default": "Fórmula completa" }
+        {
+          "type": "select",
+          "id": "icono",
+          "label": "Ícono",
+          "options": [
+            {
+              "value": "check-circle",
+              "label": "Check"
+            },
+            {
+              "value": "check",
+              "label": "Tilde"
+            },
+            {
+              "value": "truck",
+              "label": "Envío"
+            },
+            {
+              "value": "shield",
+              "label": "Escudo / garantía"
+            },
+            {
+              "value": "card",
+              "label": "Tarjeta / cuotas"
+            },
+            {
+              "value": "clock",
+              "label": "Reloj"
+            },
+            {
+              "value": "leaf",
+              "label": "Natural / hoja"
+            },
+            {
+              "value": "capsule",
+              "label": "Cápsula"
+            },
+            {
+              "value": "flask",
+              "label": "Laboratorio"
+            },
+            {
+              "value": "gift",
+              "label": "Regalo"
+            },
+            {
+              "value": "lock",
+              "label": "Pago seguro"
+            },
+            {
+              "value": "verified",
+              "label": "Verificado"
+            },
+            {
+              "value": "bolt",
+              "label": "Energía"
+            },
+            {
+              "value": "heart",
+              "label": "Corazón"
+            },
+            {
+              "value": "users",
+              "label": "Clientes"
+            },
+            {
+              "value": "medal",
+              "label": "Medalla"
+            },
+            {
+              "value": "refresh",
+              "label": "Devolución"
+            },
+            {
+              "value": "dna",
+              "label": "ADN"
+            },
+            {
+              "value": "sparkles",
+              "label": "Brillo"
+            },
+            {
+              "value": "calendar",
+              "label": "Calendario"
+            },
+            {
+              "value": "droplet",
+              "label": "Gota"
+            },
+            {
+              "value": "hair",
+              "label": "Cabello"
+            },
+            {
+              "value": "stethoscope",
+              "label": "Médico"
+            },
+            {
+              "value": "ban",
+              "label": "Prohibido"
+            },
+            {
+              "value": "x-circle",
+              "label": "Cruz"
+            },
+            {
+              "value": "map-pin",
+              "label": "Ubicación"
+            },
+            {
+              "value": "percent",
+              "label": "Descuento"
+            },
+            {
+              "value": "box",
+              "label": "Paquete"
+            },
+            {
+              "value": "trend-up",
+              "label": "Crecimiento"
+            },
+            {
+              "value": "star",
+              "label": "Estrella"
+            },
+            {
+              "value": "sun",
+              "label": "Sol"
+            },
+            {
+              "value": "moon",
+              "label": "Luna"
+            }
+          ],
+          "default": "verified"
+        },
+        {
+          "type": "image_picker",
+          "id": "imagen",
+          "label": "Ícono propio (opcional)"
+        },
+        {
+          "type": "text",
+          "id": "texto",
+          "label": "Texto",
+          "default": "Fórmula completa"
+        }
       ]
     },
     {
-      "type": "razon", "name": "Razón", "limit": 8,
+      "type": "razon",
+      "name": "Razón",
+      "limit": 8,
       "settings": [
-        { "type": "image_picker", "id": "imagen", "label": "Imagen" },
-        { "type": "text", "id": "titulo", "label": "Título", "default": "Título de la razón" },
-        { "type": "richtext", "id": "texto", "label": "Texto que se despliega con el +", "default": "<p>Explicación de la razón.</p>" }
+        {
+          "type": "image_picker",
+          "id": "imagen",
+          "label": "Imagen"
+        },
+        {
+          "type": "text",
+          "id": "titulo",
+          "label": "Título",
+          "default": "Título de la razón"
+        },
+        {
+          "type": "richtext",
+          "id": "texto",
+          "label": "Texto que se despliega con el +",
+          "default": "<p>Explicación de la razón.</p>"
+        }
       ]
     }
   ],
@@ -328,15 +710,69 @@
     {
       "name": "HM · Razones",
       "blocks": [
-        { "type": "sello", "settings": { "icono": "verified", "texto": "Fórmula completa" } },
-        { "type": "sello", "settings": { "icono": "verified", "texto": "Ayuda a bloquear la DHT" } },
-        { "type": "sello", "settings": { "icono": "verified", "texto": "Precio accesible" } },
-        { "type": "sello", "settings": { "icono": "verified", "texto": "Sin gluten" } },
-        { "type": "razon", "settings": { "titulo": "Ataca la causa, no el síntoma", "texto": "<p>No es un shampoo que actúa por fuera: HAIR trabaja desde adentro, ayudando a bloquear la DHT y nutriendo el folículo donde nace el pelo.</p>" } },
-        { "type": "razon", "settings": { "titulo": "8 nutrientes. Una sola cápsula.", "texto": "<p>Biotina, zinc, selenio, L-cistina, colágeno tipo II y vitaminas C, B5 y B6 juntos en una cápsula por día. Sin tomar cinco suplementos distintos.</p>" } },
-        { "type": "razon", "settings": { "titulo": "Sin vueltas. Sin complicaciones.", "texto": "<p>Una cápsula por día con agua. Sin cremas, sin lociones, sin rutinas eternas. Y sin gluten.</p>" } },
-        { "type": "razon", "settings": { "titulo": "Resultados reales y visibles", "texto": "<p>Menos caída en las primeras semanas y pelo con más cuerpo con el uso constante. Hombres de todo el país ya lo están comprobando.</p>" } },
-        { "type": "razon", "settings": { "titulo": "Transparencia total", "texto": "<p>Cada ingrediente y su dosis están en la etiqueta. Sin fórmulas secretas ni letra chica. Y si no te convence, tenés 30 días de garantía.</p>" } }
+        {
+          "type": "sello",
+          "settings": {
+            "icono": "verified",
+            "texto": "Fórmula completa"
+          }
+        },
+        {
+          "type": "sello",
+          "settings": {
+            "icono": "verified",
+            "texto": "Ayuda a bloquear la DHT"
+          }
+        },
+        {
+          "type": "sello",
+          "settings": {
+            "icono": "verified",
+            "texto": "Precio accesible"
+          }
+        },
+        {
+          "type": "sello",
+          "settings": {
+            "icono": "verified",
+            "texto": "Sin gluten"
+          }
+        },
+        {
+          "type": "razon",
+          "settings": {
+            "titulo": "Ataca la causa, no el síntoma",
+            "texto": "<p>No es un shampoo que actúa por fuera: HAIR trabaja desde adentro, ayudando a bloquear la DHT y nutriendo el folículo donde nace el pelo.</p>"
+          }
+        },
+        {
+          "type": "razon",
+          "settings": {
+            "titulo": "8 nutrientes. Una sola cápsula.",
+            "texto": "<p>Biotina, zinc, selenio, L-cistina, colágeno tipo II y vitaminas C, B5 y B6 juntos en una cápsula por día. Sin tomar cinco suplementos distintos.</p>"
+          }
+        },
+        {
+          "type": "razon",
+          "settings": {
+            "titulo": "Sin vueltas. Sin complicaciones.",
+            "texto": "<p>Una cápsula por día con agua. Sin cremas, sin lociones, sin rutinas eternas. Y sin gluten.</p>"
+          }
+        },
+        {
+          "type": "razon",
+          "settings": {
+            "titulo": "Resultados reales y visibles",
+            "texto": "<p>Menos caída en las primeras semanas y pelo con más cuerpo con el uso constante. Hombres de todo el país ya lo están comprobando.</p>"
+          }
+        },
+        {
+          "type": "razon",
+          "settings": {
+            "titulo": "Transparencia total",
+            "texto": "<p>Cada ingrediente y su dosis están en la etiqueta. Sin fórmulas secretas ni letra chica. Y si no te convence, tenés 30 días de garantía.</p>"
+          }
+        }
       ]
     }
   ]

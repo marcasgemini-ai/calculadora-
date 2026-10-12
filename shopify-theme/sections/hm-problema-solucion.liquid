@@ -80,6 +80,18 @@
   .hm-ps__arrow { width: 52px; height: 18px; color: var(--ps-fg); opacity: .85; }
   @media (min-width: 750px) { .hm-ps__mid { padding: 0 18px; gap: 10px; } .hm-ps__mid-text { font-size: 19px; } .hm-ps__arrow { width: 72px; height: 22px; } }
 
+  /* Celular: texto arriba, fotos grandes y flecha entre medio (estilo Revival) */
+  .hm-ps__time-m { display: none; }
+  @media (max-width: 749px) {
+    .hm-ps__time-m { display: block; margin-top: 30px !important; text-align: center; font-size: 19px; font-weight: 600; line-height: 1.2; color: var(--ps-fg); }
+    .hm-ps__time-m em { font-style: italic; font-weight: 700; color: var(--ps-hl); text-transform: uppercase; }
+    .hm-ps__ba { margin-top: 12px; grid-template-columns: minmax(0, 1fr) 40px minmax(0, 1fr); margin-left: -8px; margin-right: -8px; }
+    .hm-ps__ba-img { height: auto; max-height: var(--ps-img-m); }
+    .hm-ps__ba-img img { width: 100%; height: auto; max-height: var(--ps-img-m); }
+    .hm-ps__mid { align-self: start; margin: 18% 0 0; padding: 0; }
+    .hm-ps__mid-text { display: none; }
+    .hm-ps__arrow { width: 40px; height: 14px; }
+  }
   .hm-ps__cta { display: flex; justify-content: center; margin-top: 28px; }
   .hm-ps__btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; padding: 0 28px;
@@ -169,6 +181,9 @@
     {%- endif -%}
 
     {%- if has_ba -%}
+      {%- if s.texto_tiempo != blank or s.texto_tiempo_dest != blank -%}
+        <p class="hm-ps__time-m">{{ s.texto_tiempo }} <em>{{ s.texto_tiempo_dest }}</em></p>
+      {%- endif -%}
       <div class="hm-ps__ba">
         <div class="hm-ps__ba-img hm-ps__ba-img--before">
           {%- if s.imagen_antes != blank -%}
@@ -352,10 +367,10 @@
       "id": "alto_mobile",
       "label": "Alto de las fotos en celular",
       "min": 120,
-      "max": 340,
+      "max": 400,
       "step": 10,
       "unit": "px",
-      "default": 200
+      "default": 260
     },
     {
       "type": "header",
