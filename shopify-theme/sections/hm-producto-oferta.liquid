@@ -217,6 +217,21 @@
   {%- endfor -%}
 {%- endcapture -%}
 
+{%- liquid
+  assign hm_font = section.settings.fuente
+  assign hm_font_stack = "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+  if hm_font != blank
+    assign hm_font_stack = hm_font.family | prepend: "'" | append: "', " | append: hm_font.fallback_families
+  endif
+-%}
+{%- if hm_font != blank -%}
+  <style>
+    {{ hm_font | font_face: font_display: 'swap' }}
+    {%- assign hm_f = hm_font | font_modify: 'weight', '500' -%}{%- if hm_f -%}{{ hm_f | font_face: font_display: 'swap' }}{%- endif -%}
+    {%- assign hm_f = hm_font | font_modify: 'weight', '600' -%}{%- if hm_f -%}{{ hm_f | font_face: font_display: 'swap' }}{%- endif -%}
+    {%- assign hm_f = hm_font | font_modify: 'weight', '700' -%}{%- if hm_f -%}{{ hm_f | font_face: font_display: 'swap' }}{%- endif -%}
+  </style>
+{%- endif -%}
 <style>
 /* =========================================================================
    DR.MEN · HAIR — Sistema de secciones de landing (prefijo hm-)
@@ -239,8 +254,8 @@
   --hm-radius: 16px;
   --hm-radius-sm: 10px;
   --hm-shadow: 0 10px 30px rgba(20, 10, 40, .08);
-  --hm-font-display: 'Barlow Condensed', 'Oswald', 'Arial Narrow', Impact, sans-serif;
-  --hm-font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --hm-font-display: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --hm-font-body: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --hm-pt: 64px;
   --hm-pb: 64px;
 
@@ -492,7 +507,7 @@
 
   .hm-pdp__heading { margin-top: 8px !important; }
   .hm-pdp__brand { margin: 0 0 4px; font-size: 13px; color: var(--hm-muted); }
-  .hm-pdp__title { margin: 0; font-family: var(--hm-font-body); font-weight: 700; font-size: clamp(26px, 3vw, 32px); line-height: 1.15; letter-spacing: -.01em; color: var(--hm-fg); }
+  .hm-pdp__title { margin: 0; font-family: var(--hm-font-body); font-weight: 700; font-size: clamp(24px, 2.8vw, 30px); line-height: 1.2; letter-spacing: -.01em; color: var(--hm-fg); }
   .hm-pdp__title em, .hm-pdp__subtitle em { font-style: normal; color: var(--hm-accent); }
   .hm-pdp__subtitle { margin: 6px 0 0; font-size: clamp(18px, 2vw, 20px); font-weight: 600; line-height: 1.3; }
   .hm-pdp__text { font-size: 15px; line-height: 1.55; color: var(--hm-muted); }
@@ -649,7 +664,7 @@
   }
 </style>
 
-<section id="hm-{{ section.id }}" class="hm hm--{{ s.esquema }} hm-pdp" style="--hm-accent: {{ acc }}; --hm-a6: {{ acc | color_modify: 'alpha', 0.06 }}; --hm-a8: {{ acc | color_modify: 'alpha', 0.08 }}; --hm-a10: {{ acc | color_modify: 'alpha', 0.1 }}; --hm-a14: {{ acc | color_modify: 'alpha', 0.14 }}; --hm-a25: {{ acc | color_modify: 'alpha', 0.25 }}; --hm-a28: {{ acc | color_modify: 'alpha', 0.28 }}; --hm-a35: {{ acc | color_modify: 'alpha', 0.35 }}; --hm-a40: {{ acc | color_modify: 'alpha', 0.4 }}; --hm-a55: {{ acc | color_modify: 'alpha', 0.55 }}; --hm-dark30: {{ acc | color_mix: '#0c0b10', 30 }}; --hm-dark55: {{ acc | color_mix: '#0c0b10', 55 }}; --hm-pt: {{ s.padding_top }}px; --hm-pb: {{ s.padding_bottom }}px;{% if s.usar_fuentes_theme %} --hm-font-body: var(--font-body-family, inherit);{% endif %}">
+<section id="hm-{{ section.id }}" class="hm hm--{{ s.esquema }} hm-pdp" style="--hm-accent: {{ acc }}; --hm-a6: {{ acc | color_modify: 'alpha', 0.06 }}; --hm-a8: {{ acc | color_modify: 'alpha', 0.08 }}; --hm-a10: {{ acc | color_modify: 'alpha', 0.1 }}; --hm-a14: {{ acc | color_modify: 'alpha', 0.14 }}; --hm-a25: {{ acc | color_modify: 'alpha', 0.25 }}; --hm-a28: {{ acc | color_modify: 'alpha', 0.28 }}; --hm-a35: {{ acc | color_modify: 'alpha', 0.35 }}; --hm-a40: {{ acc | color_modify: 'alpha', 0.4 }}; --hm-a55: {{ acc | color_modify: 'alpha', 0.55 }}; --hm-dark30: {{ acc | color_mix: '#0c0b10', 30 }}; --hm-dark55: {{ acc | color_mix: '#0c0b10', 55 }}; --hm-pt: {{ s.padding_top }}px; --hm-pb: {{ s.padding_bottom }}px; --hm-font-body: {{ hm_font_stack }}; --hm-font-display: {{ hm_font_stack }};">
   <div class="hm-container">
     <div class="hm-pdp__grid">
 
@@ -1391,7 +1406,7 @@
     {"type": "header", "content": "Diseño"},
     {"type": "select", "id": "esquema", "label": "Fondo", "options": [{"value": "claro", "label": "Blanco"}, {"value": "suave", "label": "Lila suave"}, {"value": "oscuro", "label": "Negro"}, {"value": "acento", "label": "Violeta (marca)"}], "default": "claro"},
     {"type": "color", "id": "color_acento", "label": "Color de marca", "default": "#7b4bc9"},
-    {"type": "checkbox", "id": "usar_fuentes_theme", "label": "Usar tipografías del theme", "default": false},
+    {"type": "font_picker", "id": "fuente", "label": "Tipografía", "default": "poppins_n4", "info": "Por defecto Poppins, igual que el theme."},
     {"type": "range", "id": "padding_top", "label": "Espacio arriba", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 24},
     {"type": "range", "id": "padding_bottom", "label": "Espacio abajo", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48}
   ],
