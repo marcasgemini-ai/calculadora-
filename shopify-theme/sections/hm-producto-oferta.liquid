@@ -13,43 +13,6 @@
 {%- liquid
   assign s = section.settings
   assign acc = s.color_acento | default: '#6b3fc0'
-  assign cuotas = s.cuotas | default: 1
-  assign transfer_pct = s.transfer_pct | default: 0
-  assign transfer_mult = 100 | minus: transfer_pct
-  assign base_variant = product.selected_or_first_available_variant
-
-  assign sel_id = ''
-  assign first_pack_id = ''
-  for block in section.blocks
-    if block.type == 'pack'
-      if first_pack_id == ''
-        assign first_pack_id = block.id
-      endif
-      if block.settings.preseleccionado and sel_id == ''
-        assign sel_id = block.id
-      endif
-    endif
-  endfor
-  if sel_id == ''
-    assign sel_id = first_pack_id
-  endif
-
-  assign sel_variant = base_variant
-  assign sel_qty = 1
-  assign sel_price = base_variant.price | money_without_trailing_zeros
-  assign sel_compare = ''
-  assign sel_promo = ''
-  if base_variant.compare_at_price > base_variant.price
-    assign sel_compare = base_variant.compare_at_price | money_without_trailing_zeros
-    assign tmp = base_variant.compare_at_price | minus: base_variant.price | money_without_trailing_zeros
-    assign sel_promo = s.promo_label | replace: '[monto]', tmp
-  endif
-  assign tmp = base_variant.price | times: transfer_mult | divided_by: 10000 | times: 100
-  assign sel_transfer = tmp | money_without_trailing_zeros
-  assign tmp = base_variant.price | divided_by: cuotas | divided_by: 100 | times: 100
-  assign sel_cuota = tmp | money_without_trailing_zeros
-  assign sel_name = product.title
-  assign ref_unit = 0
 
   assign use_custom_gallery = false
   for block in section.blocks
@@ -57,148 +20,7 @@
       assign use_custom_gallery = true
     endif
   endfor
-  assign image_ids = ''
-  for media in product.media
-    if media.media_type == 'image'
-      assign image_ids = image_ids | append: media.id | append: ','
-    endif
-  endfor
-  assign image_ids = image_ids | split: ','
 -%}
-
-{%- capture packs_html -%}
-  {%- assign pack_index = 0 -%}
-  {%- for block in section.blocks -%}
-    {%- if block.type != 'pack' -%}{%- continue -%}{%- endif -%}
-    {%- liquid
-      assign pack_index = pack_index | plus: 1
-      assign bs = block.settings
-      assign p = product
-      if bs.producto != blank
-        assign p = bs.producto
-      endif
-      assign vi = bs.variante | minus: 1
-      assign v = p.variants[vi]
-      if v == blank
-        assign v = p.selected_or_first_available_variant
-      endif
-      assign qty = bs.cantidad | default: 1
-      assign frascos = bs.frascos | default: 1
-      assign total = v.price | times: qty
-      assign variant_total = total
-      if bs.precio != blank and bs.precio > 0
-        assign total = bs.precio | times: 100
-      endif
-
-      if ref_unit == 0
-        assign ref_unit = total | divided_by: frascos
-      endif
-      assign compare = 0
-      if v.compare_at_price > v.price
-        assign compare = v.compare_at_price | times: qty
-      endif
-      assign ref_total = ref_unit | times: frascos
-      if bs.comparar_con_unitario and ref_total > compare
-        assign compare = ref_total
-      endif
-      if bs.precio_tachado != blank and bs.precio_tachado > 0
-        assign compare = bs.precio_tachado | times: 100
-      endif
-
-      assign compare_txt = ''
-      assign save_txt = ''
-      assign promo_txt = ''
-      if compare > total
-        assign compare_txt = compare | money_without_trailing_zeros
-        assign save_amount = compare | minus: total
-        assign save_amount_txt = save_amount | money_without_trailing_zeros
-        assign half = compare | divided_by: 2
-        assign pct = save_amount | times: 100 | plus: half | divided_by: compare
-        assign save_txt = s.save_label | replace: '[monto]', save_amount_txt | replace: '[pct]', pct
-        if bs.texto_ahorro != blank
-          assign save_txt = bs.texto_ahorro | replace: '[monto]', save_amount_txt | replace: '[pct]', pct
-        endif
-        assign promo_txt = s.promo_label | replace: '[monto]', save_amount_txt | replace: '[pct]', pct
-      endif
-
-      assign total_txt = total | money_without_trailing_zeros
-      assign tmp = total | times: transfer_mult | divided_by: 10000 | times: 100
-      assign transfer_txt = tmp | money_without_trailing_zeros
-      assign tmp = total | divided_by: cuotas | divided_by: 100 | times: 100
-      assign cuota_txt = tmp | money_without_trailing_zeros
-
-      assign slide = ''
-      if bs.foto_numero > 0
-        assign slide = bs.foto_numero | minus: 1
-      endif
-      if slide == '' and use_custom_gallery == false and v.featured_media != blank
-        assign fm_s = v.featured_media.id | append: ''
-        for img_id in image_ids
-          if img_id == fm_s
-            assign slide = forloop.index0
-          endif
-        endfor
-      endif
-
-      assign is_sel = false
-      if block.id == sel_id
-        assign is_sel = true
-        assign sel_variant = v
-        assign sel_qty = qty
-        assign sel_price = total_txt
-        assign sel_compare = compare_txt
-        assign sel_promo = promo_txt
-        assign sel_transfer = transfer_txt
-        assign sel_cuota = cuota_txt
-        assign sel_name = bs.titulo
-      endif
-    -%}
-    <label
-      class="hm-pack{% if is_sel %} is-selected{% endif %}{% unless v.available %} is-soldout{% endunless %}{% if bs.etiqueta != blank %} has-tag{% endif %}"
-      data-hm-pack
-      data-index="{{ pack_index }}"
-      data-slide="{{ slide }}"
-      data-variant-id="{{ v.id }}"
-      data-qty="{{ qty }}"
-      data-available="{{ v.available }}"
-      data-price="{{ total_txt | escape }}"
-      data-compare="{{ compare_txt | escape }}"
-      data-promo="{{ promo_txt | escape }}"
-      data-transfer="{{ transfer_txt | escape }}"
-      data-cuota="{{ cuota_txt | escape }}"
-      data-name="{{ bs.titulo | escape }}"
-      {{ block.shopify_attributes }}
-    >
-      <input type="radio" name="hm-pack-{{ section.id }}" value="{{ v.id }}" class="hm-visually-hidden" {% if is_sel %}checked{% endif %} {% unless v.available %}disabled{% endunless %}>
-      {%- if bs.etiqueta != blank -%}
-        <span class="hm-pack__tag hm-pack__tag--{{ bs.etiqueta_color }}"{% if bs.etiqueta_color_libre != blank %} style="background: {{ bs.etiqueta_color_libre }}; color: {{ bs.etiqueta_texto_color | default: '#ffffff' }};"{% endif %}>{{ bs.etiqueta }}</span>
-      {%- endif -%}
-      <span class="hm-pack__info">
-        <span class="hm-pack__title">{{ bs.titulo }}</span>
-        {%- if save_txt != '' -%}
-          <span class="hm-pack__save">{{ save_txt }}</span>
-        {%- elsif bs.subtitulo != blank -%}
-          <span class="hm-pack__sub">{{ bs.subtitulo }}</span>
-        {%- endif -%}
-        {%- if request.design_mode and total != variant_total -%}<span class="hm-pack__warn">⚠ Solo lo ves vos en el editor: en Shopify esta variante cuesta {{ variant_total | money_without_trailing_zeros }}. Se cobra ese precio: actualizalo en el producto.</span>{%- endif -%}
-        {%- unless v.available -%}<span class="hm-pack__soldout">{{ s.soldout_label }}</span>{%- endunless -%}
-      </span>
-      <span class="hm-pack__img">
-        {%- if bs.imagen != blank -%}
-          {{ bs.imagen | image_url: width: 300 | image_tag: loading: 'lazy', widths: '150, 300', sizes: '96px', alt: bs.titulo }}
-        {%- elsif v.featured_image != blank -%}
-          {{ v.featured_image | image_url: width: 300 | image_tag: loading: 'lazy', widths: '150, 300', sizes: '96px', alt: bs.titulo }}
-        {%- elsif p.featured_image != blank -%}
-          {{ p.featured_image | image_url: width: 300 | image_tag: loading: 'lazy', widths: '150, 300', sizes: '96px', alt: bs.titulo }}
-        {%- endif -%}
-      </span>
-      <span class="hm-pack__price">
-        <span class="hm-pack__now">{{ total_txt }}</span>
-        {%- if compare_txt != '' -%}<s class="hm-pack__was">{{ compare_txt }}</s>{%- endif -%}
-      </span>
-    </label>
-  {%- endfor -%}
-{%- endcapture -%}
 
 {%- capture overlay_html -%}
   {%- for block in section.blocks -%}
@@ -294,18 +116,18 @@
 
 
 /* Reset: evita que estilos genéricos del theme (h1, p, label, button, img...) rompan la sección */
-#hm-{{ section.id }} :where(h1, h2, h3, p, ul, li, label, summary, details, button, a, s, strong, span, small, input, em), .hm-sticky :where(p, button, a, s, strong, span, small) {
+#hm-{{ section.id }} :where(h1, h2, h3, p, ul, li, label, summary, details, button, a, s, strong, span, small, input, em):where(:not(.hm-liquid *)) {
   text-transform: none; letter-spacing: normal; font-family: inherit; line-height: inherit; box-shadow: none;
 }
-#hm-{{ section.id }} :where(p) { margin: 0 0 .75em; }
-#hm-{{ section.id }} :where(p:last-child) { margin-bottom: 0; }
-#hm-{{ section.id }} :where(h1, h2, h3) { font-weight: 700; }
-#hm-{{ section.id }} :where(button), .hm-sticky :where(button) { min-width: 0; width: auto; }
-#hm-{{ section.id }} :where(label) { margin: 0; }
-#hm-{{ section.id }} :where(details, summary) { border: 0; background: none; padding: 0; margin: 0; }
-#hm-{{ section.id }} :where(ul) { list-style: none; margin: 0; padding: 0; }
-#hm-{{ section.id }} :where(a, s) { color: inherit; }
-#hm-{{ section.id }} :where(img, video, svg), .hm-sticky :where(img) { border-radius: 0; border: 0; max-width: 100%; display: block; }
+#hm-{{ section.id }} :where(p):where(:not(.hm-liquid *)) { margin: 0 0 .75em; }
+#hm-{{ section.id }} :where(p:last-child):where(:not(.hm-liquid *)) { margin-bottom: 0; }
+#hm-{{ section.id }} :where(h1, h2, h3):where(:not(.hm-liquid *)) { font-weight: 700; }
+#hm-{{ section.id }} :where(button):where(:not(.hm-liquid *)) { min-width: 0; width: auto; }
+#hm-{{ section.id }} :where(label):where(:not(.hm-liquid *)) { margin: 0; }
+#hm-{{ section.id }} :where(details, summary):where(:not(.hm-liquid *)) { border: 0; background: none; padding: 0; margin: 0; }
+#hm-{{ section.id }} :where(ul):where(:not(.hm-liquid *)) { list-style: none; margin: 0; padding: 0; }
+#hm-{{ section.id }} :where(a, s):where(:not(.hm-liquid *)) { color: inherit; }
+#hm-{{ section.id }} :where(img, video, svg):where(:not(.hm-liquid *)) { border-radius: 0; border: 0; max-width: 100%; display: block; }
 
 /* ---------- Esquemas de color ---------- */
 #hm-{{ section.id }}.hm--claro { --hm-bg: #ffffff; --hm-fg: #121116; --hm-muted: #5d5a66; --hm-card: #f7f5fb; --hm-line: #e8e3f1; }
@@ -349,7 +171,7 @@
 #hm-{{ section.id }} .hm-disclaimer { font-size: 12px; color: var(--hm-muted); text-align: center; max-width: 760px; margin: 22px auto 0; opacity: .85; }
 
 /* ---------- Botones ---------- */
-#hm-{{ section.id }} .hm-btn, .hm-sticky .hm-btn {
+#hm-{{ section.id }} .hm-btn{
   --b-bg: var(--hm-btn-bg, var(--hm-accent)); --b-fg: var(--hm-btn-fg, var(--hm-accent-ink));
   appearance: none; border: 0; cursor: pointer; text-decoration: none;
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
@@ -359,20 +181,20 @@
   transition: filter .2s ease, transform .1s ease;
   position: relative; overflow: hidden;
 }
-#hm-{{ section.id }} .hm-btn:hover, .hm-sticky .hm-btn:hover { filter: brightness(1.1); }
-#hm-{{ section.id }} .hm-btn:active, .hm-sticky .hm-btn:active { transform: translateY(1px); }
-#hm-{{ section.id }} .hm-btn--block, .hm-sticky .hm-btn--block { width: 100%; }
-#hm-{{ section.id }} .hm-btn--dark, .hm-sticky .hm-btn--dark { --b-bg: #0c0b10; --b-fg: #fff; }
-#hm-{{ section.id }} .hm-btn--light, .hm-sticky .hm-btn--light { --b-bg: #fff; --b-fg: #0c0b10; }
-#hm-{{ section.id }} .hm-btn--shine::after, .hm-sticky .hm-btn--shine::after {
+#hm-{{ section.id }} .hm-btn:hover{ filter: brightness(1.1); }
+#hm-{{ section.id }} .hm-btn:active{ transform: translateY(1px); }
+#hm-{{ section.id }} .hm-btn--block{ width: 100%; }
+#hm-{{ section.id }} .hm-btn--dark{ --b-bg: #0c0b10; --b-fg: #fff; }
+#hm-{{ section.id }} .hm-btn--light{ --b-bg: #fff; --b-fg: #0c0b10; }
+#hm-{{ section.id }} .hm-btn--shine::after{
   content: ''; position: absolute; top: 0; left: -60%; width: 40%; height: 100%;
   background: linear-gradient(100deg, transparent, rgba(255,255,255,.35), transparent);
   animation: hm-shine 3.2s ease-in-out infinite;
 }
 @keyframes hm-shine { 0%, 60% { left: -60%; } 100% { left: 130%; } }
-#hm-{{ section.id }} .hm-btn[aria-busy="true"], .hm-sticky .hm-btn[aria-busy="true"] { pointer-events: none; opacity: .8; }
-#hm-{{ section.id }} .hm-btn[aria-busy="true"] .hm-btn__label, .hm-sticky .hm-btn[aria-busy="true"] .hm-btn__label { opacity: 0; }
-#hm-{{ section.id }} .hm-btn[aria-busy="true"]::before, .hm-sticky .hm-btn[aria-busy="true"]::before {
+#hm-{{ section.id }} .hm-btn[aria-busy="true"]{ pointer-events: none; opacity: .8; }
+#hm-{{ section.id }} .hm-btn[aria-busy="true"] .hm-btn__label{ opacity: 0; }
+#hm-{{ section.id }} .hm-btn[aria-busy="true"]::before{
   content: ''; position: absolute; width: 22px; height: 22px; border-radius: 50%;
   border: 3px solid currentColor; border-right-color: transparent; animation: hm-spin .7s linear infinite;
 }
@@ -441,7 +263,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   #hm-{{ section.id }} .hm-reveal { opacity: 1; transform: none; transition: none; }
-  #hm-{{ section.id }} .hm-marquee__group, #hm-{{ section.id }} .hm-btn--shine::after, .hm-sticky .hm-btn--shine::after { animation: none; }
+  #hm-{{ section.id }} .hm-marquee__group, #hm-{{ section.id }} .hm-btn--shine::after{ animation: none; }
 }
 
 #hm-{{ section.id }} .hm-visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
@@ -537,89 +359,15 @@
   #hm-{{ section.id }} .hm-feat svg { width: 20px; height: 20px; flex: none; }
   #hm-{{ section.id }} .hm-feat span { color: var(--hm-fg); }
 
-  /* ---------- Precio ---------- */
-  #hm-{{ section.id }} .hm-price { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding-top: 16px; border-top: 1px solid var(--hm-line); margin-top: 18px !important; }
-  #hm-{{ section.id }} .hm-price__now { font-size: 26px; font-weight: 700; line-height: 1; color: var(--hm-price, var(--hm-accent)); }
-  #hm-{{ section.id }} .hm-price__was { font-size: 18px; color: var(--hm-muted); }
-  #hm-{{ section.id }} .hm-price__promo { font-size: 13px; font-weight: 600; color: var(--hm-promo-fg, #fff); background: var(--hm-promo-bg, var(--hm-accent)); padding: 6px 10px; border-radius: 6px; }
-
-  /* ---------- Packs ---------- */
-  #hm-{{ section.id }} .hm-packs { display: grid; gap: 12px; }
-  #hm-{{ section.id }} .hm-pack {
-    position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 88px auto; align-items: center; gap: 12px;
-    min-height: 84px; padding: 12px 16px; cursor: pointer;
-    background: var(--hm-bg); border: 1px solid var(--hm-line); border-radius: var(--hm-r, 8px);
-    transition: border-color .15s, background .15s;
-    -webkit-tap-highlight-color: transparent;
-  }
-  #hm-{{ section.id }} .hm-pack.has-tag { margin-top: 6px; }
-  #hm-{{ section.id }} .hm-pack:hover { border-color: var(--hm-a55); }
-  #hm-{{ section.id }} .hm-pack.is-selected { border-color: var(--hm-accent); box-shadow: inset 0 0 0 1px var(--hm-accent); background: var(--hm-a6); }
-  #hm-{{ section.id }} .hm-pack:focus-within { outline: 2px solid var(--hm-accent); outline-offset: 2px; }
-  #hm-{{ section.id }} .hm-pack.is-soldout { opacity: .5; cursor: not-allowed; }
-  #hm-{{ section.id }} .hm-pack__tag { position: absolute; top: -11px; right: 12px; font-size: 11.5px; font-weight: 700; line-height: 1; padding: 5px 9px; border-radius: 4px; color: #fff; background: var(--hm-accent); white-space: nowrap; }
-  #hm-{{ section.id }} .hm-pack__tag--negro { background: #121116; }
-  #hm-{{ section.id }} .hm-pack__tag--naranja { background: #e07b00; }
-  #hm-{{ section.id }} .hm-pack__tag--verde { background: #1f9d55; }
-  #hm-{{ section.id }} .hm-pack__info { display: grid; gap: 3px; min-width: 0; }
-  #hm-{{ section.id }} .hm-pack__title { font-size: 15px; font-weight: 700; line-height: 1.25; }
-  #hm-{{ section.id }} .hm-pack__save { font-size: 13px; font-weight: 600; color: var(--hm-accent); }
-  #hm-{{ section.id }} .hm-pack__sub { font-size: 13px; color: var(--hm-muted); }
-  #hm-{{ section.id }} .hm-pack__warn { font-size: 11px; line-height: 1.3; font-weight: 600; color: #b42318; background: #fff1f0; border-radius: 4px; padding: 4px 6px; margin-top: 4px; }
-  #hm-{{ section.id }} .hm-pack__soldout { font-size: 12px; font-weight: 700; color: #c0392b; }
-  #hm-{{ section.id }} .hm-pack__img { width: 88px; height: 60px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-  #hm-{{ section.id }} .hm-pack__img img { height: 100%; width: 100%; object-fit: contain; }
-  #hm-{{ section.id }} .hm-pack__price { display: grid; justify-items: end; gap: 2px; text-align: right; }
-  #hm-{{ section.id }} .hm-pack__now { font-size: 16px; font-weight: 700; white-space: nowrap; }
-  #hm-{{ section.id }} .hm-pack__was { font-size: 13px; color: var(--hm-muted); white-space: nowrap; }
-  @media (max-width: 400px) {
-    #hm-{{ section.id }} .hm-pack { grid-template-columns: minmax(0, 1fr) 64px auto; gap: 8px; padding: 12px; }
-    #hm-{{ section.id }} .hm-pack__img { width: 64px; height: 52px; }
-    #hm-{{ section.id }} .hm-pack__title { font-size: 14px; }
-  }
-
-  /* ---------- Regalos ---------- */
-  #hm-{{ section.id }} .hm-gifts { position: relative; border: 1px solid var(--hm-line); border-radius: var(--hm-r, 8px); padding: 22px 12px 12px; margin-top: 22px !important; }
-  #hm-{{ section.id }} .hm-gifts__title { position: absolute; top: -11px; left: 12px; background: var(--hm-a10); color: var(--hm-accent); border: 1px solid var(--hm-a25); font-size: 11.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 4px 8px; border-radius: 4px; }
-  #hm-{{ section.id }} .hm-gifts__row { display: flex; align-items: center; justify-content: space-around; gap: 6px; }
-  #hm-{{ section.id }} .hm-gifts__plus { color: var(--hm-muted); font-size: 14px; }
-  #hm-{{ section.id }} .hm-gift { display: grid; justify-items: center; gap: 6px; text-align: center; flex: 1; min-width: 0; }
-  #hm-{{ section.id }} .hm-gift__img { position: relative; width: 56px; height: 56px; border-radius: var(--hm-r, 8px); background: var(--hm-card); color: var(--hm-accent); display: grid; place-items: center; overflow: hidden; }
-  #hm-{{ section.id }} .hm-gift__img img { width: 100%; height: 100%; object-fit: cover; }
-  #hm-{{ section.id }} .hm-gift__lock { position: absolute; inset: 0; display: grid; place-items: center; color: var(--hm-fg); transition: opacity .25s; }
-  #hm-{{ section.id }} .hm-gift__lock::before { content: ''; position: absolute; inset: 0; background: var(--hm-bg); opacity: .7; }
-  #hm-{{ section.id }} .hm-gift__lock svg { position: relative; }
-  #hm-{{ section.id }} .hm-gift__lock svg { width: 18px; height: 18px; }
-  #hm-{{ section.id }} .hm-gift:not(.is-unlocked) .hm-gift__img > img, #hm-{{ section.id }} .hm-gift:not(.is-unlocked) .hm-gift__img > svg { filter: blur(2px) grayscale(1); opacity: .6; }
-  #hm-{{ section.id }} .hm-gift.is-unlocked .hm-gift__lock { opacity: 0; }
-  #hm-{{ section.id }} .hm-gift__state { font-size: 12px; font-weight: 600; line-height: 1.2; color: var(--hm-muted); }
-  #hm-{{ section.id }} .hm-gift.is-unlocked .hm-gift__state { color: var(--hm-fg); }
+  /* ---------- Liquid personalizado (oferta) ---------- */
+  #hm-{{ section.id }} .hm-liquid { min-width: 0; }
+  #hm-{{ section.id }} .hm-liquid:empty { display: none; }
+  #hm-{{ section.id }} .hm-liquid__empty { padding: 18px; border: 1px dashed var(--hm-a40); border-radius: var(--hm-r, 8px); background: var(--hm-a6); font-size: 13.5px; line-height: 1.45; color: var(--hm-muted); text-align: center; }
 
   /* ---------- Fecha de entrega ---------- */
   #hm-{{ section.id }} .hm-eta { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 0; padding: 10px 12px; border-radius: var(--hm-r, 8px); background: var(--hm-a8); font-size: 14px; text-align: center; }
   #hm-{{ section.id }} .hm-eta svg { width: 18px; height: 18px; color: var(--hm-accent); flex: none; }
   #hm-{{ section.id }} .hm-eta strong { text-decoration: underline; text-underline-offset: 3px; }
-
-  /* ---------- Botón ---------- */
-  #hm-{{ section.id }} .hm-buy__form { margin: 0; }
-  #hm-{{ section.id }}.hm-pdp .hm-buy__btn { justify-content: space-between; min-height: 56px; padding: 0 14px 0 18px; border-radius: var(--hm-r-btn, 8px); font-size: 16px; gap: 10px; }
-  #hm-{{ section.id }}.hm-pdp .hm-buy__btn .hm-btn__label { font-weight: 600; white-space: nowrap; }
-  #hm-{{ section.id }} .hm-buy__pill { display: inline-flex; align-items: center; gap: 8px; margin-left: auto; padding: 6px 10px; border: 1px solid var(--hm-pill-line, rgba(255,255,255,.4)); border-radius: 6px; font-size: 14px; white-space: nowrap; }
-  #hm-{{ section.id }} .hm-buy__pill s { opacity: .7; font-size: 13px; }
-  #hm-{{ section.id }} .hm-buy__guar { display: inline-flex; align-items: center; gap: 4px; padding-left: 8px; border-left: 1px solid var(--hm-pill-line, rgba(255,255,255,.4)); font-size: 13px; }
-  #hm-{{ section.id }} .hm-buy__guar svg { width: 15px; height: 15px; }
-  #hm-{{ section.id }} .hm-buy__arrow { width: 18px; height: 18px; flex: none; }
-  #hm-{{ section.id }}.hm-pdp .hm-buy__btn[disabled] { background: #9b97a5; cursor: not-allowed; }
-  @media (max-width: 520px) { #hm-{{ section.id }} .hm-buy__guar { display: none; } }
-  @media (max-width: 360px) { #hm-{{ section.id }} .hm-buy__pill s { display: none; } #hm-{{ section.id }} .hm-buy__arrow { display: none; } }
-  #hm-{{ section.id }} .hm-buy__error { color: #c0392b; font-size: 13.5px; text-align: center; margin: 8px 0 0; }
-  #hm-{{ section.id }} .hm-buy__added { display: flex; align-items: center; justify-content: center; gap: 6px; color: var(--hm-ok); font-size: 14px; font-weight: 600; margin: 8px 0 0; }
-
-  /* ---------- Pagos ---------- */
-  #hm-{{ section.id }} .hm-pay { display: grid; justify-items: center; gap: 4px; margin-top: 10px !important; }
-  #hm-{{ section.id }} .hm-pay p { display: flex; align-items: center; gap: 6px; margin: 0; font-size: 13px; color: var(--hm-muted); }
-  #hm-{{ section.id }} .hm-pay svg { width: 15px; height: 15px; }
-  #hm-{{ section.id }} .hm-pay strong { color: var(--hm-fg); }
 
   /* ---------- Prueba social ---------- */
   #hm-{{ section.id }} .hm-social { display: flex; align-items: center; gap: 12px; padding: 8px 14px 8px 8px; border-radius: 999px; background: var(--hm-card); margin-top: 18px !important; }
@@ -656,39 +404,9 @@
   #hm-{{ section.id }} .hm-acc__body li + li { margin-top: 4px; }
   #hm-{{ section.id }} .hm-acc__body strong { color: var(--hm-fg); }
 
-  /* ---------- Barra fija ---------- */
-  .hm-sticky {
-    --hm-bg: #ffffff; --hm-fg: #121116; --hm-muted: #5d5a66; --hm-line: #e8e3f1; --hm-accent-ink: #ffffff;
-    font-family: var(--hm-font-body, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
-    color: var(--hm-fg); line-height: 1.4; box-sizing: border-box;
-  }
-  .hm-sticky *, .hm-sticky *::before, .hm-sticky *::after { box-sizing: border-box; }
-  .hm-sticky [hidden] { display: none !important; }
-  .hm-sticky strong, .hm-sticky span, .hm-sticky s, .hm-sticky button { text-transform: none; letter-spacing: normal; font-family: inherit; }
-  .hm-sticky {
-    position: fixed; z-index: 60; left: 0; right: 0; bottom: 0;
-    background: var(--hm-bg); border-top: 1px solid var(--hm-line);
-    transform: translateY(110%); visibility: hidden; transition: transform .25s ease, visibility 0s .25s;
-    padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
-  }
-  .hm-sticky.is-visible { transform: none; visibility: visible; transition: transform .25s ease; box-shadow: 0 -4px 20px rgba(0,0,0,.08); }
-  .hm-sticky__inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-  .hm-sticky__product { display: flex; align-items: center; gap: 10px; min-width: 0; }
-  .hm-sticky__product img { display: block; width: 44px; height: 44px; border-radius: 6px; object-fit: cover; flex: none; }
-  .hm-sticky__product > div { min-width: 0; }
-  .hm-sticky__product strong { display: block; font-size: 13px; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .hm-sticky__price { display: flex; gap: 6px; align-items: baseline; font-weight: 700; font-size: 15px; color: var(--hm-accent); }
-  .hm-sticky__price s { font-weight: 400; font-size: 12px; color: var(--hm-muted); }
-  .hm-sticky .hm-sticky__btn { min-height: 46px; padding: 0 20px; font-size: 15px; border-radius: var(--hm-r-btn, 8px); flex: none; }
-  @media (min-width: 990px) {
-    .hm-sticky { padding: 12px 32px; }
-    .hm-sticky .hm-sticky__btn { min-width: 260px; }
-  }
-  #hm-{{ section.id }}.hm-upper .hm-btn__label { text-transform: uppercase; letter-spacing: .04em; }
-  .hm-sticky.hm-upper .hm-btn__label { text-transform: uppercase; letter-spacing: .04em; }
 </style>
 
-<section id="hm-{{ section.id }}" class="hm hm--{{ s.esquema | default: 'claro' }} hm-pdp{% if s.boton_mayus %} hm-upper{% endif %}" style="--hm-accent: {{ acc }}; --hm-a6: {{ acc | color_modify: 'alpha', 0.06 }}; --hm-a8: {{ acc | color_modify: 'alpha', 0.08 }}; --hm-a10: {{ acc | color_modify: 'alpha', 0.1 }}; --hm-a14: {{ acc | color_modify: 'alpha', 0.14 }}; --hm-a25: {{ acc | color_modify: 'alpha', 0.25 }}; --hm-a28: {{ acc | color_modify: 'alpha', 0.28 }}; --hm-a35: {{ acc | color_modify: 'alpha', 0.35 }}; --hm-a40: {{ acc | color_modify: 'alpha', 0.4 }}; --hm-a55: {{ acc | color_modify: 'alpha', 0.55 }}; --hm-dark30: {{ acc | color_mix: '#0c0b10', 30 }}; --hm-dark55: {{ acc | color_mix: '#0c0b10', 55 }}; --hm-pt: {{ s.padding_top | default: 24 }}px; --hm-pb: {{ s.padding_bottom | default: 48 }}px; --hm-font-body: {{ hm_font_stack }}; --hm-font-display: {{ hm_font_stack }}; --hm-title-d: {{ s.titulo_desktop | default: 30 }}px; --hm-title-m: {{ s.titulo_mobile | default: 26 }}px;{% if s.color_boton != blank %} --hm-btn-bg: {{ s.color_boton }};{% endif %}{% if s.color_boton_texto != blank %} --hm-btn-fg: {{ s.color_boton_texto }};{% endif %}{% if s.color_texto != blank %} --hm-fg: {{ s.color_texto }};{% endif %}{% if s.color_fondo != blank %} --hm-bg: {{ s.color_fondo }};{% endif %}{% if s.color_precio != blank %} --hm-price: {{ s.color_precio }};{% endif %}{% if s.color_texto_sec != blank %} --hm-muted: {{ s.color_texto_sec }};{% endif %}{% if s.color_bordes != blank %} --hm-line: {{ s.color_bordes }};{% endif %}{% if s.color_tarjetas != blank %} --hm-card: {{ s.color_tarjetas }};{% endif %} --hm-star: {{ s.color_estrellas | default: '#f5b301' }}; --hm-ok: {{ s.color_positivo | default: '#1f9d55' }};{% if s.color_promo != blank %} --hm-promo-bg: {{ s.color_promo }};{% endif %}{% if s.color_promo_texto != blank %} --hm-promo-fg: {{ s.color_promo_texto }};{% endif %}{% if s.color_aviso != blank %} --hm-alert-bg: {{ s.color_aviso }};{% endif %}{% if s.color_aviso_texto != blank %} --hm-alert-fg: {{ s.color_aviso_texto }}; --hm-alert-line: {{ s.color_aviso_texto | color_modify: 'alpha', 0.4 }};{% endif %} --hm-r: {{ s.redondeo | default: 8 }}px; --hm-r-btn: {{ s.redondeo_boton | default: 8 }}px; --hm-pill-line: {{ s.color_boton_texto | default: '#ffffff' | color_modify: 'alpha', 0.4 }};">
+<section id="hm-{{ section.id }}" class="hm hm--{{ s.esquema | default: 'claro' }} hm-pdp" style="--hm-accent: {{ acc }}; --hm-a6: {{ acc | color_modify: 'alpha', 0.06 }}; --hm-a8: {{ acc | color_modify: 'alpha', 0.08 }}; --hm-a10: {{ acc | color_modify: 'alpha', 0.1 }}; --hm-a14: {{ acc | color_modify: 'alpha', 0.14 }}; --hm-a25: {{ acc | color_modify: 'alpha', 0.25 }}; --hm-a28: {{ acc | color_modify: 'alpha', 0.28 }}; --hm-a35: {{ acc | color_modify: 'alpha', 0.35 }}; --hm-a40: {{ acc | color_modify: 'alpha', 0.4 }}; --hm-a55: {{ acc | color_modify: 'alpha', 0.55 }}; --hm-dark30: {{ acc | color_mix: '#0c0b10', 30 }}; --hm-dark55: {{ acc | color_mix: '#0c0b10', 55 }}; --hm-pt: {{ s.padding_top | default: 24 }}px; --hm-pb: {{ s.padding_bottom | default: 48 }}px; --hm-font-body: {{ hm_font_stack }}; --hm-font-display: {{ hm_font_stack }}; --hm-title-d: {{ s.titulo_desktop | default: 30 }}px; --hm-title-m: {{ s.titulo_mobile | default: 26 }}px;{% if s.color_texto != blank %} --hm-fg: {{ s.color_texto }};{% endif %}{% if s.color_fondo != blank %} --hm-bg: {{ s.color_fondo }};{% endif %}{% if s.color_texto_sec != blank %} --hm-muted: {{ s.color_texto_sec }};{% endif %}{% if s.color_bordes != blank %} --hm-line: {{ s.color_bordes }};{% endif %}{% if s.color_tarjetas != blank %} --hm-card: {{ s.color_tarjetas }};{% endif %} --hm-star: {{ s.color_estrellas | default: '#f5b301' }}; --hm-ok: {{ s.color_positivo | default: '#1f9d55' }};{% if s.color_aviso != blank %} --hm-alert-bg: {{ s.color_aviso }};{% endif %}{% if s.color_aviso_texto != blank %} --hm-alert-fg: {{ s.color_aviso_texto }}; --hm-alert-line: {{ s.color_aviso_texto | color_modify: 'alpha', 0.4 }};{% endif %} --hm-r: {{ s.redondeo | default: 8 }}px;">
   <div class="hm-container">
     <div class="hm-pdp__grid">
 
@@ -768,9 +486,8 @@
         {%- endif -%}
       </div>
 
-      {%- comment -%} ===================== INFO + OFERTA ===================== {%- endcomment -%}
-      <div class="hm-pdp__info" id="hm-comprar" data-hm-buybox data-after="{{ s.despues_de_agregar }}" data-error="{{ s.error_label | escape }}">
-        {%- assign packs_rendered = false -%}
+      {%- comment -%} ===================== INFO + OFERTA (Liquid) ===================== {%- endcomment -%}
+      <div class="hm-pdp__info" id="hm-comprar">
         {%- for block in section.blocks -%}
           {%- assign bs = block.settings -%}
           {%- case block.type -%}
@@ -816,93 +533,11 @@
                 <span>{{ bs.texto }}</span>
               </p>
 
-            {%- when 'precio' -%}
-              <div class="hm-price" {{ block.shopify_attributes }}>
-                <span class="hm-price__now" data-hm-price>{{ sel_price }}</span>
-                <s class="hm-price__was" data-hm-compare {% if sel_compare == '' %}hidden{% endif %}>{{ sel_compare }}</s>
-                <span class="hm-price__promo" data-hm-promo {% if sel_promo == '' %}hidden{% endif %}>{{ sel_promo }}</span>
-              </div>
-
-            {%- when 'pack' -%}
-              {%- unless packs_rendered -%}
-                {%- assign packs_rendered = true -%}
-                <div class="hm-packs" role="radiogroup" aria-label="Elegí tu pack">
-                  {{ packs_html }}
-                </div>
-              {%- endunless -%}
-
-            {%- when 'regalos' -%}
-              <div class="hm-gifts" {{ block.shopify_attributes }}>
-                <span class="hm-gifts__title">{{ bs.titulo }}</span>
-                <div class="hm-gifts__row">
-                  {%- for i in (1..3) -%}
-                    {%- assign gk = 'regalo_' | append: i -%}
-                    {%- assign gi = 'regalo_' | append: i | append: '_img' -%}
-                    {%- assign gd = 'regalo_' | append: i | append: '_desde' -%}
-                    {%- if bs[gk] != blank -%}
-                      {%- unless forloop.first -%}<span class="hm-gifts__plus" aria-hidden="true">+</span>{%- endunless -%}
-                      <div class="hm-gift" data-hm-gift data-from="{{ bs[gd] }}">
-                        <span class="hm-gift__img">
-                          {%- if bs[gi] != blank -%}
-                            {{ bs[gi] | image_url: width: 160 | image_tag: loading: 'lazy', widths: '80, 160', sizes: '56px', alt: bs[gk] }}
-                          {%- else -%}
-                            <svg class="hm-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#hmi-gift"/></svg>
-                          {%- endif -%}
-                          <span class="hm-gift__lock"><svg class="hm-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#hmi-lock"/></svg></span>
-                        </span>
-                        <span class="hm-gift__state" data-on="{{ bs[gk] | escape }}" data-off="{{ bs.texto_bloqueado | escape }}">{{ bs.texto_bloqueado }}</span>
-                      </div>
-                    {%- endif -%}
-                  {%- endfor -%}
-                </div>
-              </div>
-
             {%- when 'envio' -%}
               <p class="hm-eta" data-hm-eta data-days="{{ bs.dias }}" {{ block.shopify_attributes }}>
                 <svg class="hm-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#hmi-clock"/></svg>
                 <span>{{ bs.texto | replace: '[fecha]', '<strong data-hm-eta-date></strong>' }}</span>
               </p>
-
-            {%- when 'boton' -%}
-              <div class="hm-buy" id="hm-buy-{{ section.id }}" {{ block.shopify_attributes }}>
-                {%- form 'product', product, class: 'hm-buy__form', data-hm-form: '', novalidate: 'novalidate' -%}
-                  <input type="hidden" name="id" value="{{ sel_variant.id }}" data-hm-variant-id>
-                  <input type="hidden" name="quantity" value="{{ sel_qty }}" data-hm-qty>
-                  <button
-                    type="submit"
-                    class="hm-btn hm-btn--block hm-buy__btn"
-                    data-hm-submit
-                    data-label="{{ bs.texto | escape }}"
-                    data-soldout="{{ s.soldout_label | escape }}"
-                    {% unless sel_variant.available %}disabled{% endunless %}
-                  >
-                    <span class="hm-btn__label">{% if sel_variant.available %}{{ bs.texto }}{% else %}{{ s.soldout_label }}{% endif %}</span>
-                    <span class="hm-buy__pill">
-                      <s data-hm-compare {% if sel_compare == '' %}hidden{% endif %}>{{ sel_compare }}</s>
-                      <strong data-hm-price>{{ sel_price }}</strong>
-                      {%- if bs.garantia != blank -%}
-                        <span class="hm-buy__guar"><svg class="hm-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#hmi-check-circle"/></svg>{{ bs.garantia }}</span>
-                      {%- endif -%}
-                    </span>
-                    <svg class="hm-icon hm-buy__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#hmi-arrow-right"/></svg>
-                  </button>
-                {%- endform -%}
-                <p class="hm-buy__error" data-hm-error role="alert" hidden></p>
-                <p class="hm-buy__added" data-hm-added hidden><svg class="hm-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#hmi-check-circle"/></svg> {{ s.added_label }}</p>
-              </div>
-
-            {%- when 'pagos' -%}
-              <div class="hm-pay" {{ block.shopify_attributes }}>
-                {%- if cuotas > 1 -%}
-                  <p><svg class="hm-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#hmi-card"/></svg><span>{{ bs.texto_cuotas | replace: '[n]', cuotas }} <strong data-hm-cuota>{{ sel_cuota }}</strong></span></p>
-                {%- endif -%}
-                {%- if transfer_pct > 0 -%}
-                  <p><svg class="hm-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#hmi-percent"/></svg><span><strong data-hm-transfer>{{ sel_transfer }}</strong> {{ bs.texto_transferencia | replace: '[pct]', transfer_pct }}</span></p>
-                {%- endif -%}
-                {%- if bs.texto_seguro != blank -%}
-                  <p><svg class="hm-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#hmi-lock"/></svg><span>{{ bs.texto_seguro }}</span></p>
-                {%- endif -%}
-              </div>
 
             {%- when 'social' -%}
               <div class="hm-social" {{ block.shopify_attributes }}>
@@ -934,6 +569,13 @@
                 <div class="hm-acc__body">{{ bs.contenido }}</div>
               </details>
 
+            {%- when 'liquid' -%}
+              {%- if bs.codigo != blank -%}
+                <div class="hm-liquid" {{ block.shopify_attributes }}>{{ bs.codigo }}</div>
+              {%- elsif request.design_mode -%}
+                <div class="hm-liquid" {{ block.shopify_attributes }}><p class="hm-liquid__empty">Pegá acá el código Liquid de la oferta (bloque «Liquid personalizado»).</p></div>
+              {%- endif -%}
+
             {%- when 'espacio' -%}
               <div class="hm-space" style="height: {{ bs.alto }}px" {{ block.shopify_attributes }}></div>
 
@@ -946,27 +588,6 @@
     </div>
   </div>
 
-  {%- if s.sticky -%}
-    <div class="hm-sticky{% if s.boton_mayus %} hm-upper{% endif %}" data-hm-sticky data-hm-owner="hm-{{ section.id }}" data-target="hm-buy-{{ section.id }}" role="region" aria-label="{{ s.sticky_texto | escape }}">
-      <div class="hm-sticky__inner">
-        <div class="hm-sticky__product">
-          {%- if product.featured_image != blank -%}
-            {{ product.featured_image | image_url: width: 120 | image_tag: loading: 'lazy', widths: '60, 120', sizes: '44px', alt: '' }}
-          {%- endif -%}
-          <div>
-            <strong data-hm-pack-name>{{ sel_name }}</strong>
-            <span class="hm-sticky__price">
-              <span data-hm-price>{{ sel_price }}</span>
-              <s data-hm-compare {% if sel_compare == '' %}hidden{% endif %}>{{ sel_compare }}</s>
-            </span>
-          </div>
-        </div>
-        <button type="button" class="hm-btn hm-sticky__btn" data-hm-submit-external>
-          <span class="hm-btn__label">{{ s.sticky_texto }}</span>
-        </button>
-      </div>
-    </div>
-  {%- endif -%}
 </section>
 
 <script>
@@ -1186,146 +807,6 @@
     });
   }
 
-  /* ---------- Caja de compra: packs + agregar al carrito ---------- */
-  function initBuybox(root) {
-    if (!once(root, 'Buybox')) return;
-    var form = root.querySelector('form[data-hm-form], form.hm-buy__form');
-    var idInput = root.querySelector('[data-hm-variant-id]');
-    var qtyInput = root.querySelector('[data-hm-qty]');
-    var packs = root.querySelectorAll('[data-hm-pack]');
-    var section = root.closest('.hm') || document;
-
-    /* La barra fija se mueve al <body> para que ningún contenedor del theme la rompa */
-    var sticky = section.querySelector ? section.querySelector('[data-hm-sticky]') : null;
-    if (sticky && section.id) {
-      document.querySelectorAll('body > [data-hm-owner="' + section.id + '"]').forEach(function (old) { if (old !== sticky) old.remove(); });
-      sticky.setAttribute('style', section.getAttribute('style') || '');
-      document.body.appendChild(sticky);
-    }
-    function scopeAll(selector) {
-      var list = Array.prototype.slice.call(section.querySelectorAll(selector));
-      if (sticky) list = list.concat(Array.prototype.slice.call(sticky.querySelectorAll(selector)));
-      return list;
-    }
-
-    function fill(selector, value) {
-      scopeAll(selector).forEach(function (n) {
-        if (value) { n.innerHTML = value; n.hidden = false; }
-        else n.hidden = true;
-      });
-    }
-
-    function select(pack, fromUser) {
-      if (pack.dataset.available === 'false' && fromUser) return;
-      packs.forEach(function (p) {
-        var on = p === pack;
-        p.classList.toggle('is-selected', on);
-        var r = p.querySelector('input[type="radio"]');
-        if (r) r.checked = on;
-      });
-      var d = pack.dataset;
-      if (idInput) idInput.value = d.variantId;
-      if (qtyInput) qtyInput.value = d.qty || 1;
-      fill('[data-hm-price]', d.price);
-      fill('[data-hm-compare]', d.compare);
-      fill('[data-hm-transfer]', d.transfer);
-      fill('[data-hm-cuota]', d.cuota);
-      fill('[data-hm-pack-name]', d.name);
-      if (fromUser) section.dispatchEvent(new CustomEvent('hm:pack', { detail: { slide: d.slide, index: d.index } }));
-      var soldOut = d.available === 'false';
-      scopeAll('[data-hm-submit]').forEach(function (b) {
-        b.disabled = soldOut;
-        var label = b.querySelector('.hm-btn__label');
-        if (label) label.textContent = soldOut ? (b.dataset.soldout || 'Sin stock') : b.dataset.label;
-      });
-    }
-
-    packs.forEach(function (p) {
-      var r = p.querySelector('input[type="radio"]');
-      if (r) r.addEventListener('change', function () { if (r.checked) select(p, true); });
-    });
-    var initial = root.querySelector('[data-hm-pack].is-selected') || packs[0];
-    if (initial) select(initial);
-
-    if (!form) return;
-    form.addEventListener('submit', function (ev) {
-      if (!window.fetch) return;
-      ev.preventDefault();
-      addToCart(root, form);
-    });
-    scopeAll('[data-hm-submit-external]').forEach(function (b) {
-      b.addEventListener('click', function () { addToCart(root, form, b); });
-    });
-  }
-
-  function addToCart(root, form, extraButton) {
-    var buttons = [form.querySelector('[data-hm-submit]')];
-    if (extraButton) buttons.push(extraButton);
-    var error = root.querySelector('[data-hm-error]');
-    buttons.forEach(function (b) { if (b) b.setAttribute('aria-busy', 'true'); });
-    if (error) error.hidden = true;
-
-    var id = form.querySelector('[data-hm-variant-id]').value;
-    var qty = parseInt(form.querySelector('[data-hm-qty]').value || '1', 10);
-    var root_url = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
-    var after = root.dataset.after || 'checkout';
-
-    fetch(root_url + 'cart/add.js', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({ items: [{ id: parseInt(id, 10), quantity: qty }] })
-    })
-      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, json: j }; }); })
-      .then(function (res) {
-        if (!res.ok) throw new Error(res.json.description || res.json.message || root.dataset.error || 'Error');
-        document.dispatchEvent(new CustomEvent('hm:added', { detail: res.json }));
-        if (after === 'checkout') window.location.href = root_url + 'checkout';
-        else if (after === 'cart') window.location.href = root_url + 'cart';
-        else {
-          buttons.forEach(function (b) { if (b) b.removeAttribute('aria-busy'); });
-          var ok = root.querySelector('[data-hm-added]');
-          if (ok) { ok.hidden = false; setTimeout(function () { ok.hidden = true; }, 4000); }
-          refreshCartCount();
-        }
-      })
-      .catch(function (e) {
-        buttons.forEach(function (b) { if (b) b.removeAttribute('aria-busy'); });
-        if (error) { error.textContent = e.message; error.hidden = false; }
-      });
-  }
-
-  function refreshCartCount() {
-    var root_url = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
-    fetch(root_url + 'cart.js').then(function (r) { return r.json(); }).then(function (cart) {
-      document.querySelectorAll('.cart-count-bubble span[aria-hidden], [data-cart-count], .cart-count').forEach(function (n) {
-        n.textContent = cart.item_count;
-      });
-    }).catch(function () {});
-  }
-
-  /* ---------- Barra fija de compra ---------- */
-  function initSticky(bar) {
-    if (!once(bar, 'Sticky')) return;
-    var target = document.getElementById(bar.dataset.target);
-    if (!target) return;
-    var visible = false;
-    var ticking = false;
-    /* Se muestra cuando el botón de compra quedó arriba, fuera de pantalla */
-    function check() {
-      ticking = false;
-      var past = target.getBoundingClientRect().bottom < 0;
-      if (past === visible) return;
-      visible = past;
-      bar.classList.toggle('is-visible', past);
-      document.documentElement.classList.toggle('hm-sticky-on', past);
-    }
-    window.addEventListener('scroll', function () {
-      if (!ticking) { ticking = true; window.requestAnimationFrame(check); }
-    }, { passive: true });
-    window.addEventListener('resize', check);
-    check();
-  }
-
   /* ---------- Links internos suaves (#hm-comprar) ---------- */
   document.addEventListener('click', function (ev) {
     var a = ev.target.closest && ev.target.closest('a[href^="#"]');
@@ -1344,8 +825,6 @@
     scope.querySelectorAll('[data-hm-compare]').forEach(initCompare);
     scope.querySelectorAll('[data-hm-video]').forEach(initVideo);
     scope.querySelectorAll('[data-hm-gallery]').forEach(initGallery);
-    scope.querySelectorAll('[data-hm-buybox]').forEach(initBuybox);
-    scope.querySelectorAll('[data-hm-sticky]').forEach(initSticky);
   }
 
   window.HMLanding = { init: init };
@@ -1354,10 +833,6 @@
 
   /* Editor de temas: re-inicializa al editar una sección */
   document.addEventListener('shopify:section:load', function (e) { init(e.target); });
-  document.addEventListener('shopify:section:unload', function (e) {
-    var id = e.detail && e.detail.sectionId;
-    if (id) document.querySelectorAll('body > [data-hm-owner="hm-' + id + '"]').forEach(function (n) { n.remove(); });
-  });
   document.addEventListener('shopify:block:select', function (e) {
     var slide = e.target;
     var track = slide.parentElement;
@@ -1372,23 +847,6 @@
     var root = document.getElementById('hm-{{ section.id }}');
     if (!root || root.dataset.hmLocal) return;
     root.dataset.hmLocal = '1';
-
-    /* Regalos: se desbloquean según el pack elegido */
-    function syncGifts() {
-      var sel = root.querySelector('[data-hm-pack].is-selected');
-      var idx = sel ? parseInt(sel.dataset.index, 10) : 1;
-      root.querySelectorAll('[data-hm-gift]').forEach(function (g) {
-        var on = idx >= parseInt(g.dataset.from || '1', 10);
-        g.classList.toggle('is-unlocked', on);
-        var st = g.querySelector('.hm-gift__state');
-        if (st) st.textContent = on ? st.dataset.on : st.dataset.off;
-      });
-      /* Promo del precio */
-      var promo = root.querySelector('[data-hm-promo]');
-      if (promo && sel) { promo.textContent = sel.dataset.promo; promo.hidden = !sel.dataset.promo; }
-    }
-    root.addEventListener('change', function (e) { if (e.target.closest('[data-hm-pack]')) syncGifts(); });
-    syncGifts();
 
     /* Fecha estimada de entrega en días hábiles */
     var meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
@@ -1492,104 +950,6 @@
     },
     {
       "type": "header",
-      "content": "Oferta"
-    },
-    {
-      "type": "text",
-      "id": "save_label",
-      "label": "Ahorro en cada pack",
-      "default": "Ahorrás [monto]",
-      "info": "[monto] = ahorro en pesos · [pct] = porcentaje"
-    },
-    {
-      "type": "text",
-      "id": "promo_label",
-      "label": "Etiqueta junto al precio",
-      "default": "Promo de lanzamiento: ¡Ahorrás [monto]!",
-      "info": "[monto] = ahorro en pesos · [pct] = porcentaje"
-    },
-    {
-      "type": "text",
-      "id": "soldout_label",
-      "label": "Texto sin stock",
-      "default": "Sin stock"
-    },
-    {
-      "type": "header",
-      "content": "Cuotas y transferencia"
-    },
-    {
-      "type": "number",
-      "id": "cuotas",
-      "label": "Cuotas sin interés",
-      "default": 3,
-      "info": "Para calcular el valor de la cuota. Poné 1 para ocultar."
-    },
-    {
-      "type": "range",
-      "id": "transfer_pct",
-      "label": "Descuento por transferencia",
-      "min": 0,
-      "max": 30,
-      "step": 1,
-      "unit": "%",
-      "default": 10,
-      "info": "Poné 0 para ocultar. Tiene que coincidir con el descuento real del checkout."
-    },
-    {
-      "type": "header",
-      "content": "Al agregar al carrito"
-    },
-    {
-      "type": "select",
-      "id": "despues_de_agregar",
-      "label": "Después de tocar el botón",
-      "options": [
-        {
-          "value": "checkout",
-          "label": "Ir directo al checkout"
-        },
-        {
-          "value": "cart",
-          "label": "Ir al carrito"
-        },
-        {
-          "value": "stay",
-          "label": "Quedarse en la página"
-        }
-      ],
-      "default": "checkout"
-    },
-    {
-      "type": "text",
-      "id": "added_label",
-      "label": "Mensaje al agregar (si se queda en la página)",
-      "default": "¡Listo! Lo agregamos a tu carrito."
-    },
-    {
-      "type": "text",
-      "id": "error_label",
-      "label": "Mensaje si falla el carrito",
-      "default": "No pudimos agregar el producto. Probá de nuevo."
-    },
-    {
-      "type": "header",
-      "content": "Barra de compra fija"
-    },
-    {
-      "type": "checkbox",
-      "id": "sticky",
-      "label": "Mostrar al scrollear",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "sticky_texto",
-      "label": "Texto del botón",
-      "default": "Agregar al carrito"
-    },
-    {
-      "type": "header",
       "content": "Diseño"
     },
     {
@@ -1622,22 +982,6 @@
       "label": "Color de marca",
       "default": "#6b3fc0",
       "info": "Color principal: packs seleccionados, íconos, etiquetas, precio y botón."
-    },
-    {
-      "type": "color",
-      "id": "color_boton",
-      "label": "Color del botón (opcional)",
-      "info": "Vacío = color de marca."
-    },
-    {
-      "type": "color",
-      "id": "color_boton_texto",
-      "label": "Color del texto del botón (opcional)"
-    },
-    {
-      "type": "color",
-      "id": "color_precio",
-      "label": "Color del precio (opcional)"
     },
     {
       "type": "color",
@@ -1679,17 +1023,6 @@
     },
     {
       "type": "color",
-      "id": "color_promo",
-      "label": "Fondo de la etiqueta de promo (opcional)",
-      "info": "Vacío = color de marca."
-    },
-    {
-      "type": "color",
-      "id": "color_promo_texto",
-      "label": "Texto de la etiqueta de promo (opcional)"
-    },
-    {
-      "type": "color",
       "id": "color_aviso",
       "label": "Fondo del aviso rojo (opcional)"
     },
@@ -1707,22 +1040,6 @@
       "step": 1,
       "unit": "px",
       "default": 8
-    },
-    {
-      "type": "range",
-      "id": "redondeo_boton",
-      "label": "Redondeo del botón",
-      "min": 0,
-      "max": 30,
-      "step": 1,
-      "unit": "px",
-      "default": 8
-    },
-    {
-      "type": "checkbox",
-      "id": "boton_mayus",
-      "label": "Botones en mayúsculas",
-      "default": false
     },
     {
       "type": "range",
@@ -2337,250 +1654,19 @@
       ]
     },
     {
-      "type": "precio",
-      "name": "Precio",
-      "limit": 1,
+      "type": "liquid",
+      "name": "Liquid (oferta)",
+      "limit": 3,
       "settings": [
         {
           "type": "paragraph",
-          "content": "Muestra el precio del pack elegido. El texto de la etiqueta se edita en los ajustes de la sección (Oferta)."
-        }
-      ]
-    },
-    {
-      "type": "pack",
-      "name": "Pack",
-      "limit": 6,
-      "settings": [
-        {
-          "type": "text",
-          "id": "titulo",
-          "label": "Título",
-          "default": "Comprá 1 · 60 días"
+          "content": "Pegá acá el código de la oferta (packs + upsell + botón). Se muestra en la columna de info, en el lugar donde ubiques este bloque."
         },
         {
-          "type": "text",
-          "id": "subtitulo",
-          "label": "Texto si no hay ahorro",
-          "default": "Para empezar"
-        },
-        {
-          "type": "text",
-          "id": "etiqueta",
-          "label": "Etiqueta",
-          "info": "Ej: Más elegido, Mejor precio"
-        },
-        {
-          "type": "select",
-          "id": "etiqueta_color",
-          "label": "Color de la etiqueta",
-          "options": [
-            {
-              "value": "marca",
-              "label": "Violeta (marca)"
-            },
-            {
-              "value": "negro",
-              "label": "Negro"
-            },
-            {
-              "value": "naranja",
-              "label": "Naranja"
-            },
-            {
-              "value": "verde",
-              "label": "Verde"
-            }
-          ],
-          "default": "marca"
-        },
-        {
-          "type": "color",
-          "id": "etiqueta_color_libre",
-          "label": "Color de etiqueta personalizado (opcional)",
-          "info": "Pisa el color elegido arriba."
-        },
-        {
-          "type": "color",
-          "id": "etiqueta_texto_color",
-          "label": "Color del texto de la etiqueta (opcional)"
-        },
-        {
-          "type": "image_picker",
-          "id": "imagen",
-          "label": "Imagen del pack",
-          "info": "PNG sin fondo con los frascos. Si está vacío, usa la foto de la variante."
-        },
-        {
-          "type": "header",
-          "content": "Precio que se muestra"
-        },
-        {
-          "type": "paragraph",
-          "content": "Vacío = toma el precio de la variante de Shopify (recomendado). Si escribís un precio acá, tiene que ser IGUAL al de la variante: Shopify cobra el precio de la variante."
-        },
-        {
-          "type": "number",
-          "id": "precio",
-          "label": "Precio del pack ($)",
-          "info": "Ej: 80800"
-        },
-        {
-          "type": "number",
-          "id": "precio_tachado",
-          "label": "Precio tachado ($)",
-          "info": "Ej: 115800. Vacío = se calcula solo."
-        },
-        {
-          "type": "text",
-          "id": "texto_ahorro",
-          "label": "Texto de ahorro de este pack (opcional)",
-          "info": "Ej: Ahorrás [monto]. Vacío = el general de la sección."
-        },
-        {
-          "type": "header",
-          "content": "Qué se agrega al carrito"
-        },
-        {
-          "type": "range",
-          "id": "variante",
-          "label": "Número de variante",
-          "min": 1,
-          "max": 10,
-          "step": 1,
-          "default": 1,
-          "info": "1 = primera variante del producto, 2 = segunda, etc."
-        },
-        {
-          "type": "range",
-          "id": "cantidad",
-          "label": "Unidades de esa variante",
-          "min": 1,
-          "max": 6,
-          "step": 1,
-          "default": 1,
-          "info": "Si cada pack es una variante con su precio, dejá 1."
-        },
-        {
-          "type": "product",
-          "id": "producto",
-          "label": "Otro producto (opcional)",
-          "info": "Vacío = el producto de esta página."
-        },
-        {
-          "type": "header",
-          "content": "Ahorro"
-        },
-        {
-          "type": "range",
-          "id": "frascos",
-          "label": "Frascos que recibe",
-          "min": 1,
-          "max": 12,
-          "step": 1,
-          "default": 1
-        },
-        {
-          "type": "checkbox",
-          "id": "comparar_con_unitario",
-          "label": "Calcular el ahorro contra el pack 1",
-          "default": true,
-          "info": "Si la variante no tiene precio de comparación, tacha lo que costaría comprar esos frascos de a uno."
-        },
-        {
-          "type": "range",
-          "id": "foto_numero",
-          "label": "Foto de la galería al elegirlo",
-          "min": 0,
-          "max": 12,
-          "step": 1,
-          "default": 0,
-          "info": "0 = la foto de la variante. 1 = primera foto, 2 = segunda..."
-        },
-        {
-          "type": "checkbox",
-          "id": "preseleccionado",
-          "label": "Seleccionado al entrar",
-          "default": false
-        }
-      ]
-    },
-    {
-      "type": "regalos",
-      "name": "Regalos desbloqueados",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "titulo",
-          "label": "Título",
-          "default": "Regalos desbloqueados"
-        },
-        {
-          "type": "text",
-          "id": "texto_bloqueado",
-          "label": "Texto bloqueado",
-          "default": "Bloqueado"
-        },
-        {
-          "type": "text",
-          "id": "regalo_1",
-          "label": "Regalo 1",
-          "default": "Envío gratis"
-        },
-        {
-          "type": "image_picker",
-          "id": "regalo_1_img",
-          "label": "Imagen regalo 1"
-        },
-        {
-          "type": "range",
-          "id": "regalo_1_desde",
-          "label": "Se desbloquea desde el pack",
-          "min": 1,
-          "max": 6,
-          "step": 1,
-          "default": 2
-        },
-        {
-          "type": "text",
-          "id": "regalo_2",
-          "label": "Regalo 2",
-          "default": "Guía capilar"
-        },
-        {
-          "type": "image_picker",
-          "id": "regalo_2_img",
-          "label": "Imagen regalo 2"
-        },
-        {
-          "type": "range",
-          "id": "regalo_2_desde",
-          "label": "Se desbloquea desde el pack",
-          "min": 1,
-          "max": 6,
-          "step": 1,
-          "default": 3
-        },
-        {
-          "type": "text",
-          "id": "regalo_3",
-          "label": "Regalo 3",
-          "default": "Peine de madera"
-        },
-        {
-          "type": "image_picker",
-          "id": "regalo_3_img",
-          "label": "Imagen regalo 3"
-        },
-        {
-          "type": "range",
-          "id": "regalo_3_desde",
-          "label": "Se desbloquea desde el pack",
-          "min": 1,
-          "max": 6,
-          "step": 1,
-          "default": 4
+          "type": "liquid",
+          "id": "codigo",
+          "label": "Código Liquid",
+          "info": "Podés usar Liquid, HTML, CSS y JS. Los estilos de la sección no se aplican adentro de este bloque."
         }
       ]
     },
@@ -2604,57 +1690,6 @@
           "max": 15,
           "step": 1,
           "default": 6
-        }
-      ]
-    },
-    {
-      "type": "boton",
-      "name": "Botón de compra",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "texto",
-          "label": "Texto del botón",
-          "default": "Agregar al carrito"
-        },
-        {
-          "type": "text",
-          "id": "garantia",
-          "label": "Garantía dentro del botón",
-          "default": "Garantía 30 días",
-          "info": "Se oculta en celulares chicos."
-        }
-      ]
-    },
-    {
-      "type": "pagos",
-      "name": "Cuotas y transferencia",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "paragraph",
-          "content": "Cuotas y % de transferencia: en los ajustes de la sección."
-        },
-        {
-          "type": "text",
-          "id": "texto_cuotas",
-          "label": "Texto cuotas",
-          "default": "[n] cuotas sin interés de",
-          "info": "[n] = cantidad de cuotas"
-        },
-        {
-          "type": "text",
-          "id": "texto_transferencia",
-          "label": "Texto transferencia",
-          "default": "con transferencia ([pct]% OFF)",
-          "info": "[pct] = descuento"
-        },
-        {
-          "type": "text",
-          "id": "texto_seguro",
-          "label": "Texto de pago seguro",
-          "default": "Pago 100% seguro con Mercado Pago"
         }
       ]
     },
@@ -2993,59 +2028,10 @@
           }
         },
         {
-          "type": "precio"
-        },
-        {
-          "type": "pack",
-          "settings": {
-            "titulo": "Comprá 1 · 60 días",
-            "subtitulo": "Para empezar",
-            "variante": 1,
-            "frascos": 1
-          }
-        },
-        {
-          "type": "pack",
-          "settings": {
-            "titulo": "Comprá 2 · 120 días",
-            "etiqueta": "Más elegido",
-            "etiqueta_color": "marca",
-            "variante": 2,
-            "frascos": 2,
-            "preseleccionado": true
-          }
-        },
-        {
-          "type": "pack",
-          "settings": {
-            "titulo": "Comprá 3 · 180 días",
-            "etiqueta": "Tratamiento completo",
-            "etiqueta_color": "negro",
-            "variante": 3,
-            "frascos": 3
-          }
-        },
-        {
-          "type": "pack",
-          "settings": {
-            "titulo": "Comprá 6 · 12 meses",
-            "etiqueta": "Mejor precio",
-            "etiqueta_color": "naranja",
-            "variante": 4,
-            "frascos": 6
-          }
-        },
-        {
-          "type": "regalos"
+          "type": "liquid"
         },
         {
           "type": "envio"
-        },
-        {
-          "type": "boton"
-        },
-        {
-          "type": "pagos"
         },
         {
           "type": "social"

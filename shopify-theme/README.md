@@ -10,28 +10,26 @@ La plantilla ya trae los 11 bloques en orden con todo el copy (ángulo DHT) y la
 
 Cada bloque es **un solo archivo** de sección (CSS, JS e íconos incluidos). Se crea una sección, se pega el código y listo.
 
-## Bloque 1 · Galería + oferta → `sections/hm-producto-oferta.liquid`
+## Bloque 1 · Galería + info + oferta (Liquid) → `sections/hm-producto-oferta.liquid`
+
+Galería, título, beneficios, envío, prueba social, aviso, desplegables y tarjetas. La oferta (packs + upsell Multimagnesio + botón negro) va **adentro de la sección** en el bloque **Liquid (oferta)**.
 
 ### 1. Crear la sección
 1. Shopify → **Tienda online → Temas** → en tu tema: **⋯ → Editar código**.
-2. Carpeta **Secciones** → **Agregar una nueva sección** → nombre: `hm-producto-oferta` → Hecho.
+2. Carpeta **Secciones** → abrí `hm-producto-oferta` (o **Agregar una nueva sección** con ese nombre si no existe).
 3. Borrá todo lo que trae el archivo, pegá el código completo y tocá **Guardar**.
 
-### 2. Cargar el producto
-Producto HAIR con una opción "Pack" y 4 variantes **en este orden**:
+### 2. Pegar la oferta
+1. **Temas → Personalizar** → plantilla de producto `hair` → sección **HM · Producto (oferta)**.
+2. Tocá el bloque **Liquid (oferta)**. Si no está: **Agregar bloque → Liquid (oferta)**.
+3. En **Código Liquid** pegá todo `custom-liquid/hm-oferta-hair.liquid` → **Guardar**.
+4. Arrastrá el bloque para ubicarlo donde quieras (va después de los beneficios).
 
-| Variante | Precio |
-|---|---|
-| 1 frasco | $57.900 |
-| 2 frascos | $80.800 |
-| 3 frascos | $99.700 |
-| 6 frascos | $121.500 |
+Los estilos de la sección no tocan lo que pegues: la oferta se ve igual que sola.
 
-No hace falta "precio de comparación": el tachado y el "Ahorrás $X" se calculan solos.
-
-### 3. Ponerla en la página
+### 3. Ponerla en la página (primera vez)
 1. **Temas → Personalizar** → arriba elegí **Productos → Crear plantilla** → nombre `hair`.
-2. **Agregar sección → HM · Producto (oferta)**. Ya viene con todos los bloques cargados.
+2. **Agregar sección → HM · Producto (oferta)**.
 3. Ocultá la sección original del theme (**Información del producto**, el ojito) para que no quede duplicada.
 4. **Guardar**. Después, en el producto del admin: **Plantilla del tema → `hair`**.
 
@@ -97,9 +95,7 @@ No hace falta "precio de comparación": el tachado y el "Ahorrás $X" se calcula
 
 ## Oferta simple (Liquid personalizado) → `custom-liquid/hm-oferta-hair.liquid`
 
-Alternativa rápida al bloque 1: selector de packs + upsell Multimagnesio dentro de la página de producto del theme.
-
-1. **Personalizar → Producto → en la sección del producto: Agregar bloque → Liquid personalizado** → pegá todo el código → **Guardar**.
+Selector de packs + upsell Multimagnesio. Se pega en el bloque **Liquid (oferta)** del Bloque 1 (o en un bloque **Liquid personalizado** de cualquier sección de producto).
 2. Arriba del código está el handle del upsell: `multimagnesio-oferta-upsell`. Cambialo si tu producto tiene otro handle. Precio y precio tachado del upsell salen solos del producto.
 3. Los packs suman 1, 2, 3 o 6 unidades del producto. Para que el carrito cobre $80.800 / $99.700 / $121.500, creá un **descuento automático por cantidad** en Shopify (o ajustá los precios del código a tu descuento real).
 4. Agregar al carrito abre el carrito lateral (Dawn y temas parecidos); si el theme no tiene, lleva a /cart.
