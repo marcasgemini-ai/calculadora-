@@ -97,7 +97,7 @@ Los estilos de la sección no tocan lo que pegues: la oferta se ve igual que sol
 
 Misma oferta que la del Bronzer, adaptada a HAIR: 3 packs (1, 2 y 3 frascos) + upsell Multimagnesio + botón negro que abre el carrito lateral. Se pega en el bloque **Liquid (oferta)** del Bloque 1 (o en un bloque **Liquid personalizado** de cualquier sección de producto).
 
-1. Arriba del código está el handle del upsell: `super-magnesio-13-upsell`. El precio y el tachado del upsell salen solos del producto (cargale "precio de comparación" para que muestre el % OFF).
+1. Arriba del código están el handle del upsell (`super-magnesio-13-upsell`), su nombre y sus 2 beneficios: cambialos ahí. La foto sale sola del producto. El precio y el tachado del upsell salen solos del producto (cargale "precio de comparación" para que muestre el % OFF).
 2. HAIR tiene que costar **$59.900 por unidad** en Shopify (una sola variante). Los packs agregan 1, 2 o 3 unidades.
 3. Agregar al carrito abre el carrito lateral (Dawn y temas parecidos); si el theme no tiene, lleva a /cart.
 

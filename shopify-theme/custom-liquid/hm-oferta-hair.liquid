@@ -6,6 +6,9 @@
   - Upsell: producto MULTIMAGNESIO (handle abajo). Precio y precio tachado salen del producto, sin descuento.
 {%- endcomment -%}
 {%- assign hm_up_handle = 'super-magnesio-13-upsell' -%}
+{%- assign hm_up_nombre = 'Multimagnesio' -%}
+{%- assign hm_up_beneficio_1 = 'Mejor descanso, menos estrés' -%}
+{%- assign hm_up_beneficio_2 = 'Más energía, menos calambres' -%}
 {%- assign hm_variant = product.selected_or_first_available_variant -%}
 {%- assign hm_up = all_products[hm_up_handle] -%}
 {%- assign hm_up_variant = hm_up.selected_or_first_available_variant -%}
@@ -64,10 +67,23 @@
   </label>
 
   <label class="hm-of-upsell"{% unless hm_up_variant.available %} hidden{% endunless %}>
+    <span class="hm-of-up-badge">Sumalo a tu pedido</span>
     <input type="checkbox" id="hm-of-upsell" value="{% if hm_up_variant.available %}{{ hm_up_variant.id }}{% endif %}" data-save="{{ hm_up_save }}" data-total="{{ hm_up_price }}">
     <span class="hm-of-check"></span>
-    <span class="hm-of-up-text">Sumá Multimagnesio<span data-hm-up-pct{% if hm_up_pct == 0 %} hidden{% endif %}> <b>al {{ hm_up_pct }}% OFF</b></span></span>
-    <span class="hm-of-up-price" data-hm-up-price>{{ hm_up_variant.price | money_without_trailing_zeros }}</span>
+    <span class="hm-of-up-img" data-hm-up-img>
+      {%- if hm_up.featured_image != blank -%}
+        {{ hm_up.featured_image | image_url: width: 200 | image_tag: loading: 'lazy', widths: '100, 200', sizes: '64px', alt: hm_up_nombre }}
+      {%- endif -%}
+    </span>
+    <span class="hm-of-up-info">
+      <span class="hm-of-up-title">{{ hm_up_nombre }}<span class="hm-of-tag" data-hm-up-pct{% if hm_up_pct == 0 %} hidden{% endif %}>{{ hm_up_pct }}% OFF</span></span>
+      <span class="hm-of-up-ben"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>{{ hm_up_beneficio_1 }}</span>
+      <span class="hm-of-up-ben"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>{{ hm_up_beneficio_2 }}</span>
+    </span>
+    <span class="hm-of-prices">
+      <span class="hm-of-up-price" data-hm-up-price>{{ hm_up_variant.price | money_without_trailing_zeros }}</span>
+      <s class="hm-of-compare" data-hm-up-compare{% if hm_up_pct == 0 %} hidden{% endif %}>{{ hm_up_variant.compare_at_price | money_without_trailing_zeros }}</s>
+    </span>
   </label>
 
   <div class="hm-of-save">→ Estás ahorrando <strong data-hm-save>$59.900</strong> en este pedido</div>
@@ -100,19 +116,28 @@
   .hm-of .hm-of-prices{display:flex;flex-direction:column;align-items:flex-end;white-space:nowrap}
   .hm-of .hm-of-price{font-size:18px;font-weight:700}
   .hm-of .hm-of-compare{font-size:13px;opacity:.55}
-  .hm-of .hm-of-msg[hidden],.hm-of [hidden]{display:none}
+  .hm-of .hm-of-msg[hidden],.hm-of [hidden]{display:none !important}
   .hm-of .hm-of-badge{position:absolute;top:-11px;right:14px;background:var(--of-ink);color:#fff;font-size:12px;font-weight:700;
     padding:3px 10px;border-radius:6px;line-height:1.3}
   .hm-of .hm-of-badge--hot{background:var(--of-accent)}
-  .hm-of .hm-of-upsell{position:relative;display:flex;align-items:center;gap:10px;width:100%;margin:0 0 12px;padding:14px 18px;
-    background:var(--of-cream);border:1.5px dashed #c9b8e8;border-radius:12px;cursor:pointer;font-size:14px}
-  .hm-of .hm-of-check{flex:0 0 18px;width:18px;height:18px;border:2px solid var(--of-ink);border-radius:4px;position:relative;background:#fff}
+  .hm-of .hm-of-upsell{position:relative;display:flex;align-items:center;gap:12px;width:100%;margin:6px 0 12px;padding:16px 16px 14px;
+    background:var(--of-cream);border:1.5px dashed #c9b8e8;border-radius:12px;cursor:pointer;font-size:14px;-webkit-tap-highlight-color:transparent;
+    transition:border-color .2s,background .2s}
+  .hm-of .hm-of-upsell:has(input:checked){border-style:solid;border-color:var(--of-accent);background:#fff}
+  .hm-of .hm-of-up-badge{position:absolute;top:-11px;left:14px;background:var(--of-accent);color:#fff;font-size:12px;font-weight:700;
+    padding:3px 10px;border-radius:6px;line-height:1.3}
+  .hm-of .hm-of-check{flex:0 0 20px;width:20px;height:20px;border:2px solid var(--of-ink);border-radius:5px;position:relative;background:#fff}
   .hm-of .hm-of-upsell input:checked + .hm-of-check{background:var(--of-ink)}
-  .hm-of .hm-of-upsell input:checked + .hm-of-check:after{content:"";position:absolute;left:4px;top:0;width:5px;height:10px;
+  .hm-of .hm-of-upsell input:checked + .hm-of-check:after{content:"";position:absolute;left:5px;top:1px;width:5px;height:10px;
     border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
-  .hm-of .hm-of-up-text{flex:1;min-width:0;font-weight:500}
-  .hm-of .hm-of-up-text b{color:var(--of-accent);font-weight:700}
-  .hm-of .hm-of-up-price{font-weight:700;white-space:nowrap}
+  .hm-of .hm-of-up-img{flex:0 0 64px;width:64px;height:64px;border-radius:10px;background:#fff;border:1px solid var(--of-line);overflow:hidden;display:flex;align-items:center;justify-content:center}
+  .hm-of .hm-of-up-img:empty{display:none}
+  .hm-of .hm-of-up-img img{display:block;width:100%;height:100%;object-fit:contain;margin:0;border:0;border-radius:0;max-width:none}
+  .hm-of .hm-of-up-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+  .hm-of .hm-of-up-title{display:flex;align-items:center;flex-wrap:wrap;gap:6px;font-size:15px;font-weight:700;line-height:1.25}
+  .hm-of .hm-of-up-ben{display:flex;align-items:flex-start;gap:5px;font-size:12.5px;line-height:1.3;opacity:.8}
+  .hm-of .hm-of-up-ben svg{flex:0 0 14px;width:14px;height:14px;margin-top:1px;fill:none;stroke:var(--of-accent);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+  .hm-of .hm-of-up-price{font-size:16px;font-weight:700;white-space:nowrap}
   .hm-of .hm-of-save{margin:0 0 12px;padding:10px 14px;border:1px solid var(--of-line);border-radius:10px;font-size:14px;text-align:center}
   .hm-of .hm-of-save strong{color:var(--of-accent)}
   .hm-of .hm-of-btn{display:block;width:100%;min-height:54px;margin:0;padding:16px;background:var(--of-ink);color:#fff;
@@ -130,7 +155,10 @@
     .hm-of .hm-of-sub{font-size:12px}
     .hm-of .hm-of-price{font-size:17px}
     .hm-of .hm-of-compare{font-size:12px}
-    .hm-of .hm-of-upsell{padding:13px 14px;font-size:13px}
+    .hm-of .hm-of-upsell{padding:15px 12px 13px;gap:10px}
+    .hm-of .hm-of-up-img{flex-basis:56px;width:56px;height:56px}
+    .hm-of .hm-of-up-title{font-size:14px}
+    .hm-of .hm-of-up-ben{font-size:12px}
     .hm-of .hm-of-save{font-size:13px;padding:9px 10px}
   }
 </style>
@@ -180,8 +208,19 @@
         root.querySelector('[data-hm-up-price]').textContent = fmt(v.price / 100);
         if (v.compare_at_price > v.price) {
           var pct = root.querySelector('[data-hm-up-pct]');
-          pct.querySelector('b').textContent = 'al ' + Math.floor((v.compare_at_price - v.price) * 100 / v.compare_at_price) + '% OFF';
+          pct.textContent = Math.floor((v.compare_at_price - v.price) * 100 / v.compare_at_price) + '% OFF';
           pct.hidden = false;
+          var cmp = root.querySelector('[data-hm-up-compare]');
+          cmp.textContent = fmt(v.compare_at_price / 100);
+          cmp.hidden = false;
+        }
+        var box = root.querySelector('[data-hm-up-img]');
+        var src = prod.featured_image || (prod.images && prod.images[0]);
+        if (box && !box.children.length && src) {
+          var img = document.createElement('img');
+          img.src = (src.indexOf('//') === 0 ? 'https:' + src : src) + (src.indexOf('?') > -1 ? '&' : '?') + 'width=200';
+          img.alt = prod.title; img.loading = 'lazy';
+          box.appendChild(img);
         }
         up.closest('.hm-of-upsell').hidden = false;
         update();
