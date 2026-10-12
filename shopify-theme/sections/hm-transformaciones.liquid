@@ -1,0 +1,470 @@
+{%- comment -%}
+  HM · Bloque 2 — Cinta de confianza + Transformaciones reales (antes / después)
+  Sección autónoma: CSS, JS e íconos incluidos. Todo editable desde el personalizador.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign acc = s.color_acento | default: '#6b3fc0'
+  assign hm_font = s.fuente
+  assign hm_font_stack = "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+  if hm_font != blank
+    assign hm_font_stack = hm_font.family | prepend: "'" | append: "', " | append: hm_font.fallback_families
+  endif
+
+  assign badge_count = 0
+  assign slide_count = 0
+  for block in section.blocks
+    if block.type == 'insignia'
+      assign badge_count = badge_count | plus: 1
+    elsif block.type == 'transformacion'
+      assign slide_count = slide_count | plus: 1
+    endif
+  endfor
+-%}
+
+{%- if hm_font != blank -%}
+  <style>
+    {{ hm_font | font_face: font_display: 'swap' }}
+    {%- assign hm_f = hm_font | font_modify: 'weight', '500' -%}{%- if hm_f -%}{{ hm_f | font_face: font_display: 'swap' }}{%- endif -%}
+    {%- assign hm_f = hm_font | font_modify: 'weight', '600' -%}{%- if hm_f -%}{{ hm_f | font_face: font_display: 'swap' }}{%- endif -%}
+    {%- assign hm_f = hm_font | font_modify: 'weight', '700' -%}{%- if hm_f -%}{{ hm_f | font_face: font_display: 'swap' }}{%- endif -%}
+  </style>
+{%- endif -%}
+
+<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false"><defs><symbol id="hmi-check" viewBox="0 0 24 24"><path d="M4.5 12.5l5 5 10-11"/></symbol><symbol id="hmi-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M8 12.3l2.8 2.8L16.2 9.5"/></symbol><symbol id="hmi-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol><symbol id="hmi-x-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M9 9l6 6M15 9l-6 6"/></symbol><symbol id="hmi-truck" viewBox="0 0 24 24"><path d="M2.5 6.5h11v9h-11zM13.5 9.5h4l3 3v3h-7"/><circle cx="6.5" cy="17" r="1.8"/><circle cx="17" cy="17" r="1.8"/></symbol><symbol id="hmi-shield" viewBox="0 0 24 24"><path d="M12 2.8l7.5 3v5.6c0 4.6-3.2 8.3-7.5 9.8-4.3-1.5-7.5-5.2-7.5-9.8V5.8z"/><path d="M8.7 12l2.3 2.3 4.3-4.6"/></symbol><symbol id="hmi-card" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 9.5h19M6 15h4"/></symbol><symbol id="hmi-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M12 7v5.2l3.4 2"/></symbol><symbol id="hmi-leaf" viewBox="0 0 24 24"><path d="M5 19c0-8 5-13 15-14-1 10-6 15-14 15M5 19l7-7"/></symbol><symbol id="hmi-capsule" viewBox="0 0 24 24"><rect x="2.8" y="8.2" width="18.4" height="7.6" rx="3.8" transform="rotate(-35 12 12)"/><path d="M9.9 9.2l4.3 5.9"/></symbol><symbol id="hmi-flask" viewBox="0 0 24 24"><path d="M9.5 3h5M10.2 3v6.2L4.8 18.4A1.8 1.8 0 0 0 6.4 21h11.2a1.8 1.8 0 0 0 1.6-2.6L13.8 9.2V3M7.5 15h9"/></symbol><symbol id="hmi-gift" viewBox="0 0 24 24"><rect x="3.2" y="8.5" width="17.6" height="4" rx="1"/><path d="M4.8 12.5v8h14.4v-8M12 8.5v12M12 8.5S10.8 4 8.4 4a2.2 2.2 0 0 0 0 4.5M12 8.5S13.2 4 15.6 4a2.2 2.2 0 0 1 0 4.5"/></symbol><symbol id="hmi-lock" viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="10" rx="2.2"/><path d="M8 10.5V7.8a4 4 0 0 1 8 0v2.7"/></symbol><symbol id="hmi-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></symbol><symbol id="hmi-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol><symbol id="hmi-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol><symbol id="hmi-star" viewBox="0 0 24 24"><path d="M12 2.8l2.8 5.8 6.4.8-4.7 4.4 1.2 6.4L12 17l-5.7 3.2 1.2-6.4-4.7-4.4 6.4-.8z"/></symbol><symbol id="hmi-verified" viewBox="0 0 24 24"><path d="M12 2.5l2.3 1.7 2.8-.1.9 2.7 2.3 1.6-.9 2.7.9 2.7-2.3 1.6-.9 2.7-2.8-.1L12 21.5l-2.3-1.7-2.8.1-.9-2.7-2.3-1.6.9-2.7-.9-2.7 2.3-1.6.9-2.7 2.8.1z"/><path d="M8.8 12.2l2.2 2.2 4.2-4.4"/></symbol><symbol id="hmi-bolt" viewBox="0 0 24 24"><path d="M13 2.5L4.5 13.5H12l-1 8 8.5-11H12z"/></symbol><symbol id="hmi-heart" viewBox="0 0 24 24"><path d="M12 20.5s-8.5-5-8.5-11A4.8 4.8 0 0 1 12 6.6a4.8 4.8 0 0 1 8.5 2.9c0 6-8.5 11-8.5 11z"/></symbol><symbol id="hmi-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.1-5.8 6.5-5.8s5.9 2.2 6.5 5.8M16 4.8a3.5 3.5 0 0 1 0 6.6M18 14.6c2 .7 3.2 2.6 3.5 5.4"/></symbol><symbol id="hmi-medal" viewBox="0 0 24 24"><circle cx="12" cy="14.5" r="6"/><path d="M8.5 9.6L6 2.5h4l2 4.5 2-4.5h4l-2.5 7.1M12 12v5"/></symbol><symbol id="hmi-refresh" viewBox="0 0 24 24"><path d="M20 11.5A8 8 0 0 0 5.6 6.8L3.5 9M4 12.5a8 8 0 0 0 14.4 4.7l2.1-2.2M3.5 4v5h5M20.5 20v-5h-5"/></symbol><symbol id="hmi-dna" viewBox="0 0 24 24"><path d="M7 2.5c0 6 10 7 10 13s0 6 0 6M17 2.5c0 6-10 7-10 13v6M8 6h8M8 18h8M9.5 9.5h5M9.5 14.5h5"/></symbol><symbol id="hmi-sparkles" viewBox="0 0 24 24"><path d="M10 3l1.8 5.2L17 10l-5.2 1.8L10 17l-1.8-5.2L3 10l5.2-1.8zM18 14l.9 2.1 2.1.9-2.1.9L18 20l-.9-2.1-2.1-.9 2.1-.9z"/></symbol><symbol id="hmi-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2.2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol><symbol id="hmi-droplet" viewBox="0 0 24 24"><path d="M12 3s6.5 7 6.5 11.3a6.5 6.5 0 0 1-13 0C5.5 10 12 3 12 3z"/></symbol><symbol id="hmi-sound-off" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4zM16 9.5l5 5M21 9.5l-5 5"/></symbol><symbol id="hmi-sound-on" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4zM16 9a4.2 4.2 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></symbol><symbol id="hmi-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z" fill="currentColor"/></symbol><symbol id="hmi-hair" viewBox="0 0 24 24"><path d="M6 21c1-6 0-10-1-14M10 21c.5-6 0-11 2-17M14.5 21c-.5-5 .5-9 3.5-14M18.5 21c-.5-3 0-6 2-9"/></symbol><symbol id="hmi-stethoscope" viewBox="0 0 24 24"><path d="M5 3v5a5 5 0 0 0 10 0V3M10 13v2.5a5 5 0 0 0 10 0V13"/><circle cx="20" cy="11" r="2"/></symbol><symbol id="hmi-ban" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M5.5 5.5l13 13"/></symbol><symbol id="hmi-map-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.3-7-11.5a7 7 0 0 1 14 0C19 14.7 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></symbol><symbol id="hmi-percent" viewBox="0 0 24 24"><path d="M19 5L5 19"/><circle cx="7" cy="7" r="2.5"/><circle cx="17" cy="17" r="2.5"/></symbol><symbol id="hmi-box" viewBox="0 0 24 24"><path d="M3.5 7.5L12 3l8.5 4.5v9L12 21l-8.5-4.5zM3.5 7.5L12 12l8.5-4.5M12 12v9"/></symbol><symbol id="hmi-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></symbol><symbol id="hmi-moon" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></symbol><symbol id="hmi-trend-up" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8M15 7h6v6"/></symbol></defs></svg>
+
+<style>
+  /* ===== Reset: el theme no puede romper la sección ===== */
+  .hm-tr, .hm-tr *, .hm-tr *::before, .hm-tr *::after { box-sizing: border-box; }
+  .hm-tr :where(h2, p, span, strong, em, button, a, figure, figcaption, img, svg, ul, li) {
+    margin: 0; padding: 0; border: 0; text-transform: none; letter-spacing: normal;
+    font-family: inherit; line-height: inherit; box-shadow: none; background: none; color: inherit;
+  }
+  .hm-tr :where(img, svg) { display: block; max-width: 100%; border-radius: 0; }
+  .hm-tr :where(button) { min-width: 0; width: auto; min-height: 0; cursor: pointer; }
+  .hm-tr [hidden] { display: none !important; }
+
+  .hm-tr {
+    font-family: var(--tr-font); color: var(--tr-fg); background: var(--tr-bg);
+    font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+  .hm-tr__wrap { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+  @media (min-width: 750px) { .hm-tr__wrap { padding: 0 32px; } }
+
+  /* ===== Cinta de confianza ===== */
+  .hm-tr__strip { background: var(--tr-strip-bg); color: var(--tr-strip-fg); padding: var(--tr-strip-py) 0; }
+  .hm-tr__badges { display: grid; grid-template-columns: repeat(var(--tr-badges), minmax(0, 1fr)); gap: 16px; }
+  .hm-tr__badge {
+    display: flex; align-items: center; justify-content: center; gap: 10px; text-align: center;
+    min-height: 48px; padding: 10px 14px; border: 1px solid var(--tr-strip-line); border-radius: 8px;
+    font-size: 14px; font-weight: 600; line-height: 1.25; letter-spacing: .02em;
+  }
+  .hm-tr--upper .hm-tr__badge span { text-transform: uppercase; }
+  .hm-tr__badge svg { width: 24px; height: 24px; flex: none; }
+  .hm-tr__marquee { display: none; }
+  @media (max-width: 749px) {
+    .hm-tr--anim .hm-tr__badges { display: none; }
+    .hm-tr--anim .hm-tr__marquee { display: flex; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+    .hm-tr__group { display: flex; flex: none; gap: 10px; padding-right: 10px; animation: hm-tr-mq var(--tr-speed) linear infinite; }
+    .hm-tr__group .hm-tr__badge { flex: none; min-height: 42px; padding: 8px 14px; font-size: 12.5px; white-space: nowrap; }
+    .hm-tr__group .hm-tr__badge svg { width: 20px; height: 20px; }
+    .hm-tr:not(.hm-tr--anim) .hm-tr__badges { grid-template-columns: 1fr; gap: 8px; }
+    .hm-tr:not(.hm-tr--anim) .hm-tr__badge { justify-content: flex-start; font-size: 13px; min-height: 42px; }
+  }
+  @keyframes hm-tr-mq { to { transform: translateX(-100%); } }
+  @media (prefers-reduced-motion: reduce) { .hm-tr__group { animation: none; } }
+
+  /* ===== Transformaciones ===== */
+  .hm-tr__main { padding: var(--tr-pt) 0 var(--tr-pb); }
+  .hm-tr__head { text-align: var(--tr-align); max-width: 1100px; margin: 0 auto 28px; }
+  .hm-tr__eyebrow { display: inline-block; margin-bottom: 10px !important; font-size: 12px; font-weight: 700; letter-spacing: .12em !important; text-transform: uppercase !important; color: var(--tr-accent); }
+  .hm-tr__title { font-size: var(--tr-title-m); font-weight: 600; line-height: 1.2; color: var(--tr-fg); }
+  .hm-tr__title em { font-style: normal; color: var(--tr-accent); }
+  .hm-tr__sub { margin-top: 10px !important; font-size: 15px; color: var(--tr-muted); }
+  @media (min-width: 750px) { .hm-tr__title { font-size: var(--tr-title-d); } .hm-tr__sub { font-size: 16px; } }
+
+  .hm-tr__track {
+    display: grid; grid-auto-flow: column; grid-auto-columns: var(--tr-slide-m);
+    gap: var(--tr-gap); overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth;
+    overscroll-behavior-x: contain; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+    padding: 4px 16px 6px; margin: 0 -16px; scroll-padding-inline: 16px;
+  }
+  .hm-tr__track::-webkit-scrollbar { display: none; }
+  @media (min-width: 750px) {
+    .hm-tr__track { grid-auto-columns: calc((100% - (var(--tr-per) - 1) * var(--tr-gap)) / var(--tr-per)); padding: 4px 0 6px; margin: 0; scroll-padding-inline: 0; }
+  }
+  .hm-tr__slide { scroll-snap-align: start; min-width: 0; }
+  .hm-tr__card { position: relative; overflow: hidden; border-radius: var(--tr-radius); background: var(--tr-card); box-shadow: var(--tr-shadow); }
+  .hm-tr__img { position: relative; aspect-ratio: var(--tr-ratio); overflow: hidden; background: var(--tr-card); }
+  .hm-tr__img img, .hm-tr__img svg { width: 100%; height: 100%; object-fit: cover; }
+  .hm-tr__pair { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--tr-card); }
+  .hm-tr__label {
+    position: absolute; z-index: 1; bottom: 10px; padding: 5px 10px; border-radius: 999px;
+    font-size: 11.5px; font-weight: 700; line-height: 1; letter-spacing: .06em !important; text-transform: uppercase !important;
+    background: rgba(18, 17, 22, .78); color: #fff;
+  }
+  .hm-tr__label--l { left: 10px; }
+  .hm-tr__label--r { right: 10px; background: var(--tr-accent); }
+  .hm-tr__cap { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 12px 14px; font-size: 14px; }
+  .hm-tr__cap strong { font-weight: 600; }
+  .hm-tr__cap span { font-size: 12.5px; font-weight: 600; color: var(--tr-accent); white-space: nowrap; }
+  .hm-tr__quote { padding: 0 14px 14px !important; font-size: 13.5px; color: var(--tr-muted); }
+
+  /* Navegación */
+  .hm-tr__nav { display: flex; flex-direction: column; align-items: center; gap: 18px; margin-top: 26px; }
+  .hm-tr__progress { width: min(200px, 50%); height: 4px; border-radius: 4px; background: var(--tr-line); overflow: hidden; }
+  .hm-tr__bar { display: block; height: 100%; width: 30%; border-radius: 4px; background: var(--tr-accent); transition: transform .25s ease, width .25s ease; }
+  .hm-tr__arrows { display: flex; gap: 12px; }
+  .hm-tr__arrow {
+    width: 44px; height: 44px; border-radius: 50% !important; display: grid; place-items: center;
+    background: #fff !important; color: #121116 !important; box-shadow: 0 2px 10px rgba(0, 0, 0, .1) !important;
+    transition: background .2s, color .2s, opacity .2s;
+  }
+  .hm-tr__arrow svg { width: 18px; height: 18px; }
+  .hm-tr__arrow:hover { background: var(--tr-accent) !important; color: #fff !important; }
+  .hm-tr__arrow[disabled] { opacity: .35; pointer-events: none; }
+  .hm-tr__nav[hidden] { display: none !important; }
+
+  .hm-tr__disc { max-width: 760px; margin: 22px auto 0 !important; text-align: center; font-size: 12.5px; line-height: 1.5; color: var(--tr-muted); }
+
+  .hm-tr__cta { display: flex; justify-content: center; margin-top: 24px; }
+  .hm-tr__btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; padding: 0 28px;
+    border-radius: 8px; background: var(--tr-btn-bg); color: var(--tr-btn-fg) !important; font-size: 16px; font-weight: 600; text-decoration: none;
+    transition: filter .2s;
+  }
+  .hm-tr__btn:hover { filter: brightness(1.1); }
+  .hm-tr__btn svg { width: 18px; height: 18px; }
+  @media (max-width: 749px) { .hm-tr__btn { width: 100%; } }
+</style>
+
+<section
+  id="hm-tr-{{ section.id }}"
+  class="hm-tr{% if s.mayusculas %} hm-tr--upper{% endif %}{% if s.animar_mobile %} hm-tr--anim{% endif %}"
+  style="
+    --tr-font: {{ hm_font_stack }};
+    --tr-accent: {{ acc }};
+    --tr-bg: {{ s.color_fondo }};
+    --tr-fg: {{ s.color_texto }};
+    --tr-muted: {{ s.color_texto | color_modify: 'alpha', 0.7 }};
+    --tr-line: {{ s.color_texto | color_modify: 'alpha', 0.12 }};
+    --tr-card: {{ s.color_tarjeta }};
+    --tr-shadow: {% if s.sombra %}0 4px 14px rgba(0, 0, 0, .07){% else %}none{% endif %};
+    --tr-strip-bg: {{ s.cinta_fondo }};
+    --tr-strip-fg: {{ s.cinta_texto }};
+    --tr-strip-line: {{ s.cinta_texto | color_modify: 'alpha', 0.45 }};
+    --tr-strip-py: {{ s.cinta_espacio }}px;
+    --tr-badges: {{ badge_count | at_least: 1 }};
+    --tr-speed: {{ s.velocidad }}s;
+    --tr-btn-bg: {{ s.color_boton | default: acc }};
+    --tr-btn-fg: {{ s.color_boton_texto | default: '#ffffff' }};
+    --tr-title-d: {{ s.titulo_desktop }}px;
+    --tr-title-m: {{ s.titulo_mobile }}px;
+    --tr-align: {{ s.alineacion }};
+    --tr-per: {{ s.por_vista }};
+    --tr-slide-m: {{ s.ancho_mobile }}%;
+    --tr-gap: {{ s.separacion }}px;
+    --tr-ratio: {{ s.proporcion }};
+    --tr-radius: {{ s.bordes }}px;
+    --tr-pt: {{ s.padding_top }}px;
+    --tr-pb: {{ s.padding_bottom }}px;
+  "
+>
+  {%- if s.mostrar_cinta and badge_count > 0 -%}
+    {%- capture badges -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'insignia' -%}
+          <span class="hm-tr__badge" {{ block.shopify_attributes }}>
+            {%- if block.settings.imagen != blank -%}
+              {{ block.settings.imagen | image_url: width: 64 | image_tag: loading: 'lazy', widths: '32, 64', sizes: '24px', alt: '', style: 'width:24px;height:24px;object-fit:contain' }}
+            {%- else -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#hmi-{{ block.settings.icono }}"/></svg>
+            {%- endif -%}
+            <span>{{ block.settings.texto }}</span>
+          </span>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endcapture -%}
+    <div class="hm-tr__strip">
+      <div class="hm-tr__wrap">
+        <div class="hm-tr__badges">{{ badges }}</div>
+      </div>
+      <div class="hm-tr__marquee" aria-hidden="true">
+        <div class="hm-tr__group">{{ badges }}</div>
+        <div class="hm-tr__group">{{ badges }}</div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  <div class="hm-tr__main">
+    <div class="hm-tr__wrap">
+      {%- if s.eyebrow != blank or s.titulo != blank or s.subtitulo != blank -%}
+        <div class="hm-tr__head">
+          {%- if s.eyebrow != blank -%}<span class="hm-tr__eyebrow">{{ s.eyebrow }}</span>{%- endif -%}
+          {%- if s.titulo != blank -%}<h2 class="hm-tr__title">{{ s.titulo }}</h2>{%- endif -%}
+          {%- if s.subtitulo != blank -%}<p class="hm-tr__sub">{{ s.subtitulo }}</p>{%- endif -%}
+        </div>
+      {%- endif -%}
+
+      <div class="hm-tr__slider" data-hm-tr-slider data-autoplay="{{ s.autoplay }}">
+        <div class="hm-tr__track" data-hm-tr-track>
+          {%- for block in section.blocks -%}
+            {%- if block.type != 'transformacion' -%}{%- continue -%}{%- endif -%}
+            {%- assign bs = block.settings -%}
+            <div class="hm-tr__slide" {{ block.shopify_attributes }}>
+              <figure class="hm-tr__card">
+                {%- if bs.antes != blank and bs.despues != blank -%}
+                  <div class="hm-tr__pair">
+                    <div class="hm-tr__img">
+                      {{ bs.antes | image_url: width: 700 | image_tag: loading: 'lazy', widths: '300, 450, 600, 700', sizes: '(min-width: 990px) 17vw, 45vw', alt: bs.alt_antes }}
+                      {%- if s.mostrar_etiquetas -%}<span class="hm-tr__label hm-tr__label--l">{{ s.label_antes }}</span>{%- endif -%}
+                    </div>
+                    <div class="hm-tr__img">
+                      {{ bs.despues | image_url: width: 700 | image_tag: loading: 'lazy', widths: '300, 450, 600, 700', sizes: '(min-width: 990px) 17vw, 45vw', alt: bs.alt_despues }}
+                      {%- if s.mostrar_etiquetas -%}<span class="hm-tr__label hm-tr__label--r">{{ s.label_despues }}</span>{%- endif -%}
+                    </div>
+                  </div>
+                {%- else -%}
+                  <div class="hm-tr__img">
+                    {%- assign one = bs.imagen | default: bs.antes | default: bs.despues -%}
+                    {%- if one != blank -%}
+                      {{ one | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '400, 600, 800, 1000', sizes: '(min-width: 990px) 33vw, 85vw', alt: bs.alt_antes }}
+                    {%- else -%}
+                      {{ 'lifestyle-1' | placeholder_svg_tag }}
+                    {%- endif -%}
+                    {%- if s.mostrar_etiquetas and bs.imagen != blank -%}
+                      <span class="hm-tr__label hm-tr__label--l">{{ s.label_antes }}</span>
+                      <span class="hm-tr__label hm-tr__label--r">{{ s.label_despues }}</span>
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
+                {%- if bs.nombre != blank or bs.tiempo != blank -%}
+                  <figcaption class="hm-tr__cap">
+                    {%- if bs.nombre != blank -%}<strong>{{ bs.nombre }}</strong>{%- endif -%}
+                    {%- if bs.tiempo != blank -%}<span>{{ bs.tiempo }}</span>{%- endif -%}
+                  </figcaption>
+                {%- endif -%}
+                {%- if bs.comentario != blank -%}<p class="hm-tr__quote">{{ bs.comentario }}</p>{%- endif -%}
+              </figure>
+            </div>
+          {%- endfor -%}
+        </div>
+
+        <div class="hm-tr__nav" data-hm-tr-nav>
+          {%- if s.mostrar_barra -%}
+            <div class="hm-tr__progress" aria-hidden="true"><span class="hm-tr__bar" data-hm-tr-bar></span></div>
+          {%- endif -%}
+          {%- if s.mostrar_flechas -%}
+            <div class="hm-tr__arrows">
+              <button type="button" class="hm-tr__arrow" data-hm-tr-prev aria-label="{{ s.label_anterior | escape }}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+              </button>
+              <button type="button" class="hm-tr__arrow" data-hm-tr-next aria-label="{{ s.label_siguiente | escape }}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+
+      {%- if s.boton_texto != blank -%}
+        <div class="hm-tr__cta">
+          <a class="hm-tr__btn" href="{{ s.boton_link | default: '#hm-comprar' }}">
+            {{ s.boton_texto }}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      {%- endif -%}
+
+      {%- if s.aclaracion != blank -%}
+        <p class="hm-tr__disc">{{ s.aclaracion }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    function initTr(root) {
+      var slider = root.querySelector('[data-hm-tr-slider]');
+      if (!slider || slider.dataset.ready) return;
+      slider.dataset.ready = '1';
+      var track = slider.querySelector('[data-hm-tr-track]');
+      var prev = slider.querySelector('[data-hm-tr-prev]');
+      var next = slider.querySelector('[data-hm-tr-next]');
+      var bar = slider.querySelector('[data-hm-tr-bar]');
+      var nav = slider.querySelector('[data-hm-tr-nav]');
+      if (!track) return;
+
+      function step() {
+        var first = track.children[0];
+        if (!first) return track.clientWidth;
+        var gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+        return first.getBoundingClientRect().width + gap;
+      }
+      function update() {
+        var max = track.scrollWidth - track.clientWidth;
+        var visible = track.scrollWidth > 0 ? Math.min(1, track.clientWidth / track.scrollWidth) : 1;
+        var ratio = max > 0 ? track.scrollLeft / max : 0;
+        if (bar) {
+          var w = Math.max(visible * 100, 15);
+          bar.style.width = w + '%';
+          bar.style.transform = 'translateX(' + (ratio * (100 / w * 100 - 100)) + '%)';
+        }
+        if (prev) prev.disabled = track.scrollLeft <= 4;
+        if (next) next.disabled = track.scrollLeft >= max - 4;
+        if (nav) nav.hidden = max <= 4;
+      }
+      if (prev) prev.addEventListener('click', function () { track.scrollBy({ left: -step(), behavior: 'smooth' }); });
+      if (next) next.addEventListener('click', function () { track.scrollBy({ left: step(), behavior: 'smooth' }); });
+      var ticking = false;
+      track.addEventListener('scroll', function () {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(function () { ticking = false; update(); });
+      }, { passive: true });
+      window.addEventListener('resize', update);
+      Array.prototype.forEach.call(track.querySelectorAll('img'), function (img) { if (!img.complete) img.addEventListener('load', update, { once: true }); });
+      update();
+
+      var autoplay = parseInt(slider.dataset.autoplay || '0', 10);
+      if (autoplay > 0 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        var paused = false;
+        slider.addEventListener('pointerenter', function () { paused = true; });
+        slider.addEventListener('pointerleave', function () { paused = false; });
+        track.addEventListener('touchstart', function () { paused = true; }, { passive: true });
+        setInterval(function () {
+          if (paused || document.hidden) return;
+          var max = track.scrollWidth - track.clientWidth;
+          if (track.scrollLeft >= max - 4) track.scrollTo({ left: 0, behavior: 'smooth' });
+          else track.scrollBy({ left: step(), behavior: 'smooth' });
+        }, autoplay * 1000);
+      }
+    }
+
+    var root = document.getElementById('hm-tr-{{ section.id }}');
+    if (root) initTr(root);
+
+    if (!window.__hmTrEditor) {
+      window.__hmTrEditor = true;
+      document.addEventListener('shopify:section:load', function (e) {
+        var r = e.target.querySelector('.hm-tr');
+        if (r) initTr(r);
+      });
+      document.addEventListener('shopify:block:select', function (e) {
+        var slide = e.target;
+        var track = slide && slide.parentElement;
+        if (track && track.hasAttribute('data-hm-tr-track')) track.scrollTo({ left: slide.offsetLeft - track.offsetLeft, behavior: 'smooth' });
+      });
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "HM · Transformaciones",
+  "tag": "div",
+  "class": "hm-section-tr",
+  "settings": [
+    { "type": "header", "content": "Cinta de confianza (arriba)" },
+    { "type": "checkbox", "id": "mostrar_cinta", "label": "Mostrar cinta", "default": true },
+    { "type": "paragraph", "content": "Las frases se agregan como bloques \"Insignia\"." },
+    { "type": "checkbox", "id": "mayusculas", "label": "Texto en mayúsculas", "default": true },
+    { "type": "checkbox", "id": "animar_mobile", "label": "En celular, que se muevan solas", "default": true, "info": "Si está apagado, en celular se ven una debajo de la otra." },
+    { "type": "range", "id": "velocidad", "label": "Velocidad de la animación", "min": 8, "max": 40, "step": 1, "unit": "s", "default": 18 },
+    { "type": "color", "id": "cinta_fondo", "label": "Fondo de la cinta", "default": "#1a1422" },
+    { "type": "color", "id": "cinta_texto", "label": "Texto e íconos de la cinta", "default": "#ffffff" },
+    { "type": "range", "id": "cinta_espacio", "label": "Alto de la cinta", "min": 4, "max": 40, "step": 2, "unit": "px", "default": 14 },
+
+    { "type": "header", "content": "Título" },
+    { "type": "text", "id": "eyebrow", "label": "Texto chico arriba (opcional)" },
+    { "type": "inline_richtext", "id": "titulo", "label": "Título", "default": "Hombres reales - <em>Transformaciones capilares reales</em>", "info": "La cursiva se pinta con el color de marca." },
+    { "type": "text", "id": "subtitulo", "label": "Subtítulo (opcional)" },
+    { "type": "select", "id": "alineacion", "label": "Alineación", "options": [ { "value": "center", "label": "Centrado" }, { "value": "left", "label": "Izquierda" } ], "default": "center" },
+    { "type": "range", "id": "titulo_desktop", "label": "Tamaño del título en PC", "min": 20, "max": 52, "step": 1, "unit": "px", "default": 36 },
+    { "type": "range", "id": "titulo_mobile", "label": "Tamaño del título en celular", "min": 18, "max": 40, "step": 1, "unit": "px", "default": 24 },
+
+    { "type": "header", "content": "Fotos" },
+    { "type": "paragraph", "content": "Cada transformación es un bloque. Podés subir una foto con el antes/después ya armado, o dos fotos separadas (antes y después)." },
+    {
+      "type": "select", "id": "proporcion", "label": "Formato de cada foto",
+      "options": [ { "value": "1 / 1", "label": "Cuadrado (1:1)" }, { "value": "4 / 5", "label": "Vertical (4:5)" }, { "value": "3 / 4", "label": "Vertical (3:4)" }, { "value": "4 / 3", "label": "Horizontal (4:3)" } ],
+      "default": "1 / 1"
+    },
+    { "type": "checkbox", "id": "mostrar_etiquetas", "label": "Mostrar etiquetas Antes / Después", "default": false },
+    { "type": "text", "id": "label_antes", "label": "Etiqueta antes", "default": "Antes" },
+    { "type": "text", "id": "label_despues", "label": "Etiqueta después", "default": "Después" },
+    { "type": "range", "id": "bordes", "label": "Redondeo de las fotos", "min": 0, "max": 24, "step": 2, "unit": "px", "default": 4 },
+    { "type": "checkbox", "id": "sombra", "label": "Sombra en las fotos", "default": true },
+
+    { "type": "header", "content": "Carrusel" },
+    { "type": "range", "id": "por_vista", "label": "Fotos visibles en PC", "min": 2, "max": 5, "step": 1, "default": 3 },
+    { "type": "range", "id": "ancho_mobile", "label": "Ancho de cada foto en celular", "min": 60, "max": 100, "step": 2, "unit": "%", "default": 86, "info": "Menos de 100% deja ver la siguiente foto (invita a deslizar)." },
+    { "type": "range", "id": "separacion", "label": "Separación entre fotos", "min": 0, "max": 40, "step": 2, "unit": "px", "default": 24 },
+    { "type": "checkbox", "id": "mostrar_barra", "label": "Mostrar barra de progreso", "default": true },
+    { "type": "checkbox", "id": "mostrar_flechas", "label": "Mostrar flechas", "default": true },
+    { "type": "range", "id": "autoplay", "label": "Pasar solo cada (segundos)", "min": 0, "max": 10, "step": 1, "unit": "s", "default": 0, "info": "0 = no pasa solo." },
+    { "type": "text", "id": "label_anterior", "label": "Accesibilidad: flecha anterior", "default": "Anterior" },
+    { "type": "text", "id": "label_siguiente", "label": "Accesibilidad: flecha siguiente", "default": "Siguiente" },
+
+    { "type": "header", "content": "Botón (opcional)" },
+    { "type": "text", "id": "boton_texto", "label": "Texto del botón", "info": "Vacío = sin botón." },
+    { "type": "text", "id": "boton_link", "label": "Link del botón", "default": "#hm-comprar", "info": "#hm-comprar lleva a la oferta (bloque 1)." },
+
+    { "type": "header", "content": "Aclaración" },
+    { "type": "textarea", "id": "aclaracion", "label": "Texto legal", "default": "Los resultados individuales pueden variar. HAIR es un suplemento dietario: no está destinado a diagnosticar, tratar, curar ni prevenir ninguna enfermedad. Consultá a tu médico." },
+
+    { "type": "header", "content": "Colores y tipografía" },
+    { "type": "font_picker", "id": "fuente", "label": "Tipografía", "default": "poppins_n4" },
+    { "type": "color", "id": "color_acento", "label": "Color de marca", "default": "#6b3fc0", "info": "Título resaltado, barra de progreso y etiquetas." },
+    { "type": "color", "id": "color_fondo", "label": "Fondo de la sección", "default": "#f7f3fd" },
+    { "type": "color", "id": "color_texto", "label": "Texto", "default": "#121116" },
+    { "type": "color", "id": "color_tarjeta", "label": "Fondo de cada tarjeta", "default": "#ffffff" },
+    { "type": "color", "id": "color_boton", "label": "Color del botón (opcional)" },
+    { "type": "color", "id": "color_boton_texto", "label": "Texto del botón (opcional)" },
+
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio arriba", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio abajo", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 }
+  ],
+  "blocks": [
+    {
+      "type": "insignia", "name": "Insignia (cinta)", "limit": 4,
+      "settings": [
+        { "type": "select", "id": "icono", "label": "Ícono", "options": [{"value": "check-circle", "label": "Check"}, {"value": "check", "label": "Tilde"}, {"value": "truck", "label": "Envío"}, {"value": "shield", "label": "Escudo / garantía"}, {"value": "card", "label": "Tarjeta / cuotas"}, {"value": "clock", "label": "Reloj"}, {"value": "leaf", "label": "Natural / hoja"}, {"value": "capsule", "label": "Cápsula"}, {"value": "flask", "label": "Laboratorio"}, {"value": "gift", "label": "Regalo"}, {"value": "lock", "label": "Pago seguro"}, {"value": "verified", "label": "Verificado"}, {"value": "bolt", "label": "Energía"}, {"value": "heart", "label": "Corazón"}, {"value": "users", "label": "Clientes"}, {"value": "medal", "label": "Medalla"}, {"value": "refresh", "label": "Devolución"}, {"value": "dna", "label": "ADN"}, {"value": "sparkles", "label": "Brillo"}, {"value": "calendar", "label": "Calendario"}, {"value": "droplet", "label": "Gota"}, {"value": "hair", "label": "Cabello"}, {"value": "stethoscope", "label": "Médico"}, {"value": "ban", "label": "Prohibido"}, {"value": "x-circle", "label": "Cruz"}, {"value": "map-pin", "label": "Ubicación"}, {"value": "percent", "label": "Descuento"}, {"value": "box", "label": "Paquete"}, {"value": "trend-up", "label": "Crecimiento"}, {"value": "star", "label": "Estrella"}, {"value": "sun", "label": "Sol"}, {"value": "moon", "label": "Luna"}], "default": "sparkles" },
+        { "type": "image_picker", "id": "imagen", "label": "Ícono propio (opcional)", "info": "PNG/SVG chico. Reemplaza al ícono." },
+        { "type": "text", "id": "texto", "label": "Texto", "default": "Sin efectos secundarios" }
+      ]
+    },
+    {
+      "type": "transformacion", "name": "Transformación",
+      "settings": [
+        { "type": "image_picker", "id": "imagen", "label": "Foto antes/después (una sola imagen)", "info": "Ideal: el antes y el después ya juntos en una foto." },
+        { "type": "paragraph", "content": "O subí dos fotos separadas:" },
+        { "type": "image_picker", "id": "antes", "label": "Foto ANTES" },
+        { "type": "image_picker", "id": "despues", "label": "Foto DESPUÉS" },
+        { "type": "text", "id": "alt_antes", "label": "Texto alternativo (SEO)", "default": "Antes y después de usar HAIR" },
+        { "type": "text", "id": "alt_despues", "label": "Texto alternativo foto después (SEO)", "default": "Después de usar HAIR" },
+        { "type": "text", "id": "nombre", "label": "Nombre (opcional)", "info": "Ej: Martín, 38" },
+        { "type": "text", "id": "tiempo", "label": "Tiempo de uso (opcional)", "info": "Ej: 90 días" },
+        { "type": "text", "id": "comentario", "label": "Comentario (opcional)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "HM · Transformaciones",
+      "blocks": [
+        { "type": "insignia", "settings": { "icono": "sparkles", "texto": "Sin efectos secundarios" } },
+        { "type": "insignia", "settings": { "icono": "shield", "texto": "Sin rellenos ni aditivos" } },
+        { "type": "insignia", "settings": { "icono": "flask", "texto": "Ingredientes limpios" } },
+        { "type": "transformacion" },
+        { "type": "transformacion" },
+        { "type": "transformacion" },
+        { "type": "transformacion" }
+      ]
+    }
+  ]
+}
+{% endschema %}

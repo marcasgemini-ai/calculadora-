@@ -26,3 +26,9 @@ No hace falta "precio de comparación": el tachado y el "Ahorrás $X" se calcula
 2. **Agregar sección → HM · Producto (oferta)**. Ya viene con todos los bloques cargados.
 3. Ocultá la sección original del theme (**Información del producto**, el ojito) para que no quede duplicada.
 4. **Guardar**. Después, en el producto del admin: **Plantilla del tema → `hair`**.
+
+## Bloque 2 · Cinta de confianza + Transformaciones → `sections/hm-transformaciones.liquid`
+
+1. **Editar código → Secciones → Agregar una nueva sección** → nombre: `hm-transformaciones` → borrá todo, pegá el código y **Guardar**.
+2. **Personalizar → plantilla `hair` → Agregar sección → HM · Transformaciones** (debajo de la oferta).
+3. En cada bloque **Transformación** subí una foto con el antes/después ya armado (o dos fotos separadas). Las frases de la cinta son los bloques **Insignia**.
