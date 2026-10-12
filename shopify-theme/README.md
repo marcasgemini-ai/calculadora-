@@ -38,3 +38,9 @@ No hace falta "precio de comparación": el tachado y el "Ahorrás $X" se calcula
 1. **Editar código → Secciones → Agregar una nueva sección** → nombre: `hm-dht` → borrá todo, pegá el código y **Guardar**.
 2. **Personalizar → plantilla `hair` → Agregar sección → HM · DHT**.
 3. La ilustración de folículos viene incluida (textos y colores editables). Si preferís una foto, cargala en **Imagen**.
+
+## Bloque 4 · Historias reales → `sections/hm-historias.liquid`
+
+1. **Editar código → Secciones → Agregar una nueva sección** → nombre: `hm-historias` → borrá todo, pegá el código y **Guardar**.
+2. **Personalizar → plantilla `hair` → Agregar sección → HM · Historias reales**.
+3. Bloques **Foto (cinta)**: fotos de clientes con el producto. Bloques **Reseña**: reseñas reales (puntaje, título, texto, nombre, foto, etiquetas).

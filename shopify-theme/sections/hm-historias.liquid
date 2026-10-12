@@ -1,0 +1,855 @@
+{%- comment -%}
+  HM · Bloque 4 — Historias reales: estrellas + cinta de fotos UGC + carrusel de reseñas
+  Sección autónoma: CSS, JS e íconos incluidos. Todo editable desde el personalizador.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign acc = s.color_acento | default: '#6b3fc0'
+  assign star_on = s.color_estrellas | default: acc
+  assign hm_font = s.fuente
+  assign hm_font_stack = "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+  if hm_font != blank
+    assign hm_font_stack = hm_font.family | prepend: "'" | append: "', " | append: hm_font.fallback_families
+  endif
+-%}
+
+{%- if hm_font != blank -%}
+  <style>
+    {{ hm_font | font_face: font_display: 'swap' }}
+    {%- assign hm_f = hm_font | font_modify: 'weight', '500' -%}{%- if hm_f -%}{{ hm_f | font_face: font_display: 'swap' }}{%- endif -%}
+    {%- assign hm_f = hm_font | font_modify: 'weight', '600' -%}{%- if hm_f -%}{{ hm_f | font_face: font_display: 'swap' }}{%- endif -%}
+    {%- assign hm_f = hm_font | font_modify: 'weight', '700' -%}{%- if hm_f -%}{{ hm_f | font_face: font_display: 'swap' }}{%- endif -%}
+  </style>
+{%- endif -%}
+
+<style>
+  /* ===== Reset: el theme no puede romper la sección ===== */
+  .hm-hs, .hm-hs *, .hm-hs *::before, .hm-hs *::after { box-sizing: border-box; }
+  .hm-hs :where(h2, h3, p, span, strong, em, button, a, img, svg, ul, li, div, blockquote) {
+    margin: 0; padding: 0; border: 0; text-transform: none; letter-spacing: normal;
+    font-family: inherit; line-height: inherit; box-shadow: none; background: none; color: inherit; quotes: none;
+  }
+  .hm-hs :where(img, svg) { display: block; max-width: 100%; border-radius: 0; }
+  .hm-hs :where(button) { min-width: 0; width: auto; min-height: 0; cursor: pointer; }
+  .hm-hs [hidden] { display: none !important; }
+
+  .hm-hs {
+    font-family: var(--hs-font); color: var(--hs-fg); background: var(--hs-bg);
+    font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased;
+    padding: var(--hs-pt) 0 var(--hs-pb); overflow-x: clip;
+  }
+  .hm-hs__wrap { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+  @media (min-width: 750px) { .hm-hs__wrap { padding: 0 32px; } }
+  .hm-hs__anchor { display: block; position: relative; top: -90px; visibility: hidden; }
+
+  /* Estrellas en cuadraditos */
+  .hm-hs__stars { display: inline-flex; gap: 3px; }
+  .hm-hs__star { width: var(--hs-star); height: var(--hs-star); display: grid; place-items: center; border-radius: 2px; background: linear-gradient(90deg, var(--hs-star-on) var(--fill, 100%), var(--hs-star-off) var(--fill, 100%)); }
+  .hm-hs__star svg { width: 72%; height: 72%; fill: #fff; }
+
+  /* Encabezado */
+  .hm-hs__head { text-align: center; max-width: 900px; margin: 0 auto 28px; }
+  .hm-hs__head .hm-hs__stars { --hs-star: 28px; margin-bottom: 14px; }
+  .hm-hs__title { font-size: var(--hs-title-m); font-weight: 600; line-height: 1.2; color: var(--hs-fg); }
+  .hm-hs__title em { font-style: normal; color: var(--hs-accent); }
+  .hm-hs__sub { margin-top: 10px !important; font-size: 15px; color: var(--hs-muted); }
+  @media (min-width: 750px) { .hm-hs__title { font-size: var(--hs-title-d); } .hm-hs__sub { font-size: 17px; } }
+
+  /* Cinta de fotos */
+  .hm-hs__strip { display: flex; overflow: hidden; margin-bottom: 32px; }
+  .hm-hs__group { display: flex; flex: none; gap: var(--hs-photo-gap); padding-right: var(--hs-photo-gap); animation: hm-hs-mq var(--hs-speed) linear infinite; }
+  .hm-hs__strip:hover .hm-hs__group { animation-play-state: paused; }
+  .hm-hs__photo { flex: none; height: var(--hs-photo-h-m); aspect-ratio: var(--hs-photo-ratio); overflow: hidden; border-radius: var(--hs-photo-radius); background: var(--hs-card); }
+  .hm-hs__photo img, .hm-hs__photo svg { width: 100%; height: 100%; object-fit: cover; }
+  @media (min-width: 750px) { .hm-hs__photo { height: var(--hs-photo-h-d); } }
+  @keyframes hm-hs-mq { to { transform: translateX(-100%); } }
+  @media (prefers-reduced-motion: reduce) { .hm-hs__group { animation: none; } }
+
+  /* Carrusel de reseñas */
+  .hm-hs__track {
+    display: grid; grid-auto-flow: column; grid-auto-columns: var(--hs-slide-m);
+    gap: var(--hs-gap); overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth;
+    overscroll-behavior-x: contain; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+    padding: 4px 16px 10px; margin: 0 -16px; scroll-padding-inline: 16px; align-items: var(--hs-align);
+  }
+  .hm-hs__track::-webkit-scrollbar { display: none; }
+  @media (min-width: 750px) {
+    .hm-hs__track { grid-auto-columns: calc((100% - (var(--hs-per) - 1) * var(--hs-gap)) / var(--hs-per)); padding: 4px 2px 10px; margin: 0 -2px; scroll-padding-inline: 2px; }
+  }
+  .hm-hs__card {
+    scroll-snap-align: start; min-width: 0; display: flex; flex-direction: column; gap: 14px;
+    padding: 22px; border-radius: var(--hs-radius); background: var(--hs-card); border: 1px solid var(--hs-line);
+    box-shadow: var(--hs-shadow);
+  }
+  .hm-hs__rate { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; }
+  .hm-hs__rate .hm-hs__stars { --hs-star: 18px; gap: 2px; }
+  .hm-hs__card-title { font-size: 17px; font-weight: 600; line-height: 1.35; color: var(--hs-fg); }
+  .hm-hs__text { font-size: 15px; line-height: 1.6; color: var(--hs-fg); }
+  .hm-hs__text p + p { margin-top: .5em; }
+  .hm-hs__author { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .hm-hs__who { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .hm-hs__avatar { width: 30px; height: 30px; flex: none; border-radius: 50%; overflow: hidden; display: grid; place-items: center; background: var(--hs-accent); color: #fff; font-size: 13px; font-weight: 600; }
+  .hm-hs__avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .hm-hs__name { font-size: 13px; font-weight: 500; letter-spacing: .04em !important; text-transform: uppercase !important; color: var(--hs-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .hm-hs__ver { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; letter-spacing: .02em !important; text-transform: uppercase !important; color: var(--hs-ver); white-space: nowrap; }
+  .hm-hs__ver svg { width: 15px; height: 15px; }
+  .hm-hs__tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto !important; padding-top: 2px !important; }
+  .hm-hs__tag { padding: 7px 14px !important; border-radius: 999px; border: 1px solid var(--hs-tag-line) !important; background: var(--hs-tag-bg) !important; color: var(--hs-tag-fg) !important; font-size: 12.5px; font-weight: 500; line-height: 1.3; text-align: center; }
+
+  /* Navegación */
+  .hm-hs__nav { display: flex; flex-direction: column; align-items: center; gap: 18px; margin-top: 24px; }
+  .hm-hs__progress { width: min(220px, 55%); height: 4px; border-radius: 4px; background: var(--hs-line); overflow: hidden; }
+  .hm-hs__bar { display: block; height: 100%; width: 30%; border-radius: 4px; background: var(--hs-accent); transition: transform .25s ease, width .25s ease; }
+  .hm-hs__arrows { display: flex; gap: 12px; }
+  .hm-hs__arrow {
+    width: 44px; height: 44px; border-radius: 50% !important; display: grid; place-items: center;
+    background: #fff !important; color: #121116 !important; box-shadow: 0 2px 10px rgba(0, 0, 0, .1) !important;
+    transition: background .2s, color .2s, opacity .2s;
+  }
+  .hm-hs__arrow svg { width: 18px; height: 18px; }
+  .hm-hs__arrow:hover { background: var(--hs-accent) !important; color: #fff !important; }
+  .hm-hs__arrow[disabled] { opacity: .35; pointer-events: none; }
+  .hm-hs__nav[hidden] { display: none !important; }
+
+  .hm-hs__disc { max-width: 760px; margin: 22px auto 0 !important; text-align: center; font-size: 12.5px; line-height: 1.5; color: var(--hs-muted); }
+  .hm-hs__cta { display: flex; justify-content: center; margin-top: 24px; }
+  .hm-hs__btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; padding: 0 28px;
+    border-radius: 8px; background: var(--hs-btn-bg); color: var(--hs-btn-fg) !important; font-size: 16px; font-weight: 600; text-decoration: none;
+    transition: filter .2s;
+  }
+  .hm-hs__btn:hover { filter: brightness(1.1); }
+  .hm-hs__btn svg { width: 18px; height: 18px; }
+  @media (max-width: 749px) { .hm-hs__btn { width: 100%; } }
+</style>
+
+{%- capture star_svg -%}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7-4.4 6.4-.8z"/></svg>{%- endcapture -%}
+
+<section
+  id="hm-hs-{{ section.id }}"
+  class="hm-hs"
+  style="
+    --hs-font: {{ hm_font_stack }};
+    --hs-accent: {{ acc }};
+    --hs-bg: {{ s.color_fondo }};
+    --hs-fg: {{ s.color_texto }};
+    --hs-muted: {{ s.color_texto | color_modify: 'alpha', 0.7 }};
+    --hs-line: {{ s.color_texto | color_modify: 'alpha', 0.12 }};
+    --hs-card: {{ s.color_tarjeta }};
+    --hs-shadow: {% if s.sombra %}0 4px 16px rgba(0, 0, 0, .06){% else %}none{% endif %};
+    --hs-star-on: {{ star_on }};
+    --hs-star-off: {{ s.color_texto | color_modify: 'alpha', 0.15 }};
+    --hs-ver: {{ s.color_verificado }};
+    --hs-tag-bg: {{ acc | color_modify: 'alpha', 0.08 }};
+    --hs-tag-line: {{ acc | color_modify: 'alpha', 0.45 }};
+    --hs-tag-fg: {{ s.color_texto }};
+    --hs-btn-bg: {{ s.color_boton | default: acc }};
+    --hs-btn-fg: {{ s.color_boton_texto | default: '#ffffff' }};
+    --hs-title-d: {{ s.titulo_desktop }}px;
+    --hs-title-m: {{ s.titulo_mobile }}px;
+    --hs-photo-h-d: {{ s.foto_alto_desktop }}px;
+    --hs-photo-h-m: {{ s.foto_alto_mobile }}px;
+    --hs-photo-ratio: {{ s.foto_proporcion }};
+    --hs-photo-gap: {{ s.foto_separacion }}px;
+    --hs-photo-radius: {{ s.foto_bordes }}px;
+    --hs-speed: {{ s.velocidad }}s;
+    --hs-per: {{ s.por_vista }};
+    --hs-slide-m: {{ s.ancho_mobile }}%;
+    --hs-gap: {{ s.separacion }}px;
+    --hs-radius: {{ s.bordes }}px;
+    --hs-align: {% if s.mismo_alto %}stretch{% else %}start{% endif %};
+    --hs-pt: {{ s.padding_top }}px;
+    --hs-pb: {{ s.padding_bottom }}px;
+  "
+>
+  {%- if s.ancla != blank -%}<span id="{{ s.ancla | handleize }}" class="hm-hs__anchor" aria-hidden="true"></span>{%- endif -%}
+
+  <div class="hm-hs__wrap">
+    <div class="hm-hs__head">
+      {%- if s.mostrar_estrellas -%}
+        <div class="hm-hs__stars" role="img" aria-label="5 estrellas">
+          {%- for i in (1..5) -%}<span class="hm-hs__star">{{ star_svg }}</span>{%- endfor -%}
+        </div>
+      {%- endif -%}
+      {%- if s.titulo != blank -%}<h2 class="hm-hs__title">{{ s.titulo }}</h2>{%- endif -%}
+      {%- if s.subtitulo != blank -%}<p class="hm-hs__sub">{{ s.subtitulo }}</p>{%- endif -%}
+    </div>
+  </div>
+
+  {%- capture photos -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'foto' -%}
+        <div class="hm-hs__photo" {{ block.shopify_attributes }}>
+          {%- if block.settings.imagen != blank -%}
+            {{ block.settings.imagen | image_url: width: 500 | image_tag: loading: 'lazy', widths: '200, 300, 400, 500', sizes: '200px', alt: block.settings.alt }}
+          {%- else -%}
+            {{ 'lifestyle-2' | placeholder_svg_tag }}
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+  {%- if s.mostrar_fotos and photos != blank -%}
+    <div class="hm-hs__strip" aria-label="Fotos de clientes">
+      <div class="hm-hs__group">{{ photos }}</div>
+      <div class="hm-hs__group" aria-hidden="true">{{ photos }}</div>
+      <div class="hm-hs__group" aria-hidden="true">{{ photos }}</div>
+    </div>
+  {%- endif -%}
+
+  <div class="hm-hs__wrap">
+    <div class="hm-hs__slider" data-hm-hs-slider data-autoplay="{{ s.autoplay }}">
+      <div class="hm-hs__track" data-hm-hs-track>
+        {%- for block in section.blocks -%}
+          {%- if block.type != 'resena' -%}{%- continue -%}{%- endif -%}
+          {%- assign bs = block.settings -%}
+          <article class="hm-hs__card" {{ block.shopify_attributes }}>
+            <div class="hm-hs__rate">
+              {%- if bs.mostrar_numero -%}
+                {%- assign p_txt = bs.puntaje | append: '' -%}
+                {%- unless p_txt contains '.' -%}{%- assign p_txt = p_txt | append: '.0' -%}{%- endunless -%}
+                <span>{{ p_txt | replace: '.', ',' }}</span>
+              {%- endif -%}
+              <span class="hm-hs__stars" role="img" aria-label="{{ bs.puntaje }} / 5">
+                {%- for i in (1..5) -%}
+                  {%- liquid
+                    assign fill = bs.puntaje | minus: i | plus: 1 | times: 100 | round
+                    if fill > 100
+                      assign fill = 100
+                    elsif fill < 0
+                      assign fill = 0
+                    endif
+                  -%}
+                  <span class="hm-hs__star" style="--fill: {{ fill }}%">{{ star_svg }}</span>
+                {%- endfor -%}
+              </span>
+            </div>
+            {%- if bs.titulo != blank -%}<h3 class="hm-hs__card-title">“{{ bs.titulo }}”</h3>{%- endif -%}
+            <div class="hm-hs__text">{{ bs.texto }}</div>
+            <div class="hm-hs__author">
+              <span class="hm-hs__who">
+                <span class="hm-hs__avatar">
+                  {%- if bs.avatar != blank -%}
+                    {{ bs.avatar | image_url: width: 80 | image_tag: loading: 'lazy', widths: '40, 80', sizes: '30px', alt: '' }}
+                  {%- else -%}
+                    {{ bs.nombre | slice: 0 | upcase }}
+                  {%- endif -%}
+                </span>
+                <span class="hm-hs__name">{{ bs.nombre }}</span>
+              </span>
+              {%- if bs.verificado -%}
+                <span class="hm-hs__ver">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M8 12.3l2.8 2.8L16.2 9.5"/></svg>
+                  {{ s.texto_verificado }}
+                </span>
+              {%- endif -%}
+            </div>
+            {%- if bs.etiqueta_1 != blank or bs.etiqueta_2 != blank -%}
+              <div class="hm-hs__tags">
+                {%- if bs.etiqueta_1 != blank -%}<span class="hm-hs__tag">{{ bs.etiqueta_1 }}</span>{%- endif -%}
+                {%- if bs.etiqueta_2 != blank -%}<span class="hm-hs__tag">{{ bs.etiqueta_2 }}</span>{%- endif -%}
+              </div>
+            {%- endif -%}
+          </article>
+        {%- endfor -%}
+      </div>
+
+      <div class="hm-hs__nav" data-hm-hs-nav>
+        {%- if s.mostrar_barra -%}
+          <div class="hm-hs__progress" aria-hidden="true"><span class="hm-hs__bar" data-hm-hs-bar></span></div>
+        {%- endif -%}
+        {%- if s.mostrar_flechas -%}
+          <div class="hm-hs__arrows">
+            <button type="button" class="hm-hs__arrow" data-hm-hs-prev aria-label="Anterior">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+            </button>
+            <button type="button" class="hm-hs__arrow" data-hm-hs-next aria-label="Siguiente">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- if s.boton_texto != blank -%}
+      <div class="hm-hs__cta">
+        <a class="hm-hs__btn" href="{{ s.boton_link | default: '#hm-comprar' }}">
+          {{ s.boton_texto }}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+    {%- endif -%}
+
+    {%- if s.aclaracion != blank -%}<p class="hm-hs__disc">{{ s.aclaracion }}</p>{%- endif -%}
+  </div>
+</section>
+
+<script>
+  (function () {
+    function initHs(root) {
+      var slider = root.querySelector('[data-hm-hs-slider]');
+      if (!slider || slider.dataset.ready) return;
+      slider.dataset.ready = '1';
+      var track = slider.querySelector('[data-hm-hs-track]');
+      var prev = slider.querySelector('[data-hm-hs-prev]');
+      var next = slider.querySelector('[data-hm-hs-next]');
+      var bar = slider.querySelector('[data-hm-hs-bar]');
+      var nav = slider.querySelector('[data-hm-hs-nav]');
+      if (!track) return;
+
+      function step() {
+        var first = track.children[0];
+        if (!first) return track.clientWidth;
+        var gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+        return first.getBoundingClientRect().width + gap;
+      }
+      function update() {
+        var max = track.scrollWidth - track.clientWidth;
+        var visible = track.scrollWidth > 0 ? Math.min(1, track.clientWidth / track.scrollWidth) : 1;
+        var ratio = max > 0 ? track.scrollLeft / max : 0;
+        if (bar) {
+          var w = Math.max(visible * 100, 15);
+          bar.style.width = w + '%';
+          bar.style.transform = 'translateX(' + (ratio * (100 / w * 100 - 100)) + '%)';
+        }
+        if (prev) prev.disabled = track.scrollLeft <= 4;
+        if (next) next.disabled = track.scrollLeft >= max - 4;
+        if (nav) nav.hidden = max <= 4;
+      }
+      if (prev) prev.addEventListener('click', function () { track.scrollBy({ left: -step(), behavior: 'smooth' }); });
+      if (next) next.addEventListener('click', function () { track.scrollBy({ left: step(), behavior: 'smooth' }); });
+      var ticking = false;
+      track.addEventListener('scroll', function () {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(function () { ticking = false; update(); });
+      }, { passive: true });
+      window.addEventListener('resize', update);
+      update();
+
+      var autoplay = parseInt(slider.dataset.autoplay || '0', 10);
+      if (autoplay > 0 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        var paused = false;
+        slider.addEventListener('pointerenter', function () { paused = true; });
+        slider.addEventListener('pointerleave', function () { paused = false; });
+        track.addEventListener('touchstart', function () { paused = true; }, { passive: true });
+        setInterval(function () {
+          if (paused || document.hidden) return;
+          var max = track.scrollWidth - track.clientWidth;
+          if (track.scrollLeft >= max - 4) track.scrollTo({ left: 0, behavior: 'smooth' });
+          else track.scrollBy({ left: step(), behavior: 'smooth' });
+        }, autoplay * 1000);
+      }
+    }
+
+    var root = document.getElementById('hm-hs-{{ section.id }}');
+    if (root) initHs(root);
+
+    if (!window.__hmHsEditor) {
+      window.__hmHsEditor = true;
+      document.addEventListener('shopify:section:load', function (e) {
+        var r = e.target.querySelector('.hm-hs');
+        if (r) initHs(r);
+      });
+      document.addEventListener('shopify:block:select', function (e) {
+        var card = e.target;
+        var track = card && card.parentElement;
+        if (track && track.hasAttribute('data-hm-hs-track')) track.scrollTo({ left: card.offsetLeft - track.offsetLeft, behavior: 'smooth' });
+      });
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "HM · Historias reales",
+  "tag": "div",
+  "class": "hm-section-hs",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Encabezado"
+    },
+    {
+      "type": "checkbox",
+      "id": "mostrar_estrellas",
+      "label": "Mostrar estrellas arriba",
+      "default": true
+    },
+    {
+      "type": "inline_richtext",
+      "id": "titulo",
+      "label": "Título",
+      "default": "Historias reales, <em>resultados reales</em>",
+      "info": "La cursiva se pinta con el color de marca."
+    },
+    {
+      "type": "text",
+      "id": "subtitulo",
+      "label": "Subtítulo",
+      "default": "Mirá lo que dicen los clientes sobre HAIR."
+    },
+    {
+      "type": "range",
+      "id": "titulo_desktop",
+      "label": "Tamaño del título en PC",
+      "min": 20,
+      "max": 52,
+      "step": 1,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "titulo_mobile",
+      "label": "Tamaño del título en celular",
+      "min": 18,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 26
+    },
+    {
+      "type": "text",
+      "id": "ancla",
+      "label": "Ancla (para links)",
+      "default": "hm-resenas",
+      "info": "Las estrellas del bloque 1 llevan a #hm-resenas."
+    },
+    {
+      "type": "header",
+      "content": "Cinta de fotos"
+    },
+    {
+      "type": "checkbox",
+      "id": "mostrar_fotos",
+      "label": "Mostrar cinta de fotos",
+      "default": true
+    },
+    {
+      "type": "paragraph",
+      "content": "Las fotos se agregan como bloques \"Foto (cinta)\"."
+    },
+    {
+      "type": "range",
+      "id": "foto_alto_desktop",
+      "label": "Alto de las fotos en PC",
+      "min": 100,
+      "max": 320,
+      "step": 10,
+      "unit": "px",
+      "default": 200
+    },
+    {
+      "type": "range",
+      "id": "foto_alto_mobile",
+      "label": "Alto de las fotos en celular",
+      "min": 80,
+      "max": 260,
+      "step": 10,
+      "unit": "px",
+      "default": 150
+    },
+    {
+      "type": "select",
+      "id": "foto_proporcion",
+      "label": "Formato de las fotos",
+      "options": [
+        {
+          "value": "3 / 5",
+          "label": "Vertical angosta (3:5)"
+        },
+        {
+          "value": "3 / 4",
+          "label": "Vertical (3:4)"
+        },
+        {
+          "value": "1 / 1",
+          "label": "Cuadrada (1:1)"
+        }
+      ],
+      "default": "3 / 5"
+    },
+    {
+      "type": "range",
+      "id": "foto_separacion",
+      "label": "Separación entre fotos",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "foto_bordes",
+      "label": "Redondeo de las fotos",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "velocidad",
+      "label": "Duración de una vuelta",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "s",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Reseñas"
+    },
+    {
+      "type": "paragraph",
+      "content": "Cada reseña es un bloque. Usá reseñas reales de clientes."
+    },
+    {
+      "type": "text",
+      "id": "texto_verificado",
+      "label": "Texto de verificado",
+      "default": "Cliente verificado"
+    },
+    {
+      "type": "range",
+      "id": "por_vista",
+      "label": "Reseñas visibles en PC",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "ancho_mobile",
+      "label": "Ancho de cada reseña en celular",
+      "min": 70,
+      "max": 100,
+      "step": 2,
+      "unit": "%",
+      "default": 88
+    },
+    {
+      "type": "range",
+      "id": "separacion",
+      "label": "Separación entre reseñas",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "checkbox",
+      "id": "mismo_alto",
+      "label": "Todas las tarjetas del mismo alto",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "bordes",
+      "label": "Redondeo de las tarjetas",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 6
+    },
+    {
+      "type": "checkbox",
+      "id": "sombra",
+      "label": "Sombra en las tarjetas",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "mostrar_barra",
+      "label": "Mostrar barra de progreso",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "mostrar_flechas",
+      "label": "Mostrar flechas",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay",
+      "label": "Pasar solo cada (segundos)",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "default": 0,
+      "info": "0 = no pasa solo."
+    },
+    {
+      "type": "header",
+      "content": "Botón (opcional)"
+    },
+    {
+      "type": "text",
+      "id": "boton_texto",
+      "label": "Texto del botón",
+      "info": "Vacío = sin botón."
+    },
+    {
+      "type": "text",
+      "id": "boton_link",
+      "label": "Link del botón",
+      "default": "#hm-comprar"
+    },
+    {
+      "type": "header",
+      "content": "Aclaración"
+    },
+    {
+      "type": "textarea",
+      "id": "aclaracion",
+      "label": "Texto legal",
+      "default": "Los resultados individuales pueden variar. HAIR es un suplemento dietario y no reemplaza una alimentación variada ni la consulta médica."
+    },
+    {
+      "type": "header",
+      "content": "Colores y tipografía"
+    },
+    {
+      "type": "font_picker",
+      "id": "fuente",
+      "label": "Tipografía",
+      "default": "poppins_n4"
+    },
+    {
+      "type": "color",
+      "id": "color_acento",
+      "label": "Color de marca",
+      "default": "#6b3fc0"
+    },
+    {
+      "type": "color",
+      "id": "color_estrellas",
+      "label": "Color de las estrellas (opcional)",
+      "info": "Vacío = color de marca."
+    },
+    {
+      "type": "color",
+      "id": "color_verificado",
+      "label": "Color de \"Cliente verificado\"",
+      "default": "#1f9d55"
+    },
+    {
+      "type": "color",
+      "id": "color_fondo",
+      "label": "Fondo de la sección",
+      "default": "#f7f3fd"
+    },
+    {
+      "type": "color",
+      "id": "color_tarjeta",
+      "label": "Fondo de las tarjetas",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "color_texto",
+      "label": "Texto",
+      "default": "#121116"
+    },
+    {
+      "type": "color",
+      "id": "color_boton",
+      "label": "Color del botón (opcional)"
+    },
+    {
+      "type": "color",
+      "id": "color_boton_texto",
+      "label": "Texto del botón (opcional)"
+    },
+    {
+      "type": "header",
+      "content": "Espaciado"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Espacio arriba",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Espacio abajo",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "foto",
+      "name": "Foto (cinta)",
+      "limit": 20,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "imagen",
+          "label": "Foto de cliente"
+        },
+        {
+          "type": "text",
+          "id": "alt",
+          "label": "Texto alternativo (SEO)",
+          "default": "Cliente usando HAIR"
+        }
+      ]
+    },
+    {
+      "type": "resena",
+      "name": "Reseña",
+      "settings": [
+        {
+          "type": "range",
+          "id": "puntaje",
+          "label": "Puntaje",
+          "min": 1,
+          "max": 5,
+          "step": 0.1,
+          "default": 5
+        },
+        {
+          "type": "checkbox",
+          "id": "mostrar_numero",
+          "label": "Mostrar el número",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "titulo",
+          "label": "Título",
+          "default": "Título de la reseña"
+        },
+        {
+          "type": "richtext",
+          "id": "texto",
+          "label": "Texto",
+          "default": "<p>Texto de la reseña del cliente.</p>"
+        },
+        {
+          "type": "text",
+          "id": "nombre",
+          "label": "Nombre",
+          "default": "Nombre A."
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar",
+          "label": "Foto del cliente (opcional)",
+          "info": "Vacío = inicial del nombre."
+        },
+        {
+          "type": "checkbox",
+          "id": "verificado",
+          "label": "Cliente verificado",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "etiqueta_1",
+          "label": "Etiqueta 1"
+        },
+        {
+          "type": "text",
+          "id": "etiqueta_2",
+          "label": "Etiqueta 2"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "HM · Historias reales",
+      "blocks": [
+        {
+          "type": "foto"
+        },
+        {
+          "type": "foto"
+        },
+        {
+          "type": "foto"
+        },
+        {
+          "type": "foto"
+        },
+        {
+          "type": "foto"
+        },
+        {
+          "type": "foto"
+        },
+        {
+          "type": "foto"
+        },
+        {
+          "type": "foto"
+        },
+        {
+          "type": "resena",
+          "settings": {
+            "puntaje": 4.9,
+            "titulo": "La coronilla se está rellenando",
+            "texto": "<p>Tenía la coronilla cada vez más rala y se notaba mucho en las fotos. Después de 3 meses con HAIR se está rellenando de a poco. Hasta mi peluquero me preguntó qué estaba usando.</p>",
+            "nombre": "Martín R.",
+            "etiqueta_1": "Coronilla más poblada",
+            "etiqueta_2": "Resultados visibles"
+          }
+        },
+        {
+          "type": "resena",
+          "settings": {
+            "puntaje": 5,
+            "titulo": "¡Ya no tapo la rejilla de la ducha!",
+            "texto": "<p>Antes cada semana tenía que destapar la rejilla de la ducha por la cantidad de pelo. Hace 4 meses que tomo HAIR y casi no se me cae al lavarme. Increíble la diferencia.</p>",
+            "nombre": "Lucas G.",
+            "etiqueta_1": "Menos caída",
+            "etiqueta_2": "Pelo más fuerte"
+          }
+        },
+        {
+          "type": "resena",
+          "settings": {
+            "puntaje": 5,
+            "titulo": "Las entradas dejaron de avanzar",
+            "texto": "<p>Las entradas me venían avanzando hace años. A los 6 meses de HAIR ya noto pelitos nuevos donde antes no había nada. Es lento, pero constante.</p>",
+            "nombre": "Diego F.",
+            "etiqueta_1": "Entradas",
+            "etiqueta_2": "Resultados a largo plazo"
+          }
+        },
+        {
+          "type": "resena",
+          "settings": {
+            "puntaje": 4.8,
+            "titulo": "Más volumen, menos pelo en la almohada",
+            "texto": "<p>Lo empecé por recomendación de un amigo. Al segundo mes ya veía menos pelos en la almohada y el pelo con más cuerpo. Fácil de tomar: una cápsula y listo.</p>",
+            "nombre": "Nicolás P.",
+            "etiqueta_1": "Más volumen",
+            "etiqueta_2": "Fácil de tomar"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
