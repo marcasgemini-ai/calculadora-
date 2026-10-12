@@ -51,6 +51,12 @@
   assign sel_name = product.title
   assign ref_unit = 0
 
+  assign use_custom_gallery = false
+  for block in section.blocks
+    if block.type == 'foto_galeria' and block.settings.imagen != blank
+      assign use_custom_gallery = true
+    endif
+  endfor
   assign image_ids = ''
   for media in product.media
     if media.media_type == 'image'
@@ -79,6 +85,10 @@
       assign qty = bs.cantidad | default: 1
       assign frascos = bs.frascos | default: 1
       assign total = v.price | times: qty
+      assign variant_total = total
+      if bs.precio != blank and bs.precio > 0
+        assign total = bs.precio | times: 100
+      endif
 
       if ref_unit == 0
         assign ref_unit = total | divided_by: frascos
@@ -91,6 +101,9 @@
       if bs.comparar_con_unitario and ref_total > compare
         assign compare = ref_total
       endif
+      if bs.precio_tachado != blank and bs.precio_tachado > 0
+        assign compare = bs.precio_tachado | times: 100
+      endif
 
       assign compare_txt = ''
       assign save_txt = ''
@@ -102,6 +115,9 @@
         assign half = compare | divided_by: 2
         assign pct = save_amount | times: 100 | plus: half | divided_by: compare
         assign save_txt = s.save_label | replace: '[monto]', save_amount_txt | replace: '[pct]', pct
+        if bs.texto_ahorro != blank
+          assign save_txt = bs.texto_ahorro | replace: '[monto]', save_amount_txt | replace: '[pct]', pct
+        endif
         assign promo_txt = s.promo_label | replace: '[monto]', save_amount_txt | replace: '[pct]', pct
       endif
 
@@ -112,7 +128,10 @@
       assign cuota_txt = tmp | money_without_trailing_zeros
 
       assign slide = ''
-      if v.featured_media != blank
+      if bs.foto_numero > 0
+        assign slide = bs.foto_numero | minus: 1
+      endif
+      if slide == '' and use_custom_gallery == false and v.featured_media != blank
         assign fm_s = v.featured_media.id | append: ''
         for img_id in image_ids
           if img_id == fm_s
@@ -152,7 +171,7 @@
     >
       <input type="radio" name="hm-pack-{{ section.id }}" value="{{ v.id }}" class="hm-visually-hidden" {% if is_sel %}checked{% endif %} {% unless v.available %}disabled{% endunless %}>
       {%- if bs.etiqueta != blank -%}
-        <span class="hm-pack__tag hm-pack__tag--{{ bs.etiqueta_color }}">{{ bs.etiqueta }}</span>
+        <span class="hm-pack__tag hm-pack__tag--{{ bs.etiqueta_color }}"{% if bs.etiqueta_color_libre != blank %} style="background: {{ bs.etiqueta_color_libre }}; color: {{ bs.etiqueta_texto_color | default: '#ffffff' }};"{% endif %}>{{ bs.etiqueta }}</span>
       {%- endif -%}
       <span class="hm-pack__info">
         <span class="hm-pack__title">{{ bs.titulo }}</span>
@@ -161,6 +180,7 @@
         {%- elsif bs.subtitulo != blank -%}
           <span class="hm-pack__sub">{{ bs.subtitulo }}</span>
         {%- endif -%}
+        {%- if request.design_mode and total != variant_total -%}<span class="hm-pack__warn">⚠ Solo lo ves vos en el editor: en Shopify esta variante cuesta {{ variant_total | money_without_trailing_zeros }}. Se cobra ese precio: actualizalo en el producto.</span>{%- endif -%}
         {%- unless v.available -%}<span class="hm-pack__soldout">{{ s.soldout_label }}</span>{%- endunless -%}
       </span>
       <span class="hm-pack__img">
@@ -332,7 +352,7 @@
 
 /* ---------- Botones ---------- */
 .hm-btn {
-  --b-bg: var(--hm-accent); --b-fg: var(--hm-accent-ink);
+  --b-bg: var(--hm-btn-bg, var(--hm-accent)); --b-fg: var(--hm-btn-fg, var(--hm-accent-ink));
   appearance: none; border: 0; cursor: pointer; text-decoration: none;
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
   min-height: 54px; padding: 0 24px; border-radius: 10px;
@@ -507,7 +527,8 @@
 
   .hm-pdp__heading { margin-top: 8px !important; }
   .hm-pdp__brand { margin: 0 0 4px; font-size: 13px; color: var(--hm-muted); }
-  .hm-pdp__title { margin: 0; font-family: var(--hm-font-body); font-weight: 700; font-size: clamp(24px, 2.8vw, 30px); line-height: 1.2; letter-spacing: -.01em; color: var(--hm-fg); }
+  .hm-pdp__title { margin: 0; font-family: var(--hm-font-body); font-weight: 700; font-size: var(--hm-title-m, 26px); line-height: 1.2; letter-spacing: -.01em; color: var(--hm-fg); }
+  @media (min-width: 750px) { .hm-pdp .hm-pdp__title { font-size: var(--hm-title-d, 30px); } }
   .hm-pdp__title em, .hm-pdp__subtitle em { font-style: normal; color: var(--hm-accent); }
   .hm-pdp__subtitle { margin: 6px 0 0; font-size: clamp(18px, 2vw, 20px); font-weight: 600; line-height: 1.3; }
   .hm-pdp__text { font-size: 15px; line-height: 1.55; color: var(--hm-muted); }
@@ -520,7 +541,7 @@
 
   /* ---------- Precio ---------- */
   .hm-price { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding-top: 16px; border-top: 1px solid var(--hm-line); margin-top: 18px !important; }
-  .hm-price__now { font-size: 26px; font-weight: 700; line-height: 1; color: var(--hm-accent); }
+  .hm-price__now { font-size: 26px; font-weight: 700; line-height: 1; color: var(--hm-price, var(--hm-accent)); }
   .hm-price__was { font-size: 18px; color: var(--hm-muted); }
   .hm-price__promo { font-size: 13px; font-weight: 600; color: #fff; background: var(--hm-accent); padding: 6px 10px; border-radius: 6px; }
 
@@ -546,6 +567,7 @@
   .hm-pack__title { font-size: 15px; font-weight: 700; line-height: 1.25; }
   .hm-pack__save { font-size: 13px; font-weight: 600; color: var(--hm-accent); }
   .hm-pack__sub { font-size: 13px; color: var(--hm-muted); }
+  .hm-pack__warn { font-size: 11px; line-height: 1.3; font-weight: 600; color: #b42318; background: #fff1f0; border-radius: 4px; padding: 4px 6px; margin-top: 4px; }
   .hm-pack__soldout { font-size: 12px; font-weight: 700; color: #c0392b; }
   .hm-pack__img { width: 88px; height: 60px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
   .hm-pack__img img { height: 100%; width: 100%; object-fit: contain; }
@@ -664,7 +686,7 @@
   }
 </style>
 
-<section id="hm-{{ section.id }}" class="hm hm--{{ s.esquema }} hm-pdp" style="--hm-accent: {{ acc }}; --hm-a6: {{ acc | color_modify: 'alpha', 0.06 }}; --hm-a8: {{ acc | color_modify: 'alpha', 0.08 }}; --hm-a10: {{ acc | color_modify: 'alpha', 0.1 }}; --hm-a14: {{ acc | color_modify: 'alpha', 0.14 }}; --hm-a25: {{ acc | color_modify: 'alpha', 0.25 }}; --hm-a28: {{ acc | color_modify: 'alpha', 0.28 }}; --hm-a35: {{ acc | color_modify: 'alpha', 0.35 }}; --hm-a40: {{ acc | color_modify: 'alpha', 0.4 }}; --hm-a55: {{ acc | color_modify: 'alpha', 0.55 }}; --hm-dark30: {{ acc | color_mix: '#0c0b10', 30 }}; --hm-dark55: {{ acc | color_mix: '#0c0b10', 55 }}; --hm-pt: {{ s.padding_top }}px; --hm-pb: {{ s.padding_bottom }}px; --hm-font-body: {{ hm_font_stack }}; --hm-font-display: {{ hm_font_stack }};">
+<section id="hm-{{ section.id }}" class="hm hm--{{ s.esquema }} hm-pdp" style="--hm-accent: {{ acc }}; --hm-a6: {{ acc | color_modify: 'alpha', 0.06 }}; --hm-a8: {{ acc | color_modify: 'alpha', 0.08 }}; --hm-a10: {{ acc | color_modify: 'alpha', 0.1 }}; --hm-a14: {{ acc | color_modify: 'alpha', 0.14 }}; --hm-a25: {{ acc | color_modify: 'alpha', 0.25 }}; --hm-a28: {{ acc | color_modify: 'alpha', 0.28 }}; --hm-a35: {{ acc | color_modify: 'alpha', 0.35 }}; --hm-a40: {{ acc | color_modify: 'alpha', 0.4 }}; --hm-a55: {{ acc | color_modify: 'alpha', 0.55 }}; --hm-dark30: {{ acc | color_mix: '#0c0b10', 30 }}; --hm-dark55: {{ acc | color_mix: '#0c0b10', 55 }}; --hm-pt: {{ s.padding_top }}px; --hm-pb: {{ s.padding_bottom }}px; --hm-font-body: {{ hm_font_stack }}; --hm-font-display: {{ hm_font_stack }}; --hm-title-d: {{ s.titulo_desktop }}px; --hm-title-m: {{ s.titulo_mobile }}px;{% if s.color_boton != blank %} --hm-btn-bg: {{ s.color_boton }};{% endif %}{% if s.color_boton_texto != blank %} --hm-btn-fg: {{ s.color_boton_texto }};{% endif %}{% if s.color_texto != blank %} --hm-fg: {{ s.color_texto }};{% endif %}{% if s.color_fondo != blank %} --hm-bg: {{ s.color_fondo }};{% endif %}{% if s.color_precio != blank %} --hm-price: {{ s.color_precio }};{% endif %}">
   <div class="hm-container">
     <div class="hm-pdp__grid">
 
@@ -674,39 +696,66 @@
           <div class="hm-gal__main">
             <div class="hm-gal__track" data-hm-track>
               {%- assign img_count = 0 -%}
-              {%- for media in product.media -%}
-                {%- if media.media_type != 'image' -%}{%- continue -%}{%- endif -%}
-                {%- assign img_count = img_count | plus: 1 -%}
-                <div class="hm-gal__slide">
-                  {%- if img_count == 1 -%}
-                    {{ media.preview_image | image_url: width: 1400 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '400, 600, 800, 1000, 1200, 1400', sizes: '(min-width: 990px) 50vw, 100vw', alt: media.alt | default: product.title }}
-                    {%- if overlay_html != blank -%}<div class="hm-gal__chips">{{ overlay_html }}</div>{%- endif -%}
-                  {%- else -%}
-                    {{ media.preview_image | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '400, 600, 800, 1000, 1200, 1400', sizes: '(min-width: 990px) 50vw, 100vw', alt: media.alt | default: product.title }}
-                  {%- endif -%}
-                </div>
-              {%- endfor -%}
+              {%- if use_custom_gallery -%}
+                {%- for block in section.blocks -%}
+                  {%- if block.type != 'foto_galeria' or block.settings.imagen == blank -%}{%- continue -%}{%- endif -%}
+                  {%- assign img_count = img_count | plus: 1 -%}
+                  {%- assign g_img = block.settings.imagen -%}
+                  {%- assign g_alt = block.settings.alt | default: product.title -%}
+                  <div class="hm-gal__slide" {{ block.shopify_attributes }}>
+                    {%- if img_count == 1 -%}
+                      {{ g_img | image_url: width: 1400 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '400, 600, 800, 1000, 1200, 1400', sizes: '(min-width: 990px) 50vw, 100vw', alt: g_alt }}
+                      {%- if overlay_html != blank -%}<div class="hm-gal__chips">{{ overlay_html }}</div>{%- endif -%}
+                    {%- else -%}
+                      {{ g_img | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '400, 600, 800, 1000, 1200, 1400', sizes: '(min-width: 990px) 50vw, 100vw', alt: g_alt }}
+                    {%- endif -%}
+                  </div>
+                {%- endfor -%}
+              {%- else -%}
+                {%- for media in product.media -%}
+                  {%- if media.media_type != 'image' -%}{%- continue -%}{%- endif -%}
+                  {%- assign img_count = img_count | plus: 1 -%}
+                  <div class="hm-gal__slide">
+                    {%- if img_count == 1 -%}
+                      {{ media.preview_image | image_url: width: 1400 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '400, 600, 800, 1000, 1200, 1400', sizes: '(min-width: 990px) 50vw, 100vw', alt: media.alt | default: product.title }}
+                      {%- if overlay_html != blank -%}<div class="hm-gal__chips">{{ overlay_html }}</div>{%- endif -%}
+                    {%- else -%}
+                      {{ media.preview_image | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '400, 600, 800, 1000, 1200, 1400', sizes: '(min-width: 990px) 50vw, 100vw', alt: media.alt | default: product.title }}
+                    {%- endif -%}
+                  </div>
+                {%- endfor -%}
+              {%- endif -%}
               {%- if img_count == 0 -%}
                 <div class="hm-gal__slide">{{ 'product-1' | placeholder_svg_tag: 'hm-ph' }}</div>
               {%- endif -%}
             </div>
             {%- if img_count > 1 -%}
-              <button type="button" class="hm-gal__arrow hm-gal__arrow--prev" data-hm-gprev aria-label="Imagen anterior"><svg class="hm-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#hmi-arrow-left"/></svg></button>
-              <button type="button" class="hm-gal__arrow hm-gal__arrow--next" data-hm-gnext aria-label="Imagen siguiente"><svg class="hm-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#hmi-arrow-right"/></svg></button>
-              <span class="hm-gal__count"><span data-hm-count>1</span>/{{ img_count }}</span>
+              <button type="button" class="hm-gal__arrow hm-gal__arrow--prev" data-hm-gprev aria-label="{{ s.label_anterior | escape }}"><svg class="hm-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#hmi-arrow-left"/></svg></button>
+              <button type="button" class="hm-gal__arrow hm-gal__arrow--next" data-hm-gnext aria-label="{{ s.label_siguiente | escape }}"><svg class="hm-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#hmi-arrow-right"/></svg></button>
+              {%- if s.mostrar_contador -%}<span class="hm-gal__count"><span data-hm-count>1</span>/{{ img_count }}</span>{%- endif -%}
             {%- endif -%}
           </div>
 
-          {%- if img_count > 1 -%}
+          {%- if img_count > 1 and s.mostrar_miniaturas -%}
             <div class="hm-gal__thumbs" data-hm-thumbs>
               {%- assign ti = 0 -%}
-              {%- for media in product.media -%}
-                {%- if media.media_type != 'image' -%}{%- continue -%}{%- endif -%}
-                <button type="button" class="hm-gal__thumb{% if ti == 0 %} is-active{% endif %}" data-hm-thumb="{{ ti }}" aria-label="Ver imagen {{ ti | plus: 1 }}">
-                  {{ media.preview_image | image_url: width: 240 | image_tag: loading: 'lazy', widths: '120, 240', sizes: '96px', alt: '' }}
-                </button>
-                {%- assign ti = ti | plus: 1 -%}
-              {%- endfor -%}
+              {%- if use_custom_gallery -%}
+                {%- for block in section.blocks -%}
+                  {%- if block.type != 'foto_galeria' or block.settings.imagen == blank -%}{%- continue -%}{%- endif -%}
+                  <button type="button" class="hm-gal__thumb{% if ti == 0 %} is-active{% endif %}" data-hm-thumb="{{ ti }}" aria-label="{{ ti | plus: 1 }}">
+                    {{ block.settings.imagen | image_url: width: 240 | image_tag: loading: 'lazy', widths: '120, 240', sizes: '96px', alt: '' }}
+                  </button>
+                  {%- assign ti = ti | plus: 1 -%}
+                {%- endfor -%}
+              {%- else -%}
+                {%- for media in product.media -%}
+                  {%- if media.media_type != 'image' -%}{%- continue -%}{%- endif -%}
+                  <button type="button" class="hm-gal__thumb{% if ti == 0 %} is-active{% endif %}" data-hm-thumb="{{ ti }}" aria-label="{{ ti | plus: 1 }}">
+                    {{ media.preview_image | image_url: width: 240 | image_tag: loading: 'lazy', widths: '120, 240', sizes: '96px', alt: '' }}
+                  </button>
+                  {%- assign ti = ti | plus: 1 -%}
+                {%- endfor -%}
+              {%- endif -%}
             </div>
           {%- endif -%}
         </div>
@@ -717,7 +766,7 @@
       </div>
 
       {%- comment -%} ===================== INFO + OFERTA ===================== {%- endcomment -%}
-      <div class="hm-pdp__info" id="hm-comprar" data-hm-buybox data-after="{{ s.despues_de_agregar }}">
+      <div class="hm-pdp__info" id="hm-comprar" data-hm-buybox data-after="{{ s.despues_de_agregar }}" data-error="{{ s.error_label | escape }}">
         {%- assign packs_rendered = false -%}
         {%- for block in section.blocks -%}
           {%- assign bs = block.settings -%}
@@ -1225,7 +1274,7 @@
     })
       .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, json: j }; }); })
       .then(function (res) {
-        if (!res.ok) throw new Error(res.json.description || res.json.message || 'No pudimos agregar el producto.');
+        if (!res.ok) throw new Error(res.json.description || res.json.message || root.dataset.error || 'Error');
         document.dispatchEvent(new CustomEvent('hm:added', { detail: res.json }));
         if (after === 'checkout') window.location.href = root_url + 'checkout';
         else if (after === 'cart') window.location.href = root_url + 'cart';
@@ -1356,239 +1405,1616 @@
   "name": "HM · Producto (oferta)",
   "tag": "div",
   "class": "hm-section-pdp",
-  "enabled_on": { "templates": ["product"] },
+  "enabled_on": {
+    "templates": [
+      "product"
+    ]
+  },
   "settings": [
-    { "type": "header", "content": "Galería" },
-    { "type": "paragraph", "content": "Las fotos salen del producto (admin → Productos → Multimedia)." },
     {
-      "type": "select", "id": "proporcion", "label": "Formato de las fotos",
-      "options": [ { "value": "cuadrado", "label": "Cuadrado (1:1)" }, { "value": "retrato", "label": "Vertical (4:5)" } ],
+      "type": "header",
+      "content": "Galería"
+    },
+    {
+      "type": "paragraph",
+      "content": "Las fotos salen del producto (admin → Productos → Multimedia)."
+    },
+    {
+      "type": "select",
+      "id": "proporcion",
+      "label": "Formato de las fotos",
+      "options": [
+        {
+          "value": "cuadrado",
+          "label": "Cuadrado (1:1)"
+        },
+        {
+          "value": "retrato",
+          "label": "Vertical (4:5)"
+        }
+      ],
       "default": "cuadrado"
     },
     {
-      "type": "select", "id": "ajuste", "label": "Ajuste de las fotos",
-      "options": [ { "value": "completa", "label": "Mostrar la foto completa" }, { "value": "recortar", "label": "Recortar para llenar" } ],
+      "type": "select",
+      "id": "ajuste",
+      "label": "Ajuste de las fotos",
+      "options": [
+        {
+          "value": "completa",
+          "label": "Mostrar la foto completa"
+        },
+        {
+          "value": "recortar",
+          "label": "Recortar para llenar"
+        }
+      ],
       "default": "completa"
     },
-
     {
-      "type": "select", "id": "tarjetas_mobile", "label": "Tarjetas bajo la galería en celular",
-      "options": [ { "value": "final", "label": "Al final de la info (recomendado)" }, { "value": "galeria", "label": "Debajo de la galería" }, { "value": "ocultar", "label": "Ocultar" } ],
+      "type": "checkbox",
+      "id": "mostrar_miniaturas",
+      "label": "Mostrar miniaturas",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "mostrar_contador",
+      "label": "Mostrar contador (1/8)",
+      "default": true
+    },
+    {
+      "type": "paragraph",
+      "content": "¿Querés otras fotos en vez de las del producto? Agregá bloques \"Foto de la galería\"."
+    },
+    {
+      "type": "select",
+      "id": "tarjetas_mobile",
+      "label": "Tarjetas bajo la galería en celular",
+      "options": [
+        {
+          "value": "final",
+          "label": "Al final de la info (recomendado)"
+        },
+        {
+          "value": "galeria",
+          "label": "Debajo de la galería"
+        },
+        {
+          "value": "ocultar",
+          "label": "Ocultar"
+        }
+      ],
       "default": "final"
     },
-
-    { "type": "header", "content": "Oferta" },
-    { "type": "text", "id": "save_label", "label": "Ahorro en cada pack", "default": "Ahorrás [monto]", "info": "[monto] = ahorro en pesos · [pct] = porcentaje" },
-    { "type": "text", "id": "promo_label", "label": "Etiqueta junto al precio", "default": "Promo de lanzamiento: ¡Ahorrás [monto]!", "info": "[monto] = ahorro en pesos · [pct] = porcentaje" },
-    { "type": "text", "id": "packs_aria", "label": "Nombre del selector (accesibilidad)", "default": "Elegí tu pack" },
-    { "type": "text", "id": "soldout_label", "label": "Texto sin stock", "default": "Sin stock" },
-
-    { "type": "header", "content": "Cuotas y transferencia" },
-    { "type": "number", "id": "cuotas", "label": "Cuotas sin interés", "default": 3, "info": "Para calcular el valor de la cuota. Poné 1 para ocultar." },
-    { "type": "range", "id": "transfer_pct", "label": "Descuento por transferencia", "min": 0, "max": 30, "step": 1, "unit": "%", "default": 10, "info": "Poné 0 para ocultar. Tiene que coincidir con el descuento real del checkout." },
-
-    { "type": "header", "content": "Al agregar al carrito" },
     {
-      "type": "select", "id": "despues_de_agregar", "label": "Después de tocar el botón",
+      "type": "header",
+      "content": "Oferta"
+    },
+    {
+      "type": "text",
+      "id": "save_label",
+      "label": "Ahorro en cada pack",
+      "default": "Ahorrás [monto]",
+      "info": "[monto] = ahorro en pesos · [pct] = porcentaje"
+    },
+    {
+      "type": "text",
+      "id": "promo_label",
+      "label": "Etiqueta junto al precio",
+      "default": "Promo de lanzamiento: ¡Ahorrás [monto]!",
+      "info": "[monto] = ahorro en pesos · [pct] = porcentaje"
+    },
+    {
+      "type": "text",
+      "id": "packs_aria",
+      "label": "Nombre del selector (accesibilidad)",
+      "default": "Elegí tu pack"
+    },
+    {
+      "type": "text",
+      "id": "soldout_label",
+      "label": "Texto sin stock",
+      "default": "Sin stock"
+    },
+    {
+      "type": "header",
+      "content": "Cuotas y transferencia"
+    },
+    {
+      "type": "number",
+      "id": "cuotas",
+      "label": "Cuotas sin interés",
+      "default": 3,
+      "info": "Para calcular el valor de la cuota. Poné 1 para ocultar."
+    },
+    {
+      "type": "range",
+      "id": "transfer_pct",
+      "label": "Descuento por transferencia",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "%",
+      "default": 10,
+      "info": "Poné 0 para ocultar. Tiene que coincidir con el descuento real del checkout."
+    },
+    {
+      "type": "header",
+      "content": "Al agregar al carrito"
+    },
+    {
+      "type": "select",
+      "id": "despues_de_agregar",
+      "label": "Después de tocar el botón",
       "options": [
-        { "value": "checkout", "label": "Ir directo al checkout" },
-        { "value": "cart", "label": "Ir al carrito" },
-        { "value": "stay", "label": "Quedarse en la página" }
+        {
+          "value": "checkout",
+          "label": "Ir directo al checkout"
+        },
+        {
+          "value": "cart",
+          "label": "Ir al carrito"
+        },
+        {
+          "value": "stay",
+          "label": "Quedarse en la página"
+        }
       ],
       "default": "checkout"
     },
-    { "type": "text", "id": "added_label", "label": "Mensaje al agregar (si se queda en la página)", "default": "¡Listo! Lo agregamos a tu carrito." },
-
-    { "type": "header", "content": "Barra de compra fija" },
-    { "type": "checkbox", "id": "sticky", "label": "Mostrar al scrollear", "default": true },
-    { "type": "text", "id": "sticky_texto", "label": "Texto del botón", "default": "Agregar al carrito" },
-
-    {"type": "header", "content": "Diseño"},
-    {"type": "select", "id": "esquema", "label": "Fondo", "options": [{"value": "claro", "label": "Blanco"}, {"value": "suave", "label": "Lila suave"}, {"value": "oscuro", "label": "Negro"}, {"value": "acento", "label": "Violeta (marca)"}], "default": "claro"},
-    {"type": "color", "id": "color_acento", "label": "Color de marca", "default": "#7b4bc9"},
-    {"type": "font_picker", "id": "fuente", "label": "Tipografía", "default": "poppins_n4", "info": "Por defecto Poppins, igual que el theme."},
-    {"type": "range", "id": "padding_top", "label": "Espacio arriba", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 24},
-    {"type": "range", "id": "padding_bottom", "label": "Espacio abajo", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48}
+    {
+      "type": "text",
+      "id": "added_label",
+      "label": "Mensaje al agregar (si se queda en la página)",
+      "default": "¡Listo! Lo agregamos a tu carrito."
+    },
+    {
+      "type": "text",
+      "id": "error_label",
+      "label": "Mensaje si falla el carrito",
+      "default": "No pudimos agregar el producto. Probá de nuevo."
+    },
+    {
+      "type": "text",
+      "id": "label_anterior",
+      "label": "Accesibilidad: flecha anterior",
+      "default": "Imagen anterior"
+    },
+    {
+      "type": "text",
+      "id": "label_siguiente",
+      "label": "Accesibilidad: flecha siguiente",
+      "default": "Imagen siguiente"
+    },
+    {
+      "type": "header",
+      "content": "Barra de compra fija"
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky",
+      "label": "Mostrar al scrollear",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "sticky_texto",
+      "label": "Texto del botón",
+      "default": "Agregar al carrito"
+    },
+    {
+      "type": "header",
+      "content": "Diseño"
+    },
+    {
+      "type": "select",
+      "id": "esquema",
+      "label": "Fondo",
+      "options": [
+        {
+          "value": "claro",
+          "label": "Blanco"
+        },
+        {
+          "value": "suave",
+          "label": "Lila suave"
+        },
+        {
+          "value": "oscuro",
+          "label": "Negro"
+        },
+        {
+          "value": "acento",
+          "label": "Violeta (marca)"
+        }
+      ],
+      "default": "claro"
+    },
+    {
+      "type": "color",
+      "id": "color_acento",
+      "label": "Color de marca",
+      "default": "#6b3fc0",
+      "info": "Color principal: packs seleccionados, íconos, etiquetas, precio y botón."
+    },
+    {
+      "type": "color",
+      "id": "color_boton",
+      "label": "Color del botón (opcional)",
+      "info": "Vacío = color de marca."
+    },
+    {
+      "type": "color",
+      "id": "color_boton_texto",
+      "label": "Color del texto del botón (opcional)"
+    },
+    {
+      "type": "color",
+      "id": "color_precio",
+      "label": "Color del precio (opcional)"
+    },
+    {
+      "type": "color",
+      "id": "color_texto",
+      "label": "Color del texto (opcional)"
+    },
+    {
+      "type": "color",
+      "id": "color_fondo",
+      "label": "Color de fondo (opcional)",
+      "info": "Pisa el fondo elegido arriba."
+    },
+    {
+      "type": "range",
+      "id": "titulo_desktop",
+      "label": "Tamaño del título en PC",
+      "min": 20,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "titulo_mobile",
+      "label": "Tamaño del título en celular",
+      "min": 18,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 26
+    },
+    {
+      "type": "font_picker",
+      "id": "fuente",
+      "label": "Tipografía",
+      "default": "poppins_n4",
+      "info": "Por defecto Poppins, igual que el theme."
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Espacio arriba",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Espacio abajo",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
   ],
   "blocks": [
     {
-      "type": "tarjeta", "name": "Tarjeta bajo la galería", "limit": 4,
+      "type": "foto_galeria",
+      "name": "Foto de la galería",
+      "limit": 12,
       "settings": [
-        { "type": "text", "id": "titulo", "label": "Título", "default": "Garantía de 30 días" },
-        { "type": "text", "id": "texto", "label": "Texto", "default": "Si no te convence, te devolvemos la plata." },
-        { "type": "select", "id": "icono", "label": "Ícono", "options": [{"value": "check-circle", "label": "Check"}, {"value": "check", "label": "Tilde"}, {"value": "truck", "label": "Envío"}, {"value": "shield", "label": "Escudo / garantía"}, {"value": "card", "label": "Tarjeta / cuotas"}, {"value": "clock", "label": "Reloj"}, {"value": "leaf", "label": "Natural / hoja"}, {"value": "capsule", "label": "Cápsula"}, {"value": "flask", "label": "Laboratorio"}, {"value": "gift", "label": "Regalo"}, {"value": "lock", "label": "Pago seguro"}, {"value": "verified", "label": "Verificado"}, {"value": "bolt", "label": "Energía"}, {"value": "heart", "label": "Corazón"}, {"value": "users", "label": "Clientes"}, {"value": "medal", "label": "Medalla"}, {"value": "refresh", "label": "Devolución"}, {"value": "dna", "label": "ADN"}, {"value": "sparkles", "label": "Brillo"}, {"value": "calendar", "label": "Calendario"}, {"value": "droplet", "label": "Gota"}, {"value": "hair", "label": "Cabello"}, {"value": "stethoscope", "label": "Médico"}, {"value": "ban", "label": "Prohibido"}, {"value": "x-circle", "label": "Cruz"}, {"value": "map-pin", "label": "Ubicación"}, {"value": "percent", "label": "Descuento"}, {"value": "box", "label": "Paquete"}, {"value": "trend-up", "label": "Crecimiento"}, {"value": "star", "label": "Estrella"}, {"value": "sun", "label": "Sol"}, {"value": "moon", "label": "Luna"}], "default": "shield" },
-        { "type": "image_picker", "id": "imagen", "label": "Imagen (reemplaza al ícono)" },
-        { "type": "text", "id": "valor", "label": "Valor tachado (opcional)", "info": "Ej: $4.500" },
-        { "type": "text", "id": "valor_texto", "label": "Texto junto al valor", "default": "GRATIS" }
-      ]
-    },
-    {
-      "type": "beneficio_foto", "name": "Beneficio sobre la foto", "limit": 4,
-      "settings": [
-        { "type": "select", "id": "icono", "label": "Ícono", "options": [{"value": "check-circle", "label": "Check"}, {"value": "check", "label": "Tilde"}, {"value": "truck", "label": "Envío"}, {"value": "shield", "label": "Escudo / garantía"}, {"value": "card", "label": "Tarjeta / cuotas"}, {"value": "clock", "label": "Reloj"}, {"value": "leaf", "label": "Natural / hoja"}, {"value": "capsule", "label": "Cápsula"}, {"value": "flask", "label": "Laboratorio"}, {"value": "gift", "label": "Regalo"}, {"value": "lock", "label": "Pago seguro"}, {"value": "verified", "label": "Verificado"}, {"value": "bolt", "label": "Energía"}, {"value": "heart", "label": "Corazón"}, {"value": "users", "label": "Clientes"}, {"value": "medal", "label": "Medalla"}, {"value": "refresh", "label": "Devolución"}, {"value": "dna", "label": "ADN"}, {"value": "sparkles", "label": "Brillo"}, {"value": "calendar", "label": "Calendario"}, {"value": "droplet", "label": "Gota"}, {"value": "hair", "label": "Cabello"}, {"value": "stethoscope", "label": "Médico"}, {"value": "ban", "label": "Prohibido"}, {"value": "x-circle", "label": "Cruz"}, {"value": "map-pin", "label": "Ubicación"}, {"value": "percent", "label": "Descuento"}, {"value": "box", "label": "Paquete"}, {"value": "trend-up", "label": "Crecimiento"}, {"value": "star", "label": "Estrella"}, {"value": "sun", "label": "Sol"}, {"value": "moon", "label": "Luna"}], "default": "hair" },
-        { "type": "text", "id": "texto", "label": "Texto (corto)", "default": "Fortalece el pelo" }
-      ]
-    },
-    {
-      "type": "rating", "name": "Estrellas", "limit": 1,
-      "settings": [
-        { "type": "range", "id": "estrellas", "label": "Estrellas", "min": 3, "max": 5, "step": 0.1, "default": 4.8 },
-        { "type": "inline_richtext", "id": "texto", "label": "Texto", "default": "Calificación: <strong>4.8</strong> (Excelente)" },
-        { "type": "text", "id": "link_texto", "label": "Texto del link", "default": "Más de 1.000 reseñas", "info": "Usá tu número real de reseñas." },
-        { "type": "text", "id": "link", "label": "Link", "default": "#hm-resenas" }
-      ]
-    },
-    {
-      "type": "titulo", "name": "Título", "limit": 1,
-      "settings": [
-        { "type": "text", "id": "marca", "label": "Marca", "default": "DR.MEN®" },
-        { "type": "inline_richtext", "id": "titulo", "label": "Título", "default": "Activador capilar <em>HAIR</em>", "info": "Vacío = nombre del producto. La cursiva se pinta con el color de marca." },
-        { "type": "inline_richtext", "id": "subtitulo", "label": "Subtítulo", "default": "Menos caída de pelo, <em>crecimiento más saludable</em>" }
-      ]
-    },
-    {
-      "type": "texto", "name": "Texto",
-      "settings": [
-        { "type": "richtext", "id": "texto", "label": "Texto", "default": "<p><strong>Menos pelo en la almohada y en la ducha. Un pelo más fuerte y con más cuerpo, con garantía de devolución de 30 días.</strong> Una fórmula con 8 nutrientes (biotina, zinc, selenio, L-cistina, colágeno tipo II y vitaminas C, B5 y B6) que nutre el folículo desde adentro para un pelo más sano y abundante, sin químicos agresivos.*</p>" }
-      ]
-    },
-    {
-      "type": "beneficio", "name": "Beneficio con ícono",
-      "settings": [
-        { "type": "select", "id": "icono", "label": "Ícono", "options": [{"value": "check-circle", "label": "Check"}, {"value": "check", "label": "Tilde"}, {"value": "truck", "label": "Envío"}, {"value": "shield", "label": "Escudo / garantía"}, {"value": "card", "label": "Tarjeta / cuotas"}, {"value": "clock", "label": "Reloj"}, {"value": "leaf", "label": "Natural / hoja"}, {"value": "capsule", "label": "Cápsula"}, {"value": "flask", "label": "Laboratorio"}, {"value": "gift", "label": "Regalo"}, {"value": "lock", "label": "Pago seguro"}, {"value": "verified", "label": "Verificado"}, {"value": "bolt", "label": "Energía"}, {"value": "heart", "label": "Corazón"}, {"value": "users", "label": "Clientes"}, {"value": "medal", "label": "Medalla"}, {"value": "refresh", "label": "Devolución"}, {"value": "dna", "label": "ADN"}, {"value": "sparkles", "label": "Brillo"}, {"value": "calendar", "label": "Calendario"}, {"value": "droplet", "label": "Gota"}, {"value": "hair", "label": "Cabello"}, {"value": "stethoscope", "label": "Médico"}, {"value": "ban", "label": "Prohibido"}, {"value": "x-circle", "label": "Cruz"}, {"value": "map-pin", "label": "Ubicación"}, {"value": "percent", "label": "Descuento"}, {"value": "box", "label": "Paquete"}, {"value": "trend-up", "label": "Crecimiento"}, {"value": "star", "label": "Estrella"}, {"value": "sun", "label": "Sol"}, {"value": "moon", "label": "Luna"}], "default": "hair" },
-        { "type": "text", "id": "texto", "label": "Texto", "default": "Ayuda a reducir la caída del pelo" }
-      ]
-    },
-    {
-      "type": "precio", "name": "Precio", "limit": 1,
-      "settings": [
-        { "type": "paragraph", "content": "Muestra el precio del pack elegido. El texto de la etiqueta se edita en los ajustes de la sección (Oferta)." }
-      ]
-    },
-    {
-      "type": "pack", "name": "Pack", "limit": 6,
-      "settings": [
-        { "type": "text", "id": "titulo", "label": "Título", "default": "Comprá 1 · 60 días" },
-        { "type": "text", "id": "subtitulo", "label": "Texto si no hay ahorro", "default": "Para empezar" },
-        { "type": "text", "id": "etiqueta", "label": "Etiqueta", "info": "Ej: Más elegido, Mejor precio" },
         {
-          "type": "select", "id": "etiqueta_color", "label": "Color de la etiqueta",
-          "options": [ { "value": "marca", "label": "Violeta (marca)" }, { "value": "negro", "label": "Negro" }, { "value": "naranja", "label": "Naranja" }, { "value": "verde", "label": "Verde" } ],
+          "type": "image_picker",
+          "id": "imagen",
+          "label": "Imagen"
+        },
+        {
+          "type": "text",
+          "id": "alt",
+          "label": "Texto alternativo (SEO)"
+        },
+        {
+          "type": "paragraph",
+          "content": "Si agregás al menos una, la galería usa estas fotos en vez de las del producto."
+        }
+      ]
+    },
+    {
+      "type": "tarjeta",
+      "name": "Tarjeta bajo la galería",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "text",
+          "id": "titulo",
+          "label": "Título",
+          "default": "Garantía de 30 días"
+        },
+        {
+          "type": "text",
+          "id": "texto",
+          "label": "Texto",
+          "default": "Si no te convence, te devolvemos la plata."
+        },
+        {
+          "type": "select",
+          "id": "icono",
+          "label": "Ícono",
+          "options": [
+            {
+              "value": "check-circle",
+              "label": "Check"
+            },
+            {
+              "value": "check",
+              "label": "Tilde"
+            },
+            {
+              "value": "truck",
+              "label": "Envío"
+            },
+            {
+              "value": "shield",
+              "label": "Escudo / garantía"
+            },
+            {
+              "value": "card",
+              "label": "Tarjeta / cuotas"
+            },
+            {
+              "value": "clock",
+              "label": "Reloj"
+            },
+            {
+              "value": "leaf",
+              "label": "Natural / hoja"
+            },
+            {
+              "value": "capsule",
+              "label": "Cápsula"
+            },
+            {
+              "value": "flask",
+              "label": "Laboratorio"
+            },
+            {
+              "value": "gift",
+              "label": "Regalo"
+            },
+            {
+              "value": "lock",
+              "label": "Pago seguro"
+            },
+            {
+              "value": "verified",
+              "label": "Verificado"
+            },
+            {
+              "value": "bolt",
+              "label": "Energía"
+            },
+            {
+              "value": "heart",
+              "label": "Corazón"
+            },
+            {
+              "value": "users",
+              "label": "Clientes"
+            },
+            {
+              "value": "medal",
+              "label": "Medalla"
+            },
+            {
+              "value": "refresh",
+              "label": "Devolución"
+            },
+            {
+              "value": "dna",
+              "label": "ADN"
+            },
+            {
+              "value": "sparkles",
+              "label": "Brillo"
+            },
+            {
+              "value": "calendar",
+              "label": "Calendario"
+            },
+            {
+              "value": "droplet",
+              "label": "Gota"
+            },
+            {
+              "value": "hair",
+              "label": "Cabello"
+            },
+            {
+              "value": "stethoscope",
+              "label": "Médico"
+            },
+            {
+              "value": "ban",
+              "label": "Prohibido"
+            },
+            {
+              "value": "x-circle",
+              "label": "Cruz"
+            },
+            {
+              "value": "map-pin",
+              "label": "Ubicación"
+            },
+            {
+              "value": "percent",
+              "label": "Descuento"
+            },
+            {
+              "value": "box",
+              "label": "Paquete"
+            },
+            {
+              "value": "trend-up",
+              "label": "Crecimiento"
+            },
+            {
+              "value": "star",
+              "label": "Estrella"
+            },
+            {
+              "value": "sun",
+              "label": "Sol"
+            },
+            {
+              "value": "moon",
+              "label": "Luna"
+            }
+          ],
+          "default": "shield"
+        },
+        {
+          "type": "image_picker",
+          "id": "imagen",
+          "label": "Imagen (reemplaza al ícono)"
+        },
+        {
+          "type": "text",
+          "id": "valor",
+          "label": "Valor tachado (opcional)",
+          "info": "Ej: $4.500"
+        },
+        {
+          "type": "text",
+          "id": "valor_texto",
+          "label": "Texto junto al valor",
+          "default": "GRATIS"
+        }
+      ]
+    },
+    {
+      "type": "beneficio_foto",
+      "name": "Beneficio sobre la foto",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icono",
+          "label": "Ícono",
+          "options": [
+            {
+              "value": "check-circle",
+              "label": "Check"
+            },
+            {
+              "value": "check",
+              "label": "Tilde"
+            },
+            {
+              "value": "truck",
+              "label": "Envío"
+            },
+            {
+              "value": "shield",
+              "label": "Escudo / garantía"
+            },
+            {
+              "value": "card",
+              "label": "Tarjeta / cuotas"
+            },
+            {
+              "value": "clock",
+              "label": "Reloj"
+            },
+            {
+              "value": "leaf",
+              "label": "Natural / hoja"
+            },
+            {
+              "value": "capsule",
+              "label": "Cápsula"
+            },
+            {
+              "value": "flask",
+              "label": "Laboratorio"
+            },
+            {
+              "value": "gift",
+              "label": "Regalo"
+            },
+            {
+              "value": "lock",
+              "label": "Pago seguro"
+            },
+            {
+              "value": "verified",
+              "label": "Verificado"
+            },
+            {
+              "value": "bolt",
+              "label": "Energía"
+            },
+            {
+              "value": "heart",
+              "label": "Corazón"
+            },
+            {
+              "value": "users",
+              "label": "Clientes"
+            },
+            {
+              "value": "medal",
+              "label": "Medalla"
+            },
+            {
+              "value": "refresh",
+              "label": "Devolución"
+            },
+            {
+              "value": "dna",
+              "label": "ADN"
+            },
+            {
+              "value": "sparkles",
+              "label": "Brillo"
+            },
+            {
+              "value": "calendar",
+              "label": "Calendario"
+            },
+            {
+              "value": "droplet",
+              "label": "Gota"
+            },
+            {
+              "value": "hair",
+              "label": "Cabello"
+            },
+            {
+              "value": "stethoscope",
+              "label": "Médico"
+            },
+            {
+              "value": "ban",
+              "label": "Prohibido"
+            },
+            {
+              "value": "x-circle",
+              "label": "Cruz"
+            },
+            {
+              "value": "map-pin",
+              "label": "Ubicación"
+            },
+            {
+              "value": "percent",
+              "label": "Descuento"
+            },
+            {
+              "value": "box",
+              "label": "Paquete"
+            },
+            {
+              "value": "trend-up",
+              "label": "Crecimiento"
+            },
+            {
+              "value": "star",
+              "label": "Estrella"
+            },
+            {
+              "value": "sun",
+              "label": "Sol"
+            },
+            {
+              "value": "moon",
+              "label": "Luna"
+            }
+          ],
+          "default": "hair"
+        },
+        {
+          "type": "text",
+          "id": "texto",
+          "label": "Texto (corto)",
+          "default": "Fortalece el pelo"
+        }
+      ]
+    },
+    {
+      "type": "rating",
+      "name": "Estrellas",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "range",
+          "id": "estrellas",
+          "label": "Estrellas",
+          "min": 3,
+          "max": 5,
+          "step": 0.1,
+          "default": 4.8
+        },
+        {
+          "type": "inline_richtext",
+          "id": "texto",
+          "label": "Texto",
+          "default": "Calificación: <strong>4.8</strong> (Excelente)"
+        },
+        {
+          "type": "text",
+          "id": "link_texto",
+          "label": "Texto del link",
+          "default": "Más de 1.000 reseñas",
+          "info": "Usá tu número real de reseñas."
+        },
+        {
+          "type": "text",
+          "id": "link",
+          "label": "Link",
+          "default": "#hm-resenas"
+        }
+      ]
+    },
+    {
+      "type": "titulo",
+      "name": "Título",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "marca",
+          "label": "Marca",
+          "default": "DR.MEN®"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "titulo",
+          "label": "Título",
+          "default": "Activador capilar <em>HAIR</em>",
+          "info": "Vacío = nombre del producto. La cursiva se pinta con el color de marca."
+        },
+        {
+          "type": "inline_richtext",
+          "id": "subtitulo",
+          "label": "Subtítulo",
+          "default": "Menos caída de pelo, <em>crecimiento más saludable</em>"
+        }
+      ]
+    },
+    {
+      "type": "texto",
+      "name": "Texto",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "texto",
+          "label": "Texto",
+          "default": "<p><strong>Menos pelo en la almohada y en la ducha. Un pelo más fuerte y con más cuerpo, con garantía de devolución de 30 días.</strong> Una fórmula con 8 nutrientes (biotina, zinc, selenio, L-cistina, colágeno tipo II y vitaminas C, B5 y B6) que nutre el folículo desde adentro para un pelo más sano y abundante, sin químicos agresivos.*</p>"
+        }
+      ]
+    },
+    {
+      "type": "beneficio",
+      "name": "Beneficio con ícono",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icono",
+          "label": "Ícono",
+          "options": [
+            {
+              "value": "check-circle",
+              "label": "Check"
+            },
+            {
+              "value": "check",
+              "label": "Tilde"
+            },
+            {
+              "value": "truck",
+              "label": "Envío"
+            },
+            {
+              "value": "shield",
+              "label": "Escudo / garantía"
+            },
+            {
+              "value": "card",
+              "label": "Tarjeta / cuotas"
+            },
+            {
+              "value": "clock",
+              "label": "Reloj"
+            },
+            {
+              "value": "leaf",
+              "label": "Natural / hoja"
+            },
+            {
+              "value": "capsule",
+              "label": "Cápsula"
+            },
+            {
+              "value": "flask",
+              "label": "Laboratorio"
+            },
+            {
+              "value": "gift",
+              "label": "Regalo"
+            },
+            {
+              "value": "lock",
+              "label": "Pago seguro"
+            },
+            {
+              "value": "verified",
+              "label": "Verificado"
+            },
+            {
+              "value": "bolt",
+              "label": "Energía"
+            },
+            {
+              "value": "heart",
+              "label": "Corazón"
+            },
+            {
+              "value": "users",
+              "label": "Clientes"
+            },
+            {
+              "value": "medal",
+              "label": "Medalla"
+            },
+            {
+              "value": "refresh",
+              "label": "Devolución"
+            },
+            {
+              "value": "dna",
+              "label": "ADN"
+            },
+            {
+              "value": "sparkles",
+              "label": "Brillo"
+            },
+            {
+              "value": "calendar",
+              "label": "Calendario"
+            },
+            {
+              "value": "droplet",
+              "label": "Gota"
+            },
+            {
+              "value": "hair",
+              "label": "Cabello"
+            },
+            {
+              "value": "stethoscope",
+              "label": "Médico"
+            },
+            {
+              "value": "ban",
+              "label": "Prohibido"
+            },
+            {
+              "value": "x-circle",
+              "label": "Cruz"
+            },
+            {
+              "value": "map-pin",
+              "label": "Ubicación"
+            },
+            {
+              "value": "percent",
+              "label": "Descuento"
+            },
+            {
+              "value": "box",
+              "label": "Paquete"
+            },
+            {
+              "value": "trend-up",
+              "label": "Crecimiento"
+            },
+            {
+              "value": "star",
+              "label": "Estrella"
+            },
+            {
+              "value": "sun",
+              "label": "Sol"
+            },
+            {
+              "value": "moon",
+              "label": "Luna"
+            }
+          ],
+          "default": "hair"
+        },
+        {
+          "type": "text",
+          "id": "texto",
+          "label": "Texto",
+          "default": "Ayuda a reducir la caída del pelo"
+        }
+      ]
+    },
+    {
+      "type": "precio",
+      "name": "Precio",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Muestra el precio del pack elegido. El texto de la etiqueta se edita en los ajustes de la sección (Oferta)."
+        }
+      ]
+    },
+    {
+      "type": "pack",
+      "name": "Pack",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "text",
+          "id": "titulo",
+          "label": "Título",
+          "default": "Comprá 1 · 60 días"
+        },
+        {
+          "type": "text",
+          "id": "subtitulo",
+          "label": "Texto si no hay ahorro",
+          "default": "Para empezar"
+        },
+        {
+          "type": "text",
+          "id": "etiqueta",
+          "label": "Etiqueta",
+          "info": "Ej: Más elegido, Mejor precio"
+        },
+        {
+          "type": "select",
+          "id": "etiqueta_color",
+          "label": "Color de la etiqueta",
+          "options": [
+            {
+              "value": "marca",
+              "label": "Violeta (marca)"
+            },
+            {
+              "value": "negro",
+              "label": "Negro"
+            },
+            {
+              "value": "naranja",
+              "label": "Naranja"
+            },
+            {
+              "value": "verde",
+              "label": "Verde"
+            }
+          ],
           "default": "marca"
         },
-        { "type": "image_picker", "id": "imagen", "label": "Imagen del pack", "info": "PNG sin fondo con los frascos. Si está vacío, usa la foto de la variante." },
-        { "type": "header", "content": "Qué se agrega al carrito" },
-        { "type": "range", "id": "variante", "label": "Número de variante", "min": 1, "max": 10, "step": 1, "default": 1, "info": "1 = primera variante del producto, 2 = segunda, etc." },
-        { "type": "range", "id": "cantidad", "label": "Unidades de esa variante", "min": 1, "max": 6, "step": 1, "default": 1, "info": "Si cada pack es una variante con su precio, dejá 1." },
-        { "type": "product", "id": "producto", "label": "Otro producto (opcional)", "info": "Vacío = el producto de esta página." },
-        { "type": "header", "content": "Ahorro" },
-        { "type": "range", "id": "frascos", "label": "Frascos que recibe", "min": 1, "max": 12, "step": 1, "default": 1 },
-        { "type": "checkbox", "id": "comparar_con_unitario", "label": "Calcular el ahorro contra el pack 1", "default": true, "info": "Si la variante no tiene precio de comparación, tacha lo que costaría comprar esos frascos de a uno." },
-        { "type": "checkbox", "id": "preseleccionado", "label": "Seleccionado al entrar", "default": false }
+        {
+          "type": "color",
+          "id": "etiqueta_color_libre",
+          "label": "Color de etiqueta personalizado (opcional)",
+          "info": "Pisa el color elegido arriba."
+        },
+        {
+          "type": "color",
+          "id": "etiqueta_texto_color",
+          "label": "Color del texto de la etiqueta (opcional)"
+        },
+        {
+          "type": "image_picker",
+          "id": "imagen",
+          "label": "Imagen del pack",
+          "info": "PNG sin fondo con los frascos. Si está vacío, usa la foto de la variante."
+        },
+        {
+          "type": "header",
+          "content": "Precio que se muestra"
+        },
+        {
+          "type": "paragraph",
+          "content": "Vacío = toma el precio de la variante de Shopify (recomendado). Si escribís un precio acá, tiene que ser IGUAL al de la variante: Shopify cobra el precio de la variante."
+        },
+        {
+          "type": "number",
+          "id": "precio",
+          "label": "Precio del pack ($)",
+          "info": "Ej: 80800"
+        },
+        {
+          "type": "number",
+          "id": "precio_tachado",
+          "label": "Precio tachado ($)",
+          "info": "Ej: 115800. Vacío = se calcula solo."
+        },
+        {
+          "type": "text",
+          "id": "texto_ahorro",
+          "label": "Texto de ahorro de este pack (opcional)",
+          "info": "Ej: Ahorrás [monto]. Vacío = el general de la sección."
+        },
+        {
+          "type": "header",
+          "content": "Qué se agrega al carrito"
+        },
+        {
+          "type": "range",
+          "id": "variante",
+          "label": "Número de variante",
+          "min": 1,
+          "max": 10,
+          "step": 1,
+          "default": 1,
+          "info": "1 = primera variante del producto, 2 = segunda, etc."
+        },
+        {
+          "type": "range",
+          "id": "cantidad",
+          "label": "Unidades de esa variante",
+          "min": 1,
+          "max": 6,
+          "step": 1,
+          "default": 1,
+          "info": "Si cada pack es una variante con su precio, dejá 1."
+        },
+        {
+          "type": "product",
+          "id": "producto",
+          "label": "Otro producto (opcional)",
+          "info": "Vacío = el producto de esta página."
+        },
+        {
+          "type": "header",
+          "content": "Ahorro"
+        },
+        {
+          "type": "range",
+          "id": "frascos",
+          "label": "Frascos que recibe",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "default": 1
+        },
+        {
+          "type": "checkbox",
+          "id": "comparar_con_unitario",
+          "label": "Calcular el ahorro contra el pack 1",
+          "default": true,
+          "info": "Si la variante no tiene precio de comparación, tacha lo que costaría comprar esos frascos de a uno."
+        },
+        {
+          "type": "range",
+          "id": "foto_numero",
+          "label": "Foto de la galería al elegirlo",
+          "min": 0,
+          "max": 12,
+          "step": 1,
+          "default": 0,
+          "info": "0 = la foto de la variante. 1 = primera foto, 2 = segunda..."
+        },
+        {
+          "type": "checkbox",
+          "id": "preseleccionado",
+          "label": "Seleccionado al entrar",
+          "default": false
+        }
       ]
     },
     {
-      "type": "regalos", "name": "Regalos desbloqueados", "limit": 1,
+      "type": "regalos",
+      "name": "Regalos desbloqueados",
+      "limit": 1,
       "settings": [
-        { "type": "text", "id": "titulo", "label": "Título", "default": "Regalos desbloqueados" },
-        { "type": "text", "id": "texto_bloqueado", "label": "Texto bloqueado", "default": "Bloqueado" },
-        { "type": "text", "id": "regalo_1", "label": "Regalo 1", "default": "Envío gratis" },
-        { "type": "image_picker", "id": "regalo_1_img", "label": "Imagen regalo 1" },
-        { "type": "range", "id": "regalo_1_desde", "label": "Se desbloquea desde el pack", "min": 1, "max": 6, "step": 1, "default": 2 },
-        { "type": "text", "id": "regalo_2", "label": "Regalo 2", "default": "Guía capilar" },
-        { "type": "image_picker", "id": "regalo_2_img", "label": "Imagen regalo 2" },
-        { "type": "range", "id": "regalo_2_desde", "label": "Se desbloquea desde el pack", "min": 1, "max": 6, "step": 1, "default": 3 },
-        { "type": "text", "id": "regalo_3", "label": "Regalo 3", "default": "Peine de madera" },
-        { "type": "image_picker", "id": "regalo_3_img", "label": "Imagen regalo 3" },
-        { "type": "range", "id": "regalo_3_desde", "label": "Se desbloquea desde el pack", "min": 1, "max": 6, "step": 1, "default": 4 }
+        {
+          "type": "text",
+          "id": "titulo",
+          "label": "Título",
+          "default": "Regalos desbloqueados"
+        },
+        {
+          "type": "text",
+          "id": "texto_bloqueado",
+          "label": "Texto bloqueado",
+          "default": "Bloqueado"
+        },
+        {
+          "type": "text",
+          "id": "regalo_1",
+          "label": "Regalo 1",
+          "default": "Envío gratis"
+        },
+        {
+          "type": "image_picker",
+          "id": "regalo_1_img",
+          "label": "Imagen regalo 1"
+        },
+        {
+          "type": "range",
+          "id": "regalo_1_desde",
+          "label": "Se desbloquea desde el pack",
+          "min": 1,
+          "max": 6,
+          "step": 1,
+          "default": 2
+        },
+        {
+          "type": "text",
+          "id": "regalo_2",
+          "label": "Regalo 2",
+          "default": "Guía capilar"
+        },
+        {
+          "type": "image_picker",
+          "id": "regalo_2_img",
+          "label": "Imagen regalo 2"
+        },
+        {
+          "type": "range",
+          "id": "regalo_2_desde",
+          "label": "Se desbloquea desde el pack",
+          "min": 1,
+          "max": 6,
+          "step": 1,
+          "default": 3
+        },
+        {
+          "type": "text",
+          "id": "regalo_3",
+          "label": "Regalo 3",
+          "default": "Peine de madera"
+        },
+        {
+          "type": "image_picker",
+          "id": "regalo_3_img",
+          "label": "Imagen regalo 3"
+        },
+        {
+          "type": "range",
+          "id": "regalo_3_desde",
+          "label": "Se desbloquea desde el pack",
+          "min": 1,
+          "max": 6,
+          "step": 1,
+          "default": 4
+        }
       ]
     },
     {
-      "type": "envio", "name": "Fecha de entrega", "limit": 1,
+      "type": "envio",
+      "name": "Fecha de entrega",
+      "limit": 1,
       "settings": [
-        { "type": "text", "id": "texto", "label": "Texto", "default": "Hacé tu pedido hoy y recibilo antes del [fecha]", "info": "[fecha] se calcula sola sumando días hábiles." },
-        { "type": "range", "id": "dias", "label": "Días hábiles", "min": 1, "max": 15, "step": 1, "default": 6 }
+        {
+          "type": "text",
+          "id": "texto",
+          "label": "Texto",
+          "default": "Hacé tu pedido hoy y recibilo antes del [fecha]",
+          "info": "[fecha] se calcula sola sumando días hábiles."
+        },
+        {
+          "type": "range",
+          "id": "dias",
+          "label": "Días hábiles",
+          "min": 1,
+          "max": 15,
+          "step": 1,
+          "default": 6
+        }
       ]
     },
     {
-      "type": "boton", "name": "Botón de compra", "limit": 1,
+      "type": "boton",
+      "name": "Botón de compra",
+      "limit": 1,
       "settings": [
-        { "type": "text", "id": "texto", "label": "Texto del botón", "default": "Agregar al carrito" },
-        { "type": "text", "id": "garantia", "label": "Garantía dentro del botón", "default": "Garantía 30 días", "info": "Se oculta en celulares chicos." }
+        {
+          "type": "text",
+          "id": "texto",
+          "label": "Texto del botón",
+          "default": "Agregar al carrito"
+        },
+        {
+          "type": "text",
+          "id": "garantia",
+          "label": "Garantía dentro del botón",
+          "default": "Garantía 30 días",
+          "info": "Se oculta en celulares chicos."
+        }
       ]
     },
     {
-      "type": "pagos", "name": "Cuotas y transferencia", "limit": 1,
+      "type": "pagos",
+      "name": "Cuotas y transferencia",
+      "limit": 1,
       "settings": [
-        { "type": "paragraph", "content": "Cuotas y % de transferencia: en los ajustes de la sección." },
-        { "type": "text", "id": "texto_cuotas", "label": "Texto cuotas", "default": "[n] cuotas sin interés de", "info": "[n] = cantidad de cuotas" },
-        { "type": "text", "id": "texto_transferencia", "label": "Texto transferencia", "default": "con transferencia ([pct]% OFF)", "info": "[pct] = descuento" },
-        { "type": "text", "id": "texto_seguro", "label": "Texto de pago seguro", "default": "Pago 100% seguro con Mercado Pago" }
+        {
+          "type": "paragraph",
+          "content": "Cuotas y % de transferencia: en los ajustes de la sección."
+        },
+        {
+          "type": "text",
+          "id": "texto_cuotas",
+          "label": "Texto cuotas",
+          "default": "[n] cuotas sin interés de",
+          "info": "[n] = cantidad de cuotas"
+        },
+        {
+          "type": "text",
+          "id": "texto_transferencia",
+          "label": "Texto transferencia",
+          "default": "con transferencia ([pct]% OFF)",
+          "info": "[pct] = descuento"
+        },
+        {
+          "type": "text",
+          "id": "texto_seguro",
+          "label": "Texto de pago seguro",
+          "default": "Pago 100% seguro con Mercado Pago"
+        }
       ]
     },
     {
-      "type": "social", "name": "Prueba social", "limit": 1,
+      "type": "social",
+      "name": "Prueba social",
+      "limit": 1,
       "settings": [
-        { "type": "image_picker", "id": "avatar_1", "label": "Foto 1" },
-        { "type": "image_picker", "id": "avatar_2", "label": "Foto 2" },
-        { "type": "image_picker", "id": "avatar_3", "label": "Foto 3" },
-        { "type": "image_picker", "id": "avatar_4", "label": "Foto 4" },
-        { "type": "text", "id": "titulo", "label": "Título", "default": "Más de 10.000 frascos vendidos" },
-        { "type": "text", "id": "texto", "label": "Texto", "default": "de hombres que eligen DR.MEN para cuidar su pelo todos los días." }
+        {
+          "type": "image_picker",
+          "id": "avatar_1",
+          "label": "Foto 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar_2",
+          "label": "Foto 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar_3",
+          "label": "Foto 3"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar_4",
+          "label": "Foto 4"
+        },
+        {
+          "type": "text",
+          "id": "titulo",
+          "label": "Título",
+          "default": "Más de 10.000 frascos vendidos"
+        },
+        {
+          "type": "text",
+          "id": "texto",
+          "label": "Texto",
+          "default": "de hombres que eligen DR.MEN para cuidar su pelo todos los días."
+        }
       ]
     },
     {
-      "type": "aviso", "name": "Aviso",
+      "type": "aviso",
+      "name": "Aviso",
       "settings": [
-        { "type": "select", "id": "estilo", "label": "Estilo", "options": [ { "value": "alerta", "label": "Alerta (rojo)" }, { "value": "info", "label": "Marca (violeta)" } ], "default": "alerta" },
-        { "type": "select", "id": "icono", "label": "Ícono", "options": [{"value": "check-circle", "label": "Check"}, {"value": "check", "label": "Tilde"}, {"value": "truck", "label": "Envío"}, {"value": "shield", "label": "Escudo / garantía"}, {"value": "card", "label": "Tarjeta / cuotas"}, {"value": "clock", "label": "Reloj"}, {"value": "leaf", "label": "Natural / hoja"}, {"value": "capsule", "label": "Cápsula"}, {"value": "flask", "label": "Laboratorio"}, {"value": "gift", "label": "Regalo"}, {"value": "lock", "label": "Pago seguro"}, {"value": "verified", "label": "Verificado"}, {"value": "bolt", "label": "Energía"}, {"value": "heart", "label": "Corazón"}, {"value": "users", "label": "Clientes"}, {"value": "medal", "label": "Medalla"}, {"value": "refresh", "label": "Devolución"}, {"value": "dna", "label": "ADN"}, {"value": "sparkles", "label": "Brillo"}, {"value": "calendar", "label": "Calendario"}, {"value": "droplet", "label": "Gota"}, {"value": "hair", "label": "Cabello"}, {"value": "stethoscope", "label": "Médico"}, {"value": "ban", "label": "Prohibido"}, {"value": "x-circle", "label": "Cruz"}, {"value": "map-pin", "label": "Ubicación"}, {"value": "percent", "label": "Descuento"}, {"value": "box", "label": "Paquete"}, {"value": "trend-up", "label": "Crecimiento"}, {"value": "star", "label": "Estrella"}, {"value": "sun", "label": "Sol"}, {"value": "moon", "label": "Luna"}], "default": "clock" },
-        { "type": "text", "id": "titulo", "label": "Título", "default": "ATENCIÓN: stock limitado" },
-        { "type": "text", "id": "texto", "label": "Texto", "default": "Por la demanda, este producto ya se agotó varias veces. Te recomendamos aprovechar la promo de lanzamiento mientras haya stock." }
+        {
+          "type": "select",
+          "id": "estilo",
+          "label": "Estilo",
+          "options": [
+            {
+              "value": "alerta",
+              "label": "Alerta (rojo)"
+            },
+            {
+              "value": "info",
+              "label": "Marca (violeta)"
+            }
+          ],
+          "default": "alerta"
+        },
+        {
+          "type": "select",
+          "id": "icono",
+          "label": "Ícono",
+          "options": [
+            {
+              "value": "check-circle",
+              "label": "Check"
+            },
+            {
+              "value": "check",
+              "label": "Tilde"
+            },
+            {
+              "value": "truck",
+              "label": "Envío"
+            },
+            {
+              "value": "shield",
+              "label": "Escudo / garantía"
+            },
+            {
+              "value": "card",
+              "label": "Tarjeta / cuotas"
+            },
+            {
+              "value": "clock",
+              "label": "Reloj"
+            },
+            {
+              "value": "leaf",
+              "label": "Natural / hoja"
+            },
+            {
+              "value": "capsule",
+              "label": "Cápsula"
+            },
+            {
+              "value": "flask",
+              "label": "Laboratorio"
+            },
+            {
+              "value": "gift",
+              "label": "Regalo"
+            },
+            {
+              "value": "lock",
+              "label": "Pago seguro"
+            },
+            {
+              "value": "verified",
+              "label": "Verificado"
+            },
+            {
+              "value": "bolt",
+              "label": "Energía"
+            },
+            {
+              "value": "heart",
+              "label": "Corazón"
+            },
+            {
+              "value": "users",
+              "label": "Clientes"
+            },
+            {
+              "value": "medal",
+              "label": "Medalla"
+            },
+            {
+              "value": "refresh",
+              "label": "Devolución"
+            },
+            {
+              "value": "dna",
+              "label": "ADN"
+            },
+            {
+              "value": "sparkles",
+              "label": "Brillo"
+            },
+            {
+              "value": "calendar",
+              "label": "Calendario"
+            },
+            {
+              "value": "droplet",
+              "label": "Gota"
+            },
+            {
+              "value": "hair",
+              "label": "Cabello"
+            },
+            {
+              "value": "stethoscope",
+              "label": "Médico"
+            },
+            {
+              "value": "ban",
+              "label": "Prohibido"
+            },
+            {
+              "value": "x-circle",
+              "label": "Cruz"
+            },
+            {
+              "value": "map-pin",
+              "label": "Ubicación"
+            },
+            {
+              "value": "percent",
+              "label": "Descuento"
+            },
+            {
+              "value": "box",
+              "label": "Paquete"
+            },
+            {
+              "value": "trend-up",
+              "label": "Crecimiento"
+            },
+            {
+              "value": "star",
+              "label": "Estrella"
+            },
+            {
+              "value": "sun",
+              "label": "Sol"
+            },
+            {
+              "value": "moon",
+              "label": "Luna"
+            }
+          ],
+          "default": "clock"
+        },
+        {
+          "type": "text",
+          "id": "titulo",
+          "label": "Título",
+          "default": "ATENCIÓN: stock limitado"
+        },
+        {
+          "type": "text",
+          "id": "texto",
+          "label": "Texto",
+          "default": "Por la demanda, este producto ya se agotó varias veces. Te recomendamos aprovechar la promo de lanzamiento mientras haya stock."
+        }
       ]
     },
     {
-      "type": "acordeon", "name": "Desplegable",
+      "type": "acordeon",
+      "name": "Desplegable",
       "settings": [
-        { "type": "text", "id": "titulo", "label": "Título", "default": "¿Qué es HAIR?" },
-        { "type": "richtext", "id": "contenido", "label": "Contenido", "default": "<p>Contenido del desplegable.</p>" },
-        { "type": "checkbox", "id": "abierto", "label": "Abierto al entrar", "default": false }
+        {
+          "type": "text",
+          "id": "titulo",
+          "label": "Título",
+          "default": "¿Qué es HAIR?"
+        },
+        {
+          "type": "richtext",
+          "id": "contenido",
+          "label": "Contenido",
+          "default": "<p>Contenido del desplegable.</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "abierto",
+          "label": "Abierto al entrar",
+          "default": false
+        }
       ]
     },
     {
-      "type": "espacio", "name": "Espacio",
-      "settings": [ { "type": "range", "id": "alto", "label": "Alto", "min": 0, "max": 60, "step": 2, "unit": "px", "default": 12 } ]
+      "type": "espacio",
+      "name": "Espacio",
+      "settings": [
+        {
+          "type": "range",
+          "id": "alto",
+          "label": "Alto",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "default": 12
+        }
+      ]
     }
   ],
   "presets": [
     {
       "name": "HM · Producto (oferta)",
       "blocks": [
-        { "type": "tarjeta", "settings": { "titulo": "Garantía de 30 días", "texto": "Si no te convence, te devolvemos la plata.", "icono": "shield" } },
-        { "type": "tarjeta", "settings": { "titulo": "Envío protegido", "texto": "¿Se perdió o llegó dañado? Te lo reenviamos.", "icono": "box", "valor": "$4.500", "valor_texto": "GRATIS" } },
-        { "type": "tarjeta", "settings": { "titulo": "Envío gratis", "texto": "En packs de 2 frascos o más.", "icono": "truck", "valor": "$6.900", "valor_texto": "GRATIS" } },
-        { "type": "tarjeta", "settings": { "titulo": "3 cuotas sin interés", "texto": "O 10% OFF pagando con transferencia.", "icono": "card" } },
-        { "type": "rating" },
-        { "type": "titulo" },
-        { "type": "texto" },
-        { "type": "beneficio", "settings": { "icono": "hair", "texto": "Ayuda a reducir la caída del pelo" } },
-        { "type": "beneficio", "settings": { "icono": "trend-up", "texto": "Fortalece el pelo y favorece su crecimiento" } },
-        { "type": "beneficio", "settings": { "icono": "dna", "texto": "Nutre la raíz con 8 nutrientes clave" } },
-        { "type": "beneficio", "settings": { "icono": "leaf", "texto": "Sin gluten · 1 cápsula por día" } },
-        { "type": "precio" },
-        { "type": "pack", "settings": { "titulo": "Comprá 1 · 60 días", "subtitulo": "Para empezar", "variante": 1, "frascos": 1 } },
-        { "type": "pack", "settings": { "titulo": "Comprá 2 · 120 días", "etiqueta": "Más elegido", "etiqueta_color": "marca", "variante": 2, "frascos": 2, "preseleccionado": true } },
-        { "type": "pack", "settings": { "titulo": "Comprá 3 · 180 días", "etiqueta": "Tratamiento completo", "etiqueta_color": "negro", "variante": 3, "frascos": 3 } },
-        { "type": "pack", "settings": { "titulo": "Comprá 6 · 12 meses", "etiqueta": "Mejor precio", "etiqueta_color": "naranja", "variante": 4, "frascos": 6 } },
-        { "type": "regalos" },
-        { "type": "envio" },
-        { "type": "boton" },
-        { "type": "pagos" },
-        { "type": "social" },
-        { "type": "aviso" },
-        { "type": "acordeon", "settings": { "titulo": "¿Qué es HAIR?", "contenido": "<p>HAIR es un suplemento dietario en cápsulas, formulado para hombres, con vitaminas C, B5 y B6, biotina, zinc, selenio, L-cistina y colágeno tipo II. Le da a tu pelo, desde adentro, los nutrientes que necesita para crecer fuerte.</p>" } },
-        { "type": "acordeon", "settings": { "titulo": "¿Qué tiene adentro?", "contenido": "<ul><li><strong>Biotina:</strong> la vitamina del pelo. Contribuye a su mantenimiento normal.</li><li><strong>Zinc y selenio:</strong> minerales que contribuyen al mantenimiento normal del cabello.</li><li><strong>L-cistina:</strong> aminoácido azufrado, componente de la queratina.</li><li><strong>Colágeno tipo II:</strong> proteína estructural.</li><li><strong>Vitaminas C, B5 y B6:</strong> la vitamina C contribuye a la formación normal de colágeno.</li></ul><p>Sin gluten.</p>" } },
-        { "type": "acordeon", "settings": { "titulo": "¿Cómo se toma?", "contenido": "<p><strong>1 cápsula por día</strong> con agua, preferentemente con una comida. Cada frasco trae 60 cápsulas: te dura 60 días.</p><p>El pelo crece lento. Por eso recomendamos un tratamiento de 3 a 6 meses para ver resultados.</p>" } },
-        { "type": "acordeon", "settings": { "titulo": "Envíos y devoluciones", "contenido": "<p>Enviamos a todo el país. Despachamos en 24 hs hábiles y te pasamos el seguimiento.</p><p><strong>Envío gratis</strong> desde 2 frascos.</p><p>Tenés 30 días de garantía de satisfacción: si no te convence, te devolvemos la plata.</p>" } }
+        {
+          "type": "tarjeta",
+          "settings": {
+            "titulo": "Garantía de 30 días",
+            "texto": "Si no te convence, te devolvemos la plata.",
+            "icono": "shield"
+          }
+        },
+        {
+          "type": "tarjeta",
+          "settings": {
+            "titulo": "Envío protegido",
+            "texto": "¿Se perdió o llegó dañado? Te lo reenviamos.",
+            "icono": "box",
+            "valor": "$4.500",
+            "valor_texto": "GRATIS"
+          }
+        },
+        {
+          "type": "tarjeta",
+          "settings": {
+            "titulo": "Envío gratis",
+            "texto": "En packs de 2 frascos o más.",
+            "icono": "truck",
+            "valor": "$6.900",
+            "valor_texto": "GRATIS"
+          }
+        },
+        {
+          "type": "tarjeta",
+          "settings": {
+            "titulo": "3 cuotas sin interés",
+            "texto": "O 10% OFF pagando con transferencia.",
+            "icono": "card"
+          }
+        },
+        {
+          "type": "rating"
+        },
+        {
+          "type": "titulo"
+        },
+        {
+          "type": "texto"
+        },
+        {
+          "type": "beneficio",
+          "settings": {
+            "icono": "hair",
+            "texto": "Ayuda a reducir la caída del pelo"
+          }
+        },
+        {
+          "type": "beneficio",
+          "settings": {
+            "icono": "trend-up",
+            "texto": "Fortalece el pelo y favorece su crecimiento"
+          }
+        },
+        {
+          "type": "beneficio",
+          "settings": {
+            "icono": "dna",
+            "texto": "Nutre la raíz con 8 nutrientes clave"
+          }
+        },
+        {
+          "type": "beneficio",
+          "settings": {
+            "icono": "leaf",
+            "texto": "Sin gluten · 1 cápsula por día"
+          }
+        },
+        {
+          "type": "precio"
+        },
+        {
+          "type": "pack",
+          "settings": {
+            "titulo": "Comprá 1 · 60 días",
+            "subtitulo": "Para empezar",
+            "variante": 1,
+            "frascos": 1
+          }
+        },
+        {
+          "type": "pack",
+          "settings": {
+            "titulo": "Comprá 2 · 120 días",
+            "etiqueta": "Más elegido",
+            "etiqueta_color": "marca",
+            "variante": 2,
+            "frascos": 2,
+            "preseleccionado": true
+          }
+        },
+        {
+          "type": "pack",
+          "settings": {
+            "titulo": "Comprá 3 · 180 días",
+            "etiqueta": "Tratamiento completo",
+            "etiqueta_color": "negro",
+            "variante": 3,
+            "frascos": 3
+          }
+        },
+        {
+          "type": "pack",
+          "settings": {
+            "titulo": "Comprá 6 · 12 meses",
+            "etiqueta": "Mejor precio",
+            "etiqueta_color": "naranja",
+            "variante": 4,
+            "frascos": 6
+          }
+        },
+        {
+          "type": "regalos"
+        },
+        {
+          "type": "envio"
+        },
+        {
+          "type": "boton"
+        },
+        {
+          "type": "pagos"
+        },
+        {
+          "type": "social"
+        },
+        {
+          "type": "aviso"
+        },
+        {
+          "type": "acordeon",
+          "settings": {
+            "titulo": "¿Qué es HAIR?",
+            "contenido": "<p>HAIR es un suplemento dietario en cápsulas, formulado para hombres, con vitaminas C, B5 y B6, biotina, zinc, selenio, L-cistina y colágeno tipo II. Le da a tu pelo, desde adentro, los nutrientes que necesita para crecer fuerte.</p>"
+          }
+        },
+        {
+          "type": "acordeon",
+          "settings": {
+            "titulo": "¿Qué tiene adentro?",
+            "contenido": "<ul><li><strong>Biotina:</strong> la vitamina del pelo. Contribuye a su mantenimiento normal.</li><li><strong>Zinc y selenio:</strong> minerales que contribuyen al mantenimiento normal del cabello.</li><li><strong>L-cistina:</strong> aminoácido azufrado, componente de la queratina.</li><li><strong>Colágeno tipo II:</strong> proteína estructural.</li><li><strong>Vitaminas C, B5 y B6:</strong> la vitamina C contribuye a la formación normal de colágeno.</li></ul><p>Sin gluten.</p>"
+          }
+        },
+        {
+          "type": "acordeon",
+          "settings": {
+            "titulo": "¿Cómo se toma?",
+            "contenido": "<p><strong>1 cápsula por día</strong> con agua, preferentemente con una comida. Cada frasco trae 60 cápsulas: te dura 60 días.</p><p>El pelo crece lento. Por eso recomendamos un tratamiento de 3 a 6 meses para ver resultados.</p>"
+          }
+        },
+        {
+          "type": "acordeon",
+          "settings": {
+            "titulo": "Envíos y devoluciones",
+            "contenido": "<p>Enviamos a todo el país. Despachamos en 24 hs hábiles y te pasamos el seguimiento.</p><p><strong>Envío gratis</strong> desde 2 frascos.</p><p>Tenés 30 días de garantía de satisfacción: si no te convence, te devolvemos la plata.</p>"
+          }
+        }
       ]
     }
   ]
