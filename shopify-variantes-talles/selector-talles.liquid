@@ -1,0 +1,133 @@
+{%- comment -%}
+  Snippet: selector-talles
+  Selector de talles con referencia de calzado (Talle M = 34 al 38 · Talle L = 39 al 43).
+
+  Instalación desde Tienda online > Temas > ··· > Editar código:
+    1. En la carpeta "snippets" > "Agregar un nuevo snippet" > nombre: selector-talles
+       y pegá todo este archivo.
+    2. Abrí layout/theme.liquid y, justo antes de </body>, pegá:
+         {% if template.name == 'product' %}{% render 'selector-talles' %}{% endif %}
+    3. Guardá. No cambia tus variantes, SKUs ni el carrito: solo cómo se ven los botones.
+
+  Para editar textos, cambiá el objeto TALLES de abajo.
+{%- endcomment -%}
+
+<style>
+  /* Botones de talle tipo tarjeta: título + rango de calzado */
+  .tc-card {
+    display: inline-flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0 !important;
+    min-width: 140px;
+    padding: 12px 22px !important;
+    border-radius: 14px !important;
+    line-height: 1.2 !important;
+    position: relative;
+    text-align: center;
+  }
+  .tc-card .tc-title { font-weight: 600; font-size: 1.05em; }
+  .tc-card .tc-sub {
+    display: block;
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px solid currentColor;
+    border-top-color: color-mix(in srgb, currentColor 25%, transparent);
+    font-size: 0.85em;
+    font-weight: 400;
+    opacity: 0.85;
+    white-space: nowrap;
+  }
+  .tc-card .tc-badge {
+    position: absolute;
+    top: -10px;
+    right: -6px;
+    background: #1f3a8a;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    padding: 3px 8px;
+    border-radius: 999px;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  .tc-hint {
+    margin: 10px 0 0;
+    font-size: 0.85em;
+    opacity: 0.8;
+  }
+  .tc-hint strong { font-weight: 600; }
+</style>
+
+<script>
+  (function () {
+    // Editá acá los textos de cada talle (la clave es el valor de la variante, en minúscula).
+    var TALLES = {
+      'talle m': { titulo: 'Talle M', sub: 'Calzado 34 al 38' },
+      'talle l': { titulo: 'Talle L', sub: 'Calzado 39 al 43', badge: '★ Más elegido' }
+    };
+    var HINT = '📏 Elegí según tu número de calzado. <strong>¿Dudás entre dos? La mayoría elige Talle L.</strong>';
+
+    function norm(s) { return (s || '').trim().toLowerCase().replace(/\s+/g, ' '); }
+
+    function valueOf(label) {
+      var input = label.querySelector('input') ||
+        (label.htmlFor ? document.getElementById(label.htmlFor) : null);
+      return input ? input.value : null;
+    }
+
+    function enhance() {
+      document.querySelectorAll('label').forEach(function (label) {
+        if (label.dataset.tcDone) return;
+        var t = TALLES[norm(valueOf(label))];
+        if (!t) return;
+        label.dataset.tcDone = '1';
+        label.classList.add('tc-card');
+
+        // Reemplaza solo el texto visible del talle, sin tocar inputs ni textos ocultos del tema
+        var replaced = false;
+        label.childNodes.forEach(function (n) {
+          if (!replaced && n.nodeType === 3 && n.textContent.trim()) {
+            var title = document.createElement('span');
+            title.className = 'tc-title';
+            title.textContent = t.titulo;
+            label.replaceChild(title, n);
+            replaced = true;
+          }
+        });
+        if (!replaced) {
+          var inner = label.querySelector('span:not(.visually-hidden)');
+          if (inner) inner.classList.add('tc-title');
+        }
+
+        var sub = document.createElement('span');
+        sub.className = 'tc-sub';
+        sub.textContent = t.sub;
+        label.appendChild(sub);
+
+        if (t.badge) {
+          var b = document.createElement('span');
+          b.className = 'tc-badge';
+          b.setAttribute('aria-hidden', 'true');
+          b.textContent = t.badge;
+          label.appendChild(b);
+        }
+
+        var group = label.closest('fieldset') || label.parentElement;
+        if (group && !group.querySelector('.tc-hint')) {
+          var hint = document.createElement('p');
+          hint.className = 'tc-hint';
+          hint.innerHTML = HINT;
+          group.appendChild(hint);
+        }
+      });
+    }
+
+    enhance();
+    document.addEventListener('DOMContentLoaded', enhance);
+    // Muchos temas (Dawn, Horizon, etc.) vuelven a dibujar el selector al cambiar de color
+    new MutationObserver(enhance).observe(document.documentElement, { childList: true, subtree: true });
+  })();
+</script>
