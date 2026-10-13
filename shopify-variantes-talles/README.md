@@ -25,3 +25,9 @@ Convierte los botones "Talle M / Talle L" en tarjetas con el rango de calzado y 
 
 Arriba del `<script>`, en `TALLES`, se cambia el rango (`sub`), el sello (`badge`) y en `HINT` la frase de ayuda.
 Para sacar el sello "Más elegido", borrá `, badge: '★ Más elegido'`.
+
+## Color preseleccionado (Blanco)
+
+Al entrar al producto se elige automáticamente el color **Blanco** (lista `COLOR_INICIAL`).
+No se aplica si el link ya trae una variante (`?variant=...`, por ejemplo desde un anuncio), ni si el blanco está agotado.
+Funciona cuando el color se muestra como botones o muestras; si el color está en un desplegable, conviene reordenar las variantes en el admin (poner Blanco primero).

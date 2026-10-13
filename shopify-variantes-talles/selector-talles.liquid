@@ -68,6 +68,8 @@
       'talle m': { titulo: 'Talle M', sub: 'Calzado 34 al 38' },
       'talle l': { titulo: 'Talle L', sub: 'Calzado 39 al 43', badge: '★ Más elegido' }
     };
+    // Color que aparece elegido al entrar al producto (si el link no trae ya una variante).
+    var COLOR_INICIAL = ['blanco', 'blanca'];
     var HINT = '📏 Elegí según tu número de calzado. <strong>¿Dudás entre dos? La mayoría elige Talle L.</strong>';
 
     function norm(s) { return (s || '').trim().toLowerCase().replace(/\s+/g, ' '); }
@@ -125,8 +127,21 @@
       });
     }
 
+    function preseleccionarColor() {
+      if (/[?&]variant=/.test(location.search)) return; // respeta links a una variante puntual (ej. anuncios)
+      var inputs = document.querySelectorAll('input[type="radio"]');
+      for (var i = 0; i < inputs.length; i++) {
+        var inp = inputs[i];
+        if (norm(inp.name).indexOf('color') === -1) continue;
+        if (COLOR_INICIAL.indexOf(norm(inp.value)) === -1) continue;
+        if (!inp.checked && !inp.disabled) inp.click(); // dispara el cambio de variante del tema (precio, foto, stock)
+        return;
+      }
+    }
+
     enhance();
-    document.addEventListener('DOMContentLoaded', enhance);
+    document.addEventListener('DOMContentLoaded', function () { enhance(); preseleccionarColor(); });
+    if (document.readyState !== 'loading') preseleccionarColor();
     // Muchos temas (Dawn, Horizon, etc.) vuelven a dibujar el selector al cambiar de color
     new MutationObserver(enhance).observe(document.documentElement, { childList: true, subtree: true });
   })();
