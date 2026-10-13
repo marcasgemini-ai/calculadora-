@@ -391,7 +391,7 @@
 
 {% schema %}
 {
-  "name": "MB · Compra (Liquid)",
+  "name": "MB · Buy box",
   "tag": "div",
   "class": "mb-section",
   "settings": [
@@ -795,11 +795,188 @@
           "default": "<p>Respuesta</p>"
         }
       ]
+    },
+    {
+      "type": "pack",
+      "name": "Pack viejo (borrar)",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Ya no se usa: la oferta va en el bloque \"Liquid (oferta)\". Podés borrar este bloque."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Nombre",
+          "default": "Tratamiento integral 90 días"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Detalle",
+          "default": "3 frascos"
+        },
+        {
+          "type": "range",
+          "id": "quantity",
+          "label": "Unidades al carrito",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "default": 3,
+          "info": "Las que se agregan al carrito. Tus descuentos automáticos tienen que estar armados con estas mismas cantidades."
+        },
+        {
+          "type": "text",
+          "id": "variant_match",
+          "label": "Variante (opcional)",
+          "info": "Para un pack que se cobra como 1 unidad pero lleva más (ej: 2x1): creá esa variante en el producto y escribí parte de su nombre (ej: 2x1). Se agrega 1 unidad de esa variante."
+        },
+        {
+          "type": "text",
+          "id": "discount_code",
+          "label": "Código de descuento (opcional)",
+          "info": "Vacío si usás descuentos automáticos."
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Precio que se muestra",
+          "default": "$101.900"
+        },
+        {
+          "type": "text",
+          "id": "compare",
+          "label": "Precio tachado"
+        },
+        {
+          "type": "text",
+          "id": "savings",
+          "label": "Ahorro"
+        },
+        {
+          "type": "text",
+          "id": "off_badge",
+          "label": "Etiqueta de descuento (ej: 43% OFF)"
+        },
+        {
+          "type": "text",
+          "id": "per_day",
+          "label": "Por día"
+        },
+        {
+          "type": "text",
+          "id": "ribbon",
+          "label": "Cinta"
+        },
+        {
+          "type": "text",
+          "id": "chips",
+          "label": "Etiquetas rojas junto al nombre (separadas por coma)"
+        },
+        {
+          "type": "text",
+          "id": "note",
+          "label": "Frase al elegirlo"
+        },
+        {
+          "type": "checkbox",
+          "id": "default",
+          "label": "Elegido por defecto",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "bump",
+          "label": "Upsell en este pack",
+          "default": "off",
+          "options": [
+            {
+              "value": "none",
+              "label": "Sin upsell"
+            },
+            {
+              "value": "off",
+              "label": "Con descuento"
+            },
+            {
+              "value": "free",
+              "label": "Gratis"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "bump_text",
+          "label": "Texto del upsell",
+          "default": "Sumá TESTO BOOST con 50% OFF"
+        },
+        {
+          "type": "text",
+          "id": "bump_price",
+          "label": "Precio del upsell",
+          "default": "$23.800"
+        },
+        {
+          "type": "text",
+          "id": "bump_compare",
+          "label": "Precio tachado del upsell"
+        }
+      ]
+    },
+    {
+      "type": "gift",
+      "name": "Regalo viejo (borrar)",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Ya no se usa: la oferta va en el bloque \"Liquid (oferta)\". Podés borrar este bloque."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Nombre",
+          "default": "Regalo"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Imagen (opcional)"
+        },
+        {
+          "type": "text",
+          "id": "emoji",
+          "label": "Emoji si no hay imagen",
+          "default": "🎁"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Etiqueta",
+          "default": "Gratis"
+        },
+        {
+          "type": "text",
+          "id": "compare",
+          "label": "Valor tachado"
+        },
+        {
+          "type": "range",
+          "id": "min_qty",
+          "label": "Se desbloquea desde (unidades al carrito)",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "default": 2
+        }
+      ]
     }
   ],
   "presets": [
     {
-      "name": "MB · Compra (Liquid)",
+      "name": "MB · Buy box",
       "blocks": [
         {
           "type": "liquid"
