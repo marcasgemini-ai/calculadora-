@@ -123,3 +123,16 @@ HAIR a **$59.900 por unidad**, una sola variante. Se crean 2 descuentos **autom�
 El upsell Multimagnesio no entra en estos descuentos: cobra el precio del producto.
 
 Probalo antes de pautar: agregá cada pack al carrito y fijate que el checkout muestre $97.990 (2 frascos) y $119.800 (3 frascos), y que con 1 HAIR + 1 Multimagnesio no se aplique ningún descuento.
+
+## METABOMEN · Compra con oferta Liquid → `sections/mb-compra-liquid.liquid` + `custom-liquid/mb-oferta-metabomen.liquid`
+
+Misma sección "MB · Compra" (galería, encabezado, características, sellos, desplegables) pero sin los packs: la oferta va en el bloque **Liquid (oferta)**. La oferta es la misma que la de HAIR (mismos precios, upsell Multimagnesio, botón negro al carrito lateral) en rojo/negro Metabomen.
+
+1. **Editar código → Secciones → Agregar una nueva sección** → nombre `mb-compra-liquid` → borrá todo, pegá `sections/mb-compra-liquid.liquid` → **Guardar**.
+2. **Personalizar** → plantilla de producto de Metabomen → **Agregar sección → MB · Compra (Liquid)**. Ocultá la sección vieja "MB · Compra (packs)" (el ojito).
+3. Tocá el bloque **Liquid (oferta)** → pegá `custom-liquid/mb-oferta-metabomen.liquid` → **Guardar**.
+
+Descuentos: los mismos que HAIR pero con el producto **METABOMEN** a **$59.900** por unidad (una sola variante):
+- `Pack 2 frascos 50% OFF`: Monto de descuento en productos, automático, monto fijo **$10.905** por artículo (sin "una vez por pedido"), productos específicos → METABOMEN, cantidad mínima **2** → $97.990.
+- `3x2 METABOMEN`: Comprá X y llevate Y, automático, compra mínimo **2** METABOMEN, obtiene **1** METABOMEN **gratis**, máximo **1** uso por pedido → $119.800.
+- No combinar entre sí. Si ya creaste los de HAIR, podés editar esos y agregar METABOMEN en "productos específicos" (en los dos campos del 3x2).

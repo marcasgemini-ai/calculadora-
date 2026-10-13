@@ -1,0 +1,866 @@
+{%- if section.settings.custom_font -%}<style>{{ section.settings.heading_font | font_face: font_display: 'swap' }}</style>{%- endif -%}
+
+{%- liquid
+  assign prod = section.settings.product
+  if prod == blank and product
+    assign prod = product
+  endif
+  assign features = section.blocks | where: 'type', 'feature'
+  assign infos = section.blocks | where: 'type', 'info'
+  assign accs = section.blocks | where: 'type', 'accordion'
+  assign offers = section.blocks | where: 'type', 'liquid'
+-%}
+
+{%- capture ic_check -%}<svg class="mb-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor" stroke="none"/><path d="m7.5 12.3 3 3 6-6.3" stroke="#fff" stroke-width="2.4"/></svg>{%- endcapture -%}
+
+<style>
+  #mb-{{ section.id }} { --mb-pt: {{ section.settings.pt }}px; --mb-pb: {{ section.settings.pb }}px; scroll-margin-top: 20px; }
+  #mb-{{ section.id }} .bb-top { text-align: center; max-width: 820px; margin: 0 auto 34px; }
+  #mb-{{ section.id }} .bb-top__k { font-size: clamp(20px, 2.2vw, 28px); font-weight: 500; margin-bottom: 4px; }
+  #mb-{{ section.id }} .bb-top h2 { font-size: clamp(30px, 4.6vw, 54px); color: var(--mb-red); {% unless section.settings.heading_upper %}text-transform: none; letter-spacing: -.01em;{% endunless %} }
+  #mb-{{ section.id }} .bb-top p { margin: 12px auto 0; font-size: 16.5px; color: var(--mb-fg); opacity: .85; max-width: 640px; }
+  #mb-{{ section.id }} .bb-top__r { display: inline-flex; align-items: center; gap: 12px; margin-top: 14px; font-size: 14px; font-weight: 600; }
+  #mb-{{ section.id }} .bb-top__r .mb-stars { color: var(--mb-red); font-size: 18px; }
+  #mb-{{ section.id }} .bb-top__r i { width: 1px; height: 18px; background: var(--mb-line); }
+
+  #mb-{{ section.id }} .bb { display: grid; grid-template-columns: 1.05fr 1fr; gap: 36px; align-items: start; }
+  #mb-{{ section.id }} .bb > * { min-width: 0; }
+  #mb-{{ section.id }} .bb-timer { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: color-mix(in srgb, var(--mb-red) 10%, #fff); border-radius: 14px; padding: 14px 18px; margin-bottom: 16px; }
+  #mb-{{ section.id }} .bb-timer b { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; }
+  #mb-{{ section.id }} .bb-timer__r { display: flex; align-items: center; gap: 10px; font-size: 13px; white-space: nowrap; }
+  #mb-{{ section.id }} .bb-timer__r em { font-style: normal; font-weight: 800; color: var(--mb-red); }
+  #mb-{{ section.id }} .bb-timer__n { display: flex; gap: 4px; align-items: center; font-weight: 800; }
+  #mb-{{ section.id }} .bb-timer__n span { min-width: 30px; text-align: center; border: 1.5px solid var(--mb-ink); border-radius: 6px; padding: 3px 4px; background: #fff; font-variant-numeric: tabular-nums; }
+  #mb-{{ section.id }} .bb-gal { position: relative; border: 1.5px solid var(--mb-line); border-radius: 22px; overflow: hidden; background: #fff; }
+  #mb-{{ section.id }} .bb-gal__band { background: var(--mb-red); color: #fff; text-align: center; font-weight: 900; font-style: italic; font-size: clamp(14px, 1.6vw, 19px); text-transform: uppercase; padding: 12px 14px; }
+  #mb-{{ section.id }} .bb-gal__main { position: relative; }
+  #mb-{{ section.id }} .bb-gal__main .mb-ph { width: 100%; aspect-ratio: {{ section.settings.media_ratio }}; border-radius: 0; border: 0; }
+  #mb-{{ section.id }} .bb-slides { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; scrollbar-width: none; }
+  #mb-{{ section.id }} .bb-slides::-webkit-scrollbar { display: none; }
+  #mb-{{ section.id }} .bb-slide { flex: 0 0 100%; scroll-snap-align: center; aspect-ratio: {{ section.settings.media_ratio }}; background: #fff; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  #mb-{{ section.id }} .bb-slide img, #mb-{{ section.id }} .bb-slide video { width: 100%; height: 100%; object-fit: {{ section.settings.media_fit }}; display: block; }
+  #mb-{{ section.id }} .bb-slide iframe { width: 100%; height: 100%; border: 0; }
+  #mb-{{ section.id }} .bb-gal__arr { position: absolute; top: 50%; transform: translateY(-50%); width: 38px; height: 38px; border-radius: 50%; border: 0; background: rgba(0,0,0,.75); color: #fff; font-size: 20px; cursor: pointer; z-index: 2; display: flex; align-items: center; justify-content: center; }
+  #mb-{{ section.id }} .bb-gal__arr.is-prev { left: 12px; background: rgba(255,255,255,.85); color: var(--mb-ink); }
+  #mb-{{ section.id }} .bb-gal__arr.is-next { right: 12px; }
+  #mb-{{ section.id }} .bb-gal__side { position: absolute; right: 60px; top: 50%; transform: translateY(-50%); z-index: 1; background: rgba(255,255,255,.95); border: 1.5px solid var(--mb-ink); border-radius: 16px; padding: 14px 12px; display: grid; gap: 14px; width: 132px; text-align: center; }
+  #mb-{{ section.id }} .bb-gal__side div { font-size: 11.5px; font-weight: 700; line-height: 1.25; color: var(--mb-ink); }
+  #mb-{{ section.id }} .bb-gal__side .mb-ic { width: 22px; height: 22px; color: var(--mb-red); display: block; margin: 0 auto 4px; }
+  #mb-{{ section.id }} .bb-th { display: flex; gap: 8px; margin-top: 10px; overflow-x: auto; scrollbar-width: none; }
+  #mb-{{ section.id }} .bb-th button { position: relative; flex: 0 0 74px; height: 74px; padding: 0; border: 2px solid transparent; border-radius: 10px; overflow: hidden; background: #fff; cursor: pointer; }
+  #mb-{{ section.id }} .bb-th button.is-on { border-color: var(--mb-red); }
+  #mb-{{ section.id }} .bb-th img { width: 100%; height: 100%; object-fit: cover; }
+  #mb-{{ section.id }} .bb-th__play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 16px; background: rgba(0,0,0,.28); }
+  #mb-{{ section.id }} .bb-tiles { display: grid; grid-template-columns: repeat({{ features.size | at_least: 1 | at_most: 4 }}, 1fr); gap: 10px; margin-top: 16px; }
+  #mb-{{ section.id }} .bb-tiles div { background: #fff; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,.05); padding: 16px 8px; text-align: center; font-size: 11.5px; font-weight: 800; text-transform: uppercase; color: var(--mb-red); line-height: 1.25; }
+  #mb-{{ section.id }} .bb-tiles .mb-ic { width: 26px; height: 26px; display: block; margin: 0 auto 8px; }
+  #mb-{{ section.id }} .bb-tiles img { width: 28px; height: 28px; object-fit: contain; margin: 0 auto 8px; }
+
+  #mb-{{ section.id }} .bb-p__head { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 14px; }
+  #mb-{{ section.id }} .bb-p__head .mb-stars { color: var(--mb-red); font-size: 17px; margin-right: 6px; }
+  #mb-{{ section.id }} .bb-pill { display: inline-flex; align-items: center; gap: 6px; background: var(--mb-ink); color: #fff; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; padding: 6px 11px; border-radius: 999px; }
+  #mb-{{ section.id }} .bb-p h1, #mb-{{ section.id }} .bb-p .bb-title { font-size: clamp(28px, 3vw, 38px); margin: 10px 0 6px; {% unless section.settings.heading_upper %}text-transform: none; letter-spacing: -.01em;{% endunless %} }
+  #mb-{{ section.id }} .bb-sub { display: flex; align-items: center; gap: 8px; font-size: 14.5px; margin-bottom: 16px; }
+  #mb-{{ section.id }} .bb-sub::before { content: ''; width: 9px; height: 9px; border-radius: 50%; background: var(--mb-red); box-shadow: 0 0 0 4px color-mix(in srgb, var(--mb-red) 22%, transparent); }
+
+  /* Liquid personalizado (oferta): ocupa todo el ancho del panel y no hereda márgenes de la sección */
+  #mb-{{ section.id }} .bb-liquid { min-width: 0; }
+  #mb-{{ section.id }} .bb-liquid > .hm-of:first-child { margin-top: 0; }
+  #mb-{{ section.id }} .bb-liquid__empty { padding: 18px; border: 1.5px dashed var(--mb-red); border-radius: 12px; background: #fff; font-size: 13.5px; color: var(--mb-muted); text-align: center; }
+
+  #mb-{{ section.id }} .bb-checks { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; margin: 16px 2px 4px; }
+  #mb-{{ section.id }} .bb-checks div { display: flex; align-items: center; gap: 8px; font-size: 13.5px; }
+  #mb-{{ section.id }} .bb-checks .mb-ic { width: 20px; height: 20px; color: var(--mb-ink); }
+  #mb-{{ section.id }} .bb-auto { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 14px; border: 1.5px dashed var(--mb-red); border-radius: 10px; padding: 10px; background: color-mix(in srgb, var(--mb-red) 5%, #fff); font-size: 13px; font-weight: 700; color: var(--mb-red); }
+  #mb-{{ section.id }} .bb-auto span { background: var(--mb-red); color: #fff; padding: 3px 9px; border-radius: 6px; font-size: 11.5px; font-weight: 800; }
+  #mb-{{ section.id }} .bb-trust { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 22px 0 18px; text-align: center; }
+  #mb-{{ section.id }} .bb-trust .mb-ic { width: 32px; height: 32px; color: var(--mb-ink); margin: 0 auto 8px; display: block; }
+  #mb-{{ section.id }} .bb-trust b { display: block; font-size: 13.5px; line-height: 1.3; }
+  #mb-{{ section.id }} .bb-info { display: flex; align-items: center; gap: 14px; background: #fff; border: 1px solid var(--mb-line); border-radius: 14px; padding: 14px 16px; margin-top: 10px; font-size: 13.5px; }
+  #mb-{{ section.id }} .bb-info img { width: 40px; height: 40px; object-fit: contain; flex: 0 0 auto; }
+  #mb-{{ section.id }} .bb-info p { margin: 0; }
+  #mb-{{ section.id }} .bb-acc { margin-top: 18px; border-top: 1px solid var(--mb-ink); }
+  #mb-{{ section.id }} .bb-acc details { border-bottom: 1px solid var(--mb-ink); }
+  #mb-{{ section.id }} .bb-acc summary { list-style: none; cursor: pointer; padding: 16px 30px 16px 0; position: relative; font-weight: 800; font-size: 15.5px; }
+  #mb-{{ section.id }} .bb-acc summary::-webkit-details-marker { display: none; }
+  #mb-{{ section.id }} .bb-acc summary::after { content: '+'; position: absolute; right: 2px; top: 11px; font-size: 24px; font-weight: 400; }
+  #mb-{{ section.id }} .bb-acc details[open] summary::after { content: '−'; }
+  #mb-{{ section.id }} .bb-acc__a { padding: 0 0 16px; font-size: 14.5px; color: var(--mb-sub); }
+  #mb-{{ section.id }} .bb-acc__a p:last-child { margin-bottom: 0; }
+  @media (max-width: 989px) {
+    #mb-{{ section.id }} .bb { grid-template-columns: 1fr; gap: 24px; }
+  }
+  @media (max-width: 749px) {
+    #mb-{{ section.id }} .bb-top { margin-bottom: 22px; }
+    #mb-{{ section.id }} .bb-gal__side { display: none; }
+    #mb-{{ section.id }} .bb-tiles { grid-template-columns: repeat(2, 1fr); }
+    #mb-{{ section.id }} .bb-th button { flex-basis: 62px; height: 62px; }
+    #mb-{{ section.id }} .bb-timer { flex-direction: column; align-items: flex-start; }
+    #mb-{{ section.id }} .bb-checks { grid-template-columns: 1fr; }
+  }
+</style>
+
+<section id="mb-comprar" class="mb mb--{{ section.settings.scheme }}" style="--mb-red: {{ section.settings.accent }}; --mb-red-dark: {{ section.settings.accent | color_darken: 15 }};{% if section.settings.custom_font %} --mb-head: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }};{% endif %}">
+<div id="mb-{{ section.id }}">
+  <div class="mb-wrap mb-pad">
+
+    {%- if section.settings.kicker != blank or section.settings.heading != blank -%}
+      <div class="bb-top">
+        {%- if section.settings.kicker != blank -%}<div class="bb-top__k">{{ section.settings.kicker }}</div>{%- endif -%}
+        {%- if section.settings.heading != blank -%}<h2>{{ section.settings.heading }}</h2>{%- endif -%}
+        {%- if section.settings.top_text != blank -%}<p>{{ section.settings.top_text }}</p>{%- endif -%}
+        {%- if section.settings.rating_text != blank -%}
+          <div class="bb-top__r"><span class="mb-stars">★★★★★</span><span>{{ section.settings.rating_text }}</span>{%- if section.settings.reviews_count != blank -%}<i></i><span>{{ section.settings.reviews_count }}</span>{%- endif -%}</div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if prod == blank -%}
+      {%- if request.design_mode -%}<p class="mb-ph" style="aspect-ratio:auto">Elegí el producto en los ajustes de esta sección (o usala en la plantilla de producto).</p>{%- endif -%}
+    {%- else -%}
+    <div class="bb">
+
+      <div class="bb-left">
+        {%- if section.settings.timer_end != blank -%}
+          <div class="bb-timer" data-timer="{{ section.settings.timer_end | escape }}" hidden>
+            <b>{{ section.settings.timer_label }}</b>
+            <div class="bb-timer__r"><em>{{ section.settings.timer_hurry }}</em><span>{{ section.settings.timer_ends }}</span>
+              <div class="bb-timer__n"><span data-d>00</span>:<span data-h>00</span>:<span data-m>00</span>:<span data-s>00</span></div>
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- capture feat_html -%}{%- for f in features -%}<div {{ f.shopify_attributes }}>{%- if f.settings.icon_image != blank -%}{{ f.settings.icon_image | image_url: width: 80 | image_tag: loading: 'lazy', alt: '' }}{%- else -%}<svg class="mb-ic" viewBox="0 0 24 24" aria-hidden="true">{%- case f.settings.icon -%}{%- when 'bolt' -%}<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>{%- when 'moon' -%}<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>{%- when 'belly' -%}<path d="M8 3v4c0 1-2 2-2 6 0 5 3 8 6 8s6-3 6-8c0-4-2-5-2-6V3"/><circle cx="12" cy="14" r="1"/>{%- when 'heart' -%}<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>{%- when 'hourglass' -%}<path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.17a2 2 0 0 0-.59-1.42L12 12l-4.41 4.41A2 2 0 0 0 7 17.83V22"/><path d="M7 2v4.17a2 2 0 0 0 .59 1.42L12 12l4.41-4.41A2 2 0 0 0 17 6.17V2"/>{%- when 'brain' -%}<path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/>{%- when 'shield' -%}<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>{%- when 'leaf' -%}<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>{%- when 'dumbbell' -%}<path d="m6.5 6.5 11 11"/><path d="m21 21-1-1"/><path d="m3 3 1 1"/><path d="m18 22 4-4"/><path d="m2 6 4-4"/><path d="m3 10 7-7"/><path d="m14 21 7-7"/>{%- when 'capsule' -%}<path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/>{%- else -%}<path d="M20 6 9 17l-5-5"/>{%- endcase -%}</svg>{%- endif -%}{{ f.settings.text }}</div>{%- endfor -%}{%- endcapture -%}
+        <div class="bb-gal">
+          {%- if section.settings.band != blank -%}<div class="bb-gal__band">{{ section.settings.band }}</div>{%- endif -%}
+          <div class="bb-gal__main">
+            {%- liquid
+              assign gal = prod.media
+              assign start = 0
+              assign fm = prod.selected_or_first_available_variant.featured_media
+              if fm
+                for m in gal
+                  if m.id == fm.id
+                    assign start = forloop.index0
+                    break
+                  endif
+                endfor
+              endif
+            -%}
+            {%- if gal.size > 0 -%}
+              <div class="bb-slides" data-slides data-start="{{ start }}">
+                {%- for m in gal limit: 12 -%}
+                  <div class="bb-slide" data-i="{{ forloop.index0 }}" data-type="{{ m.media_type }}">
+                    {%- case m.media_type -%}
+                      {%- when 'image' -%}
+                        {%- if forloop.index0 == start -%}
+                          {{ m | image_url: width: 1500 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '400, 600, 800, 1000, 1200, 1500', sizes: '(min-width: 990px) 50vw, 100vw', alt: m.alt | default: prod.title }}
+                        {%- else -%}
+                          {{ m | image_url: width: 1500 | image_tag: loading: 'lazy', widths: '400, 600, 800, 1000, 1200, 1500', sizes: '(min-width: 990px) 50vw, 100vw', alt: m.alt | default: prod.title }}
+                        {%- endif -%}
+                      {%- when 'video' -%}
+                        {{ m | video_tag: controls: true, playsinline: true, muted: true, preload: 'metadata', image_size: '1100x' }}
+                      {%- when 'external_video' -%}
+                        {{ m | external_video_tag: loading: 'lazy' }}
+                      {%- else -%}
+                        {{ m.preview_image | image_url: width: 1200 | image_tag: loading: 'lazy', alt: m.alt | default: prod.title }}
+                    {%- endcase -%}
+                  </div>
+                {%- endfor -%}
+              </div>
+            {%- else -%}<div class="mb-ph">FOTOS DEL PRODUCTO · se toman de Shopify</div>{%- endif -%}
+            {%- if gal.size > 1 -%}
+              <button type="button" class="bb-gal__arr is-prev" data-gprev aria-label="Anterior">&#8249;</button>
+              <button type="button" class="bb-gal__arr is-next" data-gnext aria-label="Siguiente">&#8250;</button>
+            {%- endif -%}
+            {%- if section.settings.side_list and features.size > 0 -%}
+              <div class="bb-gal__side">
+                {{ feat_html }}
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+        {%- if gal.size > 1 -%}
+          <div class="bb-th">
+            {%- for m in gal limit: 12 -%}
+              <button type="button" class="{% if forloop.index0 == start %}is-on{% endif %}" data-go="{{ forloop.index0 }}" aria-label="Ver {{ forloop.index }}">
+                {{ m.preview_image | image_url: width: 160 | image_tag: loading: 'lazy', widths: '80, 160', sizes: '74px', alt: '' }}
+                {%- if m.media_type == 'video' or m.media_type == 'external_video' -%}<span class="bb-th__play" aria-hidden="true">▶</span>{%- endif -%}
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+        {%- if section.settings.tiles and features.size > 0 -%}
+          <div class="bb-tiles">
+            {{ feat_html }}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="bb-p">
+        <div class="bb-p__head">
+          <span>{%- if section.settings.panel_rating != blank -%}<span class="mb-stars">★★★★★</span>{{ section.settings.panel_rating }}{%- endif -%}</span>
+          {%- if section.settings.pill != blank -%}<span class="bb-pill">{{ section.settings.pill }}</span>{%- endif -%}
+        </div>
+        <h3 class="bb-title">{{ section.settings.title | default: prod.title }}</h3>
+        {%- if section.settings.subtitle != blank -%}<div class="bb-sub">{{ section.settings.subtitle }}</div>{%- endif -%}
+
+        {%- for o in offers -%}
+          {%- if o.settings.code != blank -%}
+            <div class="bb-liquid" {{ o.shopify_attributes }}>{{ o.settings.code }}</div>
+          {%- elsif request.design_mode -%}
+            <div class="bb-liquid" {{ o.shopify_attributes }}><p class="bb-liquid__empty">Pegá acá el código Liquid de la oferta (bloque «Liquid (oferta)»).</p></div>
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- assign checks = section.settings.checks | newline_to_br | split: '<br />' -%}
+        {%- if section.settings.checks != blank -%}
+          <div class="bb-checks">
+            {%- for c in checks -%}{%- assign ct = c | strip -%}{%- if ct != blank -%}<div>{{ ic_check }}<span>{{ ct }}</span></div>{%- endif -%}{%- endfor -%}
+          </div>
+        {%- endif -%}
+        {%- if section.settings.auto_text != blank -%}
+          <div class="bb-auto">{%- if section.settings.auto_tag != blank -%}<span>{{ section.settings.auto_tag }}</span>{%- endif -%}{{ section.settings.auto_text }}</div>
+        {%- endif -%}
+
+        {%- if section.settings.trust_1 != blank or section.settings.trust_2 != blank or section.settings.trust_3 != blank -%}
+          <div class="bb-trust">
+            {%- if section.settings.trust_1 != blank -%}<div><svg class="mb-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg><b>{{ section.settings.trust_1 }}</b></div>{%- endif -%}
+            {%- if section.settings.trust_2 != blank -%}<div><svg class="mb-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62L18.3 9.38a1 1 0 0 0-.78-.38H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg><b>{{ section.settings.trust_2 }}</b></div>{%- endif -%}
+            {%- if section.settings.trust_3 != blank -%}<div><svg class="mb-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><b>{{ section.settings.trust_3 }}</b></div>{%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- for inf in infos -%}
+          <div class="bb-info" {{ inf.shopify_attributes }}>
+            {%- if inf.settings.image != blank -%}{{ inf.settings.image | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}{%- endif -%}
+            <div>{{ inf.settings.text }}</div>
+          </div>
+        {%- endfor -%}
+
+        {%- if accs.size > 0 -%}
+          <div class="bb-acc">
+            {%- for a in accs -%}
+              <details {{ a.shopify_attributes }}><summary>{{ a.settings.title }}</summary><div class="bb-acc__a">{{ a.settings.content }}</div></details>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+    {%- endif -%}
+  </div>
+</div>
+</section>
+
+<script>
+  (function () {
+    var root = document.getElementById('mb-{{ section.id }}');
+    if (!root) return;
+
+    var track = root.querySelector('[data-slides]');
+    var slides = track ? Array.prototype.slice.call(track.children) : [];
+    var thumbs = Array.prototype.slice.call(root.querySelectorAll('.bb-th button'));
+    var gi = track ? Number(track.getAttribute('data-start')) || 0 : 0;
+    function mark() {
+      thumbs.forEach(function (t, k) { t.classList.toggle('is-on', k === gi); });
+      var on = thumbs[gi]; if (on && on.parentNode) { on.parentNode.scrollTo({ left: on.offsetLeft - 8, behavior: 'smooth' }); }
+      slides.forEach(function (sl, k) { if (k !== gi) { var v = sl.querySelector('video'); if (v && !v.paused) v.pause(); } });
+    }
+    function show(i, instant) {
+      if (!slides.length) return;
+      gi = (i + slides.length) % slides.length;
+      track.scrollTo({ left: slides[gi].offsetLeft, behavior: instant ? 'auto' : 'smooth' });
+      mark();
+    }
+    thumbs.forEach(function (t) { t.addEventListener('click', function () { show(Number(t.getAttribute('data-go'))); }); });
+    var gp = root.querySelector('[data-gprev]'), gn = root.querySelector('[data-gnext]');
+    if (gp) gp.addEventListener('click', function () { show(gi - 1); });
+    if (gn) gn.addEventListener('click', function () { show(gi + 1); });
+    if (track) {
+      var st;
+      track.addEventListener('scroll', function () {
+        clearTimeout(st);
+        st = setTimeout(function () { var k = Math.round(track.scrollLeft / track.clientWidth); if (k !== gi && slides[k]) { gi = k; mark(); } }, 90);
+      }, { passive: true });
+      if (gi > 0) show(gi, true);
+    }
+
+    var timer = root.querySelector('[data-timer]');
+    if (timer) {
+      var end = new Date(timer.getAttribute('data-timer').replace(' ', 'T')).getTime();
+      var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+      var tick = function () {
+        var d = end - Date.now();
+        if (!(d > 0)) { timer.hidden = true; return false; }
+        timer.hidden = false;
+        timer.querySelector('[data-d]').textContent = pad(Math.floor(d / 864e5));
+        timer.querySelector('[data-h]').textContent = pad(Math.floor(d / 36e5) % 24);
+        timer.querySelector('[data-m]').textContent = pad(Math.floor(d / 6e4) % 60);
+        timer.querySelector('[data-s]').textContent = pad(Math.floor(d / 1e3) % 60);
+        return true;
+      };
+      if (tick()) setInterval(tick, 1000);
+    }
+  })();
+</script>
+
+{% stylesheet %}
+/* Estilos base de las secciones mb-* (iguales en todas: cada sección funciona sola) */
+
+.mb {
+  --mb-red: #E1261C;
+  --mb-red-dark: #A9170F;
+  --mb-ink: #141517;
+  --mb-black: #0E0F11;
+  --mb-cream: #F4F1EC;
+  --mb-sand: #EAE4DA;
+  --mb-line: #E2DDD4;
+  --mb-muted: #6E6A64;
+  --mb-good: #2F8A5B;
+  --mb-gold: #E9A23B;
+  --mb-head: var(--font-heading-family, sans-serif);
+  --mb-body: var(--font-body-family, sans-serif);
+  --mb-bg: #FFFFFF;
+  --mb-fg: var(--mb-ink);
+  --mb-sub: var(--mb-muted);
+  --mb-card: #FFFFFF;
+  --mb-card-line: var(--mb-line);
+  background: var(--mb-bg);
+  color: var(--mb-fg);
+  font-family: var(--mb-body);
+  font-size: 16px;
+  line-height: 1.55;
+  letter-spacing: 0;
+  -webkit-text-size-adjust: 100%;
+}
+.mb.mb--cream { --mb-bg: var(--mb-cream); }
+.mb.mb--sand { --mb-bg: var(--mb-sand); }
+.mb.mb--red { --mb-bg: var(--mb-red); --mb-fg: #fff; --mb-sub: #FFE3E0; --mb-card: rgba(255,255,255,.1); --mb-card-line: rgba(255,255,255,.25); }
+.mb.mb--dark { --mb-bg: var(--mb-black); --mb-fg: #fff; --mb-sub: #A9AEB4; --mb-card: #17191C; --mb-card-line: #2A2E33; }
+
+.mb *, .mb *::before, .mb *::after { box-sizing: border-box; }
+.mb :where(p, li, span, b, strong, small, a, div, td, th, summary, em, label) { letter-spacing: 0; }
+.mb :where(p, li, td, th, summary) { font-size: inherit; line-height: inherit; }
+.mb p { margin: 0 0 14px; }
+.mb img, .mb video { display: block; max-width: 100%; height: auto; }
+.mb :where(h1, h2, h3, h4) { font-family: var(--mb-head); font-weight: 700; text-transform: uppercase; letter-spacing: .01em; line-height: 1.05; margin: 0; color: inherit; }
+.mb :where(h1, h2, h3) em, .mb .mb-accent { font-style: normal; color: var(--mb-red); }
+.mb.mb--red :where(h1, h2, h3) em, .mb.mb--red .mb-accent { color: var(--mb-black); }
+
+.mb-wrap { max-width: 1180px; margin: 0 auto; padding: 0 16px; }
+.mb-pad { padding-top: var(--mb-pt, 64px); padding-bottom: var(--mb-pb, 64px); }
+.mb-head { text-align: center; max-width: 780px; margin: 0 auto 30px; }
+.mb-eyebrow { display: inline-block; font-size: 12px; font-weight: 800; letter-spacing: .16em !important; text-transform: uppercase; color: var(--mb-red); margin-bottom: 10px; }
+.mb--red .mb-eyebrow { color: #fff; }
+.mb-h2 { font-size: clamp(30px, 4.6vw, 50px); }
+.mb-lead { font-size: 17px; color: var(--mb-sub); margin: 12px 0 0 !important; }
+.mb-lead p:last-child { margin-bottom: 0; }
+.mb-center { text-align: center; }
+
+.mb-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: var(--mb-red); color: #fff !important; text-decoration: none !important; border: 0; border-radius: 999px; padding: 17px 34px; font-family: var(--mb-body); font-weight: 800; font-size: 15px; letter-spacing: .06em !important; text-transform: uppercase; cursor: pointer; box-shadow: 0 5px 0 var(--mb-red-dark); transition: transform .12s ease, background .15s ease; }
+.mb-btn:hover { background: var(--mb-red-dark); transform: translateY(2px); }
+.mb-btn--dark { background: var(--mb-ink); box-shadow: 0 5px 0 #000; }
+.mb-btn--light { background: #fff; color: var(--mb-ink) !important; box-shadow: 0 5px 0 rgba(0,0,0,.18); }
+.mb-btn[disabled] { opacity: .55; cursor: default; transform: none; }
+.mb-under { font-size: 13px; color: var(--mb-sub); margin-top: 12px; }
+.mb-stars { color: var(--mb-gold); letter-spacing: 2px; white-space: nowrap; }
+.mb-rating { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; }
+
+.mb-ph { width: 100%; aspect-ratio: 1 / 1; border: 2px dashed #C8C1B5; border-radius: 18px; background: var(--mb-sand); color: #5B554D; display: flex; align-items: center; justify-content: center; text-align: center; padding: 16px; font-size: 13px; font-weight: 600; }
+.mb--dark .mb-ph, .mb--red .mb-ph { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.3); color: rgba(255,255,255,.75); }
+.mb-ph svg { width: 70%; height: auto; opacity: .35; }
+
+.mb-card { background: var(--mb-card); border: 1px solid var(--mb-card-line); border-radius: 18px; }
+.mb-ic { width: 1em; height: 1em; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.mb-check { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.mb-check li { display: flex; gap: 10px; align-items: flex-start; margin: 0; font-size: 16px; }
+.mb-check li::before { content: ''; flex: 0 0 20px; height: 20px; margin-top: 2px; border-radius: 50%; background: var(--mb-red) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / 12px no-repeat; }
+
+.mb-scroller { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(280px, calc((100% - 32px) / 3)); gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 4px 2px 14px; scrollbar-width: thin; }
+.mb-scroller > * { scroll-snap-align: start; min-width: 0; }
+.mb-arrows { display: flex; justify-content: center; gap: 10px; margin-top: 10px; }
+.mb-arrows button { width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--mb-card-line); background: var(--mb-card); color: var(--mb-fg); font-size: 18px; cursor: pointer; }
+
+@media (max-width: 749px) {
+  .mb-pad { padding-top: var(--mb-pt-m, 44px); padding-bottom: var(--mb-pb-m, 44px); }
+  .mb-btn { display: flex; width: 100%; }
+  .mb-scroller { grid-auto-columns: 84%; }
+  .mb-lead { font-size: 16px; }
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "MB · Compra (Liquid)",
+  "tag": "div",
+  "class": "mb-section",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Producto",
+      "info": "En la plantilla de producto se usa solo. Elegilo si ponés esta sección en otra página."
+    },
+    {
+      "type": "header",
+      "content": "Encabezado de la oferta"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Texto chico",
+      "default": "¡Oferta por tiempo limitado!"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Título",
+      "default": "Ahorrá hasta 50% en tu tratamiento"
+    },
+    {
+      "type": "checkbox",
+      "id": "heading_upper",
+      "label": "Títulos en mayúsculas",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "top_text",
+      "label": "Bajada",
+      "default": "Fórmula de 14 activos + protocolo de sueño y alimentación. Con 60 días de garantía."
+    },
+    {
+      "type": "text",
+      "id": "rating_text",
+      "label": "Calificación",
+      "default": "4,8/5 estrellas",
+      "info": "Usá tu promedio real."
+    },
+    {
+      "type": "text",
+      "id": "reviews_count",
+      "label": "Cantidad de reseñas",
+      "default": "[X] reseñas"
+    },
+    {
+      "type": "header",
+      "content": "Cuenta regresiva"
+    },
+    {
+      "type": "text",
+      "id": "timer_end",
+      "label": "Termina el (AAAA-MM-DD HH:MM)",
+      "info": "Fecha real de fin de la promo. Vacío = no se muestra. Cuando llega a cero se oculta sola."
+    },
+    {
+      "type": "text",
+      "id": "timer_label",
+      "label": "Texto",
+      "default": "Oferta por tiempo limitado"
+    },
+    {
+      "type": "text",
+      "id": "timer_hurry",
+      "label": "Palabra destacada",
+      "default": "¡Apurate!"
+    },
+    {
+      "type": "text",
+      "id": "timer_ends",
+      "label": "Texto antes del reloj",
+      "default": "Termina en"
+    },
+    {
+      "type": "header",
+      "content": "Galería"
+    },
+    {
+      "type": "paragraph",
+      "content": "La galería usa las fotos y videos del producto en Shopify (Productos › Multimedia), en ese orden. Arranca en la foto de la variante elegida."
+    },
+    {
+      "type": "select",
+      "id": "media_ratio",
+      "label": "Proporción de la galería",
+      "default": "1 / 1",
+      "options": [
+        {
+          "value": "1 / 1",
+          "label": "Cuadrada"
+        },
+        {
+          "value": "4 / 5",
+          "label": "Vertical"
+        },
+        {
+          "value": "3 / 4",
+          "label": "Vertical alta"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "media_fit",
+      "label": "Ajuste de las fotos",
+      "default": "cover",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Llenar el recuadro"
+        },
+        {
+          "value": "contain",
+          "label": "Mostrar la foto entera"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "band",
+      "label": "Banda sobre la foto",
+      "default": "Oferta: hasta 50% OFF + envío gratis"
+    },
+    {
+      "type": "checkbox",
+      "id": "side_list",
+      "label": "Lista de características sobre la foto",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "tiles",
+      "label": "Tarjetas de características debajo de las fotos",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Panel de compra"
+    },
+    {
+      "type": "paragraph",
+      "content": "La oferta (packs, upsell y botón) va en el bloque \"Liquid (oferta)\": pegá ahí el código de la oferta."
+    },
+    {
+      "type": "text",
+      "id": "panel_rating",
+      "label": "Calificación arriba del nombre",
+      "default": "[X] reseñas"
+    },
+    {
+      "type": "text",
+      "id": "pill",
+      "label": "Etiqueta negra (vacío = no)",
+      "default": "Más vendido"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Nombre del producto (vacío = el de Shopify)",
+      "default": "Metabomen · Tratamiento integral +40"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Frase bajo el nombre",
+      "default": "Pedí hoy con hasta 50% off"
+    },
+    {
+      "type": "textarea",
+      "id": "checks",
+      "label": "Tildes debajo de la oferta (una por línea)",
+      "info": "Vacío = no se muestran."
+    },
+    {
+      "type": "text",
+      "id": "auto_tag",
+      "label": "Etiqueta del descuento",
+      "default": "PACK"
+    },
+    {
+      "type": "text",
+      "id": "auto_text",
+      "label": "Texto de descuento aplicado (vacío = no)",
+      "default": "Descuento aplicado automáticamente"
+    },
+    {
+      "type": "header",
+      "content": "Sellos de abajo"
+    },
+    {
+      "type": "text",
+      "id": "trust_1",
+      "label": "Sello 1 (escudo)",
+      "default": "60 días de garantía"
+    },
+    {
+      "type": "text",
+      "id": "trust_2",
+      "label": "Sello 2 (camión)",
+      "default": "Envío gratis con seguimiento"
+    },
+    {
+      "type": "text",
+      "id": "trust_3",
+      "label": "Sello 3 (personas)",
+      "default": "Hombres de todo el país"
+    },
+    {
+      "type": "header",
+      "content": "Diseño"
+    },
+    {
+      "type": "select",
+      "id": "scheme",
+      "label": "Fondo",
+      "default": "light",
+      "options": [
+        {
+          "value": "light",
+          "label": "Blanco"
+        },
+        {
+          "value": "cream",
+          "label": "Crema"
+        },
+        {
+          "value": "sand",
+          "label": "Arena"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Espacio arriba",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Espacio abajo",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "header",
+      "content": "Estilo de marca"
+    },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Color de acento",
+      "default": "#E1261C"
+    },
+    {
+      "type": "checkbox",
+      "id": "custom_font",
+      "label": "Usar otra tipografía en los títulos",
+      "default": false,
+      "info": "Si no, usa la del theme. Para el estilo Metabomen elegí Oswald."
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_font",
+      "label": "Tipografía de títulos",
+      "default": "assistant_n4"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "liquid",
+      "name": "Liquid (oferta)",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Pegá acá el código de la oferta (packs + upsell + botón). Se muestra debajo del nombre del producto."
+        },
+        {
+          "type": "liquid",
+          "id": "code",
+          "label": "Código Liquid"
+        }
+      ]
+    },
+    {
+      "type": "feature",
+      "name": "Característica",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Ícono",
+          "default": "check",
+          "options": [
+            {
+              "value": "bolt",
+              "label": "Rayo"
+            },
+            {
+              "value": "moon",
+              "label": "Luna"
+            },
+            {
+              "value": "belly",
+              "label": "Panza"
+            },
+            {
+              "value": "heart",
+              "label": "Corazón"
+            },
+            {
+              "value": "hourglass",
+              "label": "Reloj de arena"
+            },
+            {
+              "value": "brain",
+              "label": "Cerebro"
+            },
+            {
+              "value": "shield",
+              "label": "Escudo"
+            },
+            {
+              "value": "leaf",
+              "label": "Hoja"
+            },
+            {
+              "value": "dumbbell",
+              "label": "Pesa"
+            },
+            {
+              "value": "capsule",
+              "label": "Cápsula"
+            },
+            {
+              "value": "check",
+              "label": "Tilde"
+            }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Ícono propio (opcional)"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texto",
+          "default": "Característica"
+        }
+      ]
+    },
+    {
+      "type": "info",
+      "name": "Recuadro informativo",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Imagen o logo"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Texto",
+          "default": "<p>Texto</p>"
+        }
+      ]
+    },
+    {
+      "type": "accordion",
+      "name": "Desplegable",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Título",
+          "default": "Pregunta"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Contenido",
+          "default": "<p>Respuesta</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MB · Compra (Liquid)",
+      "blocks": [
+        {
+          "type": "liquid"
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "capsule",
+            "text": "1 cápsula por día"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "moon",
+            "text": "Mejor descanso"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "bolt",
+            "text": "Más energía"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "hourglass",
+            "text": "Sentite más joven"
+          }
+        },
+        {
+          "type": "info",
+          "settings": {
+            "text": "<p><strong>Producto registrado.</strong> RNPA [número] · Elaborado en laboratorio habilitado.</p>"
+          }
+        },
+        {
+          "type": "accordion",
+          "settings": {
+            "title": "Cómo se toma",
+            "content": "<p>1 cápsula por día con el desayuno, con un vaso de agua. No la tomes de noche: tiene té verde.</p>"
+          }
+        },
+        {
+          "type": "accordion",
+          "settings": {
+            "title": "¿Es para mí?",
+            "content": "<p>Para hombres de +40 que duermen mal, tienen panza, poca energía o se sienten más viejos de lo que son. Si tomás medicación o tenés presión alta, consultá a tu médico.</p>"
+          }
+        },
+        {
+          "type": "accordion",
+          "settings": {
+            "title": "Ingredientes",
+            "content": "<p>Resveratrol y semilla de uva, vitamina C, zinc, magnesio, té verde, naranja amarga, ginkgo biloba y L-arginina, entre otros. Ver dosis en la etiqueta.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
