@@ -5,8 +5,8 @@
   Instalación desde Tienda online > Temas > ··· > Editar código:
     1. En la carpeta "snippets" > "Agregar un nuevo snippet" > nombre: selector-talles
        y pegá todo este archivo.
-    2. Abrí layout/theme.liquid y, justo antes de </body>, pegá:
-         {% if template.name == 'product' %}{% render 'selector-talles' %}{% endif %}
+    2. En layout/theme.liquid, justo antes del cierre del body, agregá el render de
+       este snippet solo para productos (ver README).
     3. Guardá. No cambia tus variantes, SKUs ni el carrito: solo cómo se ven los botones.
 
   Para editar textos, cambiá el objeto TALLES de abajo.
