@@ -136,3 +136,14 @@ Descuentos: los mismos que HAIR pero con el producto **METABOMEN** a **$59.900**
 - `Pack 2 frascos 50% OFF`: Monto de descuento en productos, automático, monto fijo **$10.905** por artículo (sin "una vez por pedido"), productos específicos → METABOMEN, cantidad mínima **2** → $97.990.
 - `3x2 METABOMEN`: Comprá X y llevate Y, automático, compra mínimo **2** METABOMEN, obtiene **1** METABOMEN **gratis**, máximo **1** uso por pedido → $119.800.
 - No combinar entre sí. Si ya creaste los de HAIR, podés editar esos y agregar METABOMEN en "productos específicos" (en los dos campos del 3x2).
+
+## BRONZER · Oferta con Liquid → `sections/bronzer-oferta.liquid` + `custom-liquid/dw-oferta-bronzer.liquid`
+
+Tu sección "Bronzer · Oferta" (encabezado, contador, galería, íconos, ventajas, cupón, confianza, garantía, desplegables) sin el selector de packs: la oferta va en el bloque **Liquid (oferta)**. La oferta es la del Bronzer (mismos precios) con el upsell CELUFIT como tarjeta de producto (foto, 2 beneficios, precio).
+
+1. **Editar código → Secciones →** el archivo de "Bronzer · Oferta" → borrá todo, pegá `sections/bronzer-oferta.liquid` → **Guardar**. Lo que ya tenías cargado queda igual.
+2. **Personalizar** → producto Bronzer → sección **Bronzer · Oferta** → **Agregar bloque → Liquid (oferta)** → pegá `custom-liquid/dw-oferta-bronzer.liquid` → **Guardar**.
+3. En los ajustes de la sección, **Descuento máximo ([max_off])** = `50%` (antes se calculaba de los packs).
+4. Los bloques **Upsell / Pack / Regalo viejo (borrar)** ya no se muestran: borralos cuando quieras.
+
+Descuentos: iguales a HAIR con el producto **BRONZER** a **$59.900** por unidad (2 frascos: $10.905 por artículo, mínimo 2 → $97.990 · 3x2: Comprá X y llevate Y, compra 2 obtiene 1 gratis, máx. 1 uso → $119.800).
