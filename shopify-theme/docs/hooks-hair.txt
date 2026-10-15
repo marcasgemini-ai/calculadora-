@@ -8,31 +8,31 @@ Cómo es: dos mujeres de 30 y pico, fit y muy lindas, entrenando juntas en el gi
 — ¿Pelado pelado?
 — Se le ve la coronilla desde la cinta. Me da vergüenza.
 
-HOOK 2 · GYM
-Cómo es: las mismas dos, descansando entre series. Habla primero la que toma agua.
-— Hoy en el vestuario me preguntaron si mi marido es mi papá.
-— No…
-— Sí. Se está quedando pelado y le sumó diez años.
-
-HOOK 3 · GYM
-Cómo es: las mismas dos, en la máquina de glúteos. Habla primero la que está en la máquina.
-— El personal trainer me dijo que mi marido parecía mi tío.
-— ¿Por el pelo?
-— Por el pelo. Y tiene razón. Está feo.
-
-HOOK 4 · HOMBRES
+HOOK 2 · ASADO
 Cómo es: dos amigos de unos 40 en un asado, al lado de la parrilla. Habla primero el que se está quedando pelado.
 — Che, ¿vos te diste cuenta que en las fotos del asado ya se me ve el cuero?
 — Te iba a decir… pero no quería ser yo.
 — Mi mujer me lo dijo antes que vos. Eso me dolió.
 
-HOOK 5 · HOMBRES
+HOOK 3 · VESTUARIO
+Cómo es: vestuario después del fútbol, dos amigos de unos 35 secándose. Habla primero el que carga.
+— Boludo, el agua de la ducha te rebota en la cabeza.
+— Reíte. Hace un año yo estaba igual que vos.
+— ¿Y ahora qué hacés?
+
+HOOK 4 · BARBERÍA
 Cómo es: barbería. El cliente, de unos 38, habla primero; le contesta el barbero.
 — Hacé lo que puedas, pero que no se note la coronilla.
 — Hermano, eso no se tapa con un corte.
 — Entonces decime qué hago, porque me está matando.
 
-HOOK 6 · HOMBRES
+HOOK 5 · LA FOTO
+Cómo es: dos amigos de unos 42 tomando una cerveza en un bar. Habla primero el que confiesa.
+— Me puse gorra hasta para el cumpleaños de mi hija. Ahí dije basta.
+— ¿Tan mal?
+— Peor. Me vi en una foto de arriba y no me reconocí.
+
+HOOK 6 · AUTO
 Cómo es: dos amigos de unos 40 en el auto. Habla primero el que maneja.
 — ¿Sabés qué es lo peor de quedarse pelado? Que tu mujer deja de mirarte igual.
 — No digas eso…
