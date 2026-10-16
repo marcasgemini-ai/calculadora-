@@ -11,7 +11,7 @@
 
   # Packs (en orden). Precios en pesos, sin puntos.
   assign p_bottles = '1|2|3|6' | split: '|'
-  assign p_name    = 'Pack 1 Mes|Pack 2 Meses|Pack 3 Meses|Pack 6 Meses' | split: '|'
+  assign p_name    = 'Pack 2x1|Pack 4 Meses|Pack 6 Meses|Pack Anual' | split: '|'
   assign p_price   = '49990|73990|109770|169890' | split: '|'
   assign p_badge   = '-|Más elegido|Mejor opción|🔥 Descuento exclusivo' | split: '|'
   assign p_hot     = 4
@@ -19,8 +19,8 @@
 
   # Cuánto dura y qué trae 1 frasco (para "Para X meses" y la pastilla).
   # caps_per_bottle = '-' muestra "N frascos" en la pastilla en vez de "N cápsulas".
-  assign days_per_bottle = 30
-  assign caps_per_bottle = '-'
+  assign days_per_bottle = 60
+  assign caps_per_bottle = '60'
 
   # Upsell (producto de oferta: la 1ª variante es la del precio promo)
   assign up_handle = 'slimfit-oferta-upsell'
