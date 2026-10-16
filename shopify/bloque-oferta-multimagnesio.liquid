@@ -1,0 +1,341 @@
+{%- comment -%}
+  DR WOMAN · Selector de packs (misma oferta y diseño que Bronzer) · versión MULTIMAGNESIO
+  Pegar en: Personalizar > Producto > Agregar bloque > Liquid personalizado
+  Para otro producto: copiá el bloque y cambiá SOLO la CONFIGURACIÓN.
+  Packs: 1, 2, 3 y 6 frascos. El precio del producto en Shopify es el del pack 1 (1 frasco)
+  y los packs se cobran con los descuentos automáticos por cantidad (los mismos de Bronzer).
+{%- endcomment -%}
+{%- liquid
+  # ===================== CONFIGURACIÓN =====================
+  assign heading = 'OFERTA DÍA DE LA MADRE'
+
+  # Packs (en orden). Precios en pesos, sin puntos.
+  assign p_bottles = '1|2|3|6' | split: '|'
+  assign p_name    = 'Pack 2x1|Pack 4 Meses|Pack 6 Meses|Pack Anual' | split: '|'
+  assign p_price   = '49990|73990|109770|169890' | split: '|'
+  assign p_badge   = '-|Más elegido|Mejor opción|🔥 Descuento exclusivo' | split: '|'
+  assign p_hot     = 4
+  assign preselected = 2
+
+  # Cuánto dura y qué trae 1 frasco (para "Para X meses" y la pastilla).
+  # caps_per_bottle = '-' muestra "N frascos" en la pastilla en vez de "N cápsulas".
+  # caps_word: cómo se llaman (cápsulas, comprimidos, gomitas…).
+  assign days_per_bottle = 60
+  assign caps_per_bottle = '60'
+  assign caps_word = 'cápsulas'
+
+  # Upsell (producto de oferta: la 1ª variante es la del precio promo)
+  assign up_handle = 'slimfit-oferta-upsell'
+  assign up_text   = 'Bajá kilos con SLIMFIT <b>al 50% OFF</b>'
+  assign up_price  = 29850
+  assign up_save   = 29850
+
+  # Colores de la marca del producto
+  assign c_ink   = '#3C4751'
+  assign c_main  = '#647788'
+  assign c_hot   = '#3C4751'
+  assign c_tag   = '#E1EAF3'
+  assign c_soft  = '#F5F8FB'
+  assign c_line  = '#D8DCE0'
+  assign c_off   = '#8E9499'
+  # =================== FIN CONFIGURACIÓN ===================
+
+  assign dw_variant = product.selected_or_first_available_variant
+  assign dw_up = all_products[up_handle]
+  assign dw_up_variant = dw_up.variants.first
+  assign base_price = p_price[0] | plus: 0
+  assign init_save = 0
+-%}
+
+<div class="dw-offer" id="dw-offer" data-variant="{{ dw_variant.id }}" data-cart-add="{{ routes.cart_add_url }}.js" data-cart="{{ routes.cart_url }}" data-root="{{ routes.root_url }}" data-upsell="{{ up_handle }}"
+  style="--dw-brown:{{ c_ink }};--dw-main:{{ c_main }};--dw-hot:{{ c_hot }};--dw-peach:{{ c_tag }};--dw-cream:{{ c_soft }};--dw-line:{{ c_line }};--dw-off:{{ c_off }};">
+  <div class="dw-head"><span>{{ heading }}</span></div>
+
+  {%- for nm in p_name -%}
+    {%- liquid
+      assign i = forloop.index0
+      assign bottles = p_bottles[i] | plus: 0
+      assign price = p_price[i] | plus: 0
+      assign compare = base_price | times: bottles
+      assign save = compare | minus: price
+      if save < 0
+        assign save = 0
+      endif
+      assign badge = p_badge[i] | strip
+      if forloop.index == preselected
+        assign init_save = save
+      endif
+
+      assign months = bottles | times: days_per_bottle | divided_by: 30 | floor
+      if months == 1
+        assign dur = '1 mes'
+      else
+        assign dur = months | append: ' meses'
+      endif
+
+      if caps_per_bottle == '-'
+        if bottles == 1
+          assign tag = '1 frasco'
+        else
+          assign tag = bottles | append: ' frascos'
+        endif
+      else
+        assign tag = caps_per_bottle | plus: 0 | times: bottles | append: ' ' | append: caps_word
+      endif
+
+      assign n = price
+      assign th = n | divided_by: 1000 | floor
+      assign rest = n | modulo: 1000 | prepend: '00' | slice: -3, 3
+      if th > 999
+        assign mi = th | divided_by: 1000 | floor
+        assign th3 = th | modulo: 1000 | prepend: '00' | slice: -3, 3
+        assign price_txt = '$' | append: mi | append: '.' | append: th3 | append: '.' | append: rest
+      elsif th > 0
+        assign price_txt = '$' | append: th | append: '.' | append: rest
+      else
+        assign price_txt = '$' | append: n
+      endif
+
+      assign n = compare
+      assign th = n | divided_by: 1000 | floor
+      assign rest = n | modulo: 1000 | prepend: '00' | slice: -3, 3
+      if th > 999
+        assign mi = th | divided_by: 1000 | floor
+        assign th3 = th | modulo: 1000 | prepend: '00' | slice: -3, 3
+        assign compare_txt = '$' | append: mi | append: '.' | append: th3 | append: '.' | append: rest
+      elsif th > 0
+        assign compare_txt = '$' | append: th | append: '.' | append: rest
+      else
+        assign compare_txt = '$' | append: n
+      endif
+    -%}
+  <label class="dw-bar{% if forloop.index == preselected %} is-active{% endif %}">
+    {%- if badge != '-' and badge != '' -%}<span class="dw-badge{% if forloop.index == p_hot %} dw-badge--hot{% endif %}">{{ badge }}</span>{%- endif -%}
+    <input type="radio" name="dw-pack" value="{{ bottles }}" data-save="{{ save }}" data-total="{{ price }}"{% if forloop.index == preselected %} checked{% endif %}>
+    <span class="dw-radio"></span>
+    <span class="dw-info">
+      <span class="dw-title">{{ nm | strip }} <span class="dw-tag">{{ tag }}</span></span>
+      <span class="dw-sub">Para <b>{{ dur }}</b> + <b>ENVÍO GRATIS</b></span>
+    </span>
+    <span class="dw-prices">
+      <span class="dw-price">{{ price_txt }}</span>
+      {%- if save > 0 -%}<s class="dw-compare">{{ compare_txt }}</s>{%- endif -%}
+    </span>
+  </label>
+  {%- endfor -%}
+
+  {%- liquid
+    assign n = up_price
+    assign th = n | divided_by: 1000 | floor
+    assign rest = n | modulo: 1000 | prepend: '00' | slice: -3, 3
+    if th > 0
+      assign up_txt = '$' | append: th | append: '.' | append: rest
+    else
+      assign up_txt = '$' | append: n
+    endif
+    assign n = init_save
+    assign th = n | divided_by: 1000 | floor
+    assign rest = n | modulo: 1000 | prepend: '00' | slice: -3, 3
+    if th > 0
+      assign save_txt = '$' | append: th | append: '.' | append: rest
+    else
+      assign save_txt = '$' | append: n
+    endif
+  -%}
+  <label class="dw-upsell"{% unless dw_up_variant.available %} hidden{% endunless %}>
+    <input type="checkbox" id="dw-up" value="{% if dw_up_variant.available %}{{ dw_up_variant.id }}{% endif %}" data-save="{{ up_save }}" data-total="{{ up_price }}">
+    <span class="dw-check"></span>
+    <span class="dw-up-text">{{ up_text }}</span>
+    <span class="dw-up-price">{{ up_txt }}</span>
+  </label>
+
+  <div class="dw-save">→ Estás ahorrando <strong data-dw-save>{{ save_txt }}</strong> en este pedido</div>
+
+  <button type="button" class="dw-btn"><span data-dw-btn-label>Agregar al carrito</span><span class="dw-btn-total" data-dw-total></span></button>
+  <p class="dw-msg" data-dw-msg role="alert" hidden></p>
+
+</div>
+
+<style>
+  .dw-offer{width:100%;max-width:100%;margin:14px 0;padding:0;background:transparent;overflow:visible;
+    color:var(--dw-brown);font-family:inherit;line-height:1.3;letter-spacing:0;box-sizing:border-box}
+  .dw-offer *,.dw-offer *:before,.dw-offer *:after{box-sizing:border-box;letter-spacing:0}
+  .dw-head{display:flex;align-items:center;gap:10px;margin:0 0 16px;font-size:14px;font-weight:600;white-space:nowrap}
+  .dw-head:before,.dw-head:after{content:"";flex:1;height:1px;background:var(--dw-line)}
+  .dw-offer .dw-bar{position:relative;display:flex;align-items:center;gap:12px;width:100%;margin:0 0 14px;padding:16px 18px;
+    background:#fff;border:1.5px solid var(--dw-line);border-radius:12px;cursor:pointer;
+    transition:border-color .2s,box-shadow .2s;-webkit-tap-highlight-color:transparent}
+  .dw-offer .dw-bar.is-active{border:2px solid var(--dw-main);box-shadow:0 2px 12px rgba(0,0,0,.08)}
+  .dw-offer input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+  .dw-radio{flex:0 0 20px;width:20px;height:20px;border:2px solid var(--dw-off);border-radius:50%;position:relative}
+  .dw-bar.is-active .dw-radio{border-color:var(--dw-main)}
+  .dw-bar.is-active .dw-radio:after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--dw-main)}
+  .dw-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+  .dw-title{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-size:17px;font-weight:700}
+  .dw-sub{font-size:13px;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .dw-sub b{font-weight:700}
+  .dw-tag{background:var(--dw-peach);font-size:12px;font-weight:700;padding:2px 8px;border-radius:6px;white-space:nowrap}
+  .dw-prices{display:flex;flex-direction:column;align-items:flex-end;white-space:nowrap}
+  .dw-price{font-size:18px;font-weight:700}
+  .dw-compare{font-size:13px;opacity:.55}
+  .dw-msg[hidden]{display:none}
+  .dw-btn-total{font-weight:600;opacity:.85}
+  .dw-btn-total:not(:empty):before{content:" · "}
+  .dw-msg{margin:8px 0 0;font-size:13px;color:#B4432B;text-align:center}
+  .dw-badge{position:absolute;top:-11px;right:14px;background:var(--dw-main);color:#fff;font-size:12px;font-weight:700;
+    padding:3px 10px;border-radius:6px;line-height:1.3}
+  .dw-badge--hot{background:var(--dw-hot)}
+  .dw-offer .dw-upsell[hidden],.dw-save[hidden]{display:none}
+  .dw-offer .dw-upsell{position:relative;display:flex;align-items:center;gap:10px;width:100%;margin:0 0 12px;padding:14px 18px;
+    background:var(--dw-cream);border:1.5px dashed var(--dw-off);border-radius:12px;cursor:pointer;font-size:14px}
+  .dw-check{flex:0 0 18px;width:18px;height:18px;border:2px solid var(--dw-main);border-radius:4px;position:relative;background:#fff}
+  .dw-upsell input:checked + .dw-check{background:var(--dw-main)}
+  .dw-upsell input:checked + .dw-check:after{content:"";position:absolute;left:4px;top:0;width:5px;height:10px;
+    border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+  .dw-up-text{flex:1;min-width:0;font-weight:500}
+  .dw-up-price{font-weight:700;white-space:nowrap}
+  .dw-save{margin:0 0 12px;padding:10px 14px;border:1px solid var(--dw-line);border-radius:10px;font-size:14px;text-align:center}
+  .dw-offer .dw-btn{display:block;width:100%;min-height:54px;margin:0;padding:16px;background:var(--dw-main);color:#fff;
+    border:0;border-radius:10px;font-family:inherit;font-size:17px;font-weight:700;text-transform:none;
+    cursor:pointer;-webkit-appearance:none;appearance:none;transition:opacity .2s}
+  .dw-offer .dw-btn:hover{opacity:.92}
+  .dw-offer .dw-btn:disabled{opacity:.6;cursor:wait}
+  @media (max-width:749px){
+    .dw-offer .dw-bar{padding:14px 14px;gap:10px}
+    .dw-title{font-size:15px;gap:4px 5px}
+    .dw-tag{font-size:11px;padding:2px 6px}
+    .dw-price{font-size:16px}
+    .dw-sub{font-size:12px}
+    .dw-compare{font-size:12px}
+    .dw-offer .dw-upsell{padding:13px 14px;font-size:13px}
+    .dw-save{font-size:13px;padding:9px 10px}
+  }
+</style>
+
+<script>
+(function(){
+  var root = document.getElementById('dw-offer');
+  if (!root || root.dataset.ready) return;
+  root.dataset.ready = '1';
+
+  var up = document.getElementById('dw-up');
+  var btn = root.querySelector('.dw-btn');
+  var label = root.querySelector('[data-dw-btn-label]');
+  var totalEl = root.querySelector('[data-dw-total]');
+  var saveEl = root.querySelector('[data-dw-save]');
+  var msg = root.querySelector('[data-dw-msg]');
+  var base = (root.dataset.root || '/').replace(/\/$/, '');
+  var busy = false;
+  var fmt = function(n){ return '$' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); };
+
+  /* ---------- Precios, ahorro y total en el botón ---------- */
+  function update(){
+    var save = 0, total = 0;
+    root.querySelectorAll('.dw-bar').forEach(function(bar){
+      var input = bar.querySelector('input');
+      bar.classList.toggle('is-active', input.checked);
+      if (input.checked) { save += Number(input.dataset.save); total += Number(input.dataset.total); }
+    });
+    if (up && up.value && up.checked) { save += Number(up.dataset.save); total += Number(up.dataset.total); }
+    saveEl.textContent = fmt(save);
+    saveEl.parentNode.hidden = save <= 0;
+    totalEl.textContent = fmt(total);
+  }
+  root.addEventListener('change', update);
+  update();
+
+  /* ---------- Upsell (si Liquid no lo encontró, lo busca por handle) ---------- */
+  if (up && !up.value) {
+    fetch(base + '/products/' + root.dataset.upsell + '.js')
+      .then(function(r){ if (!r.ok) throw new Error('Upsell no encontrado'); return r.json(); })
+      .then(function(prod){
+        var v = prod.variants[0] && prod.variants[0].available ? prod.variants[0] : null;
+        if (!v) return;
+        up.value = v.id;
+        up.closest('.dw-upsell').hidden = false;
+        update();
+      })
+      .catch(function(e){ console.warn('[DW offer]', e); });
+  }
+
+  /* ---------- Botón ---------- */
+  function setIdle(){
+    busy = false;
+    btn.disabled = false;
+    btn.classList.remove('is-done');
+    label.textContent = 'Agregar al carrito';
+    update();
+  }
+  function showError(text){
+    msg.textContent = text;
+    msg.hidden = false;
+    setTimeout(function(){ msg.hidden = true; }, 5000);
+  }
+  // Si vuelven con el botón "atrás" del navegador, el botón queda usable
+  window.addEventListener('pageshow', setIdle);
+
+  /* ---------- Carrito lateral (Dawn y temas basados en Dawn) ---------- */
+  function getDrawer(){
+    var d = document.querySelector('cart-drawer') || document.querySelector('cart-notification');
+    return d && typeof d.renderContents === 'function' ? d : null;
+  }
+
+  function openOtherDrawers(){
+    // Otros temas: eventos habituales para refrescar y abrir el carrito lateral
+    ['cart:refresh', 'cart:build', 'cart:open', 'theme:cart:reload', 'theme:cart:open', 'ajaxProduct:added', 'dispatch:cart-drawer:refresh', 'dispatch:cart-drawer:open']
+      .forEach(function(name){ document.dispatchEvent(new CustomEvent(name, { bubbles: true, detail: { open: true } })); });
+    var trigger = document.querySelector('[data-cart-drawer-toggle], [data-drawer-toggle="cart"], .js-drawer-open-cart, [data-action="open-cart"], #cart-icon-bubble, a.header__icon--cart');
+    if (trigger) { trigger.click(); return true; }
+    return false;
+  }
+
+  btn.addEventListener('click', function(){
+    if (busy) return;
+    var sel = root.querySelector('input[name="dw-pack"]:checked');
+    if (!sel) return;
+    busy = true;
+    btn.disabled = true;
+    msg.hidden = true;
+    label.textContent = 'Agregando...';
+    totalEl.textContent = '';
+
+    var items = [{ id: Number(root.dataset.variant), quantity: Number(sel.value) }];
+    if (up && up.value && up.checked) items.push({ id: Number(up.value), quantity: 1 });
+
+    var drawer = getDrawer();
+    var body = { items: items };
+    if (drawer && drawer.getSectionsToRender) {
+      body.sections = drawer.getSectionsToRender().map(function(s){ return s.id; });
+      body.sections_url = window.location.pathname;
+    }
+
+    fetch(root.dataset.cartAdd, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(body)
+    })
+    .then(function(r){
+      return r.json().then(function(data){
+        if (!r.ok || data.status) throw new Error();
+        return data;
+      });
+    })
+    .then(function(data){
+      label.textContent = '✓ Agregado';
+      btn.classList.add('is-done');
+      setTimeout(setIdle, 1800);
+
+      if (drawer && data.sections) {
+        drawer.classList.remove('is-empty');
+        drawer.renderContents(data);
+        return;
+      }
+      if (!openOtherDrawers()) window.location.href = root.dataset.cart;
+    })
+    .catch(function(e){
+      setIdle();
+      showError('No pudimos agregar el producto. Probá de nuevo.');
+    });
+  });
+})();
+</script>
