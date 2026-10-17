@@ -36,12 +36,15 @@
   assign up_save   = 29650
 
   # Colores de la marca del producto
+  # MEN CREATINE: negro + naranja de la marca (#E2541F) en badge, pastillas y ahorro
   assign c_ink     = '#15171A'
   assign c_main    = '#15171A'
-  assign c_hot     = '#C9A55C'
-  assign c_hot_txt = '#1A1407'
-  assign c_tag     = '#EEF1F4'
-  assign c_soft    = '#FFFBF1'
+  assign c_hot     = '#E2541F'
+  assign c_hot_txt = '#FFFFFF'
+  assign c_accent  = '#C9441A'
+  assign c_tag     = '#FDE8DE'
+  assign c_soft    = '#FFF4EE'
+  assign c_up_line = '#F2A47E'
   assign c_line    = '#E2E6EA'
   assign c_off     = '#B5BCC3'
   # =================== FIN CONFIGURACIÓN ===================
@@ -68,7 +71,7 @@
 -%}
 
 <div class="dw-offer" id="dw-offer" data-variant="{{ dw_variant.id }}" data-cart-add="{{ routes.cart_add_url }}.js" data-cart="{{ routes.cart_url }}" data-root="{{ routes.root_url }}" data-upsell="{{ up_handle }}"
-  style="--dw-brown:{{ c_ink }};--dw-main:{{ c_main }};--dw-hot:{{ c_hot }};--dw-peach:{{ c_tag }};--dw-cream:{{ c_soft }};--dw-line:{{ c_line }};--dw-off:{{ c_off }};--dw-hot-txt:{{ c_hot_txt }};">
+  style="--dw-brown:{{ c_ink }};--dw-main:{{ c_main }};--dw-hot:{{ c_hot }};--dw-peach:{{ c_tag }};--dw-cream:{{ c_soft }};--dw-line:{{ c_line }};--dw-off:{{ c_off }};--dw-hot-txt:{{ c_hot_txt }};--dw-accent:{{ c_accent }};--dw-up-line:{{ c_up_line }};">
   <div class="dw-head"><span>{{ heading }}</span></div>
 
   {%- for nm in p_name -%}
@@ -204,6 +207,8 @@
   .dw-title{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-size:17px;font-weight:700}
   .dw-sub{font-size:13px;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .dw-sub b{font-weight:700}
+  .dw-offer .dw-tag{color:var(--dw-accent)}
+  .dw-offer .dw-save strong{color:var(--dw-accent)}
   .dw-tag{background:var(--dw-peach);font-size:12px;font-weight:700;padding:2px 8px;border-radius:6px;white-space:nowrap}
   .dw-prices{display:flex;flex-direction:column;align-items:flex-end;white-space:nowrap}
   .dw-price{font-size:18px;font-weight:700}
@@ -217,7 +222,7 @@
   .dw-offer .dw-badge--hot{background:var(--dw-hot);color:var(--dw-hot-txt)}
   .dw-offer .dw-upsell[hidden],.dw-save[hidden]{display:none}
   .dw-offer .dw-upsell{position:relative;display:flex;align-items:center;gap:10px;width:100%;margin:0 0 12px;padding:14px 18px;
-    background:var(--dw-cream);border:1.5px dashed var(--dw-off);border-radius:12px;cursor:pointer;font-size:14px}
+    background:var(--dw-cream);border:1.5px dashed var(--dw-up-line);border-radius:12px;cursor:pointer;font-size:14px}
   .dw-check{flex:0 0 18px;width:18px;height:18px;border:2px solid var(--dw-main);border-radius:4px;position:relative;background:#fff}
   .dw-upsell input:checked + .dw-check{background:var(--dw-main)}
   .dw-upsell input:checked + .dw-check:after{content:"";position:absolute;left:4px;top:0;width:5px;height:10px;
