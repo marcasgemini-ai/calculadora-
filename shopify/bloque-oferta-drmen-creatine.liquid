@@ -101,11 +101,6 @@
         endif
       else
         assign qty_total = caps_per_bottle | plus: 0 | times: bottles
-        if bottles == 1
-          assign units_txt = '1 ' | append: unit_one | append: ' · '
-        else
-          assign units_txt = bottles | append: ' ' | append: unit_many | append: ' · '
-        endif
         if caps_word == 'g' and qty_total >= 1000
           assign kg = qty_total | divided_by: 1000 | floor
           assign kg_dec = qty_total | modulo: 1000 | divided_by: 100 | floor
@@ -116,9 +111,6 @@
           endif
         else
           assign tag = qty_total | append: ' ' | append: caps_word
-        endif
-        if caps_word == 'g'
-          assign tag = units_txt | append: tag
         endif
       endif
 
