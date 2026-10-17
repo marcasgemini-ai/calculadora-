@@ -2,7 +2,7 @@
   DR MEN · MEN CREATINE · Selector de packs (misma oferta y diseño que Bronzer)
   Pegar en: Personalizar > Producto > Agregar bloque > Liquid personalizado
   Para otro producto: copiá el bloque y cambiá SOLO la CONFIGURACIÓN.
-  Packs: 1, 2, 3 y 6 frascos. El precio del producto en Shopify es el del pack 1 (1 frasco)
+  Packs: 1, 2, 3 y 6 potes. El precio del producto en Shopify es el del pack 1 (1 pote)
   y los packs se cobran con los descuentos automáticos por cantidad (los mismos de Bronzer).
 {%- endcomment -%}
 {%- liquid
@@ -17,12 +17,15 @@
   assign p_hot     = 4
   assign preselected = 2
 
-  # Cuánto dura y qué trae 1 frasco (para "Para X meses" y la pastilla).
-  # caps_per_bottle = '-' muestra "N frascos" en la pastilla en vez de "N cápsulas".
-  # caps_word: cómo se llaman (cápsulas, comprimidos, gomitas…).
+  # Cuánto dura y qué trae 1 pote (para "Para X meses" y la pastilla).
+  # MEN CREATINE viene en pote de polvo: 300 g · 5 g por día = 60 días.
+  # caps_per_bottle = gramos por pote · caps_word = 'g' (desde 1000 g lo muestra en kg: 1,8 kg).
+  # caps_per_bottle = '-' muestra "N potes" en la pastilla.
   assign days_per_bottle = 60
-  assign caps_per_bottle = '-'
-  assign caps_word = 'cápsulas'
+  assign caps_per_bottle = '300'
+  assign caps_word = 'g'
+  assign unit_one  = 'pote'
+  assign unit_many = 'potes'
 
   # Upsell: usa la 1ª variante con precio mayor a $0 (la de $0 es la de regalo).
   # El precio y el ahorro salen solos del producto (precio y precio de comparación);
@@ -92,12 +95,31 @@
 
       if caps_per_bottle == '-'
         if bottles == 1
-          assign tag = '1 frasco'
+          assign tag = '1 ' | append: unit_one
         else
-          assign tag = bottles | append: ' frascos'
+          assign tag = bottles | append: ' ' | append: unit_many
         endif
       else
-        assign tag = caps_per_bottle | plus: 0 | times: bottles | append: ' ' | append: caps_word
+        assign qty_total = caps_per_bottle | plus: 0 | times: bottles
+        if bottles == 1
+          assign units_txt = '1 ' | append: unit_one | append: ' · '
+        else
+          assign units_txt = bottles | append: ' ' | append: unit_many | append: ' · '
+        endif
+        if caps_word == 'g' and qty_total >= 1000
+          assign kg = qty_total | divided_by: 1000 | floor
+          assign kg_dec = qty_total | modulo: 1000 | divided_by: 100 | floor
+          if kg_dec > 0
+            assign tag = kg | append: ',' | append: kg_dec | append: ' kg'
+          else
+            assign tag = kg | append: ' kg'
+          endif
+        else
+          assign tag = qty_total | append: ' ' | append: caps_word
+        endif
+        if caps_word == 'g'
+          assign tag = units_txt | append: tag
+        endif
       endif
 
       assign n = price
