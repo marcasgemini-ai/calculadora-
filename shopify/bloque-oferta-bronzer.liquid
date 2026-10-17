@@ -4,13 +4,37 @@
   Packs: 1, 2, 3 y 6 frascos de 60 cápsulas (2, 4, 6 y 12 meses).
   Precio del producto en Shopify: $49.990 (1 frasco). Los packs se cobran con descuentos automáticos por cantidad.
   Upsell: producto CELUFIT oferta (handle celufit-oferta-upsell), precio ya rebajado, sin descuento.
+  Regalo: SLIMFIT GRATIS en Pack 6 Meses y Pack Anual (handle slimfit-upsell-gra, variante de $0).
 {%- endcomment -%}
 {%- assign dw_celufit_handle = 'celufit-oferta-upsell' -%}
 {%- assign dw_variant = product.selected_or_first_available_variant -%}
 {%- assign dw_celufit = all_products[dw_celufit_handle] -%}
 {%- assign dw_celufit_variant = dw_celufit.selected_or_first_available_variant -%}
+{%- liquid
+  # Regalo: usa la variante de $0 del producto SLIMFIT.
+  # gift_value = precio normal de 1 SLIMFIT (se muestra tachado y se suma al ahorro).
+  assign dw_gift_handle = 'slimfit-upsell-gra'
+  assign gift_value = 49990
+  assign dw_gift = all_products[dw_gift_handle]
+  assign dw_gift_variant = blank
+  assign gift_found = false
+  for v in dw_gift.variants
+    if gift_found == false and v.price == 0 and v.available
+      assign dw_gift_variant = v
+      assign gift_found = true
+    endif
+  endfor
+  assign n = gift_value
+  assign th = n | divided_by: 1000 | floor
+  assign rest = n | modulo: 1000 | prepend: '00' | slice: -3, 3
+  if th > 0
+    assign gift_txt = '$' | append: th | append: '.' | append: rest
+  else
+    assign gift_txt = '$' | append: n
+  endif
+-%}
 
-<div class="dw-offer" id="dw-offer" data-variant="{{ dw_variant.id }}" data-cart-add="{{ routes.cart_add_url }}.js" data-cart="{{ routes.cart_url }}" data-root="{{ routes.root_url }}" data-upsell="{{ dw_celufit_handle }}">
+<div class="dw-offer" id="dw-offer" data-variant="{{ dw_variant.id }}" data-cart-add="{{ routes.cart_add_url }}.js" data-cart="{{ routes.cart_url }}" data-root="{{ routes.root_url }}" data-upsell="{{ dw_celufit_handle }}" data-gift-handle="{{ dw_gift_handle }}" data-gift="{% if gift_found %}{{ dw_gift_variant.id }}{% endif %}" data-gift-value="{{ gift_value }}">
   <div class="dw-head"><span>OFERTA DÍA DE LA MADRE</span></div>
 
   <label class="dw-bar">
@@ -39,9 +63,9 @@
     </span>
   </label>
 
-  <label class="dw-bar">
+  <label class="dw-bar dw-bar--gift">
     <span class="dw-badge">Mejor opción</span>
-    <input type="radio" name="dw-pack" value="3" data-save="40200" data-total="109770">
+    <input type="radio" name="dw-pack" value="3" data-gift="1" data-save="40200" data-total="109770">
     <span class="dw-radio"></span>
     <span class="dw-info">
       <span class="dw-title">Pack 6 Meses <span class="dw-tag">180 cápsulas</span></span>
@@ -51,11 +75,17 @@
       <span class="dw-price">$109.770</span>
       <s class="dw-compare">$149.970</s>
     </span>
+    <span class="dw-gift"{% unless gift_found %} hidden{% endunless %}>
+      <img class="dw-gift-img" src="{% if dw_gift.featured_image %}{{ dw_gift.featured_image | image_url: width: 120 }}{% endif %}" alt="SLIMFIT" width="40" height="40" loading="lazy"{% unless dw_gift.featured_image %} hidden{% endunless %}>
+      <span class="dw-gift-text">+ <b>SLIMFIT</b> de regalo 🎁</span>
+      <s class="dw-gift-old">{{ gift_txt }}</s>
+      <span class="dw-gift-free">GRATIS</span>
+    </span>
   </label>
 
-  <label class="dw-bar">
+  <label class="dw-bar dw-bar--gift">
     <span class="dw-badge dw-badge--hot">🔥 Descuento exclusivo</span>
-    <input type="radio" name="dw-pack" value="6" data-save="130050" data-total="169890">
+    <input type="radio" name="dw-pack" value="6" data-gift="1" data-save="130050" data-total="169890">
     <span class="dw-radio"></span>
     <span class="dw-info">
       <span class="dw-title">Pack Anual <span class="dw-tag">360 cápsulas</span></span>
@@ -64,6 +94,12 @@
     <span class="dw-prices">
       <span class="dw-price">$169.890</span>
       <s class="dw-compare">$299.940</s>
+    </span>
+    <span class="dw-gift"{% unless gift_found %} hidden{% endunless %}>
+      <img class="dw-gift-img" src="{% if dw_gift.featured_image %}{{ dw_gift.featured_image | image_url: width: 120 }}{% endif %}" alt="SLIMFIT" width="40" height="40" loading="lazy"{% unless dw_gift.featured_image %} hidden{% endunless %}>
+      <span class="dw-gift-text">+ <b>SLIMFIT</b> de regalo 🎁</span>
+      <s class="dw-gift-old">{{ gift_txt }}</s>
+      <span class="dw-gift-free">GRATIS</span>
     </span>
   </label>
 
@@ -91,6 +127,17 @@
   .dw-offer .dw-bar{position:relative;display:flex;align-items:center;gap:12px;width:100%;margin:0 0 14px;padding:16px 18px;
     background:#fff;border:1.5px solid var(--dw-line);border-radius:12px;cursor:pointer;
     transition:border-color .2s,box-shadow .2s;-webkit-tap-highlight-color:transparent}
+  .dw-offer .dw-bar.dw-bar--gift{flex-wrap:wrap;row-gap:0}
+  .dw-bar--gift .dw-info{flex-basis:0}
+  .dw-offer .dw-gift{flex:0 0 calc(100% + 36px);display:flex;align-items:center;gap:10px;margin:14px -18px -16px;padding:10px 18px;
+    background:var(--dw-cream);border-top:1.5px dashed #D7C3B2;border-radius:0 0 10px 10px;font-size:14px}
+  .dw-offer .dw-gift[hidden]{display:none}
+  .dw-offer .dw-gift-img{flex:0 0 40px;width:40px;height:40px;object-fit:contain;border-radius:8px;background:#fff;border:1px solid var(--dw-line)}
+  .dw-offer .dw-gift-img[hidden]{display:none}
+  .dw-gift-text{flex:1;min-width:0;font-weight:500}
+  .dw-gift-text b{font-weight:700}
+  .dw-gift-old{font-size:13px;opacity:.55;white-space:nowrap}
+  .dw-offer .dw-gift-free{background:var(--dw-brown);color:#fff;font-size:12px;font-weight:700;padding:3px 9px;border-radius:6px;white-space:nowrap}
   .dw-offer .dw-bar.is-active{border:2px solid var(--dw-brown);box-shadow:0 2px 12px rgba(74,44,29,.12)}
   .dw-offer input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
   .dw-radio{flex:0 0 20px;width:20px;height:20px;border:2px solid #B9A99B;border-radius:50%;position:relative}
@@ -133,6 +180,8 @@
     .dw-price{font-size:17px}
     .dw-compare{font-size:12px}
     .dw-offer .dw-upsell{padding:13px 14px;font-size:13px}
+    .dw-offer .dw-gift{flex-basis:calc(100% + 28px);margin:12px -14px -14px;padding:9px 14px;gap:8px;font-size:13px}
+    .dw-gift-old{font-size:12px}
     .dw-save{font-size:13px;padding:9px 10px}
   }
 </style>
@@ -151,6 +200,8 @@
   var msg = root.querySelector('[data-dw-msg]');
   var base = (root.dataset.root || '/').replace(/\/$/, '');
   var busy = false;
+  var gift = root.dataset.gift;
+  var giftValue = Number(root.dataset.giftValue) || 0;
   var fmt = function(n){ return '$' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); };
 
   /* ---------- Precios, ahorro y total en el botón ---------- */
@@ -159,7 +210,10 @@
     root.querySelectorAll('.dw-bar').forEach(function(bar){
       var input = bar.querySelector('input');
       bar.classList.toggle('is-active', input.checked);
-      if (input.checked) { save += Number(input.dataset.save); total += Number(input.dataset.total); }
+      if (input.checked) {
+        save += Number(input.dataset.save); total += Number(input.dataset.total);
+        if (gift && input.dataset.gift) save += giftValue;
+      }
     });
     if (up && up.value && up.checked) { save += Number(up.dataset.save); total += Number(up.dataset.total); }
     saveEl.textContent = fmt(save);
@@ -178,6 +232,24 @@
         if (!v) return;
         up.value = v.id;
         up.closest('.dw-upsell').hidden = false;
+        update();
+      })
+      .catch(function(e){ console.warn('[DW offer]', e); });
+  }
+
+  /* ---------- Regalo SLIMFIT (si Liquid no lo encontró, lo busca por handle) ---------- */
+  if (!gift && root.dataset.giftHandle) {
+    fetch(base + '/products/' + root.dataset.giftHandle + '.js')
+      .then(function(r){ if (!r.ok) throw new Error('Regalo no encontrado'); return r.json(); })
+      .then(function(prod){
+        var v = (prod.variants || []).filter(function(x){ return x.available && x.price === 0; })[0];
+        if (!v) return;
+        gift = String(v.id);
+        root.querySelectorAll('.dw-gift').forEach(function(row){
+          var img = row.querySelector('.dw-gift-img');
+          if (img && prod.featured_image) { img.src = prod.featured_image; img.hidden = false; }
+          row.hidden = false;
+        });
         update();
       })
       .catch(function(e){ console.warn('[DW offer]', e); });
@@ -226,6 +298,7 @@
 
     var items = [{ id: Number(root.dataset.variant), quantity: Number(sel.value) }];
     if (up && up.value && up.checked) items.push({ id: Number(up.value), quantity: 1 });
+    if (gift && sel.dataset.gift) items.push({ id: Number(gift), quantity: 1 });
 
     var drawer = getDrawer();
     var body = { items: items };
