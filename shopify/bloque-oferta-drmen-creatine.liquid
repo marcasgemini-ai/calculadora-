@@ -19,7 +19,7 @@
 
   # Cuánto dura y qué trae 1 pote (para "Para X meses" y la pastilla).
   # MEN CREATINE viene en pote de polvo: 300 g · 5 g por día = 60 días.
-  # caps_per_bottle = gramos por pote · caps_word = 'g' (desde 1000 g lo muestra en kg: 1,8 kg).
+  # caps_per_bottle = gramos por pote · caps_word = 'g' → la pastilla dice 300 g, 600 g, 900 g, 1.800 g.
   # caps_per_bottle = '-' muestra "N potes" en la pastilla.
   assign days_per_bottle = 60
   assign caps_per_bottle = '300'
@@ -101,14 +101,10 @@
         endif
       else
         assign qty_total = caps_per_bottle | plus: 0 | times: bottles
-        if caps_word == 'g' and qty_total >= 1000
-          assign kg = qty_total | divided_by: 1000 | floor
-          assign kg_dec = qty_total | modulo: 1000 | divided_by: 100 | floor
-          if kg_dec > 0
-            assign tag = kg | append: ',' | append: kg_dec | append: ' kg'
-          else
-            assign tag = kg | append: ' kg'
-          endif
+        if qty_total >= 1000
+          assign q_th = qty_total | divided_by: 1000 | floor
+          assign q_rest = qty_total | modulo: 1000 | prepend: '00' | slice: -3, 3
+          assign tag = q_th | append: '.' | append: q_rest | append: ' ' | append: caps_word
         else
           assign tag = qty_total | append: ' ' | append: caps_word
         endif
