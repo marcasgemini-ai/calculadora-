@@ -27,10 +27,19 @@
   # Upsell: usa la 1ª variante con precio mayor a $0 (la de $0 es la de regalo).
   # El precio y el ahorro salen solos del producto (precio y precio de comparación);
   # up_price / up_save solo se usan si el producto no se encuentra.
-  assign up_handle = 'super-magnesio-13-upsell'
-  assign up_text   = 'Sumá MULTIMAGNESIO <b>para descansar mejor</b>'
+  assign up_handle = 'creatina-micronizada-upsell'
+  assign up_text   = 'Sumá CREATINA <b>al 50% OFF</b>'
   assign up_price  = 26950
   assign up_save   = 26950
+
+  # Regalo GRATIS: usa la variante de $0 del producto (fila abajo de la tarjeta).
+  # gift_packs = número de pack (1 a 4) que llevan el regalo, separados por |.
+  # gift_value = precio normal del regalo (se muestra tachado y se suma al ahorro).
+  assign gift_handle = 'super-magnesio-13-upsell'
+  assign gift_packs  = '3|4' | split: '|'
+  assign gift_name   = '😴 Descanso y recuperación'
+  assign gift_sub    = '+ <b>MULTIMAGNESIO</b> de regalo 🎁'
+  assign gift_value  = 49990
 
   # Colores de la marca del producto
   # METABOMEN: negro + rojo de la marca (#E1261C) en badge, pastillas y ahorro
@@ -62,11 +71,28 @@
       assign up_save = dw_up_variant.compare_at_price | minus: dw_up_variant.price | divided_by: 100
     endif
   endif
+  assign dw_gift = all_products[gift_handle]
+  assign dw_gift_variant = blank
+  assign gift_found = false
+  for v in dw_gift.variants
+    if gift_found == false and v.price == 0 and v.available
+      assign dw_gift_variant = v
+      assign gift_found = true
+    endif
+  endfor
+  assign n = gift_value
+  assign th = n | divided_by: 1000 | floor
+  assign rest = n | modulo: 1000 | prepend: '00' | slice: -3, 3
+  if th > 0
+    assign gift_txt = '$' | append: th | append: '.' | append: rest
+  else
+    assign gift_txt = '$' | append: n
+  endif
   assign base_price = p_price[0] | plus: 0
   assign init_save = 0
 -%}
 
-<div class="dw-offer" id="dw-offer" data-variant="{{ dw_variant.id }}" data-cart-add="{{ routes.cart_add_url }}.js" data-cart="{{ routes.cart_url }}" data-root="{{ routes.root_url }}" data-upsell="{{ up_handle }}"
+<div class="dw-offer" id="dw-offer" data-variant="{{ dw_variant.id }}" data-cart-add="{{ routes.cart_add_url }}.js" data-cart="{{ routes.cart_url }}" data-root="{{ routes.root_url }}" data-upsell="{{ up_handle }}" data-gift-handle="{{ gift_handle }}" data-gift="{% if gift_found %}{{ dw_gift_variant.id }}{% endif %}" data-gift-value="{{ gift_value }}"
   style="--dw-brown:{{ c_ink }};--dw-main:{{ c_main }};--dw-hot:{{ c_hot }};--dw-peach:{{ c_tag }};--dw-cream:{{ c_soft }};--dw-line:{{ c_line }};--dw-off:{{ c_off }};--dw-accent:{{ c_accent }};--dw-up-line:{{ c_up_line }};">
   <div class="dw-head"><span>{{ heading }}</span></div>
 
@@ -81,6 +107,11 @@
         assign save = 0
       endif
       assign badge = p_badge[i] | strip
+      assign pack_n = forloop.index | append: ''
+      assign has_gift = false
+      if gift_packs contains pack_n
+        assign has_gift = true
+      endif
       if forloop.index == preselected
         assign init_save = save
       endif
@@ -128,9 +159,9 @@
         assign compare_txt = '$' | append: n
       endif
     -%}
-  <label class="dw-bar{% if forloop.index == preselected %} is-active{% endif %}">
+  <label class="dw-bar{% if has_gift %} dw-bar--gift{% endif %}{% if forloop.index == preselected %} is-active{% endif %}">
     {%- if badge != '-' and badge != '' -%}<span class="dw-badge{% if forloop.index == p_hot %} dw-badge--hot{% endif %}">{{ badge }}</span>{%- endif -%}
-    <input type="radio" name="dw-pack" value="{{ bottles }}" data-save="{{ save }}" data-total="{{ price }}"{% if forloop.index == preselected %} checked{% endif %}>
+    <input type="radio" name="dw-pack" value="{{ bottles }}"{% if has_gift %} data-gift="1"{% endif %} data-save="{{ save }}" data-total="{{ price }}"{% if forloop.index == preselected %} checked{% endif %}>
     <span class="dw-radio"></span>
     <span class="dw-info">
       <span class="dw-title">{{ nm | strip }} <span class="dw-tag">{{ tag }}</span></span>
@@ -140,6 +171,13 @@
       <span class="dw-price">{{ price_txt }}</span>
       {%- if save > 0 -%}<s class="dw-compare">{{ compare_txt }}</s>{%- endif -%}
     </span>
+    {%- if has_gift %}
+    <span class="dw-gift"{% unless gift_found %} hidden{% endunless %}>
+      <img class="dw-gift-img" src="{% if dw_gift.featured_image %}{{ dw_gift.featured_image | image_url: width: 120 }}{% endif %}" alt="Regalo" width="40" height="40" loading="lazy"{% unless dw_gift.featured_image %} hidden{% endunless %}>
+      <span class="dw-gift-text"><span class="dw-gift-name">{{ gift_name }}</span><span class="dw-gift-sub">{{ gift_sub }}</span></span>
+      <span class="dw-gift-price"><s class="dw-gift-old">{{ gift_txt }}</s><span class="dw-gift-free">GRATIS</span></span>
+    </span>
+    {%- endif %}
   </label>
   {%- endfor -%}
 
@@ -187,6 +225,18 @@
   .dw-offer .dw-bar{position:relative;display:flex;align-items:center;gap:12px;width:100%;margin:0 0 14px;padding:16px 18px;
     background:#fff;border:1.5px solid var(--dw-line);border-radius:12px;cursor:pointer;
     transition:border-color .2s,box-shadow .2s;-webkit-tap-highlight-color:transparent}
+  .dw-offer .dw-bar.dw-bar--gift{flex-wrap:wrap;row-gap:0}
+  .dw-bar--gift .dw-info{flex-basis:0}
+  .dw-offer .dw-gift{flex:0 0 calc(100% + 36px);display:flex;align-items:center;gap:10px;margin:14px -18px -16px;padding:10px 18px;
+    background:var(--dw-cream);border-top:1.5px dashed var(--dw-up-line);border-radius:0 0 10px 10px;font-size:14px}
+  .dw-offer .dw-gift-img{flex:0 0 40px;width:40px;height:40px;object-fit:contain;border-radius:8px;background:#fff;border:1px solid var(--dw-line)}
+  .dw-offer .dw-gift-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px;font-weight:500}
+  .dw-offer .dw-gift-name{font-weight:700}
+  .dw-offer .dw-gift-sub{font-size:12px;opacity:.8}
+  .dw-offer .dw-gift-sub b{font-weight:700}
+  .dw-gift-price{display:flex;flex-direction:column;align-items:flex-end;gap:3px;white-space:nowrap}
+  .dw-offer .dw-gift-old{font-size:13px;opacity:.55}
+  .dw-offer .dw-gift-free{background:var(--dw-hot);color:#fff;font-size:12px;font-weight:700;padding:3px 9px;border-radius:6px;white-space:nowrap}
   .dw-offer .dw-bar.is-active{border:2px solid var(--dw-main);box-shadow:0 2px 12px rgba(0,0,0,.08)}
   .dw-offer input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
   .dw-radio{flex:0 0 20px;width:20px;height:20px;border:2px solid var(--dw-off);border-radius:50%;position:relative}
@@ -232,6 +282,8 @@
     .dw-sub{font-size:12px}
     .dw-compare{font-size:12px}
     .dw-offer .dw-upsell{padding:13px 14px;font-size:13px}
+    .dw-offer .dw-gift{flex-basis:calc(100% + 28px);margin:12px -14px -14px;padding:9px 14px;gap:8px;font-size:13px}
+    .dw-offer .dw-gift-old{font-size:12px}
     .dw-save{font-size:13px;padding:9px 10px}
   }
 </style>
@@ -250,6 +302,8 @@
   var msg = root.querySelector('[data-dw-msg]');
   var base = (root.dataset.root || '/').replace(/\/$/, '');
   var busy = false;
+  var gift = root.dataset.gift;
+  var giftValue = Number(root.dataset.giftValue) || 0;
   var fmt = function(n){ return '$' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); };
 
   /* ---------- Precios, ahorro y total en el botón ---------- */
@@ -258,7 +312,10 @@
     root.querySelectorAll('.dw-bar').forEach(function(bar){
       var input = bar.querySelector('input');
       bar.classList.toggle('is-active', input.checked);
-      if (input.checked) { save += Number(input.dataset.save); total += Number(input.dataset.total); }
+      if (input.checked) {
+        save += Number(input.dataset.save); total += Number(input.dataset.total);
+        if (gift && input.dataset.gift) save += giftValue;
+      }
     });
     if (up && up.value && up.checked) { save += Number(up.dataset.save); total += Number(up.dataset.total); }
     saveEl.textContent = fmt(save);
@@ -280,6 +337,24 @@
         up.dataset.save = v.compare_at_price > v.price ? Math.round((v.compare_at_price - v.price) / 100) : 0;
         root.querySelector('.dw-up-price').textContent = fmt(up.dataset.total);
         up.closest('.dw-upsell').hidden = false;
+        update();
+      })
+      .catch(function(e){ console.warn('[DW offer]', e); });
+  }
+
+  /* ---------- Regalo (si Liquid no lo encontró, lo busca por handle) ---------- */
+  if (!gift && root.dataset.giftHandle) {
+    fetch(base + '/products/' + root.dataset.giftHandle + '.js')
+      .then(function(r){ if (!r.ok) throw new Error('Regalo no encontrado'); return r.json(); })
+      .then(function(prod){
+        var v = (prod.variants || []).filter(function(x){ return x.available && x.price === 0; })[0];
+        if (!v) return;
+        gift = String(v.id);
+        root.querySelectorAll('.dw-gift').forEach(function(row){
+          var img = row.querySelector('.dw-gift-img');
+          if (img && prod.featured_image) { img.src = prod.featured_image; img.hidden = false; }
+          row.hidden = false;
+        });
         update();
       })
       .catch(function(e){ console.warn('[DW offer]', e); });
@@ -328,6 +403,7 @@
 
     var items = [{ id: Number(root.dataset.variant), quantity: Number(sel.value) }];
     if (up && up.value && up.checked) items.push({ id: Number(up.value), quantity: 1 });
+    if (gift && sel.dataset.gift) items.push({ id: Number(gift), quantity: 1 });
 
     var drawer = getDrawer();
     var body = { items: items };
