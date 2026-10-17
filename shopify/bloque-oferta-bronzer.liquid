@@ -77,9 +77,8 @@
     </span>
     <span class="dw-gift"{% unless gift_found %} hidden{% endunless %}>
       <img class="dw-gift-img" src="{% if dw_gift.featured_image %}{{ dw_gift.featured_image | image_url: width: 120 }}{% endif %}" alt="SLIMFIT" width="40" height="40" loading="lazy"{% unless dw_gift.featured_image %} hidden{% endunless %}>
-      <span class="dw-gift-text">+ <b>SLIMFIT</b> de regalo 🎁</span>
-      <s class="dw-gift-old">{{ gift_txt }}</s>
-      <span class="dw-gift-free">GRATIS</span>
+      <span class="dw-gift-text"><span class="dw-gift-name">🔥 Quemador de grasa natural</span><span class="dw-gift-sub">+ <b>SLIMFIT</b> de regalo 🎁</span></span>
+      <span class="dw-gift-price"><s class="dw-gift-old">{{ gift_txt }}</s><span class="dw-gift-free">GRATIS</span></span>
     </span>
   </label>
 
@@ -97,9 +96,8 @@
     </span>
     <span class="dw-gift"{% unless gift_found %} hidden{% endunless %}>
       <img class="dw-gift-img" src="{% if dw_gift.featured_image %}{{ dw_gift.featured_image | image_url: width: 120 }}{% endif %}" alt="SLIMFIT" width="40" height="40" loading="lazy"{% unless dw_gift.featured_image %} hidden{% endunless %}>
-      <span class="dw-gift-text">+ <b>SLIMFIT</b> de regalo 🎁</span>
-      <s class="dw-gift-old">{{ gift_txt }}</s>
-      <span class="dw-gift-free">GRATIS</span>
+      <span class="dw-gift-text"><span class="dw-gift-name">🔥 Quemador de grasa natural</span><span class="dw-gift-sub">+ <b>SLIMFIT</b> de regalo 🎁</span></span>
+      <span class="dw-gift-price"><s class="dw-gift-old">{{ gift_txt }}</s><span class="dw-gift-free">GRATIS</span></span>
     </span>
   </label>
 
@@ -136,6 +134,10 @@
   .dw-offer .dw-gift-img[hidden]{display:none}
   .dw-gift-text{flex:1;min-width:0;font-weight:500}
   .dw-gift-text b{font-weight:700}
+  .dw-offer .dw-gift-text{display:flex;flex-direction:column;gap:1px}
+  .dw-offer .dw-gift-name{font-weight:700}
+  .dw-offer .dw-gift-sub{font-size:12px;opacity:.8}
+  .dw-gift-price{display:flex;flex-direction:column;align-items:flex-end;gap:3px;white-space:nowrap}
   .dw-gift-old{font-size:13px;opacity:.55;white-space:nowrap}
   .dw-offer .dw-gift-free{background:var(--dw-brown);color:#fff;font-size:12px;font-weight:700;padding:3px 9px;border-radius:6px;white-space:nowrap}
   .dw-offer .dw-bar.is-active{border:2px solid var(--dw-brown);box-shadow:0 2px 12px rgba(74,44,29,.12)}
