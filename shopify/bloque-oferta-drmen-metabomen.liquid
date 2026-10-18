@@ -33,9 +33,10 @@
   assign up_save   = 26950
 
   # Regalo GRATIS: usa la variante de $0 del producto (fila abajo de la tarjeta).
+  # gift_handle: podés poner varios separados por | (usa el primero que exista en la tienda).
   # gift_packs = número de pack (1 a 4) que llevan el regalo, separados por |.
   # gift_value = precio normal del regalo (se muestra tachado y se suma al ahorro).
-  assign gift_handle = 'metabomen-upsell-grat'
+  assign gift_handle = 'metabomen-upsell-gratisssss|metabomen-upsell-gratis|metabomen-upsell-grat'
   assign gift_packs  = '3|4' | split: '|'
   assign gift_name   = '😴 Descanso y recuperación'
   assign gift_sub    = '+ <b>MULTIMAGNESIO</b> de regalo 🎁'
@@ -71,7 +72,16 @@
       assign up_save = dw_up_variant.compare_at_price | minus: dw_up_variant.price | divided_by: 100
     endif
   endif
-  assign dw_gift = all_products[gift_handle]
+  assign gift_list = gift_handle | split: '|'
+  assign dw_gift = nil
+  assign gift_prod_found = false
+  for h in gift_list
+    assign hh = h | strip
+    if gift_prod_found == false and all_products[hh].variants.size > 0
+      assign dw_gift = all_products[hh]
+      assign gift_prod_found = true
+    endif
+  endfor
   assign dw_gift_variant = blank
   assign gift_found = false
   # 1º busca una variante de $0 disponible; si no hay, cualquier variante de $0.
@@ -350,13 +360,18 @@
   }
 
   /* ---------- Regalo (si Liquid no lo encontró, lo busca por handle) ---------- */
+  function fetchGift(handles){
+    var h = handles.shift();
+    if (!h) return Promise.reject(new Error('Regalo no encontrado: revisá el handle y que esté publicado en la Tienda online'));
+    return fetch(base + '/products/' + h.trim() + '.js')
+      .then(function(r){ return r.ok ? r.json() : fetchGift(handles); });
+  }
   if (!gift && root.dataset.giftHandle) {
-    fetch(base + '/products/' + root.dataset.giftHandle + '.js')
-      .then(function(r){ if (!r.ok) throw new Error('Regalo "' + root.dataset.giftHandle + '" no encontrado: revisá el handle y que esté publicado en la Tienda online'); return r.json(); })
+    fetchGift(root.dataset.giftHandle.split('|'))
       .then(function(prod){
         var free = (prod.variants || []).filter(function(x){ return x.price === 0; });
         var v = free.filter(function(x){ return x.available; })[0] || free[0];
-        if (!v) { console.warn('[DW offer] El regalo "' + root.dataset.giftHandle + '" no tiene ninguna variante a $0'); return; }
+        if (!v) { console.warn('[DW offer] El regalo "' + prod.handle + '" no tiene ninguna variante a $0'); return; }
         gift = String(v.id);
         root.querySelectorAll('.dw-gift').forEach(function(row){
           var img = row.querySelector('.dw-gift-img');
