@@ -74,8 +74,15 @@
   assign dw_gift = all_products[gift_handle]
   assign dw_gift_variant = blank
   assign gift_found = false
+  # 1º busca una variante de $0 disponible; si no hay, cualquier variante de $0.
   for v in dw_gift.variants
     if gift_found == false and v.price == 0 and v.available
+      assign dw_gift_variant = v
+      assign gift_found = true
+    endif
+  endfor
+  for v in dw_gift.variants
+    if gift_found == false and v.price == 0
       assign dw_gift_variant = v
       assign gift_found = true
     endif
@@ -345,10 +352,11 @@
   /* ---------- Regalo (si Liquid no lo encontró, lo busca por handle) ---------- */
   if (!gift && root.dataset.giftHandle) {
     fetch(base + '/products/' + root.dataset.giftHandle + '.js')
-      .then(function(r){ if (!r.ok) throw new Error('Regalo no encontrado'); return r.json(); })
+      .then(function(r){ if (!r.ok) throw new Error('Regalo "' + root.dataset.giftHandle + '" no encontrado: revisá el handle y que esté publicado en la Tienda online'); return r.json(); })
       .then(function(prod){
-        var v = (prod.variants || []).filter(function(x){ return x.available && x.price === 0; })[0];
-        if (!v) return;
+        var free = (prod.variants || []).filter(function(x){ return x.price === 0; });
+        var v = free.filter(function(x){ return x.available; })[0] || free[0];
+        if (!v) { console.warn('[DW offer] El regalo "' + root.dataset.giftHandle + '" no tiene ninguna variante a $0'); return; }
         gift = String(v.id);
         root.querySelectorAll('.dw-gift').forEach(function(row){
           var img = row.querySelector('.dw-gift-img');
@@ -412,16 +420,27 @@
       body.sections_url = window.location.pathname;
     }
 
-    fetch(root.dataset.cartAdd, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify(body)
-    })
-    .then(function(r){
-      return r.json().then(function(data){
-        if (!r.ok || data.status) throw new Error();
-        return data;
+    function addToCart(payload){
+      return fetch(root.dataset.cartAdd, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+      .then(function(r){
+        return r.json().then(function(data){
+          if (!r.ok || data.status) throw new Error(data.description || data.message || 'Error al agregar');
+          return data;
+        });
       });
+    }
+
+    addToCart(body)
+    .catch(function(e){
+      // Si el regalo no se puede agregar (sin stock, no publicado), agrega el pedido sin el regalo
+      if (!(gift && sel.dataset.gift)) throw e;
+      console.warn('[DW offer] No se pudo agregar el regalo:', e.message);
+      body.items = body.items.filter(function(it){ return String(it.id) !== String(gift); });
+      return addToCart(body);
     })
     .then(function(data){
       label.textContent = '✓ Agregado';
