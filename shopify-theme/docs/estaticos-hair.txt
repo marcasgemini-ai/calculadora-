@@ -1,99 +1,62 @@
 ESTÁTICOS TOF · HAIR · DR.MEN
-12 prompts para generar con IA (ChatGPT imagen / Nano Banana / Ideogram / Midjourney)
+Subí la foto del frasco HAIR junto con cada prompt.
 
 
-CÓMO USARLOS
+ESTÁTICO 1 · DE PELADO A PEINADO
 
-1. Siempre subí la foto real del frasco HAIR junto con el prompt. Cada prompt le pide a la IA que la copie igual.
-2. Formato: 1080 x 1350 (4:5) para feed. Si querés stories, pedí la misma imagen en 1080 x 1920 (9:16).
-3. La IA no garantiza Poppins exacta. Si el texto sale torcido o con otra letra, generá la imagen sin texto (borrá las líneas de texto del prompt) y poné los textos en Canva con Poppins ExtraBold / SemiBold.
-4. Colores de marca: negro #0F0E13, violeta #6B3FC0, violeta claro #D9C6FF, blanco #FFFFFF.
+Vertical 4:5 (1080x1350) advertising image for a men's hair supplement. Top 20%: black band with a huge white bold headline in Poppins ExtraBold, two lines: "DE PELADO" and, in violet #6B3FC0, "A PEINADO". Under it, smaller white text in Poppins SemiBold: "La DHT me estaba dejando pelado. Esto la frenó." Below, the image is split in two halves with a thin white line. Left half: a 45-year-old Latino man with a thinning crown and receding hairline, head down, sad, cold grey tones, small white label "ANTES". Right half: the same man with full thick dark hair, confident smile, warm light, white t-shirt, small white label "AHORA". In the center, over both halves, the DR.MEN HAIR bottle exactly as in the attached photo (matte black bottle, black label with purple gradient, white italic "HAIR"), with a soft violet glow. Bottom: violet #6B3FC0 ribbon with white bold text "LLEVÁS 3, PAGÁS 2 · ENVÍO GRATIS". Photorealistic, premium ad quality, all text perfectly spelled in Spanish exactly as written, nothing touching the edges.
 
 
-BLOQUE DE MARCA (va pegado al final de TODOS los prompts)
+ESTÁTICO 2 · LA DHT EN LLAMAS
 
-"Brand style: DR.MEN, premium men's supplement brand. Color palette strictly black (#0F0E13), deep violet (#6B3FC0), light lavender (#D9C6FF) and white. All on-image text in a bold geometric sans-serif typeface identical in style to Poppins (headlines in Poppins ExtraBold, tight letter spacing, all caps where indicated; secondary lines in Poppins SemiBold). Text must be perfectly spelled in Spanish exactly as written between quotes, sharp, high contrast, never distorted, never translated. Product: use the attached photo of the DR.MEN HAIR bottle as an exact reference — matte black bottle, black cap, black label with a purple gradient at the bottom, large white italic 'HAIR' wordmark, small 'DR.MEN BUILT FOR MEN' above it, 'HAIR ACTIVATOR' in violet below; do not redesign, rename or add elements to the label. Photorealistic, high-end advertising quality, crisp details, 4:5 vertical format 1080x1350, safe margins of 60px on all sides so nothing touches the edges, designed to stop the scroll on Instagram and Facebook in Argentina."
-
-
-────────────────────────────────
-ESTÁTICO 1 · ANTES / AHORA (split)
-────────────────────────────────
-
-"A high-converting split-screen advertising image, 4:5 vertical. Top band: solid black (#0F0E13) header strip occupying the top 18% of the image with a huge white headline in two lines: 'DE PELADO' and, in violet (#6B3FC0), 'A PEINADO'. Directly under it, a smaller white subheadline: 'La DHT me estaba dejando pelado. Esto la frenó.' The rest of the image is split vertically in two halves with a thin white divider line. LEFT half: a 45-year-old Latino man with visible thinning crown and receding hairline, shot slightly from above, head down, sad and tired expression, desaturated cold grey tones, flat unflattering overhead light, grey t-shirt, small white label at the top of the half: 'ANTES'. RIGHT half: the same man (same face, same age, same beard), now with full, dense, well-groomed dark hair, confident warm smile, looking at the camera, warm golden natural light, white t-shirt, small white label at the top: 'AHORA'. In the exact center, overlapping both halves, the DR.MEN HAIR bottle from the attached photo, standing upright, with a soft violet glow behind it and realistic contact shadow. Bottom of the image: a bold violet (#6B3FC0) ribbon banner, slightly tilted, with white text 'LLEVÁS 3, PAGÁS 2 · ENVÍO GRATIS'. Same person on both sides must be clearly recognizable. [BLOQUE DE MARCA]"
+Vertical 4:5 (1080x1350) advertising image on a pure black background. Small violet #6B3FC0 uppercase text at the top in Poppins SemiBold: "LA DHT ESTÁ ACHICANDO LA RAÍZ DEL PELO". In the upper center, the side profile of a 40-year-old man's head shown as a thermal scan: face in glowing electric blue, the top of the head burning in bright orange and red heat, as if the scalp were on fire. Below, a huge white bold headline in Poppins ExtraBold, two lines: "SU CABEZA ESTÁ EN LLAMAS." and "SE LLAMA DHT." with the word "DHT" in violet #6B3FC0. Bottom left: three small thermal head profiles in a row, the heat fading from orange to calm blue, with small white labels "MES 1", "MES 3", "MES 6", and under them a white box with black text "O TE DEVOLVEMOS LA PLATA · 365 DÍAS". Bottom right: two DR.MEN HAIR bottles exactly as in the attached photo, on a shiny black surface with reflection and violet glow. Cinematic, high contrast, all text perfectly spelled in Spanish exactly as written.
 
 
-────────────────────────────────
-ESTÁTICO 2 · LA DHT EN LLAMAS (térmico)
-────────────────────────────────
-
-"A dramatic, cinematic advertising image on a pure black background, 4:5 vertical. Small violet uppercase line at the very top: 'LA DHT ESTÁ ACHICANDO LA RAÍZ DEL PELO'. In the upper-center, the side profile of a 40-year-old man's head rendered as a thermal-scan / medical X-ray visualization: the skin and face in translucent electric blue tones, and the top and crown of the scalp burning in intense orange, red and yellow heat-map glow, as if the scalp were on fire, with fine glowing hair follicles visible. Below the head, a massive white headline in two lines, all caps: 'SU CABEZA ESTÁ EN LLAMAS.' and on the second line, with 'DHT' highlighted in violet (#6B3FC0): 'SE LLAMA DHT.'. Bottom-left: a horizontal strip with three small thermal head profiles side by side, the heat glow decreasing from left to right (orange, then mixed, then calm blue), with small white labels under each: 'MES 1', 'MES 3', 'MES 6'. Under that strip, a white rectangle with black text: 'O TE DEVOLVEMOS LA PLATA · 365 DÍAS'. Bottom-right: two DR.MEN HAIR bottles from the attached photo standing on a glossy black reflective surface, lit with a cold blue rim light and a violet glow, mirrored reflection below. [BLOQUE DE MARCA]"
-
-
-────────────────────────────────
 ESTÁTICO 3 · LA ALMOHADA
-────────────────────────────────
 
-"Ultra-realistic close-up photograph, 4:5 vertical, shot from above at a slight angle: a white cotton pillow on an unmade bed in soft early-morning window light, covered with dozens of short dark men's hairs scattered across it, some clumped together, every hair sharply visible. A man's hand enters from the right edge holding a few hairs between the fingers. Natural, slightly cold color grading, very real, not staged. At the top, over a soft dark gradient that fades into the photo, a huge white bold headline in two lines: 'ESTO NO ES "NORMAL".' and on the second line in violet (#6B3FC0): 'ES DHT.'. Under it, a smaller white line: 'La hormona que achica la raíz hasta que el pelo deja de salir.' In the bottom-right corner, the DR.MEN HAIR bottle from the attached photo standing on the bed sheet, realistic shadow, soft violet rim light. Bottom-left, a small white rounded pill-shaped button with black text: 'FRENALA HOY →'. [BLOQUE DE MARCA]"
-
-
-────────────────────────────────
-ESTÁTICO 4 · LA CORONILLA DESDE ARRIBA
-────────────────────────────────
-
-"Realistic photograph, 4:5 vertical, shot from directly above: the top of a seated 42-year-old Latino man's head at a family dinner table, his crown visibly thin with scalp showing under a warm ceiling lamp, slightly blurred plates, a glass of wine and a mate in the background, candid moment, he does not know he is being photographed. Harsh overhead light reflects on the scalp. Over the top 30% of the image, on a dark translucent band, a massive white bold headline in two lines: 'ÉL NO LA VE.' and on the second line in violet (#6B3FC0): 'TODOS LOS DEMÁS, SÍ.'. Small white line under it: 'La caída en el hombre tiene un culpable: la DHT.' Bottom area: a black strip with the DR.MEN HAIR bottle from the attached photo on the left, and on the right in white bold text: 'Frená la DHT desde adentro.' and below in violet: '3x2 + ENVÍO GRATIS'. [BLOQUE DE MARCA]"
+Vertical 4:5 (1080x1350) ultra-realistic photo, seen from above: a white pillow on an unmade bed in soft morning light, covered with dozens of short dark men's hairs, a man's hand holding a few hairs between his fingers. Real, not staged. At the top, over a dark gradient, a huge white bold headline in Poppins ExtraBold, two lines: "ESTO NO ES "NORMAL"." and, in violet #6B3FC0, "ES DHT." Under it, smaller white text in Poppins SemiBold: "La hormona que achica la raíz hasta que el pelo deja de salir." Bottom right: the DR.MEN HAIR bottle exactly as in the attached photo, standing on the sheet with a soft violet glow. Bottom left: a white rounded button with black text "FRENALA HOY →". Premium ad quality, all text perfectly spelled in Spanish exactly as written.
 
 
-────────────────────────────────
-ESTÁTICO 5 · RAÍZ SANA VS RAÍZ CON DHT (infografía)
-────────────────────────────────
+ESTÁTICO 4 · ÉL NO LA VE
 
-"Premium medical-style infographic advertising image, 4:5 vertical, deep black background with subtle violet radial glow. Top headline in huge white bold all caps: 'LO QUE LA DHT LE HACE' and second line in violet (#6B3FC0): 'A LA RAÍZ DEL PELO'. Center: three photorealistic 3D cross-sections of human hair follicles under the skin, side by side, like a scientific render with soft studio light: LEFT a thick healthy follicle with a strong dark hair, label below in white 'RAÍZ SANA'; CENTER the same follicle with small glowing red particles attached and the follicle visibly shrinking, the hair thinner, label 'LA DHT LA ACHICA'; RIGHT a tiny shrunken follicle producing an almost invisible thin hair, label 'EL PELO DEJA DE SALIR'. Thin white arrows connect the three. Bottom section: the DR.MEN HAIR bottle from the attached photo on the left with a translucent violet shield glowing around it, and to the right two lines in white: 'Zinc + selenio: ayudan a frenar la DHT.' and 'Biotina + L-cistina + colágeno: alimentan la raíz.' Very clean, readable, scientific but premium. [BLOQUE DE MARCA]"
+Vertical 4:5 (1080x1350) realistic photo shot from directly above: the top of the head of a 42-year-old Latino man sitting at a family dinner table, his thin crown clearly visible under a warm ceiling lamp, plates and a mate blurred around him, candid moment. Top 30%: dark translucent band with a huge white bold headline in Poppins ExtraBold, two lines: "ÉL NO LA VE." and, in violet #6B3FC0, "TODOS LOS DEMÁS, SÍ." Under it, smaller white text: "La caída en el hombre tiene un culpable: la DHT." Bottom: black strip with the DR.MEN HAIR bottle exactly as in the attached photo on the left, and on the right white bold text "Frená la DHT desde adentro." and violet text "3x2 + ENVÍO GRATIS". Premium ad quality, all text perfectly spelled in Spanish exactly as written.
 
 
-────────────────────────────────
-ESTÁTICO 6 · EL CHAMPÚ NO LLEGA (comparativa)
-────────────────────────────────
+ESTÁTICO 5 · LO QUE LA DHT LE HACE A LA RAÍZ
 
-"Bold comparison advertising image, 4:5 vertical, split horizontally into two halves. TOP half: light grey background, a generic unbranded white shampoo bottle with foam and a big red X over it, white headline on a dark strip: 'EL CHAMPÚ TRABAJA AFUERA.'. Small dark grey line: 'Lavás el pelo. La DHT sigue intacta.' BOTTOM half: black background (#0F0E13), the DR.MEN HAIR bottle from the attached photo with a few beige capsules in front of it, a violet glow, and a big violet check mark icon; white headline: 'LA DHT ESTÁ ADENTRO.' and violet subline: 'HAIR la frena desde la raíz.'. Between both halves, a thin violet line with a small white circle that says 'VS'. Bottom-right corner: white rounded badge with black text '1 CÁPSULA POR DÍA'. Sharp, clean, high contrast. [BLOQUE DE MARCA]"
+Vertical 4:5 (1080x1350) premium medical infographic on a black background with a soft violet glow. Top: huge white bold headline in Poppins ExtraBold, two lines: "LO QUE LA DHT LE HACE" and, in violet #6B3FC0, "A LA RAÍZ DEL PELO". Center: three realistic 3D cross-sections of a hair follicle under the skin, side by side, joined by thin white arrows. Left: thick healthy follicle with a strong dark hair, label "RAÍZ SANA". Middle: the follicle with small glowing red particles stuck to it, shrinking, thinner hair, label "LA DHT LA ACHICA". Right: a tiny follicle with an almost invisible hair, label "EL PELO DEJA DE SALIR". Bottom: the DR.MEN HAIR bottle exactly as in the attached photo with a glowing violet shield around it, and next to it two white lines in Poppins SemiBold: "Zinc + selenio: ayudan a frenar la DHT." and "Biotina + L-cistina + colágeno: alimentan la raíz." Clean, readable, all text perfectly spelled in Spanish exactly as written.
 
 
-────────────────────────────────
-ESTÁTICO 7 · 365 DÍAS O TE DEVOLVEMOS LA PLATA
-────────────────────────────────
+ESTÁTICO 6 · EL CHAMPÚ NO LLEGA
 
-"Premium product hero advertising image, 4:5 vertical, deep black background with a strong violet (#6B3FC0) radial light behind the product. Center: the DR.MEN HAIR bottle from the attached photo, large, standing on a glossy black surface with reflection, a few beige capsules scattered in front, subtle smoke and violet rim light. Top-right: a realistic gold-and-black guarantee seal medallion with laurel details and the text '365 DÍAS' big and 'GARANTÍA' small, embossed and metallic. Top-left, huge white bold headline in three lines: 'SI NO TE', 'FUNCIONA,' and in violet 'TE DEVOLVEMOS', then on a fourth line in white 'LA PLATA.'. Under the product, a white line: 'Tenés un año entero para probarlo. Cero riesgo.' Bottom: a full-width violet ribbon with white bold text 'LLEVÁS 3, PAGÁS 2 · ENVÍO GRATIS'. Luxurious, trustworthy, bold. [BLOQUE DE MARCA]"
+Vertical 4:5 (1080x1350) comparison ad split in two horizontal halves. Top half: light grey background, a plain white shampoo bottle with foam and a big red X over it, and a white bold headline on a dark strip in Poppins ExtraBold: "EL CHAMPÚ TRABAJA AFUERA." with smaller dark text "Lavás el pelo. La DHT sigue intacta." Bottom half: black background, the DR.MEN HAIR bottle exactly as in the attached photo with a few beige capsules in front and a violet glow, a big violet check mark, white bold headline "LA DHT ESTÁ ADENTRO." and violet text "HAIR la frena desde la raíz." In the middle, between both halves, a small white circle with "VS". Bottom right: white rounded badge with black text "1 CÁPSULA POR DÍA". Sharp, high contrast, all text perfectly spelled in Spanish exactly as written.
 
 
-────────────────────────────────
-ESTÁTICO 8 · OFERTA 3x2
-────────────────────────────────
+ESTÁTICO 7 · 365 DÍAS DE GARANTÍA
 
-"High-converting offer advertising image, 4:5 vertical, black background with a violet gradient floor. Center: three identical DR.MEN HAIR bottles from the attached photo lined up in a slight V formation on a glossy black podium, the third bottle on the right with a bright violet glowing ring and a small white tag hanging from it that reads 'GRATIS'. Top: a gigantic white bold headline 'LLEVÁS 3' and right below in violet (#6B3FC0), even bigger: 'PAGÁS 2'. Under the bottles, three white icons in a row with short labels: a calendar icon '6 MESES DE TRATAMIENTO', a truck icon 'ENVÍO GRATIS', a shield icon '365 DÍAS DE GARANTÍA'. Bottom: big price line in white 'HOY $119.800' and next to it, smaller with a strike-through in light grey, '$179.700'. Below, a white rounded button with black text 'PEDILO HOY →'. Feels like a premium Black Friday product ad. [BLOQUE DE MARCA]"
+Vertical 4:5 (1080x1350) premium product ad on a black background with a strong violet #6B3FC0 light behind the product. Center: the DR.MEN HAIR bottle exactly as in the attached photo, large, on a shiny black surface with reflection, a few beige capsules in front, light smoke and violet rim light. Top right: a realistic gold and black guarantee seal with laurels and the text "365 DÍAS" big and "GARANTÍA" small. Top left: huge white bold headline in Poppins ExtraBold, four lines: "SI NO TE", "FUNCIONA,", "TE DEVOLVEMOS" in violet, "LA PLATA." in white. Under the product, white text in Poppins SemiBold: "Tenés un año entero para probarlo. Cero riesgo." Bottom: full-width violet ribbon with white bold text "LLEVÁS 3, PAGÁS 2 · ENVÍO GRATIS". Luxurious and trustworthy, all text perfectly spelled in Spanish exactly as written.
 
 
-────────────────────────────────
-ESTÁTICO 9 · LO QUE DIJO ELLA (post de notas / UGC)
-────────────────────────────────
+ESTÁTICO 8 · LLEVÁS 3, PAGÁS 2
 
-"A realistic smartphone screenshot-style advertising image, 4:5 vertical, mimicking an iPhone Notes app or a plain white text post with black text, slightly imperfect and authentic, as if written by a real person. Text in a clean sans-serif like Poppins, left-aligned, natural line breaks: 'Mi mujer me mostró una foto del asado.' / 'Sacada desde arriba.' / 'Le pregunté quién era el pelado.' / 'Era yo.' / '' / 'Ese día me enteré de que la caída tiene nombre: DHT.' / 'Empecé con HAIR de DR.MEN.' / 'Hoy ya no me pongo la gorra para las fotos.' In the bottom 30% of the image, a real photo inserted like an attached picture: a man's hand holding the DR.MEN HAIR bottle from the attached photo next to a mate on a wooden kitchen table, natural light. Small grey timestamp at the top: 'Hoy 08:14'. Authentic, raw, not designed-looking. [BLOQUE DE MARCA]"
+Vertical 4:5 (1080x1350) offer ad on a black background with a violet gradient floor. Center: three DR.MEN HAIR bottles exactly as in the attached photo, lined up on a shiny black podium; the third bottle has a bright violet glowing ring and a small white tag that says "GRATIS". Top: gigantic white bold headline in Poppins ExtraBold "LLEVÁS 3" and right below, even bigger, in violet #6B3FC0, "PAGÁS 2". Under the bottles, three white icons in a row with short labels: calendar "6 MESES DE TRATAMIENTO", truck "ENVÍO GRATIS", shield "365 DÍAS DE GARANTÍA". Bottom: white text "HOY $119.800" and next to it, smaller and crossed out in light grey, "$179.700", then a white rounded button with black text "PEDILO HOY →". Premium Black Friday style, all text perfectly spelled in Spanish exactly as written.
 
 
-────────────────────────────────
-ESTÁTICO 10 · ELLA LO VE PRIMERO (ángulo mujer)
-────────────────────────────────
+ESTÁTICO 9 · LA NOTA DEL CELULAR
 
-"Realistic lifestyle photograph, 4:5 vertical: a 37-year-old Argentine woman in pajamas sitting on the edge of the bed in the morning, holding up the white pillow toward the camera with one hand, showing dozens of short dark men's hairs on it, her face serious and worried, soft window light, real bedroom, her husband blurred in the background putting on a cap. Top area, on a black band: huge white bold headline in two lines: 'LE ENCONTRÉ ESTO' and in violet (#6B3FC0): 'EN LA ALMOHADA.'. Under it, white smaller line: 'Y él sigue diciendo que es normal.' Bottom-right: the DR.MEN HAIR bottle from the attached photo on the bedside table next to a glass of water, soft violet rim light. Bottom-left: small white text 'Es DHT. Y se puede frenar.' [BLOQUE DE MARCA]"
+Vertical 4:5 (1080x1350) image that looks like a real iPhone Notes screenshot: white background, black text in a clean sans-serif like Poppins, left aligned, small grey "Hoy 08:14" at the top. Text, one line each: "Mi mujer me mostró una foto del asado." / "Sacada desde arriba." / "Le pregunté quién era el pelado." / "Era yo." / (empty line) / "Ese día me enteré de que la caída tiene nombre: DHT." / "Empecé con HAIR de DR.MEN." / "Hoy ya no me pongo la gorra para las fotos." In the bottom 30%, a real photo attached like a picture in the note: a man's hand holding the DR.MEN HAIR bottle exactly as in the attached photo next to a mate on a wooden kitchen table, natural light. Authentic, raw, not designed-looking, all text perfectly spelled in Spanish exactly as written.
 
 
-────────────────────────────────
-ESTÁTICO 11 · LA LÍNEA DE TIEMPO (qué esperar)
-────────────────────────────────
+ESTÁTICO 10 · LE ENCONTRÉ ESTO EN LA ALMOHADA
 
-"Clean premium timeline advertising image, 4:5 vertical, black background with subtle violet glow. Top headline in huge white bold: 'QUÉ PASA CUANDO' and in violet (#6B3FC0) 'FRENÁS LA DHT'. Center: a vertical timeline with a glowing violet line and four nodes, each node with a small realistic close-up photo on the left and white text on the right: node 1 photo of a capsule in a hand, text 'DÍA 1 · Empezás: 1 cápsula por día'; node 2 photo of a shower drain with fewer hairs, text 'MES 1 · Primeros cambios en la caída'; node 3 photo of a clean white pillow, text 'MES 3 · Menos pelos en la almohada'; node 4 photo of a man's hand running through thick hair, text 'MES 6 · Pelo con más cuerpo'. Bottom: the DR.MEN HAIR bottle from the attached photo with three small bottles behind it, and white text '3x2 = 6 meses de tratamiento · Envío gratis'. [BLOQUE DE MARCA]"
+Vertical 4:5 (1080x1350) realistic lifestyle photo: a 37-year-old Argentine woman in pajamas sitting on the edge of the bed in the morning, holding a white pillow toward the camera with dozens of short dark men's hairs on it, serious and worried face, soft window light, her husband blurred in the background putting on a cap. Top: black band with huge white bold headline in Poppins ExtraBold, two lines: "LE ENCONTRÉ ESTO" and, in violet #6B3FC0, "EN LA ALMOHADA." Under it, smaller white text: "Y él sigue diciendo que es normal." Bottom right: the DR.MEN HAIR bottle exactly as in the attached photo on the bedside table next to a glass of water, soft violet glow. Bottom left: small white text "Es DHT. Y se puede frenar." Premium ad quality, all text perfectly spelled in Spanish exactly as written.
 
 
-────────────────────────────────
-ESTÁTICO 12 · LA GORRA
-────────────────────────────────
+ESTÁTICO 11 · QUÉ PASA CUANDO FRENÁS LA DHT
 
-"Moody realistic photograph, 4:5 vertical: a 40-year-old Latino man in a dim hallway, seen from behind and slightly from above, putting on a black baseball cap in front of a small mirror by the front door, his thinning crown visible just before the cap covers it, keys in the other hand, cold blue morning light from a window. Top, huge white bold headline in two lines: 'LA GORRA NO' and in violet (#6B3FC0): 'FRENA LA DHT.'. Under it, white smaller line: 'Solo la tapa. La caída sigue.' Bottom area: a black strip with the DR.MEN HAIR bottle from the attached photo on the right with violet glow, and on the left white bold text 'Frenala desde adentro.' and in violet '3x2 · ENVÍO GRATIS · 365 DÍAS DE GARANTÍA'. [BLOQUE DE MARCA]"
+Vertical 4:5 (1080x1350) clean timeline ad on a black background with a soft violet glow. Top: huge white bold headline in Poppins ExtraBold "QUÉ PASA CUANDO" and, in violet #6B3FC0, "FRENÁS LA DHT". Center: a vertical glowing violet line with four points; each point has a small realistic photo on the left and white text on the right in Poppins SemiBold: 1) a capsule in a hand, "DÍA 1 · Empezás: 1 cápsula por día"; 2) a shower drain with few hairs, "MES 1 · Primeros cambios en la caída"; 3) a clean white pillow, "MES 3 · Menos pelos en la almohada"; 4) a man's hand running through thick hair, "MES 6 · Pelo con más cuerpo". Bottom: the DR.MEN HAIR bottle exactly as in the attached photo with two more bottles behind it, and white text "3x2 = 6 meses de tratamiento · Envío gratis". All text perfectly spelled in Spanish exactly as written.
+
+
+ESTÁTICO 12 · LA GORRA NO FRENA LA DHT
+
+Vertical 4:5 (1080x1350) moody realistic photo: a 40-year-old Latino man in a dim hallway, seen from behind and slightly above, putting on a black cap in front of a small mirror by the front door, his thin crown visible just before the cap covers it, keys in his other hand, cold blue morning light. Top: huge white bold headline in Poppins ExtraBold, two lines: "LA GORRA NO" and, in violet #6B3FC0, "FRENA LA DHT." Under it, smaller white text: "Solo la tapa. La caída sigue." Bottom: black strip with the DR.MEN HAIR bottle exactly as in the attached photo on the right with a violet glow, and on the left white bold text "Frenala desde adentro." and violet text "3x2 · ENVÍO GRATIS · 365 DÍAS DE GARANTÍA". Premium ad quality, all text perfectly spelled in Spanish exactly as written.
