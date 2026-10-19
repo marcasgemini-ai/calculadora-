@@ -1,0 +1,167 @@
+BANCO DE B-ROLLS + UGC IA · HAIR · DR.MEN
+
+Formato de todo: vertical 9:16, clips de 4 a 8 segundos, sin texto ni logos generados por la IA (el texto se agrega en edición).
+Pegá esta línea al final de cada prompt para que todo tenga la misma estética:
+
+ESTILO BASE (pegar al final de cada prompt):
+"Vertical 9:16, shot on iPhone, slight handheld movement, natural window light, realistic skin texture with pores and small imperfections, Argentine middle-class home, muted warm colors with subtle purple accents, no text, no logos, no subtitles."
+
+
+────────────────────────────────
+A · EL PROBLEMA (dolor) · 12 clips
+────────────────────────────────
+
+A1 · Almohada con pelos
+"Close-up of a white pillow in the morning light with dozens of short dark men's hairs scattered on it, a man's hand slowly picks one hair up and looks at it. Messy bed, real bedroom."
+
+A2 · Desagüe de la ducha
+"Top-down close-up of a shower drain with a clump of short dark hair caught in it, water running, a man's foot steps back."
+
+A3 · Peine con pelos
+"Close-up of a black comb full of short dark hairs on a bathroom sink, a man's hand puts it down slowly."
+
+A4 · Coronilla con espejo de mano
+"A 40-year-old Latino man in a small bathroom holds a hand mirror behind his head to check his crown in the main mirror, visible thinning crown, worried expression, he touches the spot."
+
+A5 · Entradas en el espejo
+"A 37-year-old man in front of a bathroom mirror pushes his hair back with both hands revealing a receding hairline, sighs, lets the hair fall again."
+
+A6 · Coronilla desde arriba
+"Top-down shot of a seated 42-year-old man's head at a family table, thinning crown clearly visible under a ceiling light, he doesn't notice the camera."
+
+A7 · La gorra antes de salir
+"A 39-year-old man grabs a baseball cap from a hook by the front door and puts it on before leaving, quick glance at the hallway mirror, slightly ashamed."
+
+A8 · Esquiva la foto
+"Group of friends at an Argentine asado taking a group photo with a phone, one 40-year-old man steps out of the frame and says he'll take it instead."
+
+A9 · Mira la foto y se ve
+"Close-up of a man's face looking at his phone, on screen a photo taken from above showing his bald crown (screen slightly blurred), his expression drops."
+
+A10 · Peinado para tapar
+"A 38-year-old man in front of the mirror combs his hair to the side to cover a thinning area, checks both profiles, not convinced."
+
+A11 · La esposa lo mira
+"A 36-year-old woman on a sofa glances at her husband's thinning head while he watches TV, subtle worried look, she says nothing."
+
+A12 · Luz que rebota
+"Close-up of the top of a man's head under a strong kitchen ceiling light, scalp visible through thin hair, shallow depth of field."
+
+
+────────────────────────────────
+B · LA DHT (mecanismo) · 6 clips · animación 3D
+────────────────────────────────
+
+B1 · Folículo sano
+"Clean 3D medical animation, cross-section of a healthy human hair follicle with a thick strong hair growing out of the scalp, dark background with soft purple rim light, slow camera push-in."
+
+B2 · Testosterona se convierte en DHT
+"3D animation of glowing molecules flowing through a blood vessel, some of them transform and change color from blue to red as they pass through an enzyme, dark background, purple and red lighting."
+
+B3 · La DHT ataca la raíz
+"3D animation of small red molecules attaching to the base of a hair follicle, the follicle slowly shrinks and the hair becomes thinner and shorter, dark background, dramatic purple light."
+
+B4 · Miniaturización
+"3D side-by-side animation: left a thick healthy hair follicle, right a shrunken follicle producing a thin weak hair that finally falls out, dark background."
+
+B5 · El escudo (zinc y selenio frenan la DHT)
+"3D animation of a translucent purple shield forming around a hair follicle, red molecules bounce off it and dissolve, the follicle stays strong, dark background."
+
+B6 · La raíz se alimenta
+"3D animation of tiny glowing golden particles flowing into a hair follicle from below, the hair inside grows thicker and stronger, dark background, soft purple light."
+
+
+────────────────────────────────
+C · EL PRODUCTO · 8 clips
+(usar imagen-a-video con la foto real del frasco como referencia, para que la etiqueta salga bien;
+si la IA deforma la etiqueta, estos conviene filmarlos con el celular: es el frasco real)
+────────────────────────────────
+
+C1 · Frasco héroe
+"[Imagen de referencia: frasco HAIR] The black supplement bottle with purple label slowly rotates on a dark reflective surface, purple rim light, a few capsules around it, cinematic product shot."
+
+C2 · Cápsula a la mano
+"[Imagen de referencia: frasco HAIR] A man's hand opens the black bottle and drops one beige capsule into his palm, kitchen counter, morning light."
+
+C3 · Rutina de la mañana
+"[Imagen de referencia: frasco HAIR] A 38-year-old man in a kitchen takes one capsule with a glass of water next to a mate and toast, casual, morning light."
+
+C4 · En el baño al lado del cepillo
+"[Imagen de referencia: frasco HAIR] The black supplement bottle placed on a bathroom shelf next to a toothbrush and a razor, a man's hand takes it."
+
+C5 · Lo deja ella
+"[Imagen de referencia: frasco HAIR] A woman quietly places the black supplement bottle next to her husband's toothbrush and smiles at the camera, whisper-like complicity."
+
+C6 · Ingredientes
+"Close-up of beige capsules falling in slow motion on a dark surface surrounded by floating mineral crystals and soft golden particles, purple light."
+
+C7 · Pack 3x2
+"[Imagen de referencia: frasco HAIR] Three identical black supplement bottles lined up on a dark surface, camera slides from left to right, purple rim light."
+
+C8 · Llega a casa
+"A delivery man hands a small cardboard box to a 40-year-old man at the door of an Argentine house, the man opens it and takes out a black supplement bottle."
+
+
+────────────────────────────────
+D · EL RESULTADO · 8 clips
+────────────────────────────────
+
+D1 · Almohada limpia
+"Close-up of a clean white pillow in morning light with no hairs on it, a man's hand smooths it, relaxed."
+
+D2 · Ducha sin pelos
+"Top-down close-up of a clean shower drain with water running and no hair, a man's foot."
+
+D3 · Mano por el pelo
+"A 40-year-old man runs his hand through his thick hair in front of the bathroom mirror, satisfied smile, checks his crown with a hand mirror and nods."
+
+D4 · Ella le toca el pelo
+"On a sofa, a woman runs her fingers through her husband's hair and smiles, he laughs, warm living room light."
+
+D5 · Sin gorra
+"A 39-year-old man walks past the cap hanging by the front door and leaves without it, confident."
+
+D6 · Se mete en la foto
+"Group of friends at an asado taking a selfie, a 40-year-old man jumps into the center of the frame laughing."
+
+D7 · Selfie
+"A 41-year-old man takes a selfie outdoors in the sun, checks it, smiles and posts it."
+
+D8 · Barbería feliz
+"In a barbershop, the barber shows a man the back of his head with a hand mirror, the man smiles and gives a thumbs up."
+
+
+────────────────────────────────
+E · UGC IA · talking heads (Veo 3 con audio, o avatares tipo Arcads / HeyGen)
+────────────────────────────────
+
+Regla: mismo personaje en todos sus clips (copiar la descripción exacta), clips de 8 s, audio en español rioplatense entre comillas.
+
+E1 · Él (testimonio)
+"A 41-year-old Argentine man with short dark hair, light stubble, grey t-shirt, sitting in his car in daylight, filming himself with the phone in selfie mode, speaking naturally in Rioplatense Spanish: '[texto del hook o del cuerpo]'. Natural pauses, slight handheld shake."
+
+E2 · Ella (la esposa)
+"A 38-year-old Argentine woman with long brown hair in a messy bun, no makeup, oversized sweater, in her bedroom in the morning, filming herself in selfie mode, speaking softly in Rioplatense Spanish: '[texto]'."
+
+E3 · El barbero
+"A 35-year-old Argentine barber with tattoos and a black apron in a barbershop, talking to the camera while holding clippers, Rioplatense Spanish: '[texto]'."
+
+E4 · Voz en off del cuerpo
+Grabar la voz del cuerpo único una sola vez (voz masculina, 35-45, segura, rioplatense) con ElevenLabs o en persona, y montarla sobre B + C + D.
+
+
+────────────────────────────────
+CÓMO SE ARMA CADA VIDEO
+────────────────────────────────
+
+Hook (UGC o escena de los guiones) → A (2-3 clips) → B (3 clips mientras se explica la DHT) → C (2-3 clips con los ingredientes) → D (2 clips) → C7 + C8 con "3x2 + envío gratis".
+
+
+────────────────────────────────
+NOMBRES DE ARCHIVO (para encontrar todo rápido)
+────────────────────────────────
+
+HAIR_A01_almohada-pelos_v1.mp4
+HAIR_B03_dht-ataca-raiz_v2.mp4
+HAIR_C07_pack-3x2_v1.mp4
+HAIR_E01_el-testimonio-hook4_v1.mp4
