@@ -10,12 +10,17 @@
   assign heading = 'OFERTA EXCLUSIVA'
 
   # Packs (en orden). Precios en pesos, sin puntos.
-  assign p_bottles = '1|2|3|6' | split: '|'
-  assign p_name    = 'Pack 2x1|Pack 4 Meses|Pack 6 Meses|Pack Anual' | split: '|'
-  assign p_price   = '39990|63990|93990|159990' | split: '|'
-  assign p_badge   = '-|Más elegido|Mejor opción|🔥 Descuento exclusivo' | split: '|'
-  assign p_hot     = 4
-  assign preselected = 2
+  assign p_bottles = '1|1|2|3' | split: '|'
+  assign p_name    = 'Lleva 1|Pack 2x1|Pack 4 Meses|Pack 6 Meses' | split: '|'
+  assign p_price   = '39990|39990|63990|93990' | split: '|'
+  assign p_badge   = '-|-|Más elegido|Mejor opción' | split: '|'
+  assign p_hot     = 0
+  assign preselected = 3
+
+  # Pastilla y duración a mano por pack ('-' = se calcula sola).
+  # "Lleva 1" muestra 30 cápsulas · 1 mes para que el Pack 2x1 (mismo precio) se vea como el doble.
+  assign p_tag     = '30 cápsulas|-|-|-' | split: '|'
+  assign p_dur     = '1 mes|-|-|-' | split: '|'
 
   # Cuánto dura y qué trae 1 frasco (para "Para X meses" y la pastilla).
   # caps_per_bottle = '-' muestra "N frascos" en la pastilla en vez de "N cápsulas".
@@ -89,7 +94,15 @@
         assign dur = months | append: ' meses'
       endif
 
-      if caps_per_bottle == '-'
+      assign tag_fix = p_tag[i] | strip
+      assign dur_fix = p_dur[i] | strip
+      if dur_fix != '-' and dur_fix != ''
+        assign dur = dur_fix
+      endif
+
+      if tag_fix != '-' and tag_fix != ''
+        assign tag = tag_fix
+      elsif caps_per_bottle == '-'
         if bottles == 1
           assign tag = '1 frasco'
         else
