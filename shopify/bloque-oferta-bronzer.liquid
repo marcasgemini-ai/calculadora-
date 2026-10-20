@@ -1,7 +1,7 @@
 {%- comment -%}
   DR WOMAN · Selector de packs Bronzer + upsell CELUFIT
   Pegar en: Personalizar > Producto > Agregar bloque > Liquid personalizado
-  Packs: 1, 2, 3 y 6 frascos de 60 cápsulas (2, 4, 6 y 12 meses).
+  Packs: Lleva 1 y Pack 2x1 (1 frasco, mismo precio), 2, 3 y 6 frascos de 60 cápsulas.
   Precio del producto en Shopify: $39.990 (1 frasco). Los packs se cobran con descuentos automáticos por cantidad.
   Upsell: producto CELUFIT oferta (handle celufit-oferta-upsell), precio ya rebajado, sin descuento.
   Regalo: SLIMFIT GRATIS en Pack 6 Meses y Pack Anual (handle slimfit-upsell-gra, variante de $0).
@@ -36,6 +36,18 @@
 
 <div class="dw-offer" id="dw-offer" data-variant="{{ dw_variant.id }}" data-cart-add="{{ routes.cart_add_url }}.js" data-cart="{{ routes.cart_url }}" data-root="{{ routes.root_url }}" data-upsell="{{ dw_celufit_handle }}" data-gift-handle="{{ dw_gift_handle }}" data-gift="{% if gift_found %}{{ dw_gift_variant.id }}{% endif %}" data-gift-value="{{ gift_value }}">
   <div class="dw-head"><span>OFERTA DÍA DE LA MADRE</span></div>
+
+  <label class="dw-bar">
+    <input type="radio" name="dw-pack" value="1" data-save="0" data-total="39990">
+    <span class="dw-radio"></span>
+    <span class="dw-info">
+      <span class="dw-title">Lleva 1 <span class="dw-tag">30 cápsulas</span></span>
+      <span class="dw-sub">Para <b>1 mes</b> + <b>ENVÍO GRATIS</b></span>
+    </span>
+    <span class="dw-prices">
+      <span class="dw-price">$39.990</span>
+    </span>
+  </label>
 
   <label class="dw-bar">
     <input type="radio" name="dw-pack" value="1" data-save="0" data-total="39990">
