@@ -1,10 +1,11 @@
 {%- comment -%}
   DR WOMAN · Selector de packs Bronzer + upsell CELUFIT
   Pegar en: Personalizar > Producto > Agregar bloque > Liquid personalizado
-  Packs: Lleva 1 y Pack 2x1 (1 frasco, mismo precio), 2, 3 y 6 frascos de 60 cápsulas.
-  Precio del producto en Shopify: $39.990 (1 frasco). Los packs se cobran con descuentos automáticos por cantidad.
+  Packs: Lleva 1 y Pack 2x1 (1 frasco, mismo precio), 2 y 3 frascos de 60 cápsulas.
+  Precio del producto en Shopify: $49.990 (1 frasco). Los packs se cobran con descuentos automáticos por cantidad:
+  $17.995 por unidad desde 2 y $18.660 por unidad desde 3 (solo para Bronzer).
   Upsell: producto CELUFIT oferta (handle celufit-oferta-upsell), precio ya rebajado, sin descuento.
-  Regalo: SLIMFIT GRATIS en Pack 6 Meses y Pack Anual (handle slimfit-upsell-gra, variante de $0).
+  Regalo: SLIMFIT GRATIS en Pack 6 Meses (handle slimfit-upsell-gra, variante de $0).
 {%- endcomment -%}
 {%- assign dw_celufit_handle = 'celufit-oferta-upsell' -%}
 {%- assign dw_variant = product.selected_or_first_available_variant -%}
@@ -38,32 +39,32 @@
   <div class="dw-head"><span>OFERTA DÍA DE LA MADRE</span></div>
 
   <label class="dw-bar">
-    <input type="radio" name="dw-pack" value="1" data-save="0" data-total="39990">
+    <input type="radio" name="dw-pack" value="1" data-save="0" data-total="49990">
     <span class="dw-radio"></span>
     <span class="dw-info">
       <span class="dw-title">Lleva 1 <span class="dw-tag">30 cápsulas</span></span>
       <span class="dw-sub">Para <b>1 mes</b> + <b>ENVÍO GRATIS</b></span>
     </span>
     <span class="dw-prices">
-      <span class="dw-price">$39.990</span>
+      <span class="dw-price">$49.990</span>
     </span>
   </label>
 
   <label class="dw-bar">
-    <input type="radio" name="dw-pack" value="1" data-save="0" data-total="39990">
+    <input type="radio" name="dw-pack" value="1" data-save="0" data-total="49990">
     <span class="dw-radio"></span>
     <span class="dw-info">
       <span class="dw-title">Pack 2x1 <span class="dw-tag">60 cápsulas</span></span>
       <span class="dw-sub">Para <b>2 meses</b> + <b>ENVÍO GRATIS</b></span>
     </span>
     <span class="dw-prices">
-      <span class="dw-price">$39.990</span>
+      <span class="dw-price">$49.990</span>
     </span>
   </label>
 
   <label class="dw-bar is-active">
     <span class="dw-badge">Más elegido</span>
-    <input type="radio" name="dw-pack" value="2" data-save="15990" data-total="63990" checked>
+    <input type="radio" name="dw-pack" value="2" data-save="35990" data-total="63990" checked>
     <span class="dw-radio"></span>
     <span class="dw-info">
       <span class="dw-title">Pack 4 Meses <span class="dw-tag">120 cápsulas</span></span>
@@ -71,13 +72,13 @@
     </span>
     <span class="dw-prices">
       <span class="dw-price">$63.990</span>
-      <s class="dw-compare">$79.980</s>
+      <s class="dw-compare">$99.980</s>
     </span>
   </label>
 
   <label class="dw-bar dw-bar--gift">
     <span class="dw-badge">Mejor opción</span>
-    <input type="radio" name="dw-pack" value="3" data-gift="1" data-save="25980" data-total="93990">
+    <input type="radio" name="dw-pack" value="3" data-gift="1" data-save="55980" data-total="93990">
     <span class="dw-radio"></span>
     <span class="dw-info">
       <span class="dw-title">Pack 6 Meses <span class="dw-tag">180 cápsulas</span></span>
@@ -85,26 +86,7 @@
     </span>
     <span class="dw-prices">
       <span class="dw-price">$93.990</span>
-      <s class="dw-compare">$119.970</s>
-    </span>
-    <span class="dw-gift"{% unless gift_found %} hidden{% endunless %}>
-      <img class="dw-gift-img" src="{% if dw_gift.featured_image %}{{ dw_gift.featured_image | image_url: width: 120 }}{% endif %}" alt="SLIMFIT" width="40" height="40" loading="lazy"{% unless dw_gift.featured_image %} hidden{% endunless %}>
-      <span class="dw-gift-text"><span class="dw-gift-name">🔥 Quemador de grasa natural</span><span class="dw-gift-sub">+ <b>SLIMFIT</b> de regalo 🎁</span></span>
-      <span class="dw-gift-price"><s class="dw-gift-old">{{ gift_txt }}</s><span class="dw-gift-free">GRATIS</span></span>
-    </span>
-  </label>
-
-  <label class="dw-bar dw-bar--gift">
-    <span class="dw-badge dw-badge--hot">🔥 Descuento exclusivo</span>
-    <input type="radio" name="dw-pack" value="6" data-gift="1" data-save="79950" data-total="159990">
-    <span class="dw-radio"></span>
-    <span class="dw-info">
-      <span class="dw-title">Pack Anual <span class="dw-tag">360 cápsulas</span></span>
-      <span class="dw-sub">Para <b>12 meses</b> + <b>ENVÍO GRATIS</b></span>
-    </span>
-    <span class="dw-prices">
-      <span class="dw-price">$159.990</span>
-      <s class="dw-compare">$239.940</s>
+      <s class="dw-compare">$149.970</s>
     </span>
     <span class="dw-gift"{% unless gift_found %} hidden{% endunless %}>
       <img class="dw-gift-img" src="{% if dw_gift.featured_image %}{{ dw_gift.featured_image | image_url: width: 120 }}{% endif %}" alt="SLIMFIT" width="40" height="40" loading="lazy"{% unless dw_gift.featured_image %} hidden{% endunless %}>
@@ -120,7 +102,7 @@
     <span class="dw-up-price">$29.850</span>
   </label>
 
-  <div class="dw-save">→ Estás ahorrando <strong data-dw-save>$15.990</strong> en este pedido</div>
+  <div class="dw-save">→ Estás ahorrando <strong data-dw-save>$35.990</strong> en este pedido</div>
 
   <button type="button" class="dw-btn"><span data-dw-btn-label>Agregar al carrito</span><span class="dw-btn-total" data-dw-total></span></button>
   <p class="dw-msg" data-dw-msg role="alert" hidden></p>
