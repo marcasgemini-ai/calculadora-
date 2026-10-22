@@ -1,0 +1,475 @@
+{%- comment -%}
+  DR WOMAN · Bronze · Historias / testimonios interactivos
+  Sección nativa: Editar código > Secciones > Agregar sección "bronze-historias" y pegar este archivo.
+  Después: Personalizar > Agregar sección > "Bronze · Historias".
+  Cada historia es un bloque (avatar, foto antes, foto después, nombre, relato, etiquetas, uso y nota).
+  Si el avatar queda vacío se usa la foto "después". Hereda la tipografía del tema.
+{%- endcomment -%}
+
+{%- liquid
+  assign s = section.settings
+  assign total = section.blocks.size
+  assign autoplay = s.autoplay
+  if request.design_mode
+    assign autoplay = 0
+  endif
+-%}
+
+<style>
+  #bz-hist-{{ section.id }} {
+    --bzh-cobre: {{ s.color_cobre }};
+    --bzh-cobre-dark: {{ s.color_cobre_dark }};
+    --bzh-tag-1: {{ s.color_tag_1 }};
+    --bzh-tag-2: {{ s.color_tag_2 }};
+    --bzh-card: {{ s.color_card }};
+    --bzh-texto: {{ s.color_texto }};
+    --bzh-texto-soft: {{ s.color_texto | color_modify: 'alpha', 0.48 }};
+    --bzh-borde: {{ s.color_cobre | color_modify: 'alpha', 0.2 }};
+    --bzh-pt: {{ s.padding_top }}px;
+    --bzh-pb: {{ s.padding_bottom }}px;
+    --bzh-max: {{ s.max_width }}px;
+    {%- if s.color_bg != blank and s.color_bg.alpha > 0 %}
+    --bzh-bg: {{ s.color_bg }};
+    {%- endif %}
+  }
+</style>
+
+<bronze-historias
+  id="bz-hist-{{ section.id }}"
+  class="bz-hist"
+  data-autoplay="{{ autoplay }}"
+>
+  <div class="bz-hist__contenedor">
+    {%- if s.subtitulo != blank or s.titulo != blank -%}
+      <div class="bz-hist__head">
+        {%- if s.subtitulo != blank -%}<p class="bz-hist__kicker">{{ s.subtitulo }}</p>{%- endif -%}
+        {%- if s.titulo != blank -%}<h2 class="bz-hist__titulo">{{ s.titulo }}</h2>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if total > 0 -%}
+      <div class="bz-hist__selector"{% if total < 2 %} hidden{% endif %}>
+        <button type="button" class="bz-hist__flecha" data-dir="-1" aria-label="Historia anterior">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 6.5L9 12l5.5 5.5"/></svg>
+        </button>
+
+        <div class="bz-hist__avatares" role="tablist" aria-label="Historias">
+          {%- for block in section.blocks -%}
+            {%- assign b = block.settings -%}
+            {%- assign av = b.avatar | default: b.despues -%}
+            <button
+              type="button"
+              role="tab"
+              class="bz-hist__avatar{% if forloop.first %} is-active{% endif %}"
+              id="bz-hist-tab-{{ block.id }}"
+              aria-controls="bz-hist-panel-{{ block.id }}"
+              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+              aria-label="Ver historia de {{ b.nombre | escape }}"
+              data-index="{{ forloop.index0 }}"
+            >
+              <span class="bz-hist__halo" aria-hidden="true"></span>
+              {%- if av != blank -%}
+                {{ av | image_url: width: 160 | image_tag: width: 64, height: 64, loading: 'lazy', alt: '', sizes: '64px', widths: '96, 128, 160' }}
+              {%- else -%}
+                <span class="bz-hist__avatar-ph">{{ forloop.index }}</span>
+              {%- endif -%}
+            </button>
+          {%- endfor -%}
+        </div>
+
+        <button type="button" class="bz-hist__flecha" data-dir="1" aria-label="Historia siguiente">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 6.5L15 12l-5.5 5.5"/></svg>
+        </button>
+      </div>
+
+      <div class="bz-hist__track">
+        {%- for block in section.blocks -%}
+          {%- assign b = block.settings -%}
+          <article
+            class="bz-hist__historia{% if forloop.first %} is-active{% endif %}"
+            id="bz-hist-panel-{{ block.id }}"
+            role="tabpanel"
+            aria-labelledby="bz-hist-tab-{{ block.id }}"
+            data-index="{{ forloop.index0 }}"
+            {% unless forloop.first %}hidden{% endunless %}
+            {{ block.shopify_attributes }}
+          >
+            <div class="bz-hist__comparativa">
+              <div class="bz-hist__foto bz-hist__foto--antes">
+                {%- if b.antes != blank -%}
+                  {%- assign fp = '' -%}
+                  {%- if b.antes.presentation.focal_point != blank -%}{%- assign fp = b.antes.presentation.focal_point | prepend: 'object-position: ' -%}{%- endif -%}
+                  {%- capture alt_antes -%}{{ b.nombre }} · {{ s.label_antes }}{%- endcapture -%}
+                  {{ b.antes | image_url: width: 1000 | image_tag: loading: 'lazy', alt: alt_antes, sizes: '(min-width: 990px) 33vw, (min-width: 750px) 30vw, 50vw', widths: '300, 450, 600, 800, 1000', style: fp }}
+                {%- else -%}
+                  <div class="bz-hist__ph">{{ 'image' | placeholder_svg_tag: 'bz-hist__ph-svg' }}</div>
+                {%- endif -%}
+                <span class="bz-hist__label">{{ s.label_antes }}</span>
+              </div>
+
+              <div class="bz-hist__foto bz-hist__foto--despues">
+                {%- if b.despues != blank -%}
+                  {%- assign fp = '' -%}
+                  {%- if b.despues.presentation.focal_point != blank -%}{%- assign fp = b.despues.presentation.focal_point | prepend: 'object-position: ' -%}{%- endif -%}
+                  {%- capture alt_despues -%}{{ b.nombre }} · {{ s.label_despues }}{%- endcapture -%}
+                  {{ b.despues | image_url: width: 1000 | image_tag: loading: 'lazy', alt: alt_despues, sizes: '(min-width: 990px) 33vw, (min-width: 750px) 30vw, 50vw', widths: '300, 450, 600, 800, 1000', style: fp }}
+                {%- else -%}
+                  <div class="bz-hist__ph">{{ 'image' | placeholder_svg_tag: 'bz-hist__ph-svg' }}</div>
+                {%- endif -%}
+                <span class="bz-hist__label bz-hist__label--despues">{{ s.label_despues }}</span>
+                <span class="bz-hist__sun-glow" aria-hidden="true"></span>
+              </div>
+            </div>
+
+            <div class="bz-hist__contenido">
+              <div class="bz-hist__nombre-wrap">
+                <h3 class="bz-hist__nombre">{{ b.nombre }}</h3>
+                <span class="bz-hist__sol" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.7"/><path d="M12 2.4v2.2M12 19.4v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.4 12h2.2M19.4 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"/></svg>
+                </span>
+              </div>
+
+              {%- if b.relato != blank -%}
+                <div class="bz-hist__relato">{{ b.relato }}</div>
+              {%- endif -%}
+
+              {%- assign tags = b.etiquetas | split: ',' -%}
+              {%- if tags.size > 0 -%}
+                <ul class="bz-hist__tags">
+                  {%- for t in tags -%}
+                    {%- assign tt = t | strip -%}
+                    {%- if tt != blank -%}<li>{{ tt }}</li>{%- endif -%}
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+
+              {%- if b.uso != blank or s.nota != blank -%}
+                <div class="bz-hist__footer">
+                  {%- if b.uso != blank -%}<p class="bz-hist__uso">{{ b.uso }}</p>{%- endif -%}
+                  {%- if s.nota != blank -%}<p class="bz-hist__nota">{{ s.nota }}</p>{%- endif -%}
+                </div>
+              {%- endif -%}
+            </div>
+          </article>
+        {%- endfor -%}
+      </div>
+    {%- elsif request.design_mode -%}
+      <p class="bz-hist__vacio">Agregá un bloque "Historia" para mostrar testimonios.</p>
+    {%- endif -%}
+  </div>
+</bronze-historias>
+
+{% stylesheet %}
+  .bz-hist {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: var(--bzh-pt) 30px var(--bzh-pb);
+    background: var(--bzh-bg, transparent);
+    color: var(--bzh-texto);
+    font-family: inherit;
+    box-sizing: border-box;
+  }
+  .bz-hist *, .bz-hist *::before, .bz-hist *::after { box-sizing: border-box; font-family: inherit; }
+  .bz-hist [hidden] { display: none !important; }
+  .bz-hist__contenedor { width: 100%; max-width: var(--bzh-max); margin: 0 auto; }
+
+  .bz-hist__head { text-align: center; margin: 0 auto 22px; max-width: 720px; }
+  .bz-hist__kicker { margin: 0 0 6px; color: var(--bzh-cobre); font-size: .78em; font-weight: 650; letter-spacing: .08em; text-transform: uppercase; }
+  .bz-hist__titulo { margin: 0; color: var(--bzh-texto); font-size: 1.9em; line-height: 1.12; }
+
+  /* Selector */
+  .bz-hist__selector { width: 100%; max-width: 500px; margin: 0 auto 28px; display: grid; grid-template-columns: 38px minmax(0, 1fr) 38px; align-items: center; gap: 18px; }
+  .bz-hist__flecha {
+    width: 36px; height: 36px; margin: 0; padding: 0; border: 1px solid var(--bzh-borde); border-radius: 50%;
+    background: linear-gradient(145deg, #FFF9F2, #FFE8D1); color: var(--bzh-cobre);
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+    box-shadow: 0 4px 12px rgba(154, 75, 34, .07), inset 0 1px 0 rgba(255, 255, 255, .9);
+    transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+  }
+  .bz-hist__flecha svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  @media (hover: hover) {
+    .bz-hist__flecha:hover { transform: translateY(-1px); background: linear-gradient(145deg, #FFF0DF, #FFDABB); box-shadow: 0 6px 16px rgba(154, 75, 34, .11); }
+  }
+  .bz-hist__flecha:focus-visible, .bz-hist__avatar:focus-visible { outline: 2px solid var(--bzh-cobre); outline-offset: 3px; }
+
+  .bz-hist__avatares { display: flex; align-items: center; justify-content: center; gap: 25px; }
+  .bz-hist__avatar {
+    position: relative; isolation: isolate; width: 64px; height: 64px; margin: 0; padding: 3px;
+    border: 1px solid var(--bzh-borde); border-radius: 50%; background: #FFF8EF; opacity: .48; cursor: pointer;
+    transition: opacity .25s ease, transform .25s ease, border-color .25s ease;
+  }
+  .bz-hist__halo {
+    position: absolute; z-index: -1; inset: -8px; border-radius: 50%; opacity: 0; pointer-events: none;
+    background: radial-gradient(circle, rgba(246, 190, 122, .5) 0%, rgba(235, 148, 82, .14) 48%, rgba(235, 148, 82, 0) 72%);
+    transition: opacity .25s ease;
+  }
+  .bz-hist__avatar.is-active { opacity: 1; border-color: var(--bzh-cobre); transform: scale(1.06); box-shadow: 0 0 0 3px #FFF7EB; }
+  .bz-hist__avatar.is-active .bz-hist__halo { opacity: 1; animation: bzhGlow 3s ease-in-out infinite; }
+  @keyframes bzhGlow { 0%, 100% { transform: scale(.94); opacity: .58; } 50% { transform: scale(1.08); opacity: 1; } }
+  .bz-hist__avatar img, .bz-hist__avatar-ph { display: block; width: 100%; height: 100%; border-radius: 50%; }
+  .bz-hist__avatar img { object-fit: cover; }
+  .bz-hist__avatar-ph { display: flex; align-items: center; justify-content: center; background: #FFE9D4; color: var(--bzh-cobre-dark); }
+
+  /* Tarjeta */
+  .bz-hist__track { touch-action: pan-y; }
+  .bz-hist__historia {
+    position: relative; width: 100%; display: grid; grid-template-columns: minmax(0, 1.8fr) minmax(350px, 1fr);
+    overflow: hidden; border: 1px solid var(--bzh-borde); border-radius: 20px; background: var(--bzh-card);
+    box-shadow: 0 12px 34px rgba(139, 68, 31, .07);
+  }
+  .bz-hist__historia.is-active { animation: bzhIn .35s ease both; }
+  @keyframes bzhIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  .bz-hist__comparativa { min-width: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); background: #F9EFE5; }
+  .bz-hist__foto { position: relative; min-width: 0; min-height: 510px; overflow: hidden; background: #F6EDE5; }
+  .bz-hist__foto + .bz-hist__foto { border-left: 1px solid rgba(122, 70, 45, .08); }
+  .bz-hist__foto img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+  .bz-hist__foto--antes img { filter: saturate(.92) brightness(.98); }
+  .bz-hist__foto--despues img { filter: saturate(1.04) brightness(1.02) sepia(.035); }
+  .bz-hist__foto--despues::after {
+    content: ""; position: absolute; z-index: 1; inset: 0; pointer-events: none;
+    background: linear-gradient(145deg, rgba(255, 209, 154, .11) 0%, rgba(255, 222, 181, 0) 48%, rgba(220, 126, 67, .05) 100%);
+  }
+  .bz-hist__sun-glow {
+    position: absolute; z-index: 2; top: -52px; right: -48px; width: 145px; height: 145px; border-radius: 50%; pointer-events: none;
+    background: radial-gradient(circle, rgba(255, 234, 188, .62) 0%, rgba(239, 167, 101, .16) 45%, rgba(239, 167, 101, 0) 72%);
+  }
+  .bz-hist__ph { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .bz-hist__ph-svg { width: 70%; height: 70%; fill: rgba(56, 34, 25, .25); }
+  .bz-hist__label {
+    position: absolute; z-index: 4; left: 15px; bottom: 14px; padding: 6px 10px; border-radius: 999px;
+    background: rgba(255, 249, 242, .92); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    color: #684734; border: 1px solid rgba(141, 82, 49, .14);
+    font-size: .68em; line-height: 1; font-weight: 650; letter-spacing: .05em; text-transform: uppercase;
+  }
+  .bz-hist__label--despues { color: var(--bzh-cobre-dark); background: rgba(255, 238, 216, .94); border-color: var(--bzh-borde); }
+
+  /* Contenido */
+  .bz-hist__contenido {
+    position: relative; min-width: 0; padding: 38px 34px 30px; display: flex; flex-direction: column; align-items: flex-start;
+    background: radial-gradient(circle at 100% 0%, rgba(255, 222, 176, .42) 0%, rgba(255, 222, 176, 0) 35%), linear-gradient(145deg, #FFFBF6 0%, #FFF3E5 100%);
+  }
+  .bz-hist__nombre-wrap { width: 100%; margin: 0 0 20px; display: flex; align-items: center; justify-content: space-between; gap: 15px; }
+  .bz-hist__nombre { margin: 0; padding: 0; color: var(--bzh-texto); font-size: 1.42em; line-height: 1.08; font-weight: 700; letter-spacing: inherit; text-transform: uppercase; }
+  .bz-hist__sol {
+    width: 32px; height: 32px; min-width: 32px; display: flex; align-items: center; justify-content: center; color: #D98047; border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 218, 163, .54) 0%, rgba(255, 218, 163, 0) 72%);
+  }
+  .bz-hist__sol svg { width: 24px; height: 24px; display: block; fill: none; stroke: currentColor; stroke-width: 1.35; stroke-linecap: round; }
+  .bz-hist__relato { color: var(--bzh-texto); font-size: 1em; line-height: 1.55; }
+  .bz-hist .bz-hist__relato p { margin: 0 0 .6em; padding: 0; color: inherit; font-size: inherit; line-height: inherit; font-weight: inherit; letter-spacing: inherit; }
+  .bz-hist .bz-hist__relato p:last-child { margin-bottom: 0; }
+  .bz-hist__tags { margin: 28px 0 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 7px; }
+  .bz-hist__tags li {
+    margin: 0; padding: 7px 10px; border-radius: 999px; background: linear-gradient(135deg, var(--bzh-tag-1) 0%, var(--bzh-tag-2) 100%);
+    color: #FFFFFF; box-shadow: 0 3px 9px rgba(178, 89, 42, .08);
+    font-size: .67em; line-height: 1; font-weight: 650; letter-spacing: .035em; text-transform: uppercase;
+  }
+  .bz-hist__footer { width: 100%; margin-top: auto; padding-top: 38px; border-top: 1px solid rgba(184, 97, 50, .09); }
+  .bz-hist__uso { margin: 0; color: var(--bzh-cobre-dark); font-size: .78em; line-height: 1.4; font-weight: 550; }
+  .bz-hist__nota { margin: 5px 0 0; color: var(--bzh-texto-soft); font-size: .66em; line-height: 1.4; }
+  .bz-hist__vacio { margin: 0; padding: 30px; text-align: center; border: 1px dashed var(--bzh-borde); border-radius: 14px; }
+
+  @media screen and (min-width: 990px) and (max-width: 1250px) {
+    .bz-hist { padding-left: 22px; padding-right: 22px; }
+    .bz-hist__historia { grid-template-columns: minmax(0, 1.65fr) minmax(320px, 1fr); }
+    .bz-hist__foto { min-height: 450px; }
+    .bz-hist__contenido { padding: 30px 27px 25px; }
+  }
+  @media screen and (min-width: 750px) and (max-width: 989px) {
+    .bz-hist { padding-left: 18px; padding-right: 18px; }
+    .bz-hist__selector { margin-bottom: 22px; }
+    .bz-hist__historia { grid-template-columns: minmax(0, 1.45fr) minmax(280px, 1fr); }
+    .bz-hist__foto { min-height: 385px; }
+    .bz-hist__contenido { padding: 25px 21px 22px; }
+    .bz-hist__nombre { font-size: 1.28em; }
+    .bz-hist__relato { font-size: .94em; line-height: 1.5; }
+  }
+  @media screen and (max-width: 749px) {
+    .bz-hist { padding-left: 14px; padding-right: 14px; }
+    .bz-hist__titulo { font-size: 1.5em; }
+    .bz-hist__selector { max-width: 300px; margin: 0 auto 17px; grid-template-columns: 30px minmax(0, 1fr) 30px; gap: 8px; }
+    .bz-hist__flecha { width: 29px; height: 29px; }
+    .bz-hist__flecha svg { width: 15px; height: 15px; }
+    .bz-hist__avatares { gap: 15px; }
+    .bz-hist__avatar { width: 48px; height: 48px; padding: 2px; }
+    .bz-hist__historia { display: block; border-radius: 14px; }
+    .bz-hist__foto { min-height: 0; aspect-ratio: .82 / 1; }
+    .bz-hist__label { left: 8px; bottom: 8px; padding: 5px 7px; font-size: .57em; }
+    .bz-hist__sun-glow { width: 100px; height: 100px; top: -43px; right: -38px; }
+    .bz-hist__contenido { padding: 20px 17px 17px; }
+    .bz-hist__nombre-wrap { margin-bottom: 12px; }
+    .bz-hist__nombre { font-size: 1.16em; }
+    .bz-hist__sol { width: 27px; height: 27px; min-width: 27px; }
+    .bz-hist__sol svg { width: 21px; height: 21px; }
+    .bz-hist__relato { font-size: .92em; line-height: 1.48; }
+    .bz-hist__tags { margin-top: 19px; gap: 6px; }
+    .bz-hist__tags li { padding: 6px 8px; font-size: .6em; }
+    .bz-hist__footer { margin-top: 0; padding-top: 24px; }
+    .bz-hist__uso { font-size: .72em; }
+    .bz-hist__nota { font-size: .62em; }
+  }
+  @media screen and (max-width: 390px) {
+    .bz-hist { padding-left: 11px; padding-right: 11px; }
+    .bz-hist__avatares { gap: 11px; }
+    .bz-hist__avatar { width: 44px; height: 44px; }
+    .bz-hist__contenido { padding: 17px 14px 15px; }
+    .bz-hist__relato { font-size: .88em; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .bz-hist__avatar.is-active .bz-hist__halo, .bz-hist__historia.is-active { animation: none !important; }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  if (!customElements.get('bronze-historias')) {
+    customElements.define('bronze-historias', class extends HTMLElement {
+      connectedCallback() {
+        this.tabs = Array.from(this.querySelectorAll('.bz-hist__avatar'));
+        this.panels = Array.from(this.querySelectorAll('.bz-hist__historia'));
+        if (this.panels.length < 2) return;
+        this.active = 0;
+
+        this.tabs.forEach((tab, i) => tab.addEventListener('click', () => this.show(i, true)));
+        this.querySelectorAll('.bz-hist__flecha').forEach((btn) =>
+          btn.addEventListener('click', () => this.show(this.active + Number(btn.dataset.dir), true))
+        );
+        this.querySelector('.bz-hist__avatares').addEventListener('keydown', (e) => {
+          if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+            e.preventDefault();
+            this.show(this.active + (e.key === 'ArrowRight' ? 1 : -1), true, true);
+          }
+        });
+
+        // Deslizar con el dedo en celular
+        const track = this.querySelector('.bz-hist__track');
+        let x0 = null, y0 = 0;
+        track.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+        track.addEventListener('touchend', (e) => {
+          if (x0 === null) return;
+          const dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0;
+          x0 = null;
+          if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.3) this.show(this.active + (dx < 0 ? 1 : -1), true);
+        }, { passive: true });
+
+        // Editor de temas: al seleccionar un bloque se muestra esa historia
+        this.onBlockSelect = (e) => {
+          const i = this.panels.indexOf(e.target);
+          if (i > -1) this.show(i, true);
+        };
+        document.addEventListener('shopify:block:select', this.onBlockSelect);
+
+        const secs = Number(this.dataset.autoplay) || 0;
+        if (secs > 0 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          this.timer = setInterval(() => {
+            if (!document.hidden) this.show(this.active + 1);
+          }, secs * 1000);
+        }
+      }
+
+      disconnectedCallback() {
+        clearInterval(this.timer);
+        document.removeEventListener('shopify:block:select', this.onBlockSelect);
+      }
+
+      show(index, byUser, focus) {
+        const n = this.panels.length;
+        this.active = ((index % n) + n) % n;
+        if (byUser) clearInterval(this.timer);
+        this.tabs.forEach((tab, i) => {
+          const on = i === this.active;
+          tab.classList.toggle('is-active', on);
+          tab.setAttribute('aria-selected', on ? 'true' : 'false');
+          tab.tabIndex = on ? 0 : -1;
+          if (on && focus) tab.focus();
+        });
+        this.panels.forEach((panel, i) => {
+          const on = i === this.active;
+          panel.classList.toggle('is-active', on);
+          panel.hidden = !on;
+        });
+      }
+    });
+  }
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Bronze · Historias",
+  "tag": "section",
+  "class": "bz-hist-section",
+  "settings": [
+    { "type": "header", "content": "Encabezado (opcional)" },
+    { "type": "text", "id": "subtitulo", "label": "Subtítulo" },
+    { "type": "inline_richtext", "id": "titulo", "label": "Título" },
+    { "type": "header", "content": "Textos generales" },
+    { "type": "text", "id": "label_antes", "label": "Etiqueta foto antes", "default": "ANTES" },
+    { "type": "text", "id": "label_despues", "label": "Etiqueta foto después", "default": "DESPUÉS" },
+    { "type": "text", "id": "nota", "label": "Nota al pie", "default": "Historia ilustrativa. Los resultados pueden variar.", "info": "Se muestra en todas las historias." },
+    { "type": "range", "id": "autoplay", "label": "Cambio automático (segundos)", "min": 0, "max": 12, "step": 1, "default": 0, "info": "0 = apagado. Se frena cuando la persona toca una historia." },
+    { "type": "header", "content": "Colores" },
+    { "type": "color", "id": "color_bg", "label": "Fondo de la sección", "info": "Dejalo vacío para usar el fondo del tema." },
+    { "type": "color", "id": "color_card", "label": "Fondo de la tarjeta", "default": "#FFF9F3" },
+    { "type": "color", "id": "color_texto", "label": "Texto", "default": "#382219" },
+    { "type": "color", "id": "color_cobre", "label": "Acento cobre", "default": "#B86132" },
+    { "type": "color", "id": "color_cobre_dark", "label": "Acento cobre oscuro", "default": "#8E4424" },
+    { "type": "color", "id": "color_tag_1", "label": "Etiquetas · color 1", "default": "#F4B27A" },
+    { "type": "color", "id": "color_tag_2", "label": "Etiquetas · color 2", "default": "#D77C45" },
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "max_width", "label": "Ancho máximo", "min": 900, "max": 1600, "step": 50, "unit": "px", "default": 1450 },
+    { "type": "range", "id": "padding_top", "label": "Espacio arriba", "min": 0, "max": 100, "step": 2, "unit": "px", "default": 26 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio abajo", "min": 0, "max": 100, "step": 2, "unit": "px", "default": 26 }
+  ],
+  "blocks": [
+    {
+      "type": "historia",
+      "name": "Historia",
+      "limit": 8,
+      "settings": [
+        { "type": "text", "id": "nombre", "label": "Nombre y edad", "default": "CAMILA, 36" },
+        { "type": "image_picker", "id": "avatar", "label": "Foto del círculo (avatar)", "info": "Si la dejás vacía se usa la foto después." },
+        { "type": "image_picker", "id": "antes", "label": "Foto antes" },
+        { "type": "image_picker", "id": "despues", "label": "Foto después" },
+        { "type": "richtext", "id": "relato", "label": "Relato", "default": "<p>“Siempre me costó muchísimo tomar color.”</p>" },
+        { "type": "text", "id": "etiquetas", "label": "Etiquetas", "default": "TONO DORADO, COLOR PAREJO, LOOK NATURAL", "info": "Separadas por coma." },
+        { "type": "text", "id": "uso", "label": "Línea de uso", "default": "1 cápsula al día · 60 días de rutina" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bronze · Historias",
+      "blocks": [
+        {
+          "type": "historia",
+          "settings": {
+            "nombre": "CAMILA, 36",
+            "relato": "<p>“Siempre me costó muchísimo tomar color. Con constancia empecé a verme más dorada y, cuando tomaba un poco de sol, el tono quedaba mucho más lindo y parejo. Lo que más me gusta es que se ve natural, nada naranja.”</p>",
+            "etiquetas": "TONO DORADO, COLOR PAREJO, LOOK NATURAL",
+            "uso": "1 cápsula al día · 60 días de rutina"
+          }
+        },
+        {
+          "type": "historia",
+          "settings": {
+            "nombre": "JULIETA, 43",
+            "relato": "<p>“Lo empecé porque no quería perder enseguida el color de las vacaciones. Seguí con mi rutina y sentí que ese tono de verano me acompañó muchísimo más tiempo. Me encantaba mirarme y seguir teniendo color semanas después.”</p>",
+            "etiquetas": "MÁS DURADERO, GLOW DE VERANO, MÁS LUMINOSA",
+            "uso": "Rutina diaria simple · 1 cápsula"
+          }
+        },
+        {
+          "type": "historia",
+          "settings": {
+            "nombre": "FLORENCIA, 51",
+            "relato": "<p>“En invierno siempre sentía que perdía toda la luz que tenía en verano. Empecé buscando mantener un poquito de color y terminé amando cómo se veía mi piel: más cálida, luminosa y con ese tono suave que me hace sentir mucho mejor.”</p>",
+            "etiquetas": "PIEL LUMINOSA, TONO CÁLIDO, TODO EL AÑO",
+            "uso": "60 cápsulas · 60 días de rutina"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
