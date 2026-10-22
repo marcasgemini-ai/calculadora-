@@ -44,6 +44,30 @@
 </style>
 {%- endif -%}
 
+{%- liquid
+  assign f_t = section.settings.font_titulo
+  assign f_b = section.settings.font_texto
+  assign f_b_500 = f_b | font_modify: 'weight', '500'
+  assign f_b_600 = f_b | font_modify: 'weight', '600'
+  assign f_b_700 = f_b | font_modify: 'weight', 'bold'
+  assign f_b_i = f_b | font_modify: 'style', 'italic'
+-%}
+{%- unless section.settings.usar_fuente_tema -%}
+<style>
+  {{ f_t | font_face: font_display: 'swap' }}
+  {{ f_b | font_face: font_display: 'swap' }}
+  {{ f_b_500 | font_face: font_display: 'swap' }}
+  {{ f_b_600 | font_face: font_display: 'swap' }}
+  {{ f_b_700 | font_face: font_display: 'swap' }}
+  {{ f_b_i | font_face: font_display: 'swap' }}
+  #bzev-{{ section.id }} {
+    --bzev-ft: "{{ f_t.family }}", {{ f_t.fallback_families }};
+    --bzev-ft-w: {{ f_t.weight }};
+    --bzev-fb: "{{ f_b.family }}", {{ f_b.fallback_families }};
+  }
+</style>
+{%- endunless -%}
+
 <bronze-evolucion
   id="bzev-{{ section.id }}"
   class="bzev{% if s.ancho_completo %} bzev--full{% endif %}{% if s.animar %} bzev--animar{% endif %}"
@@ -111,7 +135,7 @@
 </bronze-evolucion>
 
 <style>
-  .bzev { display: block; box-sizing: border-box; width: 100%; max-width: 100%; margin: var(--bzev-mt) 0 var(--bzev-mb); padding: 0 16px; overflow: hidden; overflow: clip; font-family: inherit; }
+  .bzev { display: block; box-sizing: border-box; width: 100%; max-width: 100%; margin: var(--bzev-mt) 0 var(--bzev-mb); padding: 0 16px; overflow: hidden; overflow: clip; font-family: var(--bzev-fb, inherit); }
   .bzev.bzev--full { padding: 0; }
   .bzev *, .bzev *::before, .bzev *::after { box-sizing: border-box; font-family: inherit; }
   .bzev img { max-width: none; border: 0; border-radius: 0; box-shadow: none; }
@@ -145,9 +169,9 @@
     background: rgba(116, 53, 21, .18); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
     color: #FFF8EC; font-size: .7em; font-weight: 650; line-height: 1; letter-spacing: .16em; text-transform: uppercase;
   }
-  .bzev .bzev__titulo {
+  .bzev .bzev__titulo { font-family: var(--bzev-ft, inherit);
     max-width: 760px; margin: 0 auto; padding: 0; color: var(--bzev-titulo);
-    font-size: clamp(2em, 3.4vw, 2.8em); font-weight: 650; line-height: 1.08; letter-spacing: .015em; text-transform: none;
+    font-size: clamp(2em, 3.4vw, 2.8em); font-weight: var(--bzev-ft-w, 650); line-height: 1.08; letter-spacing: .015em; text-transform: none;
     text-shadow: 0 3px 7px rgba(69, 29, 11, .25), 0 8px 24px rgba(69, 29, 11, .2);
   }
   .bzev .bzev__titulo span { display: block; }
@@ -186,9 +210,9 @@
     color: #FFFFFF; font-size: .7em; font-weight: 700; line-height: 1; letter-spacing: .055em; text-transform: uppercase;
     box-shadow: 0 4px 12px rgba(172, 81, 35, .15);
   }
-  .bzev .bzev__card-titulo {
+  .bzev .bzev__card-titulo { font-family: var(--bzev-ft, inherit);
     position: relative; z-index: 2; max-width: 90%; margin: 0 0 9px; padding: 0; color: var(--bzev-card-texto);
-    font-size: 1.08em; font-weight: 650; line-height: 1.25; letter-spacing: 0; text-transform: none;
+    font-size: 1.08em; font-weight: var(--bzev-ft-w, 650); line-height: 1.25; letter-spacing: 0; text-transform: none;
   }
   .bzev .bzev__card-texto { position: relative; z-index: 2; color: var(--bzev-card-texto); opacity: .78; font-size: .9em; line-height: 1.45; }
   .bzev .bzev__card-texto p { margin: 0; padding: 0; color: inherit; font-size: inherit; line-height: inherit; }
@@ -335,6 +359,10 @@
     { "type": "range", "id": "margen_abajo", "label": "Espacio abajo", "min": 0, "max": 80, "step": 2, "unit": "px", "default": 24 },
     { "type": "checkbox", "id": "evitar_scroll_lateral", "label": "Evitar franja blanca a la derecha", "default": true, "info": "Corta cualquier elemento de la página que se pase del ancho de la pantalla." },
     { "type": "checkbox", "id": "animar", "label": "Animación de entrada", "default": true },
+    { "type": "header", "content": "Tipografía" },
+    { "type": "checkbox", "id": "usar_fuente_tema", "label": "Usar la tipografía del tema", "default": false },
+    { "type": "font_picker", "id": "font_titulo", "label": "Fuente de títulos", "default": "poppins_n7" },
+    { "type": "font_picker", "id": "font_texto", "label": "Fuente de textos", "default": "poppins_n4" },
     { "type": "header", "content": "Colores" },
     { "type": "color", "id": "color_base", "label": "Color base (debajo de la foto)", "default": "#C9783D" },
     { "type": "color", "id": "color_titulo", "label": "Título", "default": "#FFFFFF" },

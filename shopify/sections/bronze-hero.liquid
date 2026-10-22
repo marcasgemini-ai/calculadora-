@@ -47,6 +47,30 @@
 </style>
 {%- endif -%}
 
+{%- liquid
+  assign f_t = section.settings.font_titulo
+  assign f_b = section.settings.font_texto
+  assign f_b_500 = f_b | font_modify: 'weight', '500'
+  assign f_b_600 = f_b | font_modify: 'weight', '600'
+  assign f_b_700 = f_b | font_modify: 'weight', 'bold'
+  assign f_b_i = f_b | font_modify: 'style', 'italic'
+-%}
+{%- unless section.settings.usar_fuente_tema -%}
+<style>
+  {{ f_t | font_face: font_display: 'swap' }}
+  {{ f_b | font_face: font_display: 'swap' }}
+  {{ f_b_500 | font_face: font_display: 'swap' }}
+  {{ f_b_600 | font_face: font_display: 'swap' }}
+  {{ f_b_700 | font_face: font_display: 'swap' }}
+  {{ f_b_i | font_face: font_display: 'swap' }}
+  #bzh2-{{ section.id }} {
+    --bzh2-ft: "{{ f_t.family }}", {{ f_t.fallback_families }};
+    --bzh2-ft-w: {{ f_t.weight }};
+    --bzh2-fb: "{{ f_b.family }}", {{ f_b.fallback_families }};
+  }
+</style>
+{%- endunless -%}
+
 <bronze-hero
   id="bzh2-{{ section.id }}"
   class="bzh2 bzh2--{{ s.alineacion_mobile }}{% if s.producto_mostrar %} bzh2--prod-{{ s.producto_lado }}{% endif %}{% if s.animar %} bzh2--animar{% endif %}"
@@ -180,7 +204,7 @@
 <style>
   .bzh2 {
     position: relative; display: block; width: 100%; max-width: 100%; margin: 0; padding: 0;
-    overflow: hidden; overflow: clip; background: var(--bzh2-bg); color: var(--bzh2-texto); font-family: inherit;
+    overflow: hidden; overflow: clip; background: var(--bzh2-bg); color: var(--bzh2-texto); font-family: var(--bzh2-fb, inherit);
   }
   .bzh2 *, .bzh2 *::before, .bzh2 *::after { box-sizing: border-box; font-family: inherit; }
   .bzh2 img { max-width: none; border: 0; border-radius: 0; box-shadow: none; }
@@ -208,12 +232,12 @@
     font-size: .7em; font-weight: 700; line-height: 1; letter-spacing: .16em; text-transform: uppercase;
   }
   .bzh2 .bzh2__eyebrow::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--bzh2-acento); box-shadow: 0 0 0 3px rgba(198, 110, 56, .18); }
-  .bzh2 .bzh2__title {
+  .bzh2 .bzh2__title { font-family: var(--bzh2-ft, inherit);
     margin: 0; padding: 0; display: flex; flex-direction: column; gap: .04em;
     color: var(--bzh2-titulo); font-size: calc(var(--bzh2-title-size) * 3.4em); line-height: 1.02; letter-spacing: -.01em; text-transform: none;
   }
-  .bzh2 .bzh2__title-1 { display: block; font-weight: 800; }
-  .bzh2 .bzh2__title-2 {
+  .bzh2 .bzh2__title-1 { display: block; font-weight: var(--bzh2-ft-w, 800); }
+  .bzh2 .bzh2__title-2 { font-family: var(--bzh2-fb, inherit);
     display: block; font-weight: 400; font-style: italic; letter-spacing: 0;
     background: linear-gradient(100deg, var(--bzh2-icono-2) 0%, var(--bzh2-acento) 55%, #E9A76A 100%);
     -webkit-background-clip: text; background-clip: text; color: transparent; padding-right: .08em;
@@ -235,7 +259,7 @@
   .bzh2 .bzh2__icon::after { content: ""; position: absolute; inset: 3px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, .28); pointer-events: none; }
   .bzh2 .bzh2__icon svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
   .bzh2 .bzh2__icon img { width: 30px; height: 30px; object-fit: contain; }
-  .bzh2 .bzh2__item-text { color: var(--bzh2-titulo); font-size: 1.22em; font-weight: 700; line-height: 1.2; }
+  .bzh2 .bzh2__item-text { font-family: var(--bzh2-ft, inherit); color: var(--bzh2-titulo); font-size: 1.22em; font-weight: var(--bzh2-ft-w, 700); line-height: 1.2; }
 
   /* ---------- Botón ---------- */
   .bzh2 .bzh2__cta { margin-top: 30px; }
@@ -440,6 +464,10 @@
     { "type": "range", "id": "max_width", "label": "Ancho máximo", "min": 1000, "max": 2000, "step": 50, "unit": "px", "default": 1600 },
     { "type": "checkbox", "id": "evitar_scroll_lateral", "label": "Evitar franja blanca a la derecha", "default": true, "info": "Corta cualquier elemento de la página que se pase del ancho de la pantalla." },
     { "type": "checkbox", "id": "animar", "label": "Animación de entrada", "default": true },
+    { "type": "header", "content": "Tipografía" },
+    { "type": "checkbox", "id": "usar_fuente_tema", "label": "Usar la tipografía del tema", "default": false },
+    { "type": "font_picker", "id": "font_titulo", "label": "Fuente de títulos", "default": "poppins_n7" },
+    { "type": "font_picker", "id": "font_texto", "label": "Fuente de textos", "default": "poppins_n4" },
     { "type": "header", "content": "Colores" },
     { "type": "color", "id": "color_bg", "label": "Fondo", "default": "#F7E3D1", "info": "Usá un color parecido al fondo de la foto para que el fundido no se note." },
     { "type": "color", "id": "color_titulo", "label": "Título y beneficios", "default": "#3A1F12" },

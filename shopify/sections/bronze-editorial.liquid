@@ -12,6 +12,7 @@
   assign fb_producto = 'https://cdn.shopify.com/s/files/1/0789/3421/2779/files/Diseno_sin_titulo_15_c8a53613-f530-499c-a5cc-3e3edce57261.png?v=1788271571'
   assign beneficios = section.blocks | where: 'type', 'beneficio'
   assign datos = s.datos | split: '|'
+  assign chips = s.chips | split: '|'
   assign img_loading = 'lazy'
   if s.prioridad
     assign img_loading = 'eager'
@@ -45,6 +46,30 @@
     --bzed-mb: {{ s.margen_abajo }}px;
   }
 </style>
+
+{%- liquid
+  assign f_t = section.settings.font_titulo
+  assign f_b = section.settings.font_texto
+  assign f_b_500 = f_b | font_modify: 'weight', '500'
+  assign f_b_600 = f_b | font_modify: 'weight', '600'
+  assign f_b_700 = f_b | font_modify: 'weight', 'bold'
+  assign f_b_i = f_b | font_modify: 'style', 'italic'
+-%}
+{%- unless section.settings.usar_fuente_tema -%}
+<style>
+  {{ f_t | font_face: font_display: 'swap' }}
+  {{ f_b | font_face: font_display: 'swap' }}
+  {{ f_b_500 | font_face: font_display: 'swap' }}
+  {{ f_b_600 | font_face: font_display: 'swap' }}
+  {{ f_b_700 | font_face: font_display: 'swap' }}
+  {{ f_b_i | font_face: font_display: 'swap' }}
+  #bzed-{{ section.id }} {
+    --bzed-ft: "{{ f_t.family }}", {{ f_t.fallback_families }};
+    --bzed-ft-w: {{ f_t.weight }};
+    --bzed-fb: "{{ f_b.family }}", {{ f_b.fallback_families }};
+  }
+</style>
+{%- endunless -%}
 
 <bronze-editorial
   id="bzed-{{ section.id }}"
@@ -112,6 +137,10 @@
       <span class="bzed__glow bzed__glow--1" aria-hidden="true"></span>
       <span class="bzed__glow bzed__glow--2" aria-hidden="true"></span>
       <span class="bzed__spark bzed__spark--1" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2.5c.45 5.5 4 9.05 9.5 9.5-5.5.45-9.05 4-9.5 9.5-.45-5.5-4-9.05-9.5-9.5 5.5-.45 9.05-4 9.5-9.5z"/></svg></span>
+      {%- if s.efecto_sol -%}
+        <span class="bzed__halo" aria-hidden="true"></span>
+        <span class="bzed__rays" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+      {%- endif -%}
       <span class="bzed__spark bzed__spark--2" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2.5c.45 5.5 4 9.05 9.5 9.5-5.5.45-9.05 4-9.5 9.5-.45-5.5-4-9.05-9.5-9.5 5.5-.45 9.05-4 9.5-9.5z"/></svg></span>
 
       {%- if s.producto_imagen != blank -%}
@@ -123,13 +152,25 @@
           <img src="{{ fb_producto }}&width=800" srcset="{{ fb_producto }}&width=400 400w, {{ fb_producto }}&width=600 600w, {{ fb_producto }}&width=800 800w, {{ fb_producto }}&width=1000 1000w" sizes="(min-width: 990px) 40vw, 84vw" width="900" height="1100" loading="{{ img_loading }}" alt="{{ s.producto_alt | escape }}">
         </div>
       {%- endif -%}
+      {%- if chips.size > 0 -%}
+        <ul class="bzed__chips" role="list">
+          {%- for c in chips -%}
+            {%- assign cc = c | strip -%}
+            {%- if cc == blank or forloop.index > 3 -%}{%- continue -%}{%- endif -%}
+            <li class="bzed__chip bzed__chip--{{ forloop.index }}">
+              <span class="bzed__chip-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2.5c.45 5.5 4 9.05 9.5 9.5-5.5.45-9.05 4-9.5 9.5-.45-5.5-4-9.05-9.5-9.5 5.5-.45 9.05-4 9.5-9.5z"/></svg></span>
+              <span>{{ cc }}</span>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
     </div>
 
   </div>
 </bronze-editorial>
 
 <style>
-  .bzed { display: block; box-sizing: border-box; width: 100%; max-width: 100%; margin: var(--bzed-mt) 0 var(--bzed-mb); padding: 0 16px; overflow: hidden; overflow: clip; font-family: inherit; color: var(--bzed-texto); }
+  .bzed { display: block; box-sizing: border-box; width: 100%; max-width: 100%; margin: var(--bzed-mt) 0 var(--bzed-mb); padding: 0 16px; overflow: hidden; overflow: clip; font-family: var(--bzed-fb, inherit); color: var(--bzed-texto); }
   .bzed *, .bzed *::before, .bzed *::after { box-sizing: border-box; font-family: inherit; }
   .bzed img { max-width: none; border: 0; border-radius: 0; box-shadow: none; }
 
@@ -150,9 +191,9 @@
     background: var(--bzed-acento-soft); border: 1px solid var(--bzed-acento-line); color: var(--bzed-acento);
     font-size: .73em; font-weight: 700; line-height: 1; letter-spacing: .14em; text-transform: uppercase;
   }
-  .bzed .bzed__title {
+  .bzed .bzed__title { font-family: var(--bzed-ft, inherit);
     margin: 0; padding: 0; color: var(--bzed-texto); font-size: clamp(2.05em, 3.6vw, 3.8em); line-height: .98;
-    font-weight: 650; letter-spacing: -.035em; text-transform: none; text-wrap: balance;
+    font-weight: var(--bzed-ft-w, 650); letter-spacing: -.035em; text-transform: none; text-wrap: balance;
   }
   .bzed .bzed__title span { display: block; }
   .bzed .bzed__title-2 { color: var(--bzed-acento); }
@@ -235,6 +276,55 @@
     display: block; width: 100%; height: auto; object-fit: contain;
     filter: drop-shadow(0 20px 30px rgba(95, 48, 19, .14)) drop-shadow(0 8px 14px rgba(255, 229, 177, .12));
   }
+  .bzed .bzed__product img { animation: bzedFloat 4.6s ease-in-out infinite; }
+  .bzed .bzed__halo {
+    position: absolute; z-index: 3; left: 50%; bottom: 18%; width: min(80%, 520px); aspect-ratio: 1 / 1; border-radius: 50%; transform: translateX(-50%);
+    background: radial-gradient(circle, rgba(255, 250, 222, .95) 0%, rgba(255, 228, 165, .55) 28%, rgba(246, 170, 92, .18) 52%, rgba(246, 170, 92, 0) 72%);
+    animation: bzedHalo 4.5s ease-in-out infinite; pointer-events: none;
+  }
+  .bzed .bzed__rays {
+    position: absolute; z-index: 3; left: 50%; bottom: calc(18% + min(40%, 260px)); width: min(130%, 860px); aspect-ratio: 1 / 1; pointer-events: none;
+    transform: translate(-50%, 50%);
+    -webkit-mask: radial-gradient(circle, transparent 0 18%, #000 28%, transparent 68%); mask: radial-gradient(circle, transparent 0 18%, #000 28%, transparent 68%);
+    animation: bzedSpin 50s linear infinite;
+  }
+  .bzed .bzed__rays i {
+    position: absolute; top: 50%; left: 50%; width: 50%; height: 2px; margin-top: -1px; transform-origin: 0 50%; border-radius: 2px;
+    background: linear-gradient(90deg, rgba(255, 246, 214, .95), rgba(255, 224, 159, 0)); box-shadow: 0 0 10px rgba(255, 214, 140, .45);
+  }
+  .bzed .bzed__rays i:nth-child(1) { transform: rotate(0deg); }
+  .bzed .bzed__rays i:nth-child(2) { transform: rotate(36deg); }
+  .bzed .bzed__rays i:nth-child(3) { transform: rotate(72deg); }
+  .bzed .bzed__rays i:nth-child(4) { transform: rotate(108deg); }
+  .bzed .bzed__rays i:nth-child(5) { transform: rotate(144deg); }
+  .bzed .bzed__rays i:nth-child(6) { transform: rotate(180deg); }
+  .bzed .bzed__rays i:nth-child(7) { transform: rotate(216deg); }
+  .bzed .bzed__rays i:nth-child(8) { transform: rotate(252deg); }
+  .bzed .bzed__rays i:nth-child(9) { transform: rotate(288deg); }
+  .bzed .bzed__rays i:nth-child(10) { transform: rotate(324deg); }
+
+  /* Etiquetas flotantes de vidrio */
+  .bzed .bzed__chips { position: absolute; inset: 0; z-index: 6; margin: 0; padding: 0; list-style: none; pointer-events: none; }
+  .bzed .bzed__chip {
+    position: absolute; display: inline-flex; align-items: center; gap: 8px; margin: 0; padding: 9px 14px 9px 10px; list-style: none;
+    border-radius: 999px; background: rgba(255, 255, 255, .62); border: 1px solid rgba(255, 255, 255, .8);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 10px 24px rgba(120, 60, 20, .16);
+    color: var(--bzed-texto); font-size: .82em; font-weight: 600; line-height: 1.1; white-space: nowrap;
+    animation: bzedChip 5s ease-in-out infinite;
+  }
+  .bzed .bzed__chip::before, .bzed .bzed__chip::marker { content: none; display: none; }
+  .bzed .bzed__chip-ico {
+    flex: 0 0 22px; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(145deg, var(--bzed-btn-1), var(--bzed-btn-2)); color: #FFFFFF;
+  }
+  .bzed .bzed__chip-ico svg { width: 12px; height: 12px; fill: currentColor; }
+  .bzed .bzed__chip--1 { top: 12%; left: 7%; }
+  .bzed .bzed__chip--2 { top: 40%; right: 6%; animation-delay: 1.4s; }
+  .bzed .bzed__chip--3 { bottom: 12%; left: 8%; animation-delay: 2.6s; }
+  @keyframes bzedFloat { 0%, 100% { transform: translateY(0) rotate(-1.2deg); } 50% { transform: translateY(-3.5%) rotate(1deg); } }
+  @keyframes bzedHalo { 0%, 100% { opacity: .8; transform: translateX(-50%) scale(.95); } 50% { opacity: 1; transform: translateX(-50%) scale(1.05); } }
+  @keyframes bzedSpin { to { transform: translate(-50%, 50%) rotate(360deg); } }
+  @keyframes bzedChip { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
   @keyframes bzedGlow { 0%, 100% { opacity: .85; transform: scale(.96); } 50% { opacity: 1; transform: scale(1.05); } }
   @keyframes bzedSpark { 0%, 100% { opacity: .4; transform: scale(.8) rotate(0); } 50% { opacity: 1; transform: scale(1.15) rotate(9deg); } }
 
@@ -264,7 +354,7 @@
   @media screen and (max-width: 749px) {
     .bzed { padding: 0 10px; }
     .bzed .bzed__card { border-radius: 18px; }
-    .bzed .bzed__visual, .bzed.bzed--visual-izquierda .bzed__visual { min-height: 360px; }
+    .bzed .bzed__visual, .bzed.bzed--visual-izquierda .bzed__visual { min-height: 410px; }
     .bzed .bzed__copy, .bzed.bzed--visual-izquierda .bzed__copy { padding: 22px 16px 24px; }
     .bzed .bzed__eyebrow { margin-bottom: 12px; padding: 6px 10px; font-size: .62em; letter-spacing: .13em; }
     .bzed .bzed__title { font-size: clamp(1.7em, 8vw, 2.35em); line-height: 1.02; }
@@ -282,16 +372,23 @@
     .bzed .bzed__spark--1 { top: 9%; left: 9%; width: 14px; height: 14px; }
     .bzed .bzed__spark--2 { right: 10%; bottom: 16%; width: 10px; height: 10px; }
     .bzed .bzed__product { bottom: -2px; width: min(var(--bzed-prod-w), 310px); }
+    .bzed .bzed__chip { padding: 7px 11px 7px 8px; gap: 6px; font-size: .7em; }
+    .bzed .bzed__chip-ico { flex-basis: 18px; width: 18px; height: 18px; }
+    .bzed .bzed__chip-ico svg { width: 10px; height: 10px; }
+    .bzed .bzed__chip--1 { top: 7%; left: 4%; }
+    .bzed .bzed__chip--2 { top: 36%; right: 3%; }
+    .bzed .bzed__chip--3 { bottom: 8%; left: 4%; }
+    .bzed .bzed__halo { bottom: 14%; }
   }
   @media screen and (max-width: 390px) {
-    .bzed .bzed__visual, .bzed.bzed--visual-izquierda .bzed__visual { min-height: 320px; }
+    .bzed .bzed__visual, .bzed.bzed--visual-izquierda .bzed__visual { min-height: 370px; }
     .bzed .bzed__copy, .bzed.bzed--visual-izquierda .bzed__copy { padding: 20px 13px 22px; }
     .bzed .bzed__title { font-size: 1.55em; }
     .bzed .bzed__subtitle { font-size: .87em; }
     .bzed .bzed__pill { font-size: .83em; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .bzed .bzed__glow--1, .bzed .bzed__spark, .bzed a.bzed__button::after { animation: none !important; }
+    .bzed .bzed__glow--1, .bzed .bzed__spark, .bzed a.bzed__button::after, .bzed .bzed__product img, .bzed .bzed__halo, .bzed .bzed__rays, .bzed .bzed__chip { animation: none !important; }
     .bzed.bzed--animar.is-ready .bzed__pill { opacity: 1; transform: none; transition: none; }
     .bzed.bzed--animar.is-ready .bzed__product { opacity: 1; transform: translateX(50%); transition: none; }
   }
@@ -347,7 +444,9 @@
     { "type": "image_picker", "id": "producto_imagen", "label": "Imagen del pote (PNG sin fondo)" },
     { "type": "text", "id": "producto_alt", "label": "Descripción del pote (accesibilidad)", "default": "Bronze DR WOMAN" },
     { "type": "checkbox", "id": "usar_ejemplos", "label": "Usar el pote actual si no elegís otro", "default": true },
-    { "type": "range", "id": "producto_ancho", "label": "Tamaño del pote", "min": 40, "max": 100, "step": 2, "unit": "%", "default": 84 },
+    { "type": "range", "id": "producto_ancho", "label": "Tamaño del pote", "min": 40, "max": 100, "step": 2, "unit": "%", "default": 88 },
+    { "type": "checkbox", "id": "efecto_sol", "label": "Halo y rayos de sol detrás del pote", "default": true },
+    { "type": "text", "id": "chips", "label": "Etiquetas flotantes sobre el visual", "default": "Sin efecto naranja | 1 cápsula al día | Tono dorado natural", "info": "Hasta 3, separadas con |. Dejalo vacío para ocultarlas." },
     { "type": "image_picker", "id": "fondo", "label": "Foto de fondo del visual (opcional)", "info": "Si la dejás vacía se usa el degradé dorado." },
     {
       "type": "select", "id": "lado_visual", "label": "Lado del visual en computadora", "default": "derecha",
@@ -361,6 +460,10 @@
     { "type": "range", "id": "margen_abajo", "label": "Espacio abajo", "min": 0, "max": 80, "step": 2, "unit": "px", "default": 28 },
     { "type": "checkbox", "id": "animar", "label": "Animación de entrada", "default": true },
     { "type": "checkbox", "id": "evitar_scroll_lateral", "label": "Evitar franja blanca a la derecha", "default": true, "info": "Corta cualquier elemento de la página que se pase del ancho de la pantalla." },
+    { "type": "header", "content": "Tipografía" },
+    { "type": "checkbox", "id": "usar_fuente_tema", "label": "Usar la tipografía del tema", "default": false },
+    { "type": "font_picker", "id": "font_titulo", "label": "Fuente de títulos", "default": "poppins_n7" },
+    { "type": "font_picker", "id": "font_texto", "label": "Fuente de textos", "default": "poppins_n4" },
     { "type": "header", "content": "Colores" },
     { "type": "color", "id": "color_card", "label": "Fondo de la tarjeta", "default": "#F3ECE7" },
     { "type": "color", "id": "color_visual_1", "label": "Visual · dorado claro", "default": "#F4C792" },
