@@ -1,0 +1,382 @@
+{%- comment -%}
+  DR WOMAN · Bronze · Evolución / resultados
+  Sección nativa: Editar código > Secciones > Agregar sección "bronze-evolucion" y pegar este archivo.
+  Después: Personalizar > Agregar sección > "Bronze · Evolución".
+  Cada etapa es un bloque (etiqueta de tiempo, título y texto). El número se pone solo (01, 02, 03...).
+  Si el botón no tiene link, baja hasta la oferta de la página. Hereda la tipografía del tema.
+{%- endcomment -%}
+
+{%- liquid
+  assign s = section.settings
+  assign fb_fondo = 'https://cdn.shopify.com/s/files/1/0789/3421/2779/files/Wellness_Bundle.jpg?v=1785981528'
+  assign etapas = section.blocks | where: 'type', 'etapa'
+  assign cols = etapas.size
+  if cols > 4
+    assign cols = 4
+  endif
+  if cols < 1
+    assign cols = 1
+  endif
+-%}
+
+<style>
+  #bzev-{{ section.id }} {
+    --bzev-cols: {{ cols }};
+    --bzev-overlay: {{ s.overlay | divided_by: 100.0 }};
+    --bzev-base: {{ s.color_base }};
+    --bzev-titulo: {{ s.color_titulo }};
+    --bzev-resalte: {{ s.color_resalte }};
+    --bzev-badge-1: {{ s.color_badge_1 }};
+    --bzev-badge-2: {{ s.color_badge_2 }};
+    --bzev-card-texto: {{ s.color_card_texto }};
+    --bzev-acento: {{ s.color_acento }};
+    --bzev-max: {{ s.max_width }}px;
+    --bzev-mt: {{ s.margen_arriba }}px;
+    --bzev-mb: {{ s.margen_abajo }}px;
+  }
+</style>
+
+<bronze-evolucion
+  id="bzev-{{ section.id }}"
+  class="bzev{% if s.ancho_completo %} bzev--full{% endif %}{% if s.animar %} bzev--animar{% endif %}"
+>
+  <div class="bzev__box">
+    <div class="bzev__bg" aria-hidden="true">
+      {%- if s.fondo != blank -%}
+        {%- assign fp = s.fondo.presentation.focal_point | default: '50% 50%' | prepend: 'object-position: ' -%}
+        {{ s.fondo | image_url: width: 1800 | image_tag: loading: 'lazy', alt: '', sizes: '100vw', widths: '600, 900, 1200, 1500, 1800', style: fp }}
+      {%- elsif s.usar_ejemplos -%}
+        <img src="{{ fb_fondo }}&width=1200" srcset="{{ fb_fondo }}&width=600 600w, {{ fb_fondo }}&width=900 900w, {{ fb_fondo }}&width=1200 1200w, {{ fb_fondo }}&width=1600 1600w" sizes="100vw" width="1600" height="900" loading="lazy" alt="">
+      {%- endif -%}
+    </div>
+    <div class="bzev__overlay" aria-hidden="true"></div>
+    <div class="bzev__sun" aria-hidden="true"></div>
+
+    <div class="bzev__contenido">
+      {%- if s.eyebrow != blank -%}<p class="bzev__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+
+      {%- if s.titulo_1 != blank or s.titulo_2 != blank -%}
+        <h2 class="bzev__titulo">
+          {%- if s.titulo_1 != blank -%}<span class="bzev__titulo-1">{{ s.titulo_1 }}</span>{%- endif -%}
+          {%- if s.titulo_2 != blank -%}<span class="bzev__titulo-2">{{ s.titulo_2 }}</span>{%- endif -%}
+        </h2>
+      {%- endif -%}
+
+      {%- if s.subtitulo != blank -%}<p class="bzev__subtitulo">{{ s.subtitulo }}</p>{%- endif -%}
+
+      {%- if etapas.size > 0 -%}
+        <ol class="bzev__etapas" role="list">
+          {%- for block in etapas -%}
+            {%- assign b = block.settings -%}
+            <li class="bzev__tarjeta" style="--i: {{ forloop.index0 }}" {{ block.shopify_attributes }}>
+              <span class="bzev__punto" aria-hidden="true"></span>
+              <span class="bzev__numero" aria-hidden="true">{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</span>
+              {%- if b.etiqueta != blank -%}<span class="bzev__semana">{{ b.etiqueta }}</span>{%- endif -%}
+              {%- if b.titulo != blank -%}<h3 class="bzev__card-titulo">{{ b.titulo }}</h3>{%- endif -%}
+              {%- if b.texto != blank -%}<div class="bzev__card-texto">{{ b.texto }}</div>{%- endif -%}
+              <span class="bzev__sparkle" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 2.5c.45 5.5 4 9.05 9.5 9.5-5.5.45-9.05 4-9.5 9.5-.45-5.5-4-9.05-9.5-9.5 5.5-.45 9.05-4 9.5-9.5z"/></svg>
+              </span>
+            </li>
+          {%- endfor -%}
+        </ol>
+      {%- elsif request.design_mode -%}
+        <p class="bzev__vacio">Agregá un bloque "Etapa" para mostrar la evolución.</p>
+      {%- endif -%}
+
+      {%- if s.boton_texto != blank -%}
+        <div class="bzev__cta">
+          <a
+            class="bzev__btn"
+            href="{% if s.boton_link != blank %}{{ s.boton_link }}{% else %}#{% endif %}"
+            {% if s.boton_link == blank %}data-scroll-compra{% endif %}
+          >
+            <span>{{ s.boton_texto }}</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6.5L18.5 12 13 17.5"/></svg>
+          </a>
+        </div>
+      {%- endif -%}
+
+      {%- if s.nota != blank -%}<p class="bzev__nota">{{ s.nota }}</p>{%- endif -%}
+    </div>
+  </div>
+</bronze-evolucion>
+
+<style>
+  .bzev { display: block; box-sizing: border-box; width: 100%; max-width: 100%; margin: var(--bzev-mt) 0 var(--bzev-mb); padding: 0 16px; font-family: inherit; }
+  .bzev.bzev--full { padding: 0; }
+  .bzev *, .bzev *::before, .bzev *::after { box-sizing: border-box; font-family: inherit; }
+  .bzev img { max-width: none; border: 0; border-radius: 0; box-shadow: none; }
+
+  .bzev .bzev__box {
+    position: relative; isolation: isolate; width: 100%; max-width: var(--bzev-max); margin: 0 auto;
+    padding: 56px 30px 50px; overflow: hidden; border-radius: 22px; background: var(--bzev-base); color: var(--bzev-card-texto);
+  }
+  .bzev.bzev--full .bzev__box { max-width: none; border-radius: 0; }
+  .bzev .bzev__bg { position: absolute; z-index: 0; inset: 0; pointer-events: none; }
+  .bzev .bzev__bg img {
+    position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover;
+    filter: saturate(.8) sepia(.3) brightness(.85); transform: scale(1.02);
+  }
+  .bzev .bzev__overlay {
+    position: absolute; z-index: 1; inset: 0; pointer-events: none; opacity: var(--bzev-overlay);
+    background:
+      radial-gradient(circle at 78% 8%, rgba(255, 227, 169, .92) 0%, rgba(255, 195, 111, .36) 23%, rgba(255, 195, 111, 0) 46%),
+      linear-gradient(135deg, rgba(139, 69, 30, .95) 0%, rgba(196, 108, 52, .95) 34%, rgba(232, 173, 111, .88) 66%, rgba(154, 76, 34, .97) 100%);
+  }
+  .bzev .bzev__sun {
+    position: absolute; z-index: 2; top: -105px; right: -80px; width: 330px; height: 330px; border-radius: 50%; pointer-events: none;
+    background: radial-gradient(circle, rgba(255, 247, 211, .9) 0%, rgba(255, 220, 152, .52) 27%, rgba(255, 188, 93, .17) 48%, rgba(255, 188, 93, 0) 72%);
+    animation: bzevSun 6s ease-in-out infinite;
+  }
+  @keyframes bzevSun { 0%, 100% { transform: scale(1); opacity: .9; } 50% { transform: scale(1.08); opacity: 1; } }
+
+  .bzev .bzev__contenido { position: relative; z-index: 5; width: 100%; max-width: 1080px; margin: 0 auto; text-align: center; }
+  .bzev .bzev__eyebrow {
+    display: inline-block; margin: 0 0 12px; padding: 7px 13px; border: 1px solid rgba(255, 255, 255, .32); border-radius: 999px;
+    background: rgba(116, 53, 21, .18); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    color: #FFF8EC; font-size: .7em; font-weight: 650; line-height: 1; letter-spacing: .16em; text-transform: uppercase;
+  }
+  .bzev .bzev__titulo {
+    max-width: 760px; margin: 0 auto; padding: 0; color: var(--bzev-titulo);
+    font-size: clamp(2em, 3.4vw, 2.8em); font-weight: 650; line-height: 1.08; letter-spacing: .015em; text-transform: none;
+    text-shadow: 0 3px 7px rgba(69, 29, 11, .25), 0 8px 24px rgba(69, 29, 11, .2);
+  }
+  .bzev .bzev__titulo span { display: block; }
+  .bzev .bzev__titulo-2 { color: var(--bzev-resalte); font-style: italic; font-weight: 600; }
+  .bzev .bzev__subtitulo {
+    margin: 10px auto 34px; padding: 0; max-width: 560px; color: rgba(255, 249, 239, .94); font-size: 1em; line-height: 1.4;
+    text-shadow: 0 2px 8px rgba(69, 29, 11, .18);
+  }
+
+  /* ---------- Etapas + línea de progreso ---------- */
+  .bzev .bzev__etapas {
+    position: relative; margin: 0; padding: 0; list-style: none; text-align: left;
+    display: grid; grid-template-columns: repeat(var(--bzev-cols), minmax(0, 1fr)); gap: 18px;
+  }
+  .bzev .bzev__etapas::before {
+    content: ""; position: absolute; z-index: 0; top: 50%; left: 7%; right: 7%; height: 2px; margin-top: -1px; border-radius: 2px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 239, 203, .72) 18%, rgba(255, 248, 224, .95) 50%, rgba(255, 239, 203, .72) 82%, rgba(255, 255, 255, 0) 100%);
+  }
+  .bzev .bzev__tarjeta {
+    position: relative; z-index: 2; min-height: 205px; margin: 0; padding: 24px 23px 23px; list-style: none; overflow: hidden;
+    border: 1px solid rgba(255, 247, 230, .6); border-radius: 17px;
+    background: radial-gradient(circle at 100% 0%, rgba(255, 213, 148, .28) 0%, rgba(255, 213, 148, 0) 38%), rgba(255, 249, 240, .9);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 13px 32px rgba(86, 39, 15, .1), inset 0 1px 0 rgba(255, 255, 255, .88);
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  .bzev .bzev__tarjeta::before, .bzev .bzev__tarjeta::marker { content: none; }
+  .bzev .bzev__punto { display: none; }
+  .bzev .bzev__numero {
+    position: absolute; top: 13px; right: 16px; color: var(--bzev-acento); opacity: .14; pointer-events: none;
+    font-size: 3.3em; font-weight: 750; line-height: 1; letter-spacing: -.06em;
+  }
+  .bzev .bzev__semana {
+    position: relative; z-index: 2; display: inline-flex; align-items: center; min-height: 32px; margin: 0 0 15px; padding: 6px 13px;
+    border-radius: 999px; background: linear-gradient(135deg, var(--bzev-badge-1) 0%, var(--bzev-badge-2) 100%);
+    color: #FFFFFF; font-size: .7em; font-weight: 700; line-height: 1; letter-spacing: .055em; text-transform: uppercase;
+    box-shadow: 0 4px 12px rgba(172, 81, 35, .15);
+  }
+  .bzev .bzev__card-titulo {
+    position: relative; z-index: 2; max-width: 90%; margin: 0 0 9px; padding: 0; color: var(--bzev-card-texto);
+    font-size: 1.08em; font-weight: 650; line-height: 1.25; letter-spacing: 0; text-transform: none;
+  }
+  .bzev .bzev__card-texto { position: relative; z-index: 2; color: var(--bzev-card-texto); opacity: .78; font-size: .9em; line-height: 1.45; }
+  .bzev .bzev__card-texto p { margin: 0; padding: 0; color: inherit; font-size: inherit; line-height: inherit; }
+  .bzev .bzev__card-texto strong { color: var(--bzev-acento); font-weight: 650; }
+  .bzev .bzev__sparkle {
+    position: absolute; z-index: 1; right: 17px; bottom: 16px; width: 16px; height: 16px; color: var(--bzev-badge-1); opacity: .65;
+    filter: drop-shadow(0 0 6px rgba(232, 173, 111, .38));
+  }
+  .bzev .bzev__sparkle svg { display: block; width: 100%; height: 100%; fill: currentColor; }
+  @media (hover: hover) {
+    .bzev .bzev__tarjeta:hover { transform: translateY(-3px); box-shadow: 0 17px 38px rgba(86, 39, 15, .15), inset 0 1px 0 rgba(255, 255, 255, .92); }
+  }
+
+  /* ---------- Botón y nota ---------- */
+  .bzev .bzev__cta { margin-top: 28px; }
+  .bzev a.bzev__btn {
+    position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 54px; padding: 15px 30px;
+    border-radius: 999px; overflow: hidden; text-decoration: none; background: #FFF8EE; color: var(--bzev-acento);
+    box-shadow: 0 12px 28px rgba(86, 39, 15, .22); font-size: 1em; font-weight: 700; line-height: 1; letter-spacing: .02em; text-transform: none;
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .bzev a.bzev__btn::after {
+    content: ""; position: absolute; top: 0; left: -60%; width: 40%; height: 100%; pointer-events: none;
+    background: linear-gradient(100deg, transparent, rgba(255, 214, 150, .55), transparent); animation: bzevShine 3.6s ease-in-out infinite;
+  }
+  .bzev a.bzev__btn svg { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform .2s ease; }
+  @media (hover: hover) {
+    .bzev a.bzev__btn:hover { transform: translateY(-2px); box-shadow: 0 16px 34px rgba(86, 39, 15, .28); }
+    .bzev a.bzev__btn:hover svg { transform: translateX(3px); }
+  }
+  .bzev a.bzev__btn:focus-visible { outline: 2px solid #FFFFFF; outline-offset: 3px; }
+  @keyframes bzevShine { 0%, 60% { left: -60%; } 100% { left: 130%; } }
+  .bzev .bzev__nota { max-width: 700px; margin: 16px auto 0; padding: 0; color: rgba(255, 247, 234, .78); font-size: .68em; line-height: 1.4; }
+  .bzev .bzev__vacio { margin: 0; padding: 26px; border: 1px dashed rgba(255, 255, 255, .5); border-radius: 14px; color: #FFFFFF; }
+
+  /* ---------- Entrada (solo si JS activo) ---------- */
+  .bzev.bzev--animar.is-ready .bzev__tarjeta { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; transition-delay: calc(var(--i) * .14s); }
+  .bzev.bzev--animar.is-ready .bzev__etapas::before { transform: scaleX(0); transform-origin: left center; transition: transform 1.1s ease .1s; }
+  .bzev.bzev--animar.is-visible .bzev__tarjeta { opacity: 1; transform: none; }
+  .bzev.bzev--animar.is-visible .bzev__etapas::before { transform: none; }
+
+  /* ---------- Tablet ---------- */
+  @media screen and (min-width: 750px) and (max-width: 989px) {
+    .bzev .bzev__box { padding: 46px 22px 42px; }
+    .bzev .bzev__etapas { gap: 12px; }
+    .bzev .bzev__tarjeta { padding: 20px 17px; min-height: 0; }
+    .bzev .bzev__card-titulo { font-size: 1em; }
+    .bzev .bzev__card-texto { font-size: .85em; }
+  }
+
+  /* ---------- Mobile: línea de tiempo vertical ---------- */
+  @media screen and (max-width: 749px) {
+    .bzev { padding: 0 12px; }
+    .bzev .bzev__box { padding: 34px 15px 26px; border-radius: 18px; }
+    .bzev .bzev__sun { width: 220px; height: 220px; top: -80px; right: -65px; }
+    .bzev .bzev__eyebrow { margin-bottom: 10px; padding: 6px 10px; font-size: .62em; }
+    .bzev .bzev__titulo { max-width: 340px; font-size: 1.65em; line-height: 1.12; }
+    .bzev .bzev__subtitulo { margin: 8px auto 24px; font-size: .9em; }
+    .bzev .bzev__etapas { grid-template-columns: 1fr; gap: 12px; padding-left: 26px; }
+    .bzev .bzev__etapas::before {
+      top: 22px; bottom: 22px; left: 8px; right: auto; width: 2px; height: auto; margin: 0;
+      background: linear-gradient(180deg, rgba(255, 248, 224, .35) 0%, rgba(255, 248, 224, .95) 50%, rgba(255, 248, 224, .35) 100%);
+    }
+    .bzev.bzev--animar.is-ready .bzev__etapas::before { transform: scaleY(0); transform-origin: center top; }
+    .bzev .bzev__tarjeta { min-height: 0; padding: 19px 17px; border-radius: 14px; overflow: visible; }
+    .bzev .bzev__punto {
+      display: block; position: absolute; z-index: 3; top: 24px; left: -24px; width: 14px; height: 14px; border-radius: 50%;
+      background: radial-gradient(circle, #FFFFFF 0 30%, var(--bzev-badge-1) 34%); box-shadow: 0 0 0 4px rgba(255, 240, 201, .35), 0 0 12px rgba(255, 223, 160, .8);
+    }
+    .bzev .bzev__numero { top: 11px; right: 14px; font-size: 2.7em; }
+    .bzev .bzev__semana { min-height: 29px; margin-bottom: 12px; padding: 6px 11px; font-size: .64em; }
+    .bzev .bzev__card-titulo { margin-bottom: 6px; font-size: 1em; }
+    .bzev .bzev__card-texto { max-width: 92%; font-size: .84em; line-height: 1.42; }
+    .bzev .bzev__sparkle { width: 13px; height: 13px; right: 14px; bottom: 14px; }
+    .bzev .bzev__cta { margin-top: 22px; }
+    .bzev a.bzev__btn { width: 100%; max-width: 360px; }
+    .bzev .bzev__nota { margin-top: 13px; font-size: .6em; }
+  }
+  @media screen and (max-width: 390px) {
+    .bzev { padding: 0 10px; }
+    .bzev .bzev__box { padding: 31px 12px 22px; }
+    .bzev .bzev__titulo { font-size: 1.5em; }
+    .bzev .bzev__tarjeta { padding: 17px 15px; }
+    .bzev .bzev__card-texto { font-size: .8em; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .bzev .bzev__sun, .bzev a.bzev__btn::after { animation: none !important; }
+    .bzev.bzev--animar.is-ready .bzev__tarjeta, .bzev.bzev--animar.is-ready .bzev__etapas::before { opacity: 1; transform: none; transition: none; }
+  }
+</style>
+
+<script>
+  if (!customElements.get('bronze-evolucion')) {
+    customElements.define('bronze-evolucion', class extends HTMLElement {
+      connectedCallback() {
+        const btn = this.querySelector('[data-scroll-compra]');
+        if (btn) {
+          btn.addEventListener('click', (e) => {
+            const target = document.querySelector('.dw-offer, [id^="bz-of-"], product-form, form[action*="/cart/add"]');
+            if (!target) return;
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          });
+        }
+        if (!this.classList.contains('bzev--animar') || window.Shopify && Shopify.designMode || !('IntersectionObserver' in window)) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        this.classList.add('is-ready');
+        this.io = new IntersectionObserver((entries) => {
+          if (entries.some((en) => en.isIntersecting)) {
+            this.classList.add('is-visible');
+            this.io.disconnect();
+          }
+        }, { threshold: 0.2 });
+        this.io.observe(this);
+      }
+      disconnectedCallback() { if (this.io) this.io.disconnect(); }
+    });
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Bronze · Evolución",
+  "tag": "section",
+  "class": "bzev-section",
+  "settings": [
+    { "type": "header", "content": "Textos" },
+    { "type": "text", "id": "eyebrow", "label": "Etiqueta superior", "default": "Tu evolución" },
+    { "type": "text", "id": "titulo_1", "label": "Título · línea 1", "default": "Tu glow puede empezar" },
+    { "type": "text", "id": "titulo_2", "label": "Título · línea 2 (resaltada)", "default": "en la primera semana" },
+    { "type": "text", "id": "subtitulo", "label": "Subtítulo", "default": "Y semana a semana se pone mejor." },
+    { "type": "text", "id": "nota", "label": "Aclaración al pie", "default": "*Experiencias reportadas por clientas. Los tiempos y resultados pueden variar." },
+    { "type": "header", "content": "Botón" },
+    { "type": "text", "id": "boton_texto", "label": "Texto del botón", "default": "Quiero empezar mi glow", "info": "Dejalo vacío para ocultar el botón." },
+    { "type": "url", "id": "boton_link", "label": "Link del botón", "info": "Si lo dejás vacío, el botón baja hasta la oferta de la página." },
+    { "type": "header", "content": "Fondo" },
+    { "type": "image_picker", "id": "fondo", "label": "Foto de fondo" },
+    { "type": "checkbox", "id": "usar_ejemplos", "label": "Usar la foto actual si no elegís otra", "default": true },
+    { "type": "range", "id": "overlay", "label": "Intensidad del dorado sobre la foto", "min": 30, "max": 100, "step": 5, "unit": "%", "default": 65 },
+    { "type": "header", "content": "Diseño" },
+    { "type": "checkbox", "id": "ancho_completo", "label": "Ancho completo (sin bordes redondeados)", "default": false },
+    { "type": "range", "id": "max_width", "label": "Ancho máximo", "min": 900, "max": 1500, "step": 20, "unit": "px", "default": 1180 },
+    { "type": "range", "id": "margen_arriba", "label": "Espacio arriba", "min": 0, "max": 80, "step": 2, "unit": "px", "default": 24 },
+    { "type": "range", "id": "margen_abajo", "label": "Espacio abajo", "min": 0, "max": 80, "step": 2, "unit": "px", "default": 24 },
+    { "type": "checkbox", "id": "animar", "label": "Animación de entrada", "default": true },
+    { "type": "header", "content": "Colores" },
+    { "type": "color", "id": "color_base", "label": "Color base (debajo de la foto)", "default": "#C9783D" },
+    { "type": "color", "id": "color_titulo", "label": "Título", "default": "#FFFFFF" },
+    { "type": "color", "id": "color_resalte", "label": "Título · línea resaltada", "default": "#FFF0C9" },
+    { "type": "color", "id": "color_badge_1", "label": "Etiquetas de tiempo · color 1", "default": "#E8AD6F" },
+    { "type": "color", "id": "color_badge_2", "label": "Etiquetas de tiempo · color 2", "default": "#BC642F" },
+    { "type": "color", "id": "color_card_texto", "label": "Texto de las tarjetas", "default": "#3B2115" },
+    { "type": "color", "id": "color_acento", "label": "Acento (negritas, números y botón)", "default": "#8F4524" }
+  ],
+  "blocks": [
+    {
+      "type": "etapa",
+      "name": "Etapa",
+      "limit": 4,
+      "settings": [
+        { "type": "text", "id": "etiqueta", "label": "Etiqueta de tiempo", "default": "DESDE 7 DÍAS*" },
+        { "type": "text", "id": "titulo", "label": "Título", "default": "Empieza ese “¿estás más bronceada?”" },
+        { "type": "richtext", "id": "texto", "label": "Texto", "default": "<p>Algunas clientas cuentan que durante la primera semana empiezan a notar un <strong>tono más cálido y dorado.</strong></p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bronze · Evolución",
+      "blocks": [
+        {
+          "type": "etapa",
+          "settings": {
+            "etiqueta": "DESDE 7 DÍAS*",
+            "titulo": "Empieza ese “¿estás más bronceada?”",
+            "texto": "<p>Algunas clientas cuentan que durante la primera semana empiezan a notar un <strong>tono más cálido y dorado.</strong></p>"
+          }
+        },
+        {
+          "type": "etapa",
+          "settings": {
+            "etiqueta": "SEMANAS 2–3",
+            "titulo": "Más dorada. Más pareja. Más glow.",
+            "texto": "<p>Con constancia, el tono puede seguir tomando protagonismo y verse cada vez <strong>más uniforme y natural.</strong></p>"
+          }
+        },
+        {
+          "type": "etapa",
+          "settings": {
+            "etiqueta": "CON CONTINUIDAD",
+            "titulo": "Ese color lindo empieza a quedarse.",
+            "texto": "<p>Seguir con tu rutina ayuda a acompañar el tono conseguido para disfrutar <strong>tu color de verano por más tiempo.</strong></p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
