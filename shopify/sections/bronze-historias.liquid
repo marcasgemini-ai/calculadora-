@@ -39,6 +39,14 @@
   }
 </style>
 
+{%- if section.settings.evitar_scroll_lateral -%}
+<style>
+  /* Evita que cualquier bloque de la página genere scroll hacia la derecha (franja blanca). */
+  html, body { overflow-x: hidden; }
+  @supports (overflow-x: clip) { html, body { overflow-x: clip; } }
+</style>
+{%- endif -%}
+
 <bronze-historias
   id="bz-hist-{{ section.id }}"
   class="bz-hist"
@@ -181,6 +189,8 @@
     margin: 0;
     padding: var(--bzh-pt) 30px var(--bzh-pb);
     background: var(--bzh-bg, transparent);
+    overflow: hidden;
+    overflow: clip;
     color: var(--bzh-texto);
     font-family: inherit;
     box-sizing: border-box;
@@ -208,7 +218,7 @@
   }
   .bz-hist .bz-hist__flecha:focus-visible, .bz-hist .bz-hist__avatar:focus-visible { outline: 2px solid var(--bzh-cobre); outline-offset: 3px; }
 
-  .bz-hist .bz-hist__avatares { display: flex; align-items: center; justify-content: center; gap: 25px; }
+  .bz-hist .bz-hist__avatares { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 25px; row-gap: 14px; min-width: 0; padding: 6px 0; }
   .bz-hist .bz-hist__avatar {
     position: relative; isolation: isolate; width: 64px; height: 64px; margin: 0; padding: 3px;
     border: 1px solid var(--bzh-borde); border-radius: 50%; background: #FFF8EF; opacity: .48; cursor: pointer;
@@ -436,6 +446,7 @@
     { "type": "text", "id": "nota", "label": "Nota al pie", "default": "Historia ilustrativa. Los resultados pueden variar.", "info": "Se muestra en todas las historias." },
     { "type": "checkbox", "id": "usar_ejemplos", "label": "Usar fotos de ejemplo", "default": true, "info": "Muestra las fotos actuales en las 3 primeras historias mientras no elijas otras." },
     { "type": "range", "id": "autoplay", "label": "Cambio automático (segundos)", "min": 0, "max": 12, "step": 1, "default": 0, "info": "0 = apagado. Se frena cuando la persona toca una historia." },
+    { "type": "checkbox", "id": "evitar_scroll_lateral", "label": "Evitar franja blanca a la derecha", "default": true, "info": "Corta cualquier elemento de la página que se pase del ancho de la pantalla." },
     { "type": "header", "content": "Colores" },
     { "type": "color", "id": "color_bg", "label": "Fondo de la sección", "info": "Dejalo vacío para usar el fondo del tema." },
     { "type": "color", "id": "color_card", "label": "Fondo de la tarjeta", "default": "#FFF9F3" },

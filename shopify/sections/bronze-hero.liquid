@@ -39,6 +39,14 @@
   }
 </style>
 
+{%- if section.settings.evitar_scroll_lateral -%}
+<style>
+  /* Evita que cualquier bloque de la página genere scroll hacia la derecha (franja blanca). */
+  html, body { overflow-x: hidden; }
+  @supports (overflow-x: clip) { html, body { overflow-x: clip; } }
+</style>
+{%- endif -%}
+
 <bronze-hero
   id="bzh2-{{ section.id }}"
   class="bzh2 bzh2--{{ s.alineacion_mobile }}{% if s.producto_mostrar %} bzh2--prod-{{ s.producto_lado }}{% endif %}{% if s.animar %} bzh2--animar{% endif %}"
@@ -430,6 +438,7 @@
     },
     { "type": "range", "id": "altura_desktop", "label": "Alto mínimo en computadora", "min": 480, "max": 900, "step": 20, "unit": "px", "default": 640 },
     { "type": "range", "id": "max_width", "label": "Ancho máximo", "min": 1000, "max": 2000, "step": 50, "unit": "px", "default": 1600 },
+    { "type": "checkbox", "id": "evitar_scroll_lateral", "label": "Evitar franja blanca a la derecha", "default": true, "info": "Corta cualquier elemento de la página que se pase del ancho de la pantalla." },
     { "type": "checkbox", "id": "animar", "label": "Animación de entrada", "default": true },
     { "type": "header", "content": "Colores" },
     { "type": "color", "id": "color_bg", "label": "Fondo", "default": "#F7E3D1", "info": "Usá un color parecido al fondo de la foto para que el fundido no se note." },

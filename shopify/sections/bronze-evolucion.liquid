@@ -36,6 +36,14 @@
   }
 </style>
 
+{%- if section.settings.evitar_scroll_lateral -%}
+<style>
+  /* Evita que cualquier bloque de la página genere scroll hacia la derecha (franja blanca). */
+  html, body { overflow-x: hidden; }
+  @supports (overflow-x: clip) { html, body { overflow-x: clip; } }
+</style>
+{%- endif -%}
+
 <bronze-evolucion
   id="bzev-{{ section.id }}"
   class="bzev{% if s.ancho_completo %} bzev--full{% endif %}{% if s.animar %} bzev--animar{% endif %}"
@@ -103,7 +111,7 @@
 </bronze-evolucion>
 
 <style>
-  .bzev { display: block; box-sizing: border-box; width: 100%; max-width: 100%; margin: var(--bzev-mt) 0 var(--bzev-mb); padding: 0 16px; font-family: inherit; }
+  .bzev { display: block; box-sizing: border-box; width: 100%; max-width: 100%; margin: var(--bzev-mt) 0 var(--bzev-mb); padding: 0 16px; overflow: hidden; overflow: clip; font-family: inherit; }
   .bzev.bzev--full { padding: 0; }
   .bzev *, .bzev *::before, .bzev *::after { box-sizing: border-box; font-family: inherit; }
   .bzev img { max-width: none; border: 0; border-radius: 0; box-shadow: none; }
@@ -325,6 +333,7 @@
     { "type": "range", "id": "max_width", "label": "Ancho máximo", "min": 900, "max": 1500, "step": 20, "unit": "px", "default": 1180 },
     { "type": "range", "id": "margen_arriba", "label": "Espacio arriba", "min": 0, "max": 80, "step": 2, "unit": "px", "default": 24 },
     { "type": "range", "id": "margen_abajo", "label": "Espacio abajo", "min": 0, "max": 80, "step": 2, "unit": "px", "default": 24 },
+    { "type": "checkbox", "id": "evitar_scroll_lateral", "label": "Evitar franja blanca a la derecha", "default": true, "info": "Corta cualquier elemento de la página que se pase del ancho de la pantalla." },
     { "type": "checkbox", "id": "animar", "label": "Animación de entrada", "default": true },
     { "type": "header", "content": "Colores" },
     { "type": "color", "id": "color_base", "label": "Color base (debajo de la foto)", "default": "#C9783D" },
