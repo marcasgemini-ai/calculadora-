@@ -1,0 +1,129 @@
+{%- comment -%}
+  DR WOMAN · Bronze · Dudas rápidas (debajo del botón de compra)
+  Pegar en: Personalizar > Producto > Agregar bloque > Liquid personalizado (debajo de "Comprar").
+  4 desplegables simples: Modo de uso · ¿Es para mí? · Ingredientes · Envíos y garantía.
+  Se abre uno a la vez. Hereda la tipografía del tema.
+  Para editar: cambiá el texto dentro de cada <summary> (pregunta) y <div class="bzq__a"> (respuesta).
+{%- endcomment -%}
+
+<div class="bzq" id="bzq-{{ section.id }}">
+
+  <details class="bzq__item" name="bzq-{{ section.id }}">
+    <summary class="bzq__q">
+      <span>Modo de uso</span>
+      <span class="bzq__icon" aria-hidden="true"></span>
+    </summary>
+    <div class="bzq__a">
+      <p>Tomá <strong>1 cápsula por día</strong>, con una comida.</p>
+      <p>Cada frasco trae <strong>60 cápsulas: 2 meses de rutina</strong>. La clave es la constancia.</p>
+      <p class="bzq__small">Seguí usando protector solar: Bronze no lo reemplaza.</p>
+    </div>
+  </details>
+
+  <details class="bzq__item" name="bzq-{{ section.id }}">
+    <summary class="bzq__q">
+      <span>¿Es para mí?</span>
+      <span class="bzq__icon" aria-hidden="true"></span>
+    </summary>
+    <div class="bzq__a">
+      <p>Sí, si querés un <strong>tono dorado, parejo y natural</strong> sin cama solar ni autobronceantes que manchen.</p>
+      <p>Ideal si te cuesta tomar color o querés que <strong>el bronceado del verano te dure más</strong>.</p>
+      <p class="bzq__small">No recomendado en embarazo, lactancia ni menores de 18. Ante dudas, consultá a tu médico.</p>
+    </div>
+  </details>
+
+  <details class="bzq__item" name="bzq-{{ section.id }}">
+    <summary class="bzq__q">
+      <span>Ingredientes</span>
+      <span class="bzq__icon" aria-hidden="true"></span>
+    </summary>
+    <div class="bzq__a">
+      <p><strong>Betacaroteno, licopeno y cúrcuma</strong>, con vitaminas C, E y del complejo B.</p>
+      <p>Sin gluten. No es una crema: actúa desde adentro, <strong>no mancha la ropa ni se va con el agua</strong>.</p>
+    </div>
+  </details>
+
+  <details class="bzq__item" name="bzq-{{ section.id }}">
+    <summary class="bzq__q">
+      <span>Envíos y garantía</span>
+      <span class="bzq__icon" aria-hidden="true"></span>
+    </summary>
+    <div class="bzq__a">
+      <p><strong>Envío gratis a todo el país.</strong> Recibís el número de seguimiento por mail.</p>
+      <p>Compra 100% segura. Si tenés cualquier problema con tu pedido, <strong>escribinos y lo resolvemos</strong>.</p>
+    </div>
+  </details>
+
+</div>
+
+<style>
+  #bzq-{{ section.id }} {
+    --bzq-text: #3A1F12;
+    --bzq-soft: rgba(58, 31, 18, .72);
+    --bzq-line: rgba(58, 31, 18, .13);
+    --bzq-accent: #B86132;
+    width: 100%; margin: 6px 0 10px; padding: 0; font-family: inherit; color: var(--bzq-text);
+  }
+  #bzq-{{ section.id }}, #bzq-{{ section.id }} * { box-sizing: border-box; }
+
+  #bzq-{{ section.id }} .bzq__item { margin: 0; padding: 0; border: 0; border-bottom: 1px solid var(--bzq-line); background: transparent; }
+  #bzq-{{ section.id }} .bzq__item:first-child { border-top: 1px solid var(--bzq-line); }
+
+  #bzq-{{ section.id }} .bzq__q {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    min-height: 60px; margin: 0; padding: 16px 2px; list-style: none; cursor: pointer;
+    color: var(--bzq-text); font-family: inherit; font-size: 1.08em; font-weight: 700; line-height: 1.25; letter-spacing: .02em;
+    -webkit-tap-highlight-color: transparent;
+  }
+  #bzq-{{ section.id }} .bzq__q::-webkit-details-marker { display: none; }
+  #bzq-{{ section.id }} .bzq__q::marker { content: ""; }
+  #bzq-{{ section.id }} .bzq__q:focus-visible { outline: 2px solid var(--bzq-accent); outline-offset: 2px; border-radius: 4px; }
+
+  /* + que se convierte en − */
+  #bzq-{{ section.id }} .bzq__icon { position: relative; flex: 0 0 18px; width: 18px; height: 18px; }
+  #bzq-{{ section.id }} .bzq__icon::before,
+  #bzq-{{ section.id }} .bzq__icon::after {
+    content: ""; position: absolute; top: 50%; left: 50%; width: 18px; height: 1.6px; margin: -.8px 0 0 -9px;
+    border-radius: 2px; background: var(--bzq-text); transition: transform .25s ease, opacity .25s ease;
+  }
+  #bzq-{{ section.id }} .bzq__icon::after { transform: rotate(90deg); }
+  #bzq-{{ section.id }} .bzq__item[open] .bzq__icon::after { transform: rotate(90deg) scaleX(0); opacity: 0; }
+
+  #bzq-{{ section.id }} .bzq__a { padding: 0 34px 18px 2px; color: var(--bzq-soft); }
+  #bzq-{{ section.id }} .bzq__item[open] .bzq__a { animation: bzqIn .28s ease both; }
+  #bzq-{{ section.id }} .bzq__a p { margin: 0 0 8px; padding: 0; color: inherit; font-family: inherit; font-size: .95em; line-height: 1.55; letter-spacing: 0; }
+  #bzq-{{ section.id }} .bzq__a p:last-child { margin-bottom: 0; }
+  #bzq-{{ section.id }} .bzq__a strong { color: var(--bzq-text); font-weight: 600; }
+  #bzq-{{ section.id }} .bzq__a .bzq__small { font-size: .82em; opacity: .85; }
+  @keyframes bzqIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+
+  @media (hover: hover) {
+    #bzq-{{ section.id }} .bzq__q:hover { color: var(--bzq-accent); }
+    #bzq-{{ section.id }} .bzq__q:hover .bzq__icon::before,
+    #bzq-{{ section.id }} .bzq__q:hover .bzq__icon::after { background: var(--bzq-accent); }
+  }
+  @media screen and (max-width: 749px) {
+    #bzq-{{ section.id }} .bzq__q { min-height: 56px; padding: 15px 2px; font-size: 1.02em; }
+    #bzq-{{ section.id }} .bzq__a { padding: 0 26px 16px 2px; }
+    #bzq-{{ section.id }} .bzq__a p { font-size: .92em; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #bzq-{{ section.id }} .bzq__item[open] .bzq__a { animation: none; }
+  }
+</style>
+
+<script>
+  /* Abre uno a la vez también en navegadores viejos (los nuevos ya lo hacen con name=""). */
+  (function () {
+    var root = document.getElementById('bzq-{{ section.id }}');
+    if (!root || root.dataset.ready) return;
+    root.dataset.ready = '1';
+    var items = root.querySelectorAll('.bzq__item');
+    items.forEach(function (d) {
+      d.addEventListener('toggle', function () {
+        if (!d.open) return;
+        items.forEach(function (o) { if (o !== d) o.open = false; });
+      });
+    });
+  })();
+</script>
