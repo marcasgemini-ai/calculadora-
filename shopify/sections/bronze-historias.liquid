@@ -107,7 +107,7 @@
 
 <bronze-historias
   id="bz-hist-{{ section.id }}"
-  class="bz-hist"
+  class="bz-hist{% if s.retoque_fotos %} bz-hist--retoque{% endif %}"
   data-autoplay="{{ autoplay }}"
   data-preview="{% if s.vista_previa %}1{% endif %}"
   {%- unless s.vista_previa %} data-no-preview{% endunless %}
@@ -134,7 +134,32 @@
               {%- if v.media_type != 'video' -%}{%- continue -%}{%- endif -%}
               <li class="bz-hist__reel">
                 <div class="bz-hist__reel-card">
-                  {{ v | video_tag: muted: true, loop: true, playsinline: true, preload: 'none', controls: false, image_size: '540x', class: 'bz-hist__reel-video' }}
+                  {%- liquid
+                    assign vv = v
+                    assign mp4s = vv.sources | where: 'format', 'mp4' | sort: 'width'
+                    assign src_chica = ''
+                    assign src_grande = ''
+                    for so in mp4s
+                      if src_chica == '' and so.width >= 400
+                        assign src_chica = so.url
+                      endif
+                      if so.width <= 1080
+                        assign src_grande = so.url
+                      endif
+                    endfor
+                    if src_chica == ''
+                      assign src_chica = mp4s.last.url
+                    endif
+                    if src_grande == ''
+                      assign src_grande = mp4s.first.url
+                    endif
+                    assign hls = vv.sources | where: 'format', 'm3u8' | map: 'url' | first
+                  -%}
+                  <video class="bz-hist__reel-video" muted loop playsinline preload="none"
+                    poster="{{ vv.preview_image | image_url: width: 540 }}"
+                    data-full="{{ src_grande }}" data-hls="{{ hls }}">
+                    <source data-src="{{ src_chica }}" type="video/mp4">
+                  </video>
                   <span class="bz-hist__reel-bar" aria-hidden="true"><i></i></span>
                   <span class="bz-hist__reel-play" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 5.8v12.4a.8.8 0 0 0 1.2.7l9.6-6.2a.8.8 0 0 0 0-1.4L9.7 5.1a.8.8 0 0 0-1.2.7z"/></svg></span>
                   <span class="bz-hist__reel-info">
@@ -152,7 +177,32 @@
               {%- if vb.video == blank -%}{%- continue -%}{%- endif -%}
               <li class="bz-hist__reel" {{ block.shopify_attributes }}>
                 <div class="bz-hist__reel-card">
-                  {{ vb.video | video_tag: muted: true, loop: true, playsinline: true, preload: 'none', controls: false, image_size: '540x', class: 'bz-hist__reel-video' }}
+                  {%- liquid
+                    assign vv = vb.video
+                    assign mp4s = vv.sources | where: 'format', 'mp4' | sort: 'width'
+                    assign src_chica = ''
+                    assign src_grande = ''
+                    for so in mp4s
+                      if src_chica == '' and so.width >= 400
+                        assign src_chica = so.url
+                      endif
+                      if so.width <= 1080
+                        assign src_grande = so.url
+                      endif
+                    endfor
+                    if src_chica == ''
+                      assign src_chica = mp4s.last.url
+                    endif
+                    if src_grande == ''
+                      assign src_grande = mp4s.first.url
+                    endif
+                    assign hls = vv.sources | where: 'format', 'm3u8' | map: 'url' | first
+                  -%}
+                  <video class="bz-hist__reel-video" muted loop playsinline preload="none"
+                    poster="{{ vv.preview_image | image_url: width: 540 }}"
+                    data-full="{{ src_grande }}" data-hls="{{ hls }}">
+                    <source data-src="{{ src_chica }}" type="video/mp4">
+                  </video>
                   <span class="bz-hist__reel-bar" aria-hidden="true"><i></i></span>
                   <span class="bz-hist__reel-play" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 5.8v12.4a.8.8 0 0 0 1.2.7l9.6-6.2a.8.8 0 0 0 0-1.4L9.7 5.1a.8.8 0 0 0-1.2.7z"/></svg></span>
                   <span class="bz-hist__reel-info">
@@ -362,14 +412,14 @@
     transition: opacity .25s ease;
   }
   .bz-hist .bz-hist__avatar.is-active { opacity: 1; border-color: var(--bzh-cobre); transform: scale(1.06); box-shadow: 0 0 0 3px #FFF7EB; }
-  .bz-hist .bz-hist__avatar.is-active .bz-hist__halo { opacity: 1; animation: bzhGlow 3s ease-in-out infinite; }
-  @keyframes bzhGlow { 0%, 100% { transform: scale(.94); opacity: .58; } 50% { transform: scale(1.08); opacity: 1; } }
+  .bz-hist .bz-hist__avatar.is-active .bz-hist__halo { opacity: 1; }
   .bz-hist .bz-hist__avatar img, .bz-hist .bz-hist__avatar-ph { display: block; width: 100%; height: 100%; border-radius: 50%; }
   .bz-hist .bz-hist__avatar img { object-fit: cover; }
   .bz-hist .bz-hist__avatar-ph { display: flex; align-items: center; justify-content: center; background: #FFE9D4; color: var(--bzh-cobre-dark); }
 
   /* Tarjeta */
-  .bz-hist .bz-hist__track { touch-action: pan-y; }
+  .bz-hist .bz-hist__track { touch-action: pan-y; content-visibility: auto; contain-intrinsic-size: auto 640px; }
+  .bz-hist .bz-hist__historia { contain: layout paint; }
   .bz-hist .bz-hist__historia {
     position: relative; width: 100%; max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(320px, 1fr);
     overflow: hidden; border: 1px solid var(--bzh-borde); border-radius: 20px; background: var(--bzh-card);
@@ -382,8 +432,8 @@
   .bz-hist .bz-hist__foto { position: relative; min-width: 0; min-height: 360px; overflow: hidden; background: #F6EDE5; }
   .bz-hist .bz-hist__foto + .bz-hist__foto { border-left: 1px solid rgba(122, 70, 45, .08); }
   .bz-hist .bz-hist__foto img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
-  .bz-hist .bz-hist__foto--antes img { filter: saturate(.92) brightness(.98); }
-  .bz-hist .bz-hist__foto--despues img { filter: saturate(1.04) brightness(1.02) sepia(.035); }
+  .bz-hist.bz-hist--retoque .bz-hist__foto--antes img { filter: saturate(.92) brightness(.98); }
+  .bz-hist.bz-hist--retoque .bz-hist__foto--despues img { filter: saturate(1.04) brightness(1.02) sepia(.035); }
   .bz-hist .bz-hist__foto--despues::after {
     content: ""; position: absolute; z-index: 1; inset: 0; pointer-events: none;
     background: linear-gradient(145deg, rgba(255, 209, 154, .11) 0%, rgba(255, 222, 181, 0) 48%, rgba(220, 126, 67, .05) 100%);
@@ -396,7 +446,7 @@
     background: linear-gradient(145deg, #FBF1E7, #F3E2D3); color: rgba(56, 34, 25, .45); font-size: .8em; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
   .bz-hist .bz-hist__label {
     position: absolute; z-index: 4; left: 15px; bottom: 14px; padding: 6px 10px; border-radius: 999px;
-    background: rgba(255, 249, 242, .92); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    background: rgba(255, 249, 242, .95);
     color: #684734; border: 1px solid rgba(141, 82, 49, .14);
     font-size: .68em; line-height: 1; font-weight: 650; letter-spacing: .05em; text-transform: uppercase;
   }
@@ -490,14 +540,13 @@
   .bz-hist .bz-hist__reel { flex: 0 0 var(--bzh-reel-w); width: var(--bzh-reel-w); margin: 0; padding: 0; list-style: none; scroll-snap-align: start; }
   .bz-hist .bz-hist__reel::before, .bz-hist .bz-hist__reel::marker { content: none; display: none; }
   .bz-hist .bz-hist__reel-card {
-    position: relative; display: block; width: 100%; aspect-ratio: 9 / 16; overflow: hidden; isolation: isolate;
+    position: relative; display: block; width: 100%; aspect-ratio: 9 / 16; overflow: hidden; isolation: isolate; transform: translateZ(0);
     border-radius: 18px; background: linear-gradient(160deg, #EBD4BF, #D9A982); box-shadow: 0 14px 30px rgba(139, 68, 31, .18);
     transition: transform .25s ease, box-shadow .25s ease;
   }
   .bz-hist .bz-hist__reel-card::before {
     content: ""; position: absolute; inset: 0; z-index: 3; border-radius: inherit; pointer-events: none;
-    padding: 2px; background: linear-gradient(160deg, var(--bzh-tag-1), var(--bzh-cobre));
-    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
+    border: 2px solid var(--bzh-tag-1);
   }
   .bz-hist .bz-hist__reel-card::after {
     content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
@@ -520,14 +569,14 @@
   .bz-hist button.bz-hist__reel-open:focus-visible { outline: 2px solid var(--bzh-cobre); outline-offset: 3px; }
   .bz-hist .bz-hist__reel-expand {
     position: absolute; top: 20px; left: 10px; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    background: rgba(20, 8, 2, .32); color: #FFFFFF; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); opacity: .9;
+    background: rgba(20, 8, 2, .45); color: #FFFFFF; opacity: .9;
   }
   .bz-hist .bz-hist__reel-expand svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
   /* Sonido dentro de la tarjeta */
   .bz-hist button.bz-hist__reel-sound {
     position: absolute; z-index: 6; top: 20px; right: 10px; width: 32px; height: 32px; margin: 0; padding: 0 !important; border: 0; border-radius: 50%;
     display: flex; align-items: center; justify-content: center; cursor: pointer; color: #FFFFFF;
-    background: rgba(20, 8, 2, .38); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    background: rgba(20, 8, 2, .5);
     -webkit-appearance: none; appearance: none; min-width: 0; min-height: 0; box-shadow: none; transition: background .2s ease, transform .2s ease;
   }
   .bz-hist button.bz-hist__reel-sound svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
@@ -598,7 +647,7 @@
     .bz-hist .bz-hist__reels-track { padding-left: 11px; padding-right: 11px; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .bz-hist .bz-hist__avatar.is-active .bz-hist__halo, .bz-hist .bz-hist__historia.is-active { animation: none !important; }
+    .bz-hist .bz-hist__historia.is-active { animation: none !important; }
   }
 
   .bz-hist button.bz-hist__flecha, .bz-hist button.bz-hist__avatar {
@@ -666,6 +715,8 @@
         this.modal = this.querySelector('.bz-hist__modal');
         if (!this.reels.length || !this.modal) return;
         this.modalVideo = this.modal.querySelector('.bz-hist__modal-video');
+        this.maxPlaying = window.matchMedia('(max-width: 749px)').matches ? 2 : 4;
+        this.visibles = new Set();
         this.reels.forEach((reel, i) => {
           const v = reel.querySelector('video');
           const bar = reel.querySelector('.bz-hist__reel-bar i');
@@ -690,7 +741,7 @@
           if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
         });
         this.modal.addEventListener('click', (e) => { if (e.target === this.modal) this.closeReel(); });
-        this.modal.addEventListener('close', () => { this.modalVideo.pause(); this.observeReels(); });
+        this.modal.addEventListener('close', () => { this.modalVideo.pause(); this.syncPlayback(); });
         if (this.reels.length < 2) this.modal.querySelectorAll('.bz-hist__modal-nav').forEach((b) => (b.hidden = true));
 
         // Los videos se reproducen solos (sin sonido) mientras se ven en pantalla
@@ -699,19 +750,48 @@
         if (this.dataset.preview && !saveData && !reduce && 'IntersectionObserver' in window) {
           this.reelIO = new IntersectionObserver((entries) => {
             entries.forEach((en) => {
-              const v = en.target.querySelector('video');
-              if (!v) return;
-              if (en.isIntersecting && !(this.modal && this.modal.open)) {
-                const p = v.play();
-                if (p && p.catch) p.catch(() => {});
-              } else {
-                v.pause();
+              if (en.isIntersecting) this.visibles.add(en.target);
+              else {
+                this.visibles.delete(en.target);
                 if (en.target.classList.contains('is-sound')) this.setSound(en.target, false);
               }
             });
+            this.syncPlayback();
           }, { threshold: 0.5 });
           this.observeReels();
+          this.onVis = () => { if (document.hidden) this.pauseAll(); else this.syncPlayback(); };
+          document.addEventListener('visibilitychange', this.onVis);
         }
+      }
+
+      // Carga la versión liviana del video recién cuando hace falta
+      prime(v) {
+        const so = v.querySelector('source[data-src]');
+        if (so && !so.getAttribute('src')) { so.src = so.dataset.src; v.load(); }
+      }
+
+      play(reel) {
+        const v = reel.querySelector('video');
+        if (!v) return;
+        this.prime(v);
+        const p = v.play();
+        if (p && p.catch) p.catch(() => {});
+      }
+
+      pauseAll() {
+        this.reels.forEach((r) => { const v = r.querySelector('video'); if (v) v.pause(); });
+      }
+
+      // Reproduce solo los visibles, con un máximo a la vez (2 en celular)
+      syncPlayback() {
+        if (this.modal && this.modal.open) return;
+        let n = 0;
+        this.reels.forEach((r) => {
+          const v = r.querySelector('video');
+          if (!v) return;
+          if (this.visibles.has(r) && (n < this.maxPlaying || r.classList.contains('is-sound'))) { n++; this.play(r); }
+          else v.pause();
+        });
       }
 
       setSound(reel, on) {
@@ -728,11 +808,7 @@
         const on = !reel.classList.contains('is-sound');
         this.reels.forEach((r) => { if (r !== reel) this.setSound(r, false); });
         this.setSound(reel, on);
-        const v = reel.querySelector('video');
-        if (on && v) {
-          const p = v.play();
-          if (p && p.catch) p.catch(() => {});
-        }
+        if (on) this.play(reel);
       }
 
       observeReels() {
@@ -748,7 +824,12 @@
         this.reels.forEach((r) => { const v = r.querySelector('video'); if (v) v.pause(); this.setSound(r, false); });
         const v = this.modalVideo;
         v.pause();
-        v.innerHTML = src.innerHTML;
+        v.removeAttribute('src');
+        v.innerHTML = '';
+        const hls = src.dataset.hls;
+        const full = src.dataset.full || (src.querySelector('source') && (src.querySelector('source').dataset.src || src.querySelector('source').src));
+        // Safari/iPhone usa streaming adaptativo (HLS); el resto, el mp4 en buena calidad
+        v.src = hls && v.canPlayType('application/vnd.apple.mpegurl') ? hls : full;
         if (src.getAttribute('poster')) v.setAttribute('poster', src.getAttribute('poster'));
         v.muted = false;
         v.load();
@@ -766,6 +847,7 @@
 
       disconnectedCallback() {
         if (this.reelIO) this.reelIO.disconnect();
+        if (this.onVis) document.removeEventListener('visibilitychange', this.onVis);
         clearInterval(this.timer);
         document.removeEventListener('shopify:block:select', this.onBlockSelect);
       }
@@ -822,6 +904,7 @@
     { "type": "text", "id": "label_antes", "label": "Etiqueta foto antes", "default": "ANTES" },
     { "type": "text", "id": "label_despues", "label": "Etiqueta foto después", "default": "DESPUÉS" },
     { "type": "text", "id": "nota", "label": "Nota al pie", "default": "Historia ilustrativa. Los resultados pueden variar.", "info": "Se muestra en todas las historias." },
+    { "type": "checkbox", "id": "retoque_fotos", "label": "Retoque de color en las fotos (más pesado)", "default": false, "info": "Aplica un leve filtro cálido en vivo. Mejor dejarlo apagado y subir las fotos ya editadas." },
     { "type": "checkbox", "id": "usar_ejemplos", "label": "Usar fotos de ejemplo", "default": true, "info": "Muestra las fotos actuales en las 3 primeras historias mientras no elijas otras." },
     { "type": "range", "id": "autoplay", "label": "Cambio automático (segundos)", "min": 0, "max": 12, "step": 1, "default": 0, "info": "0 = apagado. Se frena cuando la persona toca una historia." },
     { "type": "checkbox", "id": "evitar_scroll_lateral", "label": "Evitar franja blanca a la derecha", "default": true, "info": "Corta cualquier elemento de la página que se pase del ancho de la pantalla." },
